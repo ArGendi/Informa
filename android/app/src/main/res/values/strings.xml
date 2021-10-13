@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Informa</string>
+    <string name="facebook_app_id">573902283846815</string>
+    <string name="fb_login_protocol_scheme">fb573902283846815</string>
+</resources>
