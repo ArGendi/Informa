@@ -5,6 +5,7 @@ import 'package:informa/app_localization.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
+import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Informa',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xffededed),
+        scaffoldBackgroundColor: Color(0xfff6f6f6),
         fontFamily: 'Cairo',
         appBarTheme: AppBarTheme(
           color: primaryColor,
