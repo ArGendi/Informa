@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
@@ -89,14 +90,34 @@ class _LoginScreenState extends State<LoginScreen> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 30,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => ForgetPasswordScreen()),
+                          );
+                        },
+                        child: Text(
+                          'نسيت كلمة المرور؟',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 15,),
                   CustomButton(
                     text: 'تسجيل الدخول',
                     onClick: (){
                       onSubmit(context);
                     },
                   ),
-                  SizedBox(height: 5,),
+                  //SizedBox(height: 5,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -106,8 +127,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 16,
                         ),
                       ),
-                      InkWell(
-                        onTap: (){
+                      TextButton(
+                        onPressed: (){
                           Navigator.pop(context);
                         },
                         child: Text(

@@ -182,7 +182,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                   text: 'أنشاء حساب',
                   onClick: (){},
                 ),
-                SizedBox(height: 10,),
+                //SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -192,8 +192,8 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                         fontSize: 16,
                       ),
                     ),
-                    InkWell(
-                      onTap: (){
+                    TextButton(
+                      onPressed: (){
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => LoginScreen()),

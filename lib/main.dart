@@ -5,6 +5,8 @@ import 'package:informa/app_localization.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
+import 'package:informa/screens/email_confirmation_screen.dart';
+import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/services/auth_service.dart';
