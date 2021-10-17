@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/services/auth_service.dart';
@@ -71,154 +72,158 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Image.asset(
-                  'assets/images/logo1.png',
-                ),
-                //SizedBox(height: 20,),
-                Text(
-                  'أبدأ التغيير',
-                  style: TextStyle(
-                    fontSize: 30,
-                    height: 0.5
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/images/logo1.png',
                   ),
-                ),
-                Text(
-                  'خطوة بخطوة',
-                  style: TextStyle(
-                    fontSize: 30,
+                  //SizedBox(height: 20,),
+                  Text(
+                    'أبدأ التغيير',
+                    style: TextStyle(
+                      fontSize: 30,
+                      height: 0.5
+                    ),
                   ),
-                ),
-                SizedBox(height: 10,),
-                Text(
-                  'يجب عليك انشاء حساب او تسجيل الدخول للحصول علي برامج التغذية والتمارين',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600]
+                  Text(
+                    'خطوة بخطوة',
+                    style: TextStyle(
+                      fontSize: 30,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20,),
+                  SizedBox(height: 10,),
+                  Text(
+                    'يجب عليك انشاء حساب او تسجيل الدخول للحصول علي برامج التغذية والتمارين',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[600]
+                    ),
+                  ),
+                  SizedBox(height: 20,),
 
-                //Social media login buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      borderRadius: BorderRadius.circular(300),
-                      onTap: (){
-                        facebookLogin(context);
-                      },
-                      child: CircleAvatar(
-                        radius: 23,
-                        backgroundColor: Colors.blue,
-                        child: !isFacebookLoading ? FaIcon(
-                          FontAwesomeIcons.facebookF,
-                          color: Colors.white,
-                        ) : Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: CircularProgressIndicator(
-                          strokeWidth: 3,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white),
+                  //Social media login buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        borderRadius: BorderRadius.circular(300),
+                        onTap: (){
+                          googleLogin(context);
+                        },
+                        child: Ink(
+                          child: CircleAvatar(
+                            radius: 23,
+                            backgroundColor: Colors.white,
+                            child: !isGoogleLoading ? FaIcon(
+                              FontAwesomeIcons.google,
+                              color: Colors.red,
+                            ) : Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.red),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(width: 15,),
-                    InkWell(
-                      borderRadius: BorderRadius.circular(300),
-                      onTap: (){
-                        googleLogin(context);
-                      },
-                      child: Ink(
+                      SizedBox(width: 15,),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(300),
+                        onTap: (){
+                          facebookLogin(context);
+                        },
                         child: CircleAvatar(
                           radius: 23,
-                          backgroundColor: Colors.white,
-                          child: !isGoogleLoading ? FaIcon(
-                            FontAwesomeIcons.google,
-                            color: Colors.red,
+                          backgroundColor: Colors.blue,
+                          child: !isFacebookLoading ? FaIcon(
+                            FontAwesomeIcons.facebookF,
+                            color: Colors.white,
                           ) : Padding(
                             padding: const EdgeInsets.all(12.0),
                             child: CircularProgressIndicator(
                               strokeWidth: 3,
                               valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.red),
+                                  Colors.white),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20,),
-                Row(
-                  children: [
-                    Expanded(child: Divider(
-                      color: Colors.grey[600],
-                    )),
-                    Text(
-                      '''   تسجيل الدخول بالبريد الألكتروني   ''',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
+                    ],
+                  ),
+                  SizedBox(height: 20,),
+                  Row(
+                    children: [
+                      Expanded(child: Divider(
+                        endIndent: 10,
                         color: Colors.grey[600],
-                        fontSize: 13,
-                      ),
-                    ),
-                    Expanded(child: Divider(
-                      color: Colors.grey[600],
-                    )),
-                  ],
-                ),
-                SizedBox(height: 5,),
-
-                //Login button
-                CustomButton(
-                  text: 'أنشاء حساب',
-                  onClick: (){},
-                ),
-                //SizedBox(height: 10,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'لديك حساب بالفعل؟ ',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),
-                        );
-                      },
-                      child: Text(
-                        'سجل الدخول',
+                      )),
+                      Text(
+                        'تسجيل الدخول بالبريد الألكتروني',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 16,
-                          color: primaryColor
+                          color: Colors.grey[600],
+                          fontSize: 13,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 25,),
-                Text(
-                  'بالتسجيل في تطبيق أنفورما فأنت توافق علي شروط الأستخدام وقوانين الخصوصية',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey[600],
+                      Expanded(child: Divider(
+                        indent: 10,
+                        color: Colors.grey[600],
+                      )),
+                    ],
                   ),
-                ),
-              ],
+                  SizedBox(height: 5,),
+
+                  //Login button
+                  CustomButton(
+                    text: 'أنشاء حساب',
+                    onClick: (){},
+                  ),
+                  //SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginScreen()),
+                          );
+                        },
+                        child: Text(
+                          'سجل الدخول',
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: primaryColor
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'لديك حساب بالفعل؟ ',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 25,),
+                  Text(
+                    'بالتسجيل في تطبيق أنفورما فأنت توافق علي شروط الأستخدام وقوانين الخصوصية',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

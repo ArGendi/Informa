@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/screens/reset_password_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:pinput/pin_put/pin_put.dart';
@@ -19,11 +20,12 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
 
   onSubmit(){
     FocusScope.of(context).unfocus();
-    String input = _controller.text.split('').reversed.join();
+    String input = _controller.text;
     if(input == widget.code)
-      setState(() {
-        _codeStatusColor = Colors.green;
-      });
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
+      );
     else
       setState(() {
         _codeStatusColor = Colors.red;
@@ -33,79 +35,86 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/mailed.png',
-                    width: 140,
-                  ),
-                  SizedBox(height: 15,),
-                  Text(
-                    'تأكيد البريد الألكتروني',
-                    style: TextStyle(
-                      fontSize: 24,
-                      //height: 0.3
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/mailed.png',
+                      width: 140,
                     ),
-                  ),
-                  Text(
-                    'تم أرسال رمز التأكيد لك, من فضلك تحقق من البريد الوارد وأعد كتابة الرمز لتعيين كلمة المرور',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 13,
+                    SizedBox(height: 15,),
+                    Text(
+                      'تأكيد البريد الألكتروني',
+                      style: TextStyle(
+                        fontSize: 24,
+                        //height: 0.3
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 30,),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: PinPut(
+                    Text(
+                      'تم أرسال رمز التأكيد لك, من فضلك تحقق من البريد الوارد وأعد كتابة الرمز لتعيين كلمة المرور',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 13,
+                      ),
+                    ),
+                    SizedBox(height: 30,),
+                    PinPut(
+                      //withCursor: true,
+                      cursor: Text('-'),
+                      autofocus: true,
                       fieldsCount: 5,
+                      eachFieldHeight: 55,
+                      eachFieldWidth: 55,
+                      textStyle: TextStyle(
+                        fontSize: 18,
+                      ),
                       controller: _controller,
                       submittedFieldDecoration: BoxDecoration(
                         border: Border.all(),
-                        borderRadius: BorderRadius.circular(200),
+                        borderRadius: BorderRadius.circular(10),
                         color: Colors.white,
                       ),
                       selectedFieldDecoration: BoxDecoration(
                         border: Border.all(),
-                        borderRadius: BorderRadius.circular(200),
-                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        color: primaryColor.withOpacity(0.1),
                       ),
                       followingFieldDecoration: BoxDecoration(
                         border: Border.all(color: _codeStatusColor),
-                        borderRadius: BorderRadius.circular(200),
+                        borderRadius: BorderRadius.circular(10),
                         color: Colors.white,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 30,),
-                  CustomButton(
-                    text: 'تأكيد البريد الألكتروني',
-                    onClick: onSubmit,
-                  ),
-                  SizedBox(height: 20,),
-                  Text(
-                    'لم يصل رمز التأكيد؟',
-                    style: TextStyle(
+                    SizedBox(height: 30,),
+                    CustomButton(
+                      text: 'تأكيد البريد الألكتروني',
+                      onClick: onSubmit,
                     ),
-                  ),
-                  TextButton(
-                    onPressed: (){},
-                    child: Text(
-                      'أعد ارسال رمز التأكيد مرة أخرى',
+                    SizedBox(height: 20,),
+                    Text(
+                      'لم يصل رمز التأكيد؟',
                       style: TextStyle(
-                          color: primaryColor,
-                        height: 0.2
                       ),
                     ),
-                  )
-                ],
+                    TextButton(
+                      onPressed: (){},
+                      child: Text(
+                        'أعد ارسال رمز التأكيد مرة أخرى',
+                        style: TextStyle(
+                            color: primaryColor,
+                          height: 0.2
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

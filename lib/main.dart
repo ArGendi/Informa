@@ -9,6 +9,7 @@ import 'package:informa/screens/email_confirmation_screen.dart';
 import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/reset_password_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: MainRegisterScreen(),
+      home: ResetPasswordScreen(),
       supportedLocales: [
         Locale('en', ''),
         Locale('ar', ''),

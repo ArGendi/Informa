@@ -29,17 +29,17 @@ class _CustomButtonState extends State<CustomButton> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              SizedBox(width: 10,),
               Text(
                 widget.text,
                 style: TextStyle(
                     fontSize: 18,
                     color: Colors.white
                 ),
+              ),
+              SizedBox(width: 10,),
+              Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
               ),
             ],
           ),
