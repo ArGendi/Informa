@@ -11,6 +11,7 @@ import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
 class MainRegisterScreen extends StatefulWidget {
+  static String id = 'main register';
   const MainRegisterScreen({Key? key}) : super(key: key);
 
   @override
@@ -33,10 +34,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isFacebookLoading = false;});
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      Navigator.pushReplacementNamed(context, HomeScreen.id);
     }
     else {
       setState(() {isFacebookLoading = false;});
@@ -56,10 +54,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isGoogleLoading = false;});
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      Navigator.pushReplacementNamed(context, HomeScreen.id);
     }
     else {
       setState(() {isGoogleLoading = false;});
@@ -198,10 +193,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                       ),
                       TextButton(
                         onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginScreen()),
-                          );
+                          Navigator.pushNamed(context, LoginScreen.id);
                         },
                         child: Text(
                           'سجل الدخول',

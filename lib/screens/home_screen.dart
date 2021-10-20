@@ -3,6 +3,7 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  static String id = 'home';
   const HomeScreen({Key? key}) : super(key: key);
 
   @override

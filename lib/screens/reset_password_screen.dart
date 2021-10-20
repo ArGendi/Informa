@@ -8,6 +8,7 @@ import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
+  static String id = 'reset password';
   const ResetPasswordScreen({Key? key}) : super(key: key);
 
   @override
@@ -27,10 +28,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         email: 'No email yet',
         name: 'No name yet'
       ));
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      Navigator.popUntil(context, ModalRoute.withName(LoginScreen.id));
     }
   }
 

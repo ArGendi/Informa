@@ -9,6 +9,7 @@ import 'package:informa/widgets/wide_card.dart';
 import 'package:provider/provider.dart';
 
 class FreeKitchenScreen extends StatefulWidget {
+  static String id = 'free kitchen';
   const FreeKitchenScreen({Key? key}) : super(key: key);
 
   @override
@@ -46,6 +47,7 @@ class _FreeKitchenScreenState extends State<FreeKitchenScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             color: primaryColor,
+                              fontFamily: 'CairoBold'
                           ),
                         ),
                         Text(

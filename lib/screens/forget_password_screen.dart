@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'email_confirmation_screen.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
+  static String id = 'forget password';
   const ForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override

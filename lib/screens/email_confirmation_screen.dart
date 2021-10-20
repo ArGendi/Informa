@@ -6,6 +6,7 @@ import 'package:informa/widgets/custom_textfield.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 
 class EmailConfirmationScreen extends StatefulWidget {
+  static String id = 'email confirmation';
   final String code;
   const EmailConfirmationScreen({Key? key, required this.code}) : super(key: key);
 
@@ -22,10 +23,7 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
     FocusScope.of(context).unfocus();
     String input = _controller.text;
     if(input == widget.code)
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => ResetPasswordScreen()),
-      );
+      Navigator.pushNamed(context, ResetPasswordScreen.id);
     else
       setState(() {
         _codeStatusColor = Colors.red;

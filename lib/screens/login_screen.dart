@@ -11,6 +11,7 @@ import '../constants.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  static String id = 'login';
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -32,10 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
         name: 'No Name',
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      );
+      Navigator.pushNamedAndRemoveUntil(context, HomeScreen.id, (route) => false);
     }
     print("email: " + _email.toString());
     print("password: " + _password.toString());
@@ -97,10 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         TextButton(
                           onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ForgetPasswordScreen()),
-                            );
+                            Navigator.pushNamed(context, ForgetPasswordScreen.id);
                           },
                           child: Text(
                             'نسيت كلمة المرور؟',
