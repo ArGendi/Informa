@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 15,),
                     CustomTextField(
                       text: 'كلمة المرور',
                       obscureText: true,
@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
                           onPressed: (){
@@ -123,6 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Text(
+                          'مستخدم جديد؟ ',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
                         TextButton(
                           onPressed: (){
                             Navigator.pop(context);
@@ -133,12 +139,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 16,
                                 color: primaryColor
                             ),
-                          ),
-                        ),
-                        Text(
-                          'مستخدم جديد؟ ',
-                          style: TextStyle(
-                            fontSize: 16,
                           ),
                         ),
                       ],

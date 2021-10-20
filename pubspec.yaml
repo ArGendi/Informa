@@ -76,10 +76,13 @@ flutter:
   fonts:
      - family: Cairo
        fonts:
-         - asset: assets/fonts/Cairo-Bold.ttf
-     - family: CairoLight
+         - asset: assets/fonts/Cairo-SemiBold.ttf
+     - family: CairoRegular
        fonts:
-         - asset: assets/fonts/Cairo-Light.ttf
+         - asset: assets/fonts/Cairo-Regular.ttf
+     - family: CairoBold
+       fonts:
+         - asset: assets/fonts/Cairo-Bold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

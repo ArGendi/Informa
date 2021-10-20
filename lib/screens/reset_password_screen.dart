@@ -50,7 +50,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       'assets/images/shield.png',
                       width: 140,
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(height: 25,),
                     Text(
                       'أدخل كلمة مرور جديدة',
                       style: TextStyle(
@@ -80,7 +80,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 15,),
                     CustomTextField(
                       text: 'تأكيد كلمة المرور',
                       obscureText: true,

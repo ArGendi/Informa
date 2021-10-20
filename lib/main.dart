@@ -5,8 +5,10 @@ import 'package:informa/app_localization.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
+import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/screens/email_confirmation_screen.dart';
 import 'package:informa/screens/forget_password_screen.dart';
+import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/screens/reset_password_screen.dart';
@@ -32,6 +34,9 @@ void main() async{
         ChangeNotifierProvider<ActiveUserProvider>(
           create: (context) => ActiveUserProvider(),
         ),
+        ChangeNotifierProvider<RecentlyViewedMealsProvider>(
+          create: (context) => RecentlyViewedMealsProvider(),
+        ),
       ],
       child: MyApp()
     )
@@ -46,13 +51,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Informa',
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xfff6f6f6),
+        scaffoldBackgroundColor: bgColor,
         fontFamily: 'Cairo',
         appBarTheme: AppBarTheme(
           color: primaryColor,
         ),
       ),
-      home: ResetPasswordScreen(),
+      home: FreeKitchenScreen(),
       supportedLocales: [
         Locale('en', ''),
         Locale('ar', ''),

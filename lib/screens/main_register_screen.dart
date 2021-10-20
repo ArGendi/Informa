@@ -114,6 +114,28 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                       InkWell(
                         borderRadius: BorderRadius.circular(300),
                         onTap: (){
+                          facebookLogin(context);
+                        },
+                        child: CircleAvatar(
+                          radius: 23,
+                          backgroundColor: Colors.blue,
+                          child: !isFacebookLoading ? FaIcon(
+                            FontAwesomeIcons.facebookF,
+                            color: Colors.white,
+                          ) : Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: CircularProgressIndicator(
+                              strokeWidth: 3,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 15,),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(300),
+                        onTap: (){
                           googleLogin(context);
                         },
                         child: Ink(
@@ -130,28 +152,6 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                     Colors.red),
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 15,),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(300),
-                        onTap: (){
-                          facebookLogin(context);
-                        },
-                        child: CircleAvatar(
-                          radius: 23,
-                          backgroundColor: Colors.blue,
-                          child: !isFacebookLoading ? FaIcon(
-                            FontAwesomeIcons.facebookF,
-                            color: Colors.white,
-                          ) : Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white),
                             ),
                           ),
                         ),
@@ -190,6 +190,12 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Text(
+                        'لديك حساب بالفعل؟ ',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
                       TextButton(
                         onPressed: (){
                           Navigator.push(
@@ -203,12 +209,6 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                               fontSize: 16,
                               color: primaryColor
                           ),
-                        ),
-                      ),
-                      Text(
-                        'لديك حساب بالفعل؟ ',
-                        style: TextStyle(
-                          fontSize: 16,
                         ),
                       ),
                     ],
