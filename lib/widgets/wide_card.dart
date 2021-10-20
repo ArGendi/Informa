@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/models/meal.dart';
 
 class WideCard extends StatefulWidget {
-  const WideCard({Key? key}) : super(key: key);
+  final Meal meal;
+  const WideCard({Key? key, required this.meal}) : super(key: key);
 
   @override
   _WideCardState createState() => _WideCardState();
@@ -25,7 +27,7 @@ class _WideCardState extends State<WideCard> {
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.asset(
-              'assets/images/burger.png',
+              widget.meal.image!,
               width: 130,
               height: 130,
               fit: BoxFit.cover,
@@ -42,7 +44,7 @@ class _WideCardState extends State<WideCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'تشكن برجر',
+                        widget.meal.name!,
                         style: TextStyle(
                           fontSize: 16,
                           height: 1

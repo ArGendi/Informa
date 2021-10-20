@@ -5,6 +5,7 @@ import 'package:informa/app_localization.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
+import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/screens/email_confirmation_screen.dart';
 import 'package:informa/screens/forget_password_screen.dart';
@@ -36,6 +37,9 @@ void main() async{
         ),
         ChangeNotifierProvider<RecentlyViewedMealsProvider>(
           create: (context) => RecentlyViewedMealsProvider(),
+        ),
+        ChangeNotifierProvider<KitchenProvider>(
+          create: (context) => KitchenProvider(),
         ),
       ],
       child: MyApp()
