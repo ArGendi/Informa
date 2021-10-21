@@ -7,7 +7,8 @@ class ActiveUserProvider extends ChangeNotifier{
   ActiveUserProvider(){
     _user = new User(
       name: 'new',
-      email: 'new'
+      email: 'new',
+      premium: true,
     );
   }
 

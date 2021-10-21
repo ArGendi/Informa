@@ -3,6 +3,7 @@ class User {
   String? name;
   String? email;
   String? token;
+  bool premium;
 
-  User({this.id, this.name, this.email, this.token});
+  User({this.id, this.name, this.email, this.token, this.premium = false});
 }

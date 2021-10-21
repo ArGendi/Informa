@@ -7,6 +7,7 @@ import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
 import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
+import 'package:informa/screens/detailed_meal_screen.dart';
 import 'package:informa/screens/email_confirmation_screen.dart';
 import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: MainScreen(),
+      home: DetailedMealScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
