@@ -10,7 +10,7 @@ import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/screens/email_confirmation_screen.dart';
 import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
-import 'package:informa/screens/home_screen.dart';
+import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/screens/reset_password_screen.dart';
@@ -62,12 +62,12 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: FreeKitchenScreen(),
+      home: MainScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
         LoginScreen.id: (context) => LoginScreen(),
-        HomeScreen.id: (context) => HomeScreen(),
+        MainScreen.id: (context) => MainScreen(),
         FreeKitchenScreen.id: (context) => FreeKitchenScreen(),
         ForgetPasswordScreen.id: (context) => ForgetPasswordScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),

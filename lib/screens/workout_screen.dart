@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class WorkoutScreen extends StatefulWidget {
+  const WorkoutScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _WorkoutScreenState createState() => _WorkoutScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _WorkoutScreenState extends State<WorkoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Text(
-          'Home',
+          'Workout',
           style: TextStyle(
             fontSize: 40,
           ),

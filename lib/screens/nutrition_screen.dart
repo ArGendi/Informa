@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class NutritionScreen extends StatefulWidget {
+  const NutritionScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _NutritionScreenState createState() => _NutritionScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _NutritionScreenState extends State<NutritionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Text(
-          'Home',
+          'Nutrition',
           style: TextStyle(
             fontSize: 40,
           ),

@@ -4,7 +4,7 @@ import 'package:informa/constants.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
-import 'package:informa/screens/home_screen.dart';
+import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/widgets/custom_button.dart';
@@ -34,7 +34,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isFacebookLoading = false;});
-      Navigator.pushReplacementNamed(context, HomeScreen.id);
+      Navigator.pushReplacementNamed(context, MainScreen.id);
     }
     else {
       setState(() {isFacebookLoading = false;});
@@ -54,7 +54,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isGoogleLoading = false;});
-      Navigator.pushReplacementNamed(context, HomeScreen.id);
+      Navigator.pushReplacementNamed(context, MainScreen.id);
     }
     else {
       setState(() {isGoogleLoading = false;});

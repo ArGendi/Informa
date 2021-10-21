@@ -8,7 +8,7 @@ import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
-import 'home_screen.dart';
+import 'main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login';
@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
         name: 'No Name',
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-      Navigator.pushNamedAndRemoveUntil(context, HomeScreen.id, (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, MainScreen.id, (route) => false);
     }
     print("email: " + _email.toString());
     print("password: " + _password.toString());
