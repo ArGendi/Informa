@@ -21,13 +21,14 @@ class MainRegisterScreen extends StatefulWidget {
 class _MainRegisterScreenState extends State<MainRegisterScreen> {
   bool isGoogleLoading = false;
   bool isFacebookLoading = false;
+  AuthServices? _authServices;
 
   facebookLogin(BuildContext context) async{
     setState(() {isFacebookLoading = true;});
-    bool valid = await AuthServices.loginWithFacebook();
+    bool valid = await _authServices!.loginWithFacebook();
     if(valid){
-      var profile = await AuthServices.fb.getUserProfile();
-      var email = await AuthServices.fb.getUserEmail();
+      var profile = await _authServices!.fb.getUserProfile();
+      var email = await _authServices!.fb.getUserEmail();
       User user = new User(
         name: profile!.name,
         email: email,
@@ -46,11 +47,11 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
 
   googleLogin(BuildContext context) async{
     setState(() {isGoogleLoading = true;});
-    bool valid = await AuthServices.googleLogin();
+    bool valid = await _authServices!.googleLogin();
     if(valid){
       User user = new User(
-        name: AuthServices.user!.displayName,
-        email: AuthServices.user!.email,
+        name: _authServices!.user.displayName,
+        email: _authServices!.user.email,
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isGoogleLoading = false;});
@@ -62,6 +63,13 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
           SnackBar(content: Text('حدث خطأ فالتسجيل'))
       );
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _authServices = new AuthServices();
   }
 
   @override

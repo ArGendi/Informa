@@ -49,6 +49,11 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        elevation: 0,
+        title: Text('أنفورما'),
+        centerTitle: true,
+      ),
       body: Center(
         child: YoutubePlayerBuilder(
           player: YoutubePlayer(

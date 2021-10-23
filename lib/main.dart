@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: DetailedMealScreen(),
+      home: MainRegisterScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
         MainScreen.id: (context) => MainScreen(),
         FreeKitchenScreen.id: (context) => FreeKitchenScreen(),
         ForgetPasswordScreen.id: (context) => ForgetPasswordScreen(),
+        DetailedMealScreen.id: (context) => DetailedMealScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

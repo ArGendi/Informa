@@ -3,6 +3,7 @@ import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/screens/forget_password_screen.dart';
+import 'package:informa/services/auth_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +23,9 @@ class _LoginScreenState extends State<LoginScreen> {
   var _formKey = GlobalKey<FormState>();
   String? _email;
   String? _password;
+  AuthServices? _authServices;
 
-  onSubmit(BuildContext context){
+  onSubmit(BuildContext context) async{
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
     if(valid) {
@@ -33,10 +35,18 @@ class _LoginScreenState extends State<LoginScreen> {
         name: 'No Name',
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+      await _authServices!.loginWithEmailAndPassword(_email!, _password!);
       Navigator.pushNamedAndRemoveUntil(context, MainScreen.id, (route) => false);
     }
     print("email: " + _email.toString());
     print("password: " + _password.toString());
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _authServices = new AuthServices();
   }
 
   @override

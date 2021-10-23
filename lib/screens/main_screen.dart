@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/analytics_screen.dart';
+import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/nutrition_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
@@ -139,7 +140,7 @@ class _MainScreenState extends State<MainScreen> {
                   onPressed: (){
                     setState(() {
                       _selectedIndex = 4;
-                      _currentPage = NutritionScreen();
+                      _currentPage = FreeKitchenScreen();
                     });
                   },
                   child: Column(

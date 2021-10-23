@@ -6,6 +6,7 @@ import 'package:informa/widgets/meal_info_box.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class DetailedMealScreen extends StatefulWidget {
+  static String id = 'detailed meal';
   const DetailedMealScreen({Key? key}) : super(key: key);
 
   @override
@@ -15,8 +16,8 @@ class DetailedMealScreen extends StatefulWidget {
 class _DetailedMealScreenState extends State<DetailedMealScreen> {
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.black,
       body: ListView(
         children: [
           Container(
@@ -47,8 +48,8 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
                   ),
                 ),
                 Positioned(
-                  bottom: 12,
-                  left: 12,
+                  bottom: 15,
+                  left: 15,
                   child: InkWell(
                     onTap: (){
                       Navigator.push(
@@ -78,117 +79,113 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
               ],
             ),
           ),
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'وصفات الدجاج',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                        ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Divider(
+                  thickness: 2,
+                  color: Colors.black,
+                  indent: screenSize.width * 0.37,
+                  endIndent: screenSize.width * 0.37,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'وصفات الدجاج',
+                      style: TextStyle(
+                        color: Colors.grey[600],
                       ),
-                      Text(
-                        'تشكن برجر دايت',
-                        style: TextStyle(
-                          fontSize: 24,
-                          height: 1.6
-                        ),
+                    ),
+                    Text(
+                      'تشكن برجر دايت',
+                      style: TextStyle(
+                        fontSize: 24,
+                        height: 1.6
                       ),
-                      //SizedBox(height: 10,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'النسبة من الهدف اليومي',
-                            style: TextStyle(
-                              fontSize: 12
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: (){},
-                            child: Text(
-                              'الترقية الي أنفورما بلس',
-                              style: TextStyle(
-                                color: primaryColor,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          MealInfoBox(
-                            text: 'كاربوهايدرات',
-                            value: 1200,
-                            percent: 0.6,
-                          ),
-                          MealInfoBox(
-                            text: 'سعرات حرارية',
-                            value: 300,
-                            percent: 0.2,
-                          ),
-                          MealInfoBox(
-                            text: 'بروتين',
-                            value: 500,
-                            percent: 0.2,
-                          ),
-                          MealInfoBox(
-                            text: 'دهون',
-                            value: 800,
-                            percent: 0.1,
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20,),
-                      Text(
-                        'المكونات',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: primaryColor
-                        ),
-                      ),
-                      for(int i=0; i<5; i++)
+                    ),
+                    //SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Text(
-                          'نص كيلو دجاج مخلي'
+                          'النسبة من الهدف اليومي',
+                          style: TextStyle(
+                            fontSize: 12
+                          ),
                         ),
-                    ],
-                  ),
-                  SizedBox(height: 20,),
-                  MaterialButton(
-                    elevation: 0,
-                    onPressed: (){},
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
+                        TextButton(
+                          onPressed: (){},
+                          child: Text(
+                            'الترقية الي أنفورما بلس',
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    color: primaryColor,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      child: Text(
-                        'أضف الوجبة الي نظامي الغذائي',
-                        style: TextStyle(
-                            color: Colors.white
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        MealInfoBox(
+                          text: 'كاربوهايدرات',
+                          value: 1200,
+                          percent: 0.6,
                         ),
+                        MealInfoBox(
+                          text: 'سعرات حرارية',
+                          value: 300,
+                          percent: 0.2,
+                        ),
+                        MealInfoBox(
+                          text: 'بروتين',
+                          value: 500,
+                          percent: 0.2,
+                        ),
+                        MealInfoBox(
+                          text: 'دهون',
+                          value: 800,
+                          percent: 0.1,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20,),
+                    Text(
+                      'المكونات',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: primaryColor
+                      ),
+                    ),
+                    for(int i=0; i<5; i++)
+                      Text(
+                        'نص كيلو دجاج مخلي'
+                      ),
+                  ],
+                ),
+                SizedBox(height: 20,),
+                MaterialButton(
+                  elevation: 0,
+                  onPressed: (){},
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  color: primaryColor,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    child: Text(
+                      'أضف الوجبة الي نظامي الغذائي',
+                      style: TextStyle(
+                          color: Colors.white
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

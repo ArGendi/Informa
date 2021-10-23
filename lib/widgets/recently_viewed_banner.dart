@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:informa/models/meal.dart';
+import 'package:informa/screens/detailed_meal_screen.dart';
 
 import '../constants.dart';
 import 'bottom_shaded_card.dart';
@@ -30,7 +31,8 @@ class RecentlyViewedBanner extends StatelessWidget {
                 ),
                 MaterialButton(
                   height: 30,
-                  onPressed: (){},
+                  onPressed: (){
+                  },
                   child: Text('عرض الجميع'),
                   color: Colors.white,
                   textColor: primaryColor,
@@ -55,7 +57,10 @@ class RecentlyViewedBanner extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     child: BottomShadedCard(
-                      meal: recentlyViewed[index]
+                      meal: recentlyViewed[index],
+                      onClick: (){
+                        Navigator.pushNamed(context, DetailedMealScreen.id);
+                      },
                     ),
                   );
                 },

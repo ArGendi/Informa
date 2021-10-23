@@ -26,9 +26,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     if(valid) {
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(new User(
         email: 'No email yet',
-        name: 'No name yet'
+        name: 'No name yet',
+        premium: true,
       ));
-      Navigator.popUntil(context, ModalRoute.withName(LoginScreen.id));
+      //Navigator.popUntil(context, ModalRoute.withName(LoginScreen.id));
+      Navigator.pushNamed(context, MainScreen.id);
     }
   }
 
