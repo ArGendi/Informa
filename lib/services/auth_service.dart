@@ -6,7 +6,7 @@ class AuthServices {
   final _fb = FacebookLogin();
   final _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
-  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   GoogleSignInAccount get user => _user!;
   FacebookLogin get fb => _fb;
@@ -40,7 +40,7 @@ class AuthServices {
     }
   }
 
-  Future<bool> googleLogin() async{
+  Future<bool> loginWithGoogle() async{
     final googleUser = await _googleSignIn.signIn();
     if(googleUser == null) return false;
     _user = googleUser;
@@ -51,7 +51,7 @@ class AuthServices {
     );
 
     try {
-      await auth.signInWithCredential(credential);
+      await _auth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         // handle the error here
@@ -59,15 +59,48 @@ class AuthServices {
       else if (e.code == 'invalid-credential') {
         // handle the error here
       }
+      return false;
     } catch (e) {
       // handle the error here
+      return false;
     }
     print(_user!.email);
     print(_user!.displayName);
     return true;
   }
 
-  Future<void> loginWithEmailAndPassword(String email, String password) async{
-    var r = await auth.signInWithEmailAndPassword(email: email, password: password);
+  Future<String?> signIn(String email, String password) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return "Signed in";
+    } on FirebaseAuthException catch(e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> signUp(String email, String password) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      return "Signed up";
+    } on FirebaseAuthException catch(e) {
+      return e.message;
+    }
+  }
+
+  Future<String?> signOut() async {
+    try {
+      await _auth.signOut();
+      return "Signed out";
+    } on FirebaseAuthException catch(e) {
+      return e.message;
+    }
+  }
+
+  User? getUser() {
+    try {
+      return _auth.currentUser;
+    } on FirebaseAuthException {
+      return null;
+    }
   }
 }

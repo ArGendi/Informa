@@ -1,4 +1,6 @@
+import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/user.dart';
@@ -7,7 +9,10 @@ import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/services/auth_service.dart';
+import 'package:informa/services/web_services.dart';
 import 'package:informa/widgets/custom_button.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'package:provider/provider.dart';
 
 class MainRegisterScreen extends StatefulWidget {
@@ -21,7 +26,8 @@ class MainRegisterScreen extends StatefulWidget {
 class _MainRegisterScreenState extends State<MainRegisterScreen> {
   bool isGoogleLoading = false;
   bool isFacebookLoading = false;
-  AuthServices? _authServices;
+  AuthServices? _authServices = new AuthServices();
+  EmailAuth emailAuth =  new EmailAuth(sessionName: "Sample session");
 
   facebookLogin(BuildContext context) async{
     setState(() {isFacebookLoading = true;});
@@ -47,7 +53,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
 
   googleLogin(BuildContext context) async{
     setState(() {isGoogleLoading = true;});
-    bool valid = await _authServices!.googleLogin();
+    bool valid = await _authServices!.loginWithGoogle();
     if(valid){
       User user = new User(
         name: _authServices!.user.displayName,
@@ -63,13 +69,6 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
           SnackBar(content: Text('حدث خطأ فالتسجيل'))
       );
     }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _authServices = new AuthServices();
   }
 
   @override

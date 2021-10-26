@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,9 +13,11 @@ import 'package:informa/screens/detailed_meal_screen.dart';
 import 'package:informa/screens/email_confirmation_screen.dart';
 import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
+import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/register_screens.dart';
 import 'package:informa/screens/reset_password_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +67,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: MainRegisterScreen(),
+      home: RegisterScreens(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),

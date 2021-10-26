@@ -5,8 +5,10 @@ import '../constants.dart';
 class CustomButton extends StatefulWidget {
   final String text;
   final VoidCallback onClick;
+  final bool isLoading;
+  final Color bgColor;
 
-  const CustomButton({Key? key, required this.text, required this.onClick}) : super(key: key);
+  const CustomButton({Key? key, required this.text, required this.onClick, this.isLoading = false, this.bgColor = primaryColor}) : super(key: key);
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -21,19 +23,14 @@ class _CustomButtonState extends State<CustomButton> {
       child: Ink(
         width: double.infinity,
         decoration: BoxDecoration(
-            color: primaryColor,
+            color: widget.bgColor,
             borderRadius: BorderRadius.circular(30)
         ),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Row(
+          child: !widget.isLoading ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              SizedBox(width: 10,),
               Text(
                 widget.text,
                 style: TextStyle(
@@ -41,7 +38,18 @@ class _CustomButtonState extends State<CustomButton> {
                     color: Colors.white
                 ),
               ),
+              SizedBox(width: 10,),
+              Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
+              ),
             ],
+          ) : Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Colors.white),
+            ),
           ),
         ),
       ),

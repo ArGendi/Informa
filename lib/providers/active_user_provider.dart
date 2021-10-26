@@ -19,4 +19,19 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setGender(int gender){
+    _user!.gender = gender;
+    notifyListeners();
+  }
+
+  setProgram(int program){
+    _user!.program = program;
+    notifyListeners();
+  }
+
+  setGoal(int goal){
+    _user!.goal = goal;
+    notifyListeners();
+  }
+
 }

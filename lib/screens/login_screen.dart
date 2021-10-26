@@ -23,7 +23,8 @@ class _LoginScreenState extends State<LoginScreen> {
   var _formKey = GlobalKey<FormState>();
   String? _email;
   String? _password;
-  AuthServices? _authServices;
+  AuthServices _authServices = new AuthServices();
+  bool? _isLoading = false;
 
   onSubmit(BuildContext context) async{
     FocusScope.of(context).unfocus();
@@ -35,18 +36,15 @@ class _LoginScreenState extends State<LoginScreen> {
         name: 'No Name',
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-      await _authServices!.loginWithEmailAndPassword(_email!, _password!);
-      Navigator.pushNamedAndRemoveUntil(context, MainScreen.id, (route) => false);
+      String? response = await _authServices.signIn(_email!, _password!);
+      if(response == 'Signed in')
+        Navigator.pushNamedAndRemoveUntil(context, MainScreen.id, (route) => false);
+      else ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('غير صحيح'))
+      );
     }
     print("email: " + _email.toString());
     print("password: " + _password.toString());
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _authServices = new AuthServices();
   }
 
   @override
@@ -123,6 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onClick: (){
                         onSubmit(context);
                       },
+                      isLoading: _isLoading!,
                     ),
                     //SizedBox(height: 5,),
                     Row(
