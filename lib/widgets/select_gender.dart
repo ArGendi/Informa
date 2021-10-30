@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/custom_button.dart';
@@ -25,13 +26,17 @@ class _SelectGenderState extends State<SelectGender> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Text(
-                    'أهلا',
-                    style: TextStyle(
-                        fontSize: 26,
-                        color: primaryColor,
-                        fontFamily: 'CairoBold'
-                    ),
+                  // Text(
+                  //   'أهلا',
+                  //   style: TextStyle(
+                  //       fontSize: 26,
+                  //       color: primaryColor,
+                  //       fontFamily: 'CairoBold'
+                  //   ),
+                  // ),
+                  Image.asset(
+                    'assets/images/ahlan.png',
+                    width: 90,
                   ),
                   Text(
                     'دعنا نتعرف عليك أكثر',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/widgets/select_gender.dart';
 import 'package:informa/widgets/select_goal.dart';
@@ -64,7 +65,7 @@ class _RegisterScreensState extends State<RegisterScreens> {
           ),
           SelectGoal(
             onClick: (){
-              Navigator.pushNamed(context, MainScreen.id);
+              Navigator.pushNamed(context, MainRegisterScreen.id);
             },
           ),
         ],

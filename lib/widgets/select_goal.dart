@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
@@ -27,13 +28,17 @@ class _SelectGoalState extends State<SelectGoal> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Text(
-                    'أهلا',
-                    style: TextStyle(
-                        fontSize: 26,
-                        color: primaryColor,
-                        fontFamily: 'CairoBold'
-                    ),
+                  // Text(
+                  //   'أهلا',
+                  //   style: TextStyle(
+                  //       fontSize: 26,
+                  //       color: primaryColor,
+                  //       fontFamily: 'CairoBold'
+                  //   ),
+                  // ),
+                  Image.asset(
+                    'assets/images/ahlan.png',
+                    width: 90,
                   ),
                   Text(
                     'دعنا نتعرف عليك أكثر',

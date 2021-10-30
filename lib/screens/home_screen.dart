@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/models/challenge.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/challenges_screen.dart';
+import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/widgets/home_banner.dart';
 import 'package:provider/provider.dart';
+
+import 'muscle_selection_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -87,21 +92,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainText: 'تمارين انفورما',
                   subText: 'للحصول علي برنامج تغذية وتمارين ',
                   btnText: 'تصفح التمارين',
-                  onClick: (){},
+                  onClick: (){
+                    Navigator.pushNamed(context, MuscleSelectionScreen.id);
+                  },
                 ),
                 SizedBox(height: 20,),
                 HomeBanner(
                   mainText: 'مطبخ انفورما',
                   subText: 'للحصول علي برنامج تغذية وتمارين ',
                   btnText: 'تصفح الوجبات',
-                  onClick: (){},
+                  onClick: (){
+                    Navigator.pushNamed(context, FreeKitchenScreen.id);
+                  },
                 ),
                 SizedBox(height: 20,),
                 HomeBanner(
                   mainText: 'تحديات انفورما',
                   subText: 'للحصول علي برنامج تغذية وتمارين ',
                   btnText: 'تصفح التحديات',
-                  onClick: (){},
+                  onClick: (){
+                    final now = DateTime.now();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChallengesScreen(
+                        challenge: new Challenge(
+                          name: 'تحدي جديد',
+                          deadline: DateTime(now.year, now.month, now.day + 1),
+                        ),
+                      )),
+                    );
+                  },
                 ),
               ],
             ),

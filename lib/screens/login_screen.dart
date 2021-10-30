@@ -34,14 +34,17 @@ class _LoginScreenState extends State<LoginScreen> {
       User user = new User(
         email: _email,
         name: 'No Name',
+        premium: true,
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-      String? response = await _authServices.signIn(_email!, _password!);
+      setState(() { _isLoading = true; });
+      String? response = await _authServices.signIn(_email!.trim(), _password!);
       if(response == 'Signed in')
         Navigator.pushNamedAndRemoveUntil(context, MainScreen.id, (route) => false);
       else ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('غير صحيح'))
       );
+      setState(() { _isLoading = false; });
     }
     print("email: " + _email.toString());
     print("password: " + _password.toString());

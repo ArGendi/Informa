@@ -1,6 +1,4 @@
-import 'package:email_auth/email_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/user.dart';
@@ -11,8 +9,6 @@ import 'package:informa/screens/login_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/web_services.dart';
 import 'package:informa/widgets/custom_button.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server/gmail.dart';
 import 'package:provider/provider.dart';
 
 class MainRegisterScreen extends StatefulWidget {
@@ -27,7 +23,6 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
   bool isGoogleLoading = false;
   bool isFacebookLoading = false;
   AuthServices? _authServices = new AuthServices();
-  EmailAuth emailAuth =  new EmailAuth(sessionName: "Sample session");
 
   facebookLogin(BuildContext context) async{
     setState(() {isFacebookLoading = true;});
@@ -38,6 +33,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       User user = new User(
         name: profile!.name,
         email: email,
+        premium: true,
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isFacebookLoading = false;});
@@ -58,6 +54,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       User user = new User(
         name: _authServices!.user.displayName,
         email: _authServices!.user.email,
+        premium: true,
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isGoogleLoading = false;});

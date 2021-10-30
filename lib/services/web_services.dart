@@ -5,7 +5,21 @@ class WebServices {
   Future<http.Response> post(String url, data) async {
     var response = await http.post(
       Uri.parse(url),
-      headers: {"Content-type": "application/json"},
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: json.encode(data),
+    );
+    return response;
+  }
+
+  Future<http.Response> postWithOrigin(String url, data) async {
+    var response = await http.post(
+      Uri.parse(url),
+      headers: {
+        "origin": 'http://localhost',
+        "Content-type": "application/json",
+      },
       body: json.encode(data),
     );
     return response;

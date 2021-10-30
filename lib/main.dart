@@ -4,19 +4,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:informa/app_localization.dart';
+import 'package:informa/models/challenge.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
 import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
+import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/detailed_meal_screen.dart';
+import 'package:informa/screens/dummy.dart';
 import 'package:informa/screens/email_confirmation_screen.dart';
 import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
+import 'package:informa/screens/free_workout_screen.dart';
 import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/muscle_selection_screen.dart';
 import 'package:informa/screens/register_screens.dart';
 import 'package:informa/screens/reset_password_screen.dart';
 import 'package:informa/services/auth_service.dart';
@@ -76,6 +81,8 @@ class MyApp extends StatelessWidget {
         FreeKitchenScreen.id: (context) => FreeKitchenScreen(),
         ForgetPasswordScreen.id: (context) => ForgetPasswordScreen(),
         DetailedMealScreen.id: (context) => DetailedMealScreen(),
+        FreeWorkoutScreen.id: (context) => FreeWorkoutScreen(),
+        MuscleSelectionScreen.id: (context) => MuscleSelectionScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

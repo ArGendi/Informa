@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:informa/constants.dart';
 
 class CustomTextField extends StatefulWidget {
   final String text;
@@ -6,8 +7,9 @@ class CustomTextField extends StatefulWidget {
   final TextInputType textInputType;
   final Function(String textInput) setValue;
   final Function(String value) validation;
+  final bool anotherFilledColor;
 
-  const CustomTextField({Key? key, required this.text, required this.obscureText, required this.textInputType, required this.setValue, required this.validation}) : super(key: key);
+  const CustomTextField({Key? key, required this.text, required this.obscureText, required this.textInputType, required this.setValue, required this.validation, this.anotherFilledColor = false}) : super(key: key);
 
   @override
   _CustomTextFieldState createState() =>
@@ -43,8 +45,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
           color: Colors.grey.shade500,
         ),
         contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        focusColor: Colors.grey.shade100,
-        fillColor: Colors.grey.shade100,
+        focusColor: widget.anotherFilledColor ? Colors.white : Colors.grey.shade100,
+        fillColor: widget.anotherFilledColor ? Colors.white : Colors.grey.shade100,
         filled: true,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
