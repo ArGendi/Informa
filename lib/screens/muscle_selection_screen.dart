@@ -125,6 +125,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                             setState(() {
                               _image = 'assets/images/selected_body_chest.png';
                               _isMuscleSelected = true;
+                              _selectedMuscle = 'العضلة المستهدفة هي الصدر';
                             });
                           },
                           child: Container(
@@ -144,6 +145,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                             setState(() {
                               _image = 'assets/images/selected_body_abs.png';
                               _isMuscleSelected = true;
+                              _selectedMuscle = 'العضلة المستهدفة هي البطن';
                             });
                           },
                           child: Container(

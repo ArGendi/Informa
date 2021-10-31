@@ -82,7 +82,13 @@ class _SelectGenderState extends State<SelectGender> {
                               child: Column(
                                 children: [
                                   Expanded(
-                                    child: Container(),
+                                    child: Container(
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          'assets/icons/male.svg'
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   Text(
                                     'ذكر',
@@ -117,7 +123,13 @@ class _SelectGenderState extends State<SelectGender> {
                               child: Column(
                                 children: [
                                   Expanded(
-                                    child: Container(),
+                                    child: Container(
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                            'assets/icons/female.svg'
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   Text(
                                     'انثى',
