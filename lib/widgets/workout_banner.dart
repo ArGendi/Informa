@@ -31,7 +31,7 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 110,
+      height: 120,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -41,7 +41,7 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(15.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,17 +54,19 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                 ),
                 Text(
                   'العضلة المستهدفة, الصدر العلوي',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 9,
                     color: Colors.grey
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 5,),
                 Row(
                   children: [
                     Container(
                       width: 40,
-                      height: 5,
+                      height: 4,
                       decoration: BoxDecoration(
                         color: widget.workout.level! >= 1 ? primaryColor : Colors.grey[300],
                         borderRadius: BorderRadius.circular(5)
@@ -73,7 +75,7 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                     SizedBox(width: 5,),
                     Container(
                       width: 40,
-                      height: 5,
+                      height: 4,
                       decoration: BoxDecoration(
                           color: widget.workout.level! >= 2 ? primaryColor : Colors.grey[300],
                           borderRadius: BorderRadius.circular(5)
@@ -82,7 +84,7 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                     SizedBox(width: 5,),
                     Container(
                       width: 40,
-                      height: 5,
+                      height: 4,
                       decoration: BoxDecoration(
                           color: widget.workout.level! >= 3 ? primaryColor : Colors.grey[300],
                           borderRadius: BorderRadius.circular(5)
@@ -107,7 +109,7 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
             ),
             child: Image.asset(
               'assets/images/Hands-Clapping-Chaulk-Kettlebell.jpg',
-              width: 120,
+              width: 130,
               //height: 120,
               fit: BoxFit.cover,
             ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/web_services.dart';
@@ -10,6 +11,8 @@ class Dummy extends StatefulWidget {
 }
 
 class _DummyState extends State<Dummy> {
+  List list = [1,2,3];
+
   sendEmail() async{
     WebServices webServices = new WebServices();
     var response = await webServices.postWithOrigin('https://api.emailjs.com/api/v1.0/email/send', {
@@ -32,16 +35,134 @@ class _DummyState extends State<Dummy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: MaterialButton(
-          onPressed: firebaseSendEmail,
-          child: Container(
-            width: 200,
-            height: 200,
-            color: Colors.black,
-          ),
-        ),
-      ),
+      body: ListView(
+        shrinkWrap: true,
+        children: [
+          for(int i=0; i<list.length; i+=2)
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.blue)
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Image.asset(
+                              'assets/images/burger.png',
+                              fit: BoxFit.cover,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Ahmed',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'actor',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Text(
+                                            '23 years',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: (){},
+                                  icon: Icon(Icons.mail),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 5,),
+                    i+1 == list.length ? Expanded(child: Container()) : Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.blue)
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Image.asset(
+                              'assets/images/burger.png',
+                              fit: BoxFit.cover,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Ahmed',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(),
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'actor',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          SizedBox(width: 5,),
+                                          Text(
+                                            '23 years',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: (){},
+                                  icon: Icon(Icons.mail),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 5,),
+              ],
+            ),
+        ],
+      )
     );
   }
 }
