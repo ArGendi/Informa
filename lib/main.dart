@@ -22,6 +22,7 @@ import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/screens/muscle_selection_screen.dart';
+import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
 import 'package:informa/screens/register_screens.dart';
 import 'package:informa/screens/reset_password_screen.dart';
@@ -72,8 +73,16 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           color: primaryColor,
         ),
+        textTheme: TextTheme(
+          caption: TextStyle(
+              fontSize: 13.0
+          ),
+          body1: TextStyle(
+              fontSize: 13.0
+          ),
+        ),
       ),
-      home: ProfileScreen(),
+      home: RegisterScreens(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),

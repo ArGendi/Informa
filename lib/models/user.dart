@@ -11,7 +11,11 @@ class User {
   int goal;
   int points;
   List<String>? achievements = [];
+  int? weight;
+  int? tall;
+  int? fatsPercent;
+  int? age;
 
   User({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
-      this.goal = 0, this.points = 0});
+      this.goal = 0, this.points = 0, this.weight, this.age, this.fatsPercent, this.tall});
 }

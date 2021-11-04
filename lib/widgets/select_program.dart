@@ -21,7 +21,7 @@ class _SelectProgramState extends State<SelectProgram> {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     var screenSize = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
       child: Column(
         children: [
           Expanded(

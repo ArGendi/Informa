@@ -21,7 +21,7 @@ class _SelectGoalState extends State<SelectGoal> {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     var screenSize = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         children: [
           Expanded(

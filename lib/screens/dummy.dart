@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/web_services.dart';
 
+import '../constants.dart';
+
 class Dummy extends StatefulWidget {
   const Dummy({Key? key}) : super(key: key);
 
@@ -35,132 +37,94 @@ class _DummyState extends State<Dummy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        shrinkWrap: true,
+      body: Column(
         children: [
-          for(int i=0; i<list.length; i+=2)
-            Column(
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.blue)
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Image.asset(
-                              'assets/images/burger.png',
-                              fit: BoxFit.cover,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Ahmed',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'actor',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                            ),
-                                          ),
-                                          SizedBox(width: 5,),
-                                          Text(
-                                            '23 years',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: (){},
-                                  icon: Icon(Icons.mail),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
+                    Text(
+                      'أنفورما',
+                      style: TextStyle(
+                        fontFamily: 'CairoBold',
                       ),
                     ),
-                    SizedBox(width: 5,),
-                    i+1 == list.length ? Expanded(child: Container()) : Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
+                    Card(
+                      elevation: 0,
+                      color: primaryColor,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          'بريميم',
+                          style: TextStyle(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.blue)
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Image.asset(
-                              'assets/images/burger.png',
-                              fit: BoxFit.cover,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        'Ahmed',
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'actor',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                            ),
-                                          ),
-                                          SizedBox(width: 5,),
-                                          Text(
-                                            '23 years',
-                                            style: TextStyle(
-                                              fontSize: 10,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                IconButton(
-                                  onPressed: (){},
-                                  icon: Icon(Icons.mail),
-                                )
-                              ],
-                            ),
-                          ],
+                            fontSize: 10,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 5,),
+                Text(
+                  'أنفورما',
+                  style: TextStyle(
+                    //fontFamily: 'CairoBold',
+                  ),
+                ),
+                Text(
+                  'أنفورما',
+                  style: TextStyle(
+                      color: bgColor
+                  ),
+                ),
               ],
             ),
+          ),
+          Container(
+            width: double.infinity,
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      CircleAvatar(
+                        radius: 13,
+                        backgroundColor: Colors.green[200],
+                        child: Icon(
+                          Icons.check,
+                          color: Colors.green[600],
+                          size: 22,
+                        ),
+                      ),
+                      SizedBox(width: 20,),
+                      CircleAvatar(
+                        radius: 13,
+                        backgroundColor: Colors.red[200],
+                        child: Icon(
+                          Icons.clear,
+                          color: Colors.red[600],
+                          size: 22,
+                        ),
+                      ),
+                      Text(
+                        'تسجيل ومتابعة اوزانك وتغييرات جسمك',
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       )
     );

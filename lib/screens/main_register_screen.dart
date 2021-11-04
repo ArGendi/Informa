@@ -37,7 +37,8 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isFacebookLoading = false;});
-      Navigator.pushReplacementNamed(context, MainScreen.id);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
     }
     else {
       setState(() {isFacebookLoading = false;});
@@ -58,7 +59,8 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() {isGoogleLoading = false;});
-      Navigator.pushReplacementNamed(context, MainScreen.id);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
     }
     else {
       setState(() {isGoogleLoading = false;});
@@ -178,14 +180,14 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                       )),
                     ],
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(height: 20,),
 
                   //Login button
                   CustomButton(
                     text: 'أنشاء حساب',
                     onClick: (){},
                   ),
-                  //SizedBox(height: 10,),
+                  SizedBox(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -211,11 +213,22 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                   ),
                   SizedBox(height: 25,),
                   Text(
-                    'بالتسجيل في تطبيق أنفورما فأنت توافق علي شروط الأستخدام وقوانين الخصوصية',
+                    'بالتسجيل في تطبيق أنفورما فأنت توافق علي',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 11,
+                      fontSize: 8,
                       color: Colors.grey[600],
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: (){},
+                    child: Text(
+                      'شروط الأستخدام وقوانين الخصوصية',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 8,
+                        color: primaryColor,
+                      ),
                     ),
                   ),
                 ],

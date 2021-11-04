@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -13,16 +16,28 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    var activeUserProvider = Provider.of<ActiveUserProvider>(context);
+    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(5.0),
         child: ListView(
           children: [
             Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(
+                  color: Colors.grey.shade300
+                )
+              ),
+              elevation: 0,
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  right: 20,
+                  bottom: 20,
+                  left: 5
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,14 +53,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              activeUserProvider.user!.name.toString(),
+                              activeUser!.name.toString(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontFamily: 'CairoBold',
                               ),
                             ),
                             Text(
-                              'المستوي الأول - ' + activeUserProvider.user!.points.toString() + ' نقطة',
+                              'المستوي الأول - ' + activeUser.points.toString() + ' نقطة',
                               style: TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey
@@ -57,7 +72,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     IconButton(
                       onPressed: (){},
-                      icon: SvgPicture.asset('assets/icons/settings.svg'),
+                      icon: SvgPicture.asset(
+                        'assets/icons/settings.svg',
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                 ),
@@ -65,6 +83,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             SizedBox(height: 5,),
             Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(
+                      color: Colors.grey.shade300
+                  )
+              ),
+              elevation: 0,
               color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -126,6 +151,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             SizedBox(height: 5,),
             Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(
+                      color: Colors.grey.shade300
+                  )
+              ),
+              elevation: 0,
               color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -177,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '70 كيلو جرام'
+                                activeUser.weight.toString() + ' كيلو جرام'
                             ),
                             Text(
                                 'وزن الجسم الحالي',
@@ -208,10 +240,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                '70 كيلو جرام'
+                                activeUser.tall.toString() + ' سم'
                             ),
                             Text(
-                              'وزن الجسم الحالي',
+                              'طول الجسم',
                               style: TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey[600]
@@ -239,10 +271,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                '70 كيلو جرام'
+                                activeUser.fatsPercent.toString() + '%'
                             ),
                             Text(
-                              'وزن الجسم الحالي',
+                              'نسبة الدهون',
                               style: TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey[600]
@@ -270,10 +302,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                '70 كيلو جرام'
+                                activeUser.age.toString() + ' سنة'
                             ),
                             Text(
-                              'وزن الجسم الحالي',
+                              'العمر',
                               style: TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey[600]
@@ -283,6 +315,102 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 5,),
+            if(activeUser.premium)
+              Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(
+                        color: Colors.grey.shade300
+                    )
+                ),
+              elevation: 0,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'أنفورما',
+                          style: TextStyle(
+                            fontFamily: 'CairoBold',
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Card(
+                              elevation: 0,
+                              color: primaryColor,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                child: Text(
+                                  'بريميم',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 15,),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'أنضم الي عائلة أنفورما',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'CairoBold',
+                        fontSize: 18,
+                      ),
+                    ),
+                    Text(
+                      'للحصول علي برنامج تغذية وتمارين مخصصة لجسمك بالأضافة الي مميزات غير محدودة',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 10
+                      ),
+                    ),
+                    SizedBox(height: 10,),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: (){},
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'أنضم الأن',
+                                style: TextStyle(
+                                  color: Colors.white
+                                ),
+                              ),
+                              SizedBox(width: 5,),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10,),
                   ],
                 ),
               ),

@@ -19,7 +19,7 @@ class _SelectGenderState extends State<SelectGender> {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     var screenSize = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         children: [
           Expanded(
@@ -64,6 +64,7 @@ class _SelectGenderState extends State<SelectGender> {
                     children: [
                       Expanded(
                         child: InkWell(
+                          borderRadius: BorderRadius.circular(7),
                           onTap: (){
                             Provider.of<ActiveUserProvider>(context, listen: false).setGender(1);
                           },
@@ -105,6 +106,7 @@ class _SelectGenderState extends State<SelectGender> {
                       SizedBox(width: 20,),
                       Expanded(
                         child: InkWell(
+                          borderRadius: BorderRadius.circular(7),
                           onTap: (){
                             Provider.of<ActiveUserProvider>(context, listen: false).setGender(2);
                           },

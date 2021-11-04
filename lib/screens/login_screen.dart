@@ -68,8 +68,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       'تسجيل الدخول',
                       style: TextStyle(
-                          fontSize: 30,
-                          height: 0.3
+                          fontSize: 20,
+                          height: 0.3,
+                        fontFamily: 'CairoBold'
                       ),
                     ),
                     SizedBox(height: 40,),
@@ -126,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       isLoading: _isLoading!,
                     ),
-                    //SizedBox(height: 5,),
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -149,15 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ],
-                    ),
-                    SizedBox(height: 25,),
-                    Text(
-                      'بالتسجيل في تطبيق أنفورما فأنت توافق علي شروط الأستخدام وقوانين الخصوصية',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey[600],
-                      ),
                     ),
                   ],
                 ),

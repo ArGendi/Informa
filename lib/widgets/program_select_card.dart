@@ -21,6 +21,7 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return InkWell(
+      borderRadius: BorderRadius.circular(7),
       onTap: widget.onClick,
       child: Ink(
         width: double.infinity,

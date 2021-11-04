@@ -6,9 +6,13 @@ class ActiveUserProvider extends ChangeNotifier{
 
   ActiveUserProvider(){
     _user = new User(
-      name: 'new',
+      name: 'Abdelrahman',
       email: 'new',
       premium: true,
+      weight: 70,
+      tall: 190,
+      fatsPercent: 15,
+      age: 22,
     );
   }
 
