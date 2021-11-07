@@ -26,7 +26,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return TextFormField(
       cursorColor: Colors.grey.shade600,
       keyboardType: widget.textInputType,
-      style: TextStyle(color: Colors.grey.shade600),
+      style: TextStyle(
+        color: Colors.grey.shade600,
+      ),
       obscureText: obscureText,
       decoration: InputDecoration(
         suffixIcon: widget.obscureText ? IconButton(
@@ -49,28 +51,28 @@ class _CustomTextFieldState extends State<CustomTextField> {
         fillColor: widget.anotherFilledColor ? Colors.white : Colors.grey.shade100,
         filled: true,
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(borderRadius),
           borderSide: BorderSide(
             color: Colors.grey.shade400,
             //width: 2.0,
           ),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(borderRadius),
           borderSide: BorderSide(
-            color: Colors.grey.shade400,
+            color: Colors.grey.shade300,
             //width: 2.0,
           ),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(borderRadius),
           borderSide: BorderSide(
             color: Colors.red,
             //width: 2.0,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(borderRadius),
           borderSide: BorderSide(
             color: Colors.red,
             //width: 2.0,

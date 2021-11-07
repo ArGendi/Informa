@@ -15,7 +15,7 @@ class RecentlyViewedBanner extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: Column(
           children: [
             Row(
@@ -24,24 +24,27 @@ class RecentlyViewedBanner extends StatelessWidget {
                 Text(
                   'تم عرضه مؤخرا',
                   style: TextStyle(
-                    fontSize: 18,
-                    color: primaryColor,
+                    fontSize: 16,
                     fontFamily: 'CairoBold'
                   ),
                 ),
-                MaterialButton(
-                  height: 30,
-                  onPressed: (){
-                  },
-                  child: Text('عرض الجميع'),
-                  color: Colors.white,
-                  textColor: primaryColor,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                          color: primaryColor
+                InkWell(
+                  onTap: (){},
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'عرض الجميع',
+                        style: TextStyle(
+                          color: primaryColor,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(20)
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 18,
+                        color: primaryColor,
+                      )
+                    ],
                   ),
                 ),
               ],

@@ -57,7 +57,7 @@ class _SelectGoalState extends State<SelectGoal> {
                     'ما الهدف الذي تريد تحقيقه',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 20,
                         fontFamily: 'CairoBold'
                     ),
                   ),

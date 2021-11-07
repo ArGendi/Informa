@@ -26,13 +26,22 @@ class _FreeKitchenScreenState extends State<FreeKitchenScreen> {
         title: Text('مطبخ أنفورما'),
         centerTitle: true,
         elevation: 0,
+        leading: IconButton(
+          splashRadius: splashRadius,
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: ListView(
         children: [
           RecentlyViewedBanner(recentlyViewed: recentlyViewedProvider.items!),
           //SizedBox(height: 10,),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Column(
               children: [
                 //Loop for categories
@@ -45,15 +54,14 @@ class _FreeKitchenScreenState extends State<FreeKitchenScreen> {
                         Text(
                           category.name!,
                           style: TextStyle(
-                            fontSize: 18,
-                            color: primaryColor,
-                              fontFamily: 'CairoBold'
+                            fontSize: 16,
+                            fontFamily: 'CairoBold',
                           ),
                         ),
                         Text(
                           '(${category.meals!.length}) وصفة',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Colors.grey,
                           ),
                         ),

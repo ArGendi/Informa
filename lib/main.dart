@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: RegisterScreens(),
+      home: PlansScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),

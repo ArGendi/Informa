@@ -204,7 +204,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                         child: Text(
                           'سجل الدخول',
                           style: TextStyle(
-                              fontSize: 16,
+                              //fontSize: 16,
                               color: primaryColor
                           ),
                         ),
@@ -218,6 +218,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                     style: TextStyle(
                       fontSize: 8,
                       color: Colors.grey[600],
+                      height: 1
                     ),
                   ),
                   TextButton(

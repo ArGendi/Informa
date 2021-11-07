@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       'تسجيل الدخول',
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 22,
                           height: 0.3,
                         fontFamily: 'CairoBold'
                       ),
@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             'أنشاء حساب الأن',
                             style: TextStyle(
-                                fontSize: 16,
+                                //fontSize: 16,
                                 color: primaryColor
                             ),
                           ),

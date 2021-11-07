@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/widgets/workout_banner.dart';
 
+import '../constants.dart';
+
 class FreeWorkoutScreen extends StatefulWidget {
   static String id = 'free workout';
   const FreeWorkoutScreen({Key? key}) : super(key: key);
@@ -18,6 +20,15 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
         elevation: 0,
         title: Text('تمارين أنفورما'),
         centerTitle: true,
+        leading: IconButton(
+          splashRadius: splashRadius,
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: ListView(
         children: [
@@ -38,14 +49,14 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
                     Text(
                       'تمارين صدر',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontFamily: 'CairoBold'
                       ),
                     ),
                     Text(
                       '(3) تمرين',
                       style: TextStyle(
-                        //fontSize: 14,
+                        fontSize: 16,
                         color: Colors.grey[600],
                       ),
                     ),

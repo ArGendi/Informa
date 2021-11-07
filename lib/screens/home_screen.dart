@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.all(20.0),
               child: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'أنضم الي عائلة أنفورما',
@@ -56,8 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       'للحصول علي برنامج تغذية وتمارين مخصصة لجسمك بالأضافة الي مميزات غير محدودة',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color: Colors.white,
-                        height: 1.5
+                        fontSize: 12,
+                        color: Colors.white,
+                        height: 1.5,
                       ),
                     ),
                     SizedBox(height: 10,),
@@ -65,14 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: (){},
                       color: primaryColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
+                        borderRadius: BorderRadius.circular(borderRadius)
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           'أنضم الأن',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             fontFamily: 'CairoBold',
                             color: Colors.white,
                           ),
@@ -85,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
                 HomeBanner(
@@ -96,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pushNamed(context, MuscleSelectionScreen.id);
                   },
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: 10,),
                 HomeBanner(
                   mainText: 'مطبخ انفورما',
                   subText: 'للحصول علي برنامج تغذية وتمارين ',
@@ -105,11 +107,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.pushNamed(context, FreeKitchenScreen.id);
                   },
                 ),
-                SizedBox(height: 20,),
+                SizedBox(height: 10,),
                 HomeBanner(
                   mainText: 'تحديات انفورما',
                   subText: 'للحصول علي برنامج تغذية وتمارين ',
                   btnText: 'تصفح التحديات',
+                  challenge: Challenge(
+                    deadline: DateTime(
+                      DateTime.now().year,
+                      DateTime.now().month,
+                      DateTime.now().day + 1,
+                    ),
+                  ),
                   onClick: (){
                     final now = DateTime.now();
                     Navigator.push(
@@ -126,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+          SizedBox(height: 75,),
         ],
       )
     );

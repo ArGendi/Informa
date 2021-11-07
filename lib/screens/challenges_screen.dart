@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/widgets/countdown_card.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
+
+import '../constants.dart';
 
 class ChallengesScreen extends StatefulWidget {
   final Challenge challenge;
@@ -37,6 +40,15 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
         elevation: 0,
         title: Text('تحديات أنفورما'),
         centerTitle: true,
+        leading: IconButton(
+          splashRadius: splashRadius,
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -61,37 +73,13 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
                         Text(
                           'متبقي علي نهاية التحدي',
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 12,
                             color: Colors.orange
                           ),
                         ),
                         SizedBox(width: 5,),
-                        Card(
-                          elevation: 0,
-                          color: Colors.orange,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Directionality(
-                              textDirection: TextDirection.ltr,
-                              child: CountdownTimer(
-                                endTime: widget.challenge.deadline!.millisecondsSinceEpoch,
-                                textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12
-                                ),
-                                endWidget: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Text(
-                                    'أنتهى التحدي',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                        CountdownCard(
+                          deadline: widget.challenge.deadline!,
                         ),
                       ],
                     ),

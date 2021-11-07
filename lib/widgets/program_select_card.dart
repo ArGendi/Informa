@@ -41,7 +41,7 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
               Text(
                widget.mainText,
                 style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontFamily: 'CairoBold'
                 ),
               ),

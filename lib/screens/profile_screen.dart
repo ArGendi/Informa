@@ -381,12 +381,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     SizedBox(height: 10,),
                     InkWell(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(borderRadius),
                       onTap: (){},
                       child: Ink(
                         decoration: BoxDecoration(
                           color: primaryColor,
-                          borderRadius: BorderRadius.circular(20)
+                          borderRadius: BorderRadius.circular(borderRadius)
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2),
@@ -415,6 +415,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             ),
+            SizedBox(height: 75,),
           ],
         ),
       ),

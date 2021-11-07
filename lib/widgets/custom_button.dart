@@ -19,12 +19,12 @@ class _CustomButtonState extends State<CustomButton> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: widget.onClick,
-      borderRadius: BorderRadius.circular(5),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: Ink(
         width: double.infinity,
         decoration: BoxDecoration(
             color: widget.bgColor,
-            borderRadius: BorderRadius.circular(5)
+            borderRadius: BorderRadius.circular(borderRadius)
         ),
         child: Padding(
           padding: const EdgeInsets.all(5.0),

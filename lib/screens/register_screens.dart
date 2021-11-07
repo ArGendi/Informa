@@ -37,6 +37,7 @@ class _RegisterScreensState extends State<RegisterScreens> {
         elevation: 0,
         backgroundColor: bgColor,
         leading: _initialPage != 0 ? IconButton(
+          splashRadius: splashRadius,
           onPressed: (){
             _controller.animateToPage(
                 _initialPage - 1,

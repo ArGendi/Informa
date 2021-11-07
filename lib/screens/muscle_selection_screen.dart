@@ -26,6 +26,15 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
         elevation: 0,
         title: Text('تمارين أنفورما'),
         centerTitle: true,
+        leading: IconButton(
+          splashRadius: splashRadius,
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

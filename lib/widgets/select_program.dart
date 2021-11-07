@@ -57,7 +57,7 @@ class _SelectProgramState extends State<SelectProgram> {
                     'ما الشيء الذي تريد التركيز عليه اكتر',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 20,
                         fontFamily: 'CairoBold'
                     ),
                   ),
