@@ -10,8 +10,9 @@ class HomeBanner extends StatelessWidget {
   final String btnText;
   final VoidCallback onClick;
   final Challenge? challenge;
+  final String imagePath;
 
-  const HomeBanner({Key? key, required this.mainText, required this.subText, required this.onClick, required this.btnText, this.challenge}) : super(key: key);
+  const HomeBanner({Key? key, required this.mainText, required this.subText, required this.onClick, required this.btnText, this.challenge, required this.imagePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,8 @@ class HomeBanner extends StatelessWidget {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.cover,
-          image: AssetImage('assets/images/bg_man.jpg',),
+          colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
+          image: AssetImage(imagePath,),
         ),
         borderRadius: BorderRadius.circular(borderRadius)
       ),

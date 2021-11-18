@@ -4,7 +4,9 @@ import 'package:informa/models/challenge.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
+import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/widgets/home_banner.dart';
+import 'package:informa/widgets/submit_challenge.dart';
 import 'package:provider/provider.dart';
 
 import 'muscle_selection_screen.dart';
@@ -17,6 +19,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  showSubmitChallengeBottomSheet(){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      builder: (BuildContext context) {
+        return SubmitChallenge(challenge: Challenge(
+          name: 'تحدي جديد',
+          deadline: DateTime(
+            DateTime.now().year,
+            DateTime.now().month,
+            DateTime.now().day + 1,
+          ),
+        ));
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -35,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/bg_man.jpg',),
+                colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
+                image: AssetImage('assets/images/home1.jpg',),
               ),
             ),
             child: Padding(
@@ -64,7 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(height: 10,),
                     MaterialButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.pushNamed(context, PlansScreen.id);
+                      },
                       color: primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(borderRadius)
@@ -94,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainText: 'تمارين انفورما',
                   subText: 'للحصول علي برنامج تغذية وتمارين ',
                   btnText: 'تصفح التمارين',
+                  imagePath: 'assets/images/home3.jpg',
                   onClick: (){
                     Navigator.pushNamed(context, MuscleSelectionScreen.id);
                   },
@@ -103,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainText: 'مطبخ انفورما',
                   subText: 'للحصول علي برنامج تغذية وتمارين ',
                   btnText: 'تصفح الوجبات',
+                  imagePath: 'assets/images/bg_man.jpg',
                   onClick: (){
                     Navigator.pushNamed(context, FreeKitchenScreen.id);
                   },
@@ -112,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainText: 'تحديات انفورما',
                   subText: 'للحصول علي برنامج تغذية وتمارين ',
                   btnText: 'تصفح التحديات',
+                  imagePath: 'assets/images/home2.jpg',
                   challenge: Challenge(
                     deadline: DateTime(
                       DateTime.now().year,
@@ -119,18 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       DateTime.now().day + 1,
                     ),
                   ),
-                  onClick: (){
-                    final now = DateTime.now();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ChallengesScreen(
-                        challenge: new Challenge(
-                          name: 'تحدي جديد',
-                          deadline: DateTime(now.year, now.month, now.day + 1),
-                        ),
-                      )),
-                    );
-                  },
+                  onClick: showSubmitChallengeBottomSheet,
                 ),
               ],
             ),

@@ -8,6 +8,7 @@ import 'package:informa/widgets/regular_premium_comparison.dart';
 import '../constants.dart';
 
 class PlansScreen extends StatefulWidget {
+  static String id = 'plans';
   const PlansScreen({Key? key}) : super(key: key);
 
   @override
