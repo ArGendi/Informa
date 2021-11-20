@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:informa/app_localization.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/models/workout.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
@@ -26,6 +27,7 @@ import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
 import 'package:informa/screens/register_screens.dart';
 import 'package:informa/screens/reset_password_screen.dart';
+import 'package:informa/screens/single_workout_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
 
@@ -82,7 +84,12 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: RegisterScreens(),
+      home: SingleWorkoutScreen(
+        workout: Workout(
+          name: 'بنش بريس',
+          level: 2,
+        ),
+      ),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
