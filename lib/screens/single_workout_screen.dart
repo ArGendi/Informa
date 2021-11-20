@@ -4,6 +4,7 @@ import 'package:informa/constants.dart';
 import 'package:informa/models/workout.dart';
 
 class SingleWorkoutScreen extends StatefulWidget {
+  static String id = 'single workout';
   final Workout workout;
   const SingleWorkoutScreen({Key? key, required this.workout}) : super(key: key);
 

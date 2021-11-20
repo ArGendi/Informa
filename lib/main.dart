@@ -84,12 +84,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SingleWorkoutScreen(
-        workout: Workout(
-          name: 'بنش بريس',
-          level: 2,
-        ),
-      ),
+      home: FreeWorkoutScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
