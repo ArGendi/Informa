@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:informa/constants.dart';
-import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/screens/main_register_screen.dart';
-import 'package:informa/screens/main_screen.dart';
-import 'package:informa/widgets/select_gender.dart';
-import 'package:informa/widgets/select_goal.dart';
-import 'package:informa/widgets/select_place.dart';
-import 'package:informa/widgets/select_program.dart';
-import 'package:provider/provider.dart';
+import 'package:informa/widgets/select_age_tall_weight.dart';
+import 'package:informa/widgets/select_level.dart';
 
-class RegisterScreens extends StatefulWidget {
-  const RegisterScreens({Key? key}) : super(key: key);
+import '../constants.dart';
+
+class MoreUserInfoScreen extends StatefulWidget {
+  const MoreUserInfoScreen({Key? key}) : super(key: key);
 
   @override
-  _RegisterScreensState createState() => _RegisterScreensState();
+  _MoreUserInfoScreenState createState() => _MoreUserInfoScreenState();
 }
 
-class _RegisterScreensState extends State<RegisterScreens> {
+class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
   int _initialPage = 0;
   final PageController _controller = PageController(initialPage: 0);
 
@@ -59,20 +54,12 @@ class _RegisterScreensState extends State<RegisterScreens> {
         physics:new NeverScrollableScrollPhysics(),
         controller: _controller,
         children: [
-          SelectGender(
+          SelectAgeTallWeight(
             onClick: goToNextPage,
           ),
-          SelectProgram(
+          SelectLevel(
             onClick: goToNextPage,
           ),
-          SelectGoal(
-            onClick: goToNextPage,
-          ),
-          SelectPlace(
-            onClick: (){
-              Navigator.pushNamed(context, MainRegisterScreen.id);
-            },
-          )
         ],
       ),
     );

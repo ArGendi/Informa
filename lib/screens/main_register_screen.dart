@@ -185,7 +185,9 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                   //Login button
                   CustomButton(
                     text: 'أنشاء حساب',
-                    onClick: (){},
+                    onClick: (){
+
+                    },
                   ),
                   SizedBox(height: 10,),
                   Row(

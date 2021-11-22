@@ -22,6 +22,7 @@ import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/more_user_info_screen.dart';
 import 'package:informa/screens/muscle_selection_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: FreeWorkoutScreen(),
+      home: MoreUserInfoScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),

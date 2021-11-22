@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  table_calendar: ^3.0.3
   carousel_slider: ^4.0.0
   flutter_countdown_timer: ^4.1.0
   http: ^0.13.3

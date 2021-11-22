@@ -38,4 +38,30 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setWorkoutPlace(int place){
+    _user!.workoutPlace = place;
+    notifyListeners();
+  }
+
+  setAge(int age){
+    _user!.age = age;
+    notifyListeners();
+  }
+
+  setWeight(int weight){
+    _user!.weight = weight;
+    notifyListeners();
+  }
+
+  setTall(int tall){
+    _user!.tall = tall;
+    notifyListeners();
+  }
+
+  setFitnessLevel(int level){
+    _user!.fitnessLevel = level;
+    notifyListeners();
+  }
+
+
 }
