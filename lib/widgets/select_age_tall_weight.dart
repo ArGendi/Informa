@@ -18,19 +18,10 @@ class SelectAgeTallWeight extends StatefulWidget {
 }
 
 class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
-  double _tallSliderValue = 170;
-  double _weightSliderValue = 80;
-  double _ageSliderValue = 30;
-
-  onSubmit(BuildContext context){
-    var activeUserProvider = Provider.of<ActiveUserProvider>(context, listen: false);
-    activeUserProvider.setAge(_ageSliderValue.round());
-    activeUserProvider.setTall(_tallSliderValue.round());
-    activeUserProvider.setWeight(_weightSliderValue.round());
-  }
 
   @override
   Widget build(BuildContext context) {
+    var activeUserProvider = Provider.of<ActiveUserProvider>(context);
     var screenSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -80,29 +71,32 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                           fontSize: 16,
                         ),
                       ),
-                      CircleAvatar(
-                        backgroundColor: primaryColor,
-                        radius: 18,
-                        child: Text(
-                          _ageSliderValue.toStringAsFixed(0),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14
+                      Container(
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          child: Text(
+                            activeUserProvider.user!.age.toString() + ' سنة',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                   Slider(
-                    value: _ageSliderValue,
+                    value: activeUserProvider.user!.age.toDouble(),
                     min: 10,
                     max: 90,
                     divisions: 80,
-                    label: _ageSliderValue.round().toString(),
+                    label: activeUserProvider.user!.age.toString(),
                     onChanged: (double value) {
-                      setState(() {
-                        _ageSliderValue = value;
-                      });
+                      activeUserProvider.setAge(value.round());
                     },
                     activeColor: primaryColor,
                     inactiveColor: Colors.grey[300],
@@ -116,29 +110,32 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                           fontSize: 16,
                         ),
                       ),
-                      CircleAvatar(
-                        backgroundColor: primaryColor,
-                        radius: 18,
-                        child: Text(
-                          _tallSliderValue.toStringAsFixed(0),
-                          style: TextStyle(
-                              color: Colors.white,
-                            fontSize: 14
+                      Container(
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          child: Text(
+                            activeUserProvider.user!.tall.toString() + ' سم',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                   Slider(
-                    value: _tallSliderValue,
+                    value: activeUserProvider.user!.tall.toDouble(),
                     min: 120,
                     max: 220,
                     divisions: 100,
-                    label: _tallSliderValue.round().toString(),
+                    label: activeUserProvider.user!.tall.toString(),
                     onChanged: (double value) {
-                      setState(() {
-                        _tallSliderValue = value;
-                      });
+                      activeUserProvider.setTall(value.round());
                     },
                     activeColor: primaryColor,
                     inactiveColor: Colors.grey[300],
@@ -152,29 +149,71 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                           fontSize: 16,
                         ),
                       ),
-                      CircleAvatar(
-                        backgroundColor: primaryColor,
-                        radius: 18,
-                        child: Text(
-                          _weightSliderValue.toStringAsFixed(0),
-                          style: TextStyle(
-                              color: Colors.white,
-                            fontSize: 14
+                      Container(
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          child: Text(
+                            activeUserProvider.user!.weight.toString() + ' كجم',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                   Slider(
-                    value: _weightSliderValue,
+                    value: activeUserProvider.user!.weight.toDouble(),
                     min: 20,
                     max: 250,
                     divisions: 230,
-                    label: _weightSliderValue.round().toString(),
+                    label: activeUserProvider.user!.weight.toString(),
                     onChanged: (double value) {
-                      setState(() {
-                        _weightSliderValue = value;
-                      });
+                      activeUserProvider..setWeight(value.round());
+                    },
+                    activeColor: primaryColor,
+                    inactiveColor: Colors.grey[300],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'الوزن الي محتاج توصله',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          child: Text(
+                            activeUserProvider.user!.goalWeight.toString() + ' كجم',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Slider(
+                    value: activeUserProvider.user!.goalWeight.toDouble(),
+                    min: 20,
+                    max: 250,
+                    divisions: 230,
+                    label: activeUserProvider.user!.goalWeight.toString(),
+                    onChanged: (double value) {
+                      activeUserProvider.setGoalWeight(value.round());
                     },
                     activeColor: primaryColor,
                     inactiveColor: Colors.grey[300],
@@ -185,10 +224,7 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: (){
-              onSubmit(context);
-              widget.onClick();
-            },
+            onClick: widget.onClick,
           )
         ],
       ),

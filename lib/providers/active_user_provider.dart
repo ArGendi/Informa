@@ -9,10 +9,10 @@ class ActiveUserProvider extends ChangeNotifier{
       name: 'Abdelrahman',
       email: 'new',
       premium: true,
-      weight: 70,
-      tall: 190,
+      weight: 80,
+      tall: 170,
       fatsPercent: 15,
-      age: 22,
+      age: 30,
     );
   }
 
@@ -50,6 +50,11 @@ class ActiveUserProvider extends ChangeNotifier{
 
   setWeight(int weight){
     _user!.weight = weight;
+    notifyListeners();
+  }
+
+  setGoalWeight(int weight){
+    _user!.goalWeight = weight;
     notifyListeners();
   }
 

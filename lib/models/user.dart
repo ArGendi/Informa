@@ -13,13 +13,14 @@ class User {
   int workoutPlace;
   int points;
   List<String>? achievements = [];
-  int? weight;
-  int? tall;
+  int weight;
+  int goalWeight;
+  int tall;
   int? fatsPercent;
-  int? age;
+  int age;
   int fitnessLevel;
 
   User({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
-      this.goal = 0, this.points = 0, this.weight, this.age, this.fatsPercent, this.tall, this.workoutPlace = 0,
-      this.fitnessLevel = 0});
+      this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent, this.tall = 170, this.workoutPlace = 0,
+      this.fitnessLevel = 0, this.goalWeight = 80});
 }
