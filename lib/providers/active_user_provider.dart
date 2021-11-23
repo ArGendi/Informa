@@ -68,5 +68,21 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setTrainingPeriodLevel(int value){
+    _user!.trainingPeriodLevel = value;
+    notifyListeners();
+  }
+
+  addTrainingTool(int tool){
+    if(!_user!.trainingTools.contains(tool))
+      _user!.trainingTools.add(tool);
+    notifyListeners();
+  }
+
+  removeTrainingTool(int tool){
+    if(_user!.trainingTools.contains(tool))
+      _user!.trainingTools.remove(tool);
+    notifyListeners();
+  }
 
 }

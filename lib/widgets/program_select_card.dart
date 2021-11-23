@@ -6,11 +6,12 @@ import 'package:provider/provider.dart';
 class ProgramSelectCard extends StatefulWidget {
   final VoidCallback onClick;
   final String mainText;
-  final String subText;
+  final String? subText;
   final int number;
   final int userChoice;
+  final String? imagePath;
 
-  const ProgramSelectCard({Key? key, required this.onClick, required this.mainText, required this.subText, required this.number, required this.userChoice}) : super(key: key);
+  const ProgramSelectCard({Key? key, required this.onClick, required this.mainText, this.subText, required this.number, required this.userChoice, this.imagePath}) : super(key: key);
 
   @override
   _ProgramSelectCardState createState() => _ProgramSelectCardState();
@@ -35,23 +36,36 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-               widget.mainText,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'CairoBold'
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                   widget.mainText,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'CairoBold'
+                    ),
+                  ),
+                  if(widget.subText != null)
+                    Text(
+                      widget.subText!,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13
+                      ),
+                    ),
+                ],
               ),
-              Text(
-                widget.subText,
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 13
-                ),
-              ),
+              if(widget.imagePath != null)
+                Image.asset(
+                  widget.imagePath!,
+                  width: 60,
+                  height: 50,
+                  fit: BoxFit.cover,
+                )
             ],
           ),
         ),

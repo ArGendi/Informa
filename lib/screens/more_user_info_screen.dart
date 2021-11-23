@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:informa/widgets/select_age_tall_weight.dart';
 import 'package:informa/widgets/select_level.dart';
+import 'package:informa/widgets/select_tools.dart';
+import 'package:informa/widgets/select_training_period.dart';
 
 import '../constants.dart';
 
@@ -58,6 +60,12 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
             onClick: goToNextPage,
           ),
           SelectLevel(
+            onClick: goToNextPage,
+          ),
+          SelectTrainingPeriod(
+            onClick: goToNextPage,
+          ),
+          SelectTools(
             onClick: goToNextPage,
           ),
         ],

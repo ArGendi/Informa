@@ -19,8 +19,10 @@ class User {
   int? fatsPercent;
   int age;
   int fitnessLevel;
+  int trainingPeriodLevel;
+  List<int> trainingTools = [];
 
   User({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent, this.tall = 170, this.workoutPlace = 0,
-      this.fitnessLevel = 0, this.goalWeight = 80});
+      this.fitnessLevel = 0, this.goalWeight = 80, this.trainingPeriodLevel = 0});
 }
