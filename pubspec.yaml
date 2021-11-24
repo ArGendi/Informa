@@ -68,6 +68,7 @@ flutter:
     - lang/ar.json
     - lang/en.json
     - assets/images/
+    - assets/images/body_fat/
     - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -11,7 +11,7 @@ class ActiveUserProvider extends ChangeNotifier{
       premium: true,
       weight: 80,
       tall: 170,
-      fatsPercent: 15,
+      fatsPercent: 0,
       age: 30,
     );
   }
@@ -82,6 +82,28 @@ class ActiveUserProvider extends ChangeNotifier{
   removeTrainingTool(int tool){
     if(_user!.trainingTools.contains(tool))
       _user!.trainingTools.remove(tool);
+    notifyListeners();
+  }
+
+  setFatPercent(int percent){
+    _user!.fatsPercent = percent;
+    notifyListeners();
+  }
+
+  setNumberOfTrainingDays(int days){
+    _user!.iTrainingDays = days;
+    notifyListeners();
+  }
+
+  addTrainingDay(int day){
+    if(!_user!.trainingDays.contains(day))
+      _user!.trainingTools.add(day);
+    notifyListeners();
+  }
+
+  removeTrainingDay(int day){
+    if(_user!.trainingDays.contains(day))
+      _user!.trainingDays.remove(day);
     notifyListeners();
   }
 
