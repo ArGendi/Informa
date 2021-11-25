@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/widgets/select_day_card.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -123,27 +124,50 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 25,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(borderRadius)
-                        ),
-                        elevation: 0,
-                        color: Colors.grey[300],
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                          child: Text(
-                            'السبت',
-                            style: TextStyle(
-                              color: Colors.grey[700]
-                            ),
-                          ),
-                        ),
+                      SelectDayCard(
+                        text: 'السبت',
+                        id: 1,
+                      ),
+                      SizedBox(width: 10,),
+                      SelectDayCard(
+                        text: 'الأحد',
+                        id: 2,
+                      ),
+                      SizedBox(width: 10,),
+                      SelectDayCard(
+                        text: 'الأثنين',
+                        id: 3,
                       ),
                     ],
+                  ),
+                  SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SelectDayCard(
+                        text: 'الثلاثاء',
+                        id: 4,
+                      ),
+                      SizedBox(width: 10,),
+                      SelectDayCard(
+                        text: 'الأربع',
+                        id: 5,
+                      ),
+                      SizedBox(width: 10,),
+                      SelectDayCard(
+                        text: 'الخميس',
+                        id: 6,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  SelectDayCard(
+                    text: 'الجمعة',
+                    id: 7,
                   ),
                 ],
               ),
@@ -151,8 +175,8 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.trainingTools.isNotEmpty ? widget.onClick : (){},
-            bgColor: activeUser.trainingTools.isNotEmpty ? primaryColor : Colors.grey.shade400,
+            onClick: activeUser.trainingDays.isNotEmpty ? widget.onClick : (){},
+            bgColor: activeUser.trainingDays.isNotEmpty ? primaryColor : Colors.grey.shade400,
           )
         ],
       ),

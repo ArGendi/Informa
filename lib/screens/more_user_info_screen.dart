@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:informa/widgets/register.dart';
 import 'package:informa/widgets/select_age_tall_weight.dart';
 import 'package:informa/widgets/select_fat_percent.dart';
 import 'package:informa/widgets/select_level.dart';
@@ -58,6 +59,9 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
         physics:new NeverScrollableScrollPhysics(),
         controller: _controller,
         children: [
+          Register(
+            onClick: goToNextPage,
+          ),
           SelectAgeTallWeight(
             onClick: goToNextPage,
           ),

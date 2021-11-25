@@ -37,7 +37,7 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    'شكرا لتسجيلك معانا',
+                    'شكرا ' + activeUserProvider.user!.name! + ' لتسجيلك معانا',
                     style: TextStyle(
                       fontSize: 16,
                     ),

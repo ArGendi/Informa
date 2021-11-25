@@ -23,6 +23,26 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setName(String name){
+    _user!.name = name;
+    notifyListeners();
+  }
+
+  setEmail(String email){
+    _user!.email = email;
+    notifyListeners();
+  }
+
+  setPassword(String pass){
+    _user!.password = pass;
+    notifyListeners();
+  }
+
+  setPhoneNumber(String phone){
+    _user!.phone = phone;
+    notifyListeners();
+  }
+
   setGender(int gender){
     _user!.gender = gender;
     notifyListeners();
@@ -91,13 +111,23 @@ class ActiveUserProvider extends ChangeNotifier{
   }
 
   setNumberOfTrainingDays(int days){
+    print("Entered with: " + days.toString());
     _user!.iTrainingDays = days;
+    if(_user!.trainingDays.length > days){
+      print(_user!.trainingDays);
+      for(int i=_user!.trainingDays.length-1; i >= days; i--) {
+        _user!.trainingDays.removeAt(i);
+        print(_user!.trainingDays);
+      }
+      print("Length: " + _user!.trainingDays.length.toString());
+    }
     notifyListeners();
   }
 
   addTrainingDay(int day){
-    if(!_user!.trainingDays.contains(day))
-      _user!.trainingTools.add(day);
+    int trainingDays = _user!.iTrainingDays;
+    if(!_user!.trainingDays.contains(day) && _user!.trainingDays.length < trainingDays)
+      _user!.trainingDays.add(day);
     notifyListeners();
   }
 

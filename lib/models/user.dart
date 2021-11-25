@@ -2,6 +2,8 @@ class User {
   int? id;
   String? name;
   String? email;
+  String? password;
+  String? phone;
   String? token;
   bool premium;
   //0 = none, 1 = male, 2 = female

@@ -11,6 +11,8 @@ import 'package:informa/services/web_services.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
+import 'more_user_info_screen.dart';
+
 class MainRegisterScreen extends StatefulWidget {
   static String id = 'main register';
   const MainRegisterScreen({Key? key}) : super(key: key);
@@ -186,7 +188,10 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                   CustomButton(
                     text: 'أنشاء حساب',
                     onClick: (){
-
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MoreUserInfoScreen()),
+                      );
                     },
                   ),
                   SizedBox(height: 10,),
