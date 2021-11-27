@@ -21,218 +21,223 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            CircleAvatar(
-              backgroundColor: Colors.grey[300],
-              radius: 40,
+      child: Column(
+        children: [
+          CircleAvatar(
+            backgroundColor: Colors.grey[300],
+            radius: 40,
+          ),
+          SizedBox(height: 10,),
+          Text(
+            'ملخص معلوماتك',
+            style: TextStyle(
+              fontSize: 18,
+              fontFamily: 'CairoBold',
             ),
-            SizedBox(height: 10,),
-            Text(
-              'ملخص معلوماتك',
-              style: TextStyle(
-                fontSize: 18,
-                fontFamily: 'CairoBold',
-              ),
+          ),
+          Text(
+            'تأكد من صحة معلوماتك قبل الأستمرار',
+            style: TextStyle(
+              color: Colors.grey[600]
             ),
-            Text(
-              'تأكد من صحة معلوماتك قبل الأستمرار',
-              style: TextStyle(
-                color: Colors.grey[600]
-              ),
-            ),
-            SizedBox(height: 20,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+          SizedBox(height: 20,),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
               children: [
-                Text(
-                  'العمر',
-                  style: TextStyle(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'العمر',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      activeUser!.age.toString() + ' سنة',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  activeUser!.age.toString() + ' سنة',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
+                Divider(
+                  height: 30,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'الطول',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      activeUser.tall.toString() + ' سم',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 30,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'الوزن',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      activeUser.weight.toString() + ' كجم',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 30,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'الوزن المستهدف',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      activeUser.goalWeight.toString() + ' كجم',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 30,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'نسبة الدهون',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      activeUser.fatsPercent.toString() + ' %',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 30,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'المستوي',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      _dictionary.convertLevelToString(activeUser.fitnessLevel),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 30,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'وقت التمرين',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      _dictionary.convertTrainingPeriodToString(activeUser.trainingPeriodLevel),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 30,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'أدوات التمرين',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      _dictionary.convertTrainingToolsToString(activeUser.trainingTools),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 30,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'عدد ايام التمرين',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      activeUser.iTrainingDays.toString() + ' ايام',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-            Divider(
-              height: 30,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'الطول',
-                  style: TextStyle(),
-                ),
-                Text(
-                  activeUser.tall.toString() + ' سم',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 30,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'الوزن',
-                  style: TextStyle(),
-                ),
-                Text(
-                  activeUser.weight.toString() + ' كجم',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 30,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'الوزن المستهدف',
-                  style: TextStyle(),
-                ),
-                Text(
-                  activeUser.goalWeight.toString() + ' كجم',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 30,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'نسبة الدهون',
-                  style: TextStyle(),
-                ),
-                Text(
-                  activeUser.fatsPercent.toString() + ' %',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 30,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'المستوي',
-                  style: TextStyle(),
-                ),
-                Text(
-                  _dictionary.convertLevelToString(activeUser.fitnessLevel),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 30,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'وقت التمرين',
-                  style: TextStyle(),
-                ),
-                Text(
-                  _dictionary.convertTrainingPeriodToString(activeUser.trainingPeriodLevel),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 30,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'أدوات التمرين',
-                  style: TextStyle(),
-                ),
-                Text(
-                  _dictionary.convertTrainingToolsToString(activeUser.trainingTools),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-            Divider(
-              height: 30,
-              indent: 20,
-              endIndent: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'عدد ايام التمرين',
-                  style: TextStyle(),
-                ),
-                Text(
-                  activeUser.iTrainingDays.toString() + ' ايام',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20,),
-            CustomButton(
-              text: 'تأكيد',
-              onClick: (){
-                Navigator.pushNamed(context, PrepareProgramScreen.id);
-              },
-            )
-          ],
-        ),
+          ),
+          SizedBox(height: 10,),
+          CustomButton(
+            text: 'تأكيد',
+            onClick: (){
+              Navigator.pushNamed(context, PrepareProgramScreen.id);
+            },
+          ),
+        ],
       ),
     );
   }

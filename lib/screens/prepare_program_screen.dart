@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/screens/main_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class PrepareProgramScreen extends StatefulWidget {
@@ -30,6 +31,7 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
           setState(() {
             timer.cancel();
           });
+          Navigator.pushNamed(context, MainScreen.id);
         }
         else if (_counter == 22){
           setState(() {
