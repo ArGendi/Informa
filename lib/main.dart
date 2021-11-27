@@ -25,6 +25,7 @@ import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/screens/more_user_info_screen.dart';
 import 'package:informa/screens/muscle_selection_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
+import 'package:informa/screens/prepare_program_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
 import 'package:informa/screens/register_screens.dart';
 import 'package:informa/screens/reset_password_screen.dart';
@@ -80,12 +81,9 @@ class MyApp extends StatelessWidget {
           caption: TextStyle(
               fontSize: 13.0
           ),
-          body1: TextStyle(
-              fontSize: 13.0
-          ),
         ),
       ),
-      home: RegisterScreens(),
+      home: MoreUserInfoScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -97,6 +95,7 @@ class MyApp extends StatelessWidget {
         FreeWorkoutScreen.id: (context) => FreeWorkoutScreen(),
         MuscleSelectionScreen.id: (context) => MuscleSelectionScreen(),
         PlansScreen.id: (context) => PlansScreen(),
+        PrepareProgramScreen.id: (context) => PrepareProgramScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

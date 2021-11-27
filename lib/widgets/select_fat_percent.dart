@@ -51,7 +51,7 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         fontFamily: 'CairoBold'
                     ),
                   ),
-                  SizedBox(height: 25,),
+                  SizedBox(height: 20,),
                   Row(
                     children: [
                       Expanded(

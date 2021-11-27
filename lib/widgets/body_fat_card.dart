@@ -33,7 +33,7 @@ class _BodyFatCardState extends State<BodyFatCard> {
         child: Column(
           children: [
             Container(
-              height: 160,
+              height: 140,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(

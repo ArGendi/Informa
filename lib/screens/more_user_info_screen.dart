@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:informa/widgets/confirm_user_info.dart';
 import 'package:informa/widgets/register.dart';
 import 'package:informa/widgets/select_age_tall_weight.dart';
 import 'package:informa/widgets/select_fat_percent.dart';
@@ -59,9 +60,9 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
         physics:new NeverScrollableScrollPhysics(),
         controller: _controller,
         children: [
-          Register(
-            onClick: goToNextPage,
-          ),
+          // Register(
+          //   onClick: goToNextPage,
+          // ),
           SelectAgeTallWeight(
             onClick: goToNextPage,
           ),
@@ -78,8 +79,9 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
             onClick: goToNextPage,
           ),
           SelectTrainingDays(
-            onClick: (){},
+            onClick: goToNextPage,
           ),
+          ConfirmUserInfo(),
         ],
       ),
     );
