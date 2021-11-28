@@ -185,28 +185,33 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
                     ),
                   ],
                 ),
-                Divider(
-                  height: 30,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'أدوات التمرين',
-                      style: TextStyle(),
-                    ),
-                    Text(
-                      _dictionary.convertTrainingToolsToString(activeUser.trainingTools),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                        color: Colors.grey[600],
+                if(activeUser.workoutPlace == 1)
+                  Column(
+                    children: [
+                      Divider(
+                        height: 30,
+                        indent: 20,
+                        endIndent: 20,
                       ),
-                    ),
-                  ],
-                ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'أدوات التمرين',
+                            style: TextStyle(),
+                          ),
+                          Text(
+                            _dictionary.convertTrainingToolsToString(activeUser.trainingTools),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 Divider(
                   height: 30,
                   indent: 20,

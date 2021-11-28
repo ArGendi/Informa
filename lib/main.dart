@@ -83,7 +83,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: MoreUserInfoScreen(),
+      home: MainRegisterScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -96,6 +96,7 @@ class MyApp extends StatelessWidget {
         MuscleSelectionScreen.id: (context) => MuscleSelectionScreen(),
         PlansScreen.id: (context) => PlansScreen(),
         PrepareProgramScreen.id: (context) => PrepareProgramScreen(),
+        MoreUserInfoScreen.id: (context) => MoreUserInfoScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

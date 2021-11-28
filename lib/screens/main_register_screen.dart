@@ -35,12 +35,11 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       User user = new User(
         name: profile!.name,
         email: email,
-        premium: true,
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+      Provider.of<ActiveUserProvider>(context, listen: false)..setFromSocialMedia(true);
       setState(() {isFacebookLoading = false;});
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
+      Navigator.pushNamed(context, MoreUserInfoScreen.id);
     }
     else {
       setState(() {isFacebookLoading = false;});
@@ -57,12 +56,11 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
       User user = new User(
         name: _authServices!.user.displayName,
         email: _authServices!.user.email,
-        premium: true,
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+      Provider.of<ActiveUserProvider>(context, listen: false)..setFromSocialMedia(true);
       setState(() {isGoogleLoading = false;});
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
+      Navigator.pushNamed(context, MoreUserInfoScreen.id);
     }
     else {
       setState(() {isGoogleLoading = false;});

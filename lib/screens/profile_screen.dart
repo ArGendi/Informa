@@ -210,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                                activeUser.weight.toString() + ' كيلو جرام'
+                                activeUser.weight.toString() + ' كجم'
                             ),
                             Text(
                                 'وزن الجسم الحالي',

@@ -68,67 +68,72 @@ class _RegisterState extends State<Register> {
                     ),
                     SizedBox(height: 20,),
                     Text(
-                      'أدخل البيانات التالية',
+                      activeUser!.fromSocialMedia ? 'أدخل رقم الهاتف' : 'أدخل البيانات التالية',
                       style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'CairoBold'
                       ),
                     ),
                     SizedBox(height: 25,),
-                    CustomTextField(
-                      text: 'الأسم كامل',
-                      obscureText: false,
-                      textInputType: TextInputType.text,
-                      setValue: (value){
-                        _fullName = value;
-                      },
-                      validation: (value){
-                        if(value.isEmpty) return 'ادخل الأسم';
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10,),
-                    CustomTextField(
-                      text: 'البريد الألكتروني',
-                      obscureText: false,
-                      textInputType: TextInputType.emailAddress,
-                      setValue: (value){
-                        _email = value;
-                      },
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل البريد الألكتروني';
-                        if (!value.contains('@') || !value.contains('.'))
-                          return 'بريد الكتروني خاطىء';
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10,),
-                    CustomTextField(
-                      text: 'كلمة المرور',
-                      obscureText: true,
-                      textInputType: TextInputType.text,
-                      setValue: (value){
-                        _password = value;
-                      },
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل كلمة المرور';
-                        if (value.length < 6) return 'كلمة المرور قصيرة';
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10,),
-                    CustomTextField(
-                      text: 'تأكيد كلمة المرور',
-                      obscureText: true,
-                      textInputType: TextInputType.text,
-                      setValue: (value){},
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل كلمة المرور';
-                        if(_password != value) return 'كلمة المرور غير متطابقة';
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10,),
+                    if(!activeUser.fromSocialMedia)
+                      Column(
+                        children: [
+                          CustomTextField(
+                            text: 'الأسم كامل',
+                            obscureText: false,
+                            textInputType: TextInputType.text,
+                            setValue: (value){
+                              _fullName = value;
+                            },
+                            validation: (value){
+                              if(value.isEmpty) return 'ادخل الأسم';
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10,),
+                          CustomTextField(
+                            text: 'البريد الألكتروني',
+                            obscureText: false,
+                            textInputType: TextInputType.emailAddress,
+                            setValue: (value){
+                              _email = value;
+                            },
+                            validation: (value){
+                              if (value.isEmpty) return 'أدخل البريد الألكتروني';
+                              if (!value.contains('@') || !value.contains('.'))
+                                return 'بريد الكتروني خاطىء';
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10,),
+                          CustomTextField(
+                            text: 'كلمة المرور',
+                            obscureText: true,
+                            textInputType: TextInputType.text,
+                            setValue: (value){
+                              _password = value;
+                            },
+                            validation: (value){
+                              if (value.isEmpty) return 'أدخل كلمة المرور';
+                              if (value.length < 6) return 'كلمة المرور قصيرة';
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10,),
+                          CustomTextField(
+                            text: 'تأكيد كلمة المرور',
+                            obscureText: true,
+                            textInputType: TextInputType.text,
+                            setValue: (value){},
+                            validation: (value){
+                              if (value.isEmpty) return 'أدخل كلمة المرور';
+                              if(_password != value) return 'كلمة المرور غير متطابقة';
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 10,),
+                        ],
+                      ),
                     Row(
                       children: [
                         CountryCodePicker(

@@ -38,6 +38,11 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setFromSocialMedia(bool value){
+    _user!.fromSocialMedia = value;
+    notifyListeners();
+  }
+
   setPhoneNumber(String phone){
     _user!.phone = phone;
     notifyListeners();

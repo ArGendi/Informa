@@ -6,6 +6,7 @@ class User {
   String? phone;
   String? token;
   bool premium;
+  bool fromSocialMedia = false;
   //0 = none, 1 = male, 2 = female
   int gender;
   //0 = none, 1 = workout + nutrition, 2 = workout, 3 = nutrition

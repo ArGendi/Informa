@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/confirm_user_info.dart';
 import 'package:informa/widgets/register.dart';
 import 'package:informa/widgets/select_age_tall_weight.dart';
@@ -7,10 +8,12 @@ import 'package:informa/widgets/select_level.dart';
 import 'package:informa/widgets/select_tools.dart';
 import 'package:informa/widgets/select_training_days.dart';
 import 'package:informa/widgets/select_training_period.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
 class MoreUserInfoScreen extends StatefulWidget {
+  static String id = 'more user info';
   const MoreUserInfoScreen({Key? key}) : super(key: key);
 
   @override
@@ -34,6 +37,7 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -60,9 +64,9 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
         physics:new NeverScrollableScrollPhysics(),
         controller: _controller,
         children: [
-          // Register(
-          //   onClick: goToNextPage,
-          // ),
+          Register(
+            onClick: goToNextPage,
+          ),
           SelectAgeTallWeight(
             onClick: goToNextPage,
           ),
@@ -75,9 +79,10 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
           SelectTrainingPeriod(
             onClick: goToNextPage,
           ),
-          SelectTools(
-            onClick: goToNextPage,
-          ),
+          if(activeUser!.workoutPlace == 1)
+            SelectTools(
+              onClick: goToNextPage,
+            ),
           SelectTrainingDays(
             onClick: goToNextPage,
           ),

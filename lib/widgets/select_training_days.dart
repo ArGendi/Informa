@@ -175,8 +175,8 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.trainingDays.length == activeUser.iTrainingDays ? widget.onClick : (){},
-            bgColor: activeUser.trainingDays.length == activeUser.iTrainingDays ? primaryColor : Colors.grey.shade400,
+            onClick: activeUser.trainingDays.length == activeUser.iTrainingDays && activeUser.iTrainingDays != 0 ? widget.onClick : (){},
+            bgColor: activeUser.trainingDays.length == activeUser.iTrainingDays && activeUser.iTrainingDays != 0? primaryColor : Colors.grey.shade400,
           )
         ],
       ),
