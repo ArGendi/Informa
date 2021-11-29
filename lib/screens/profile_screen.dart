@@ -321,7 +321,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             SizedBox(height: 5,),
-            if(activeUser.premium)
+            if(!activeUser.premium)
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

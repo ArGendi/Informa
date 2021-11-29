@@ -31,7 +31,7 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
           setState(() {
             timer.cancel();
           });
-          Navigator.pushNamed(context, MainScreen.id);
+          //Navigator.pushNamed(context, MainScreen.id);
         }
         else if (_counter == 22){
           setState(() {
@@ -111,73 +111,72 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
             SizedBox(height: 15,),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: _dataPrepared ? Colors.green : Colors.grey[300],
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 13,
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: _workoutSchedulePrepared ? Colors.green : Colors.grey[300],
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 13,
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundColor: _dailyTasksPrepared ? Colors.green : Colors.grey[300],
-                      child: Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 13,
-                      ),
-                    ),
-                  ],
+                CircleAvatar(
+                  radius: 10,
+                  backgroundColor: _dataPrepared ? Colors.green : Colors.grey[300],
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.white,
+                    size: 13,
+                  ),
                 ),
                 SizedBox(width: 10,),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'نقوم بعمل تحليل لبيناتك',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontFamily: 'CairoBold',
-                          color: _dataPrepared ? Colors.black : Colors.grey
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Text(
-                      'جاري تحضير جدول التمرين',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontFamily: 'CairoBold',
-                          color: _workoutSchedulePrepared ? Colors.black : Colors.grey
-                      ),
-                    ),
-                    SizedBox(height: 4,),
-                    Text(
-                      'جاري تصمميم المهام اليومية',
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontFamily: 'CairoBold',
-                          color: _dailyTasksPrepared ? Colors.black : Colors.grey
-                      ),
-                    ),
-                  ],
+                Text(
+                  'نقوم بعمل تحليل لبيناتك' + '''           ''',
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontFamily: 'CairoBold',
+                      color: _dataPrepared ? Colors.black : Colors.grey
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 10,
+                  backgroundColor: _workoutSchedulePrepared ? Colors.green : Colors.grey[300],
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.white,
+                    size: 13,
+                  ),
+                ),
+                SizedBox(width: 10,),
+                Text(
+                  'جاري تحضير جدول التمرين' + '''         ''',
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontFamily: 'CairoBold',
+                      color: _workoutSchedulePrepared ? Colors.black : Colors.grey
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 10,
+                  backgroundColor: _dailyTasksPrepared ? Colors.green : Colors.grey[300],
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.white,
+                    size: 13,
+                  ),
+                ),
+                SizedBox(width: 10,),
+                Text(
+                  'جاري تصمميم المهام اليومية',
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontFamily: 'CairoBold',
+                      color: _dailyTasksPrepared ? Colors.black : Colors.grey
+                  ),
                 ),
               ],
             ),

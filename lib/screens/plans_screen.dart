@@ -232,7 +232,7 @@ class _PlansScreenState extends State<PlansScreen> {
                 ),
               ],
               options: CarouselOptions(
-                height: 180,
+                //height: 200,
                 aspectRatio: 16/9,
                 viewportFraction: 0.5,
                 initialPage: 2,

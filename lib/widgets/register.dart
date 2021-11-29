@@ -1,9 +1,12 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/services/auth_service.dart';
+import 'package:informa/services/country_code_service.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
@@ -25,9 +28,70 @@ class _RegisterState extends State<Register> {
   String _email = '';
   String _password = '';
   String _phoneNumber = '';
-  String _dialCode = '+02';
+  String _dialCode = '20';
   bool _isLoading = false;
+  String _flag = 'https://flagcdn.com/w320/eg.png';
   FirestoreService _firestoreService = new FirestoreService();
+  CountryCodeService _countryCodeService = new CountryCodeService();
+
+  showSelectCountryBottomSheet(List data){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+          child: ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index){
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: (){
+                      setState(() {
+                        _flag = data[index]['flags']['png'];
+                        _dialCode = data[index]['callingCodes'][0];
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Image.network(
+                                data[index]['flags']['png'],
+                                width: 40.0,
+                              ),
+                              SizedBox(width: 10,),
+                              Text('+' + data[index]['callingCodes'][0]),
+                            ],
+                          ),
+                          Flexible(
+                            child: Text(
+                              data[index]['name'],
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Divider(height: 10,),
+                ],
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
 
   Future<UserCredential?> createAccount() async{
     try {
@@ -74,7 +138,7 @@ class _RegisterState extends State<Register> {
           return;
         }
       }
-      Provider.of<ActiveUserProvider>(context, listen: false).setPhoneNumber(_dialCode + _phoneNumber);
+      Provider.of<ActiveUserProvider>(context, listen: false).setPhoneNumber("+" + _dialCode + _phoneNumber);
       widget.onClick();
     }
   }
@@ -179,16 +243,53 @@ class _RegisterState extends State<Register> {
                       ),
                     Row(
                       children: [
-                        CountryCodePicker(
-                          onChanged: (value){
-                            _dialCode = value.dialCode!;
+                        // CountryCodePicker(
+                        //   onChanged: (value){
+                        //     _dialCode = value.dialCode!;
+                        //   },
+                        //   initialSelection: 'EG',
+                        //   showCountryOnly: false,
+                        //   showOnlyCountryWhenClosed: false,
+                        //   alignLeft: false,
+                        // ),
+                        FutureBuilder(
+                          future: _countryCodeService.getAllCountries(),
+                          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                            if(snapshot.hasData) {
+                              var data = snapshot.data;
+                              print(data);
+                              return InkWell(
+                                onTap: (){
+                                  showSelectCountryBottomSheet(data);
+                                },
+                                child: Container(
+                                  width: 80,
+                                  height: 45,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Image.network(
+                                          _flag,
+                                        ),
+                                      ),
+                                      SizedBox(width: 5,),
+                                      Text('+' + _dialCode),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                            else return Container(
+                              width: 80,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            );
                           },
-                          initialSelection: 'EG',
-                          showCountryOnly: false,
-                          showOnlyCountryWhenClosed: false,
-                          alignLeft: false,
                         ),
-                        //SizedBox(width: 10,),
+                        SizedBox(width: 10,),
                         Expanded(
                           child: CustomTextField(
                             text: 'رقم الهاتف',

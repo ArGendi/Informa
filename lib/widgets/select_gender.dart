@@ -24,141 +24,131 @@ class _SelectGenderState extends State<SelectGender> {
       child: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Text(
-                  //   'أهلا',
-                  //   style: TextStyle(
-                  //       fontSize: 26,
-                  //       color: primaryColor,
-                  //       fontFamily: 'CairoBold'
-                  //   ),
-                  // ),
-                  Image.asset(
-                    'assets/images/ahlan.png',
-                    width: 90,
-                  ),
-                  Text(
-                    'دعنا نتعرف عليك أكثر',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: primaryColor,
-                    ),
-                  ),
-                  Divider(
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/ahlan.png',
+                  width: 90,
+                ),
+                Text(
+                  'دعنا نتعرف عليك أكثر',
+                  style: TextStyle(
+                    fontSize: 16,
                     color: primaryColor,
-                    indent: screenSize.width * .3,
-                    endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 20,),
-                  Text(
-                    'أختار النوع',
-                    style: TextStyle(
-                        fontSize: 22,
-                        fontFamily: 'CairoBold'
+                ),
+                Divider(
+                  color: primaryColor,
+                  indent: screenSize.width * .3,
+                  endIndent: screenSize.width * .3,
+                ),
+                SizedBox(height: 20,),
+                Text(
+                  'أختار النوع',
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: 'CairoBold'
+                  ),
+                ),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(7),
+                        onTap: (){
+                          Provider.of<ActiveUserProvider>(context, listen: false).setUser(
+                            new AppUser(
+                              gender: 1,
+                            ),
+                          );
+                        },
+                        child: Ink(
+                          height: 200,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(7),
+                              border: Border.all(
+                                  color: activeUser!.gender == 1 ? primaryColor : Colors.white,
+                                  width: 2
+                              )
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/male.svg'
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'ذكر',
+                                  style: TextStyle(
+                                      fontSize: 16
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 20,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(7),
-                          onTap: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false).setUser(
-                              new AppUser(
-                                gender: 1,
-                              ),
-                            );
-                          },
-                          child: Ink(
-                            height: 200,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(7),
-                                border: Border.all(
-                                    color: activeUser!.gender == 1 ? primaryColor : Colors.white,
-                                    width: 2
-                                )
+                    SizedBox(width: 20,),
+                    Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(7),
+                        onTap: (){
+                          Provider.of<ActiveUserProvider>(context, listen: false).setUser(
+                            new AppUser(
+                              gender: 1,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          'assets/icons/male.svg'
-                                        ),
+                          );
+                        },
+                        child: Ink(
+                          height: 200,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(7),
+                              border: Border.all(
+                                  color: activeUser.gender == 2 ? primaryColor : Colors.white,
+                                  width: 2
+                              )
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                          'assets/icons/female.svg'
                                       ),
                                     ),
                                   ),
-                                  Text(
-                                    'ذكر',
-                                    style: TextStyle(
-                                        fontSize: 16
-                                    ),
+                                ),
+                                Text(
+                                  'انثى',
+                                  style: TextStyle(
+                                      fontSize: 16
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(width: 20,),
-                      Expanded(
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(7),
-                          onTap: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false).setUser(
-                              new AppUser(
-                                gender: 1,
-                              ),
-                            );
-                          },
-                          child: Ink(
-                            height: 200,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(7),
-                                border: Border.all(
-                                    color: activeUser.gender == 2 ? primaryColor : Colors.white,
-                                    width: 2
-                                )
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                            'assets/icons/female.svg'
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    'انثى',
-                                    style: TextStyle(
-                                        fontSize: 16
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 40,),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 40,),
+              ],
             ),
           ),
           CustomButton(

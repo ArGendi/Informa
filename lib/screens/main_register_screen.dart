@@ -40,6 +40,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
         print('Not a new user');
         AppUser? user = await _firestoreService.getUserById(fbUser.uid).catchError((e){
           print('error getting data from fireStore');
+          setState(() {isFacebookLoading = false;});
         });
         setState(() {isFacebookLoading = false;});
         print(user);

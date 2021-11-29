@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/workout.dart';
+import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/plans_screen.dart';
+import 'package:provider/provider.dart';
 
 class SingleWorkoutScreen extends StatefulWidget {
   static String id = 'single workout';
@@ -23,6 +26,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SafeArea(
@@ -165,7 +169,11 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
 
                 //Button
                 InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    if(!activeUser!.premium){
+                      Navigator.pushNamed(context, PlansScreen.id);
+                    }
+                  },
                   borderRadius: BorderRadius.circular(borderRadius),
                   child: Ink(
                     width: screenSize.width,
