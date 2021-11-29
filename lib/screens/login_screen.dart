@@ -31,14 +31,14 @@ class _LoginScreenState extends State<LoginScreen> {
     bool valid = _formKey.currentState!.validate();
     if(valid) {
       _formKey.currentState!.save();
-      User user = new User(
+      AppUser user = new AppUser(
         email: _email,
         name: 'No Name',
         premium: true,
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() { _isLoading = true; });
-      String? response = await _authServices.signIn(_email!.trim(), _password!);
+      String? response = await _authServices.signInWithEmailAndPassword(_email!.trim(), _password!);
       if(response == 'Signed in')
         Navigator.pushNamedAndRemoveUntil(context, MainScreen.id, (route) => false);
       else ScaffoldMessenger.of(context).showSnackBar(

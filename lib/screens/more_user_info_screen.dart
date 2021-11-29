@@ -79,7 +79,7 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
           SelectTrainingPeriod(
             onClick: goToNextPage,
           ),
-          if(activeUser!.workoutPlace == 1)
+          if(activeUser!.workoutPlace != 2)
             SelectTools(
               onClick: goToNextPage,
             ),

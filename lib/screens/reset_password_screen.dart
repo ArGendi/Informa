@@ -24,7 +24,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     _formKey.currentState!.save();
     bool valid = _formKey.currentState!.validate();
     if(valid) {
-      Provider.of<ActiveUserProvider>(context, listen: false).setUser(new User(
+      Provider.of<ActiveUserProvider>(context, listen: false).setUser(new AppUser(
         email: 'No email yet',
         name: 'No name yet',
         premium: true,

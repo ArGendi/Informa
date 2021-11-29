@@ -21,7 +21,7 @@ class Dictionary{
     return 'لا يوجد';
   }
 
-  String convertTrainingToolsToString(List<int> tools){
+  String convertTrainingToolsToString(List tools){
     String result = '';
     for(var tool in tools){
       if(tool == 1)

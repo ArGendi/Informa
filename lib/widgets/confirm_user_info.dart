@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/prepare_program_screen.dart';
 import 'package:informa/services/dictionary.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,24 @@ class ConfirmUserInfo extends StatefulWidget {
 
 class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
   Dictionary _dictionary = Dictionary();
+  bool _isLoading = false;
+  FirestoreService _firestoreService = new FirestoreService();
+
+  onConfirm(BuildContext context) async{
+    bool done = true;
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    setState(() { _isLoading = true; });
+    await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
+      setState(() { _isLoading = false; });
+      done = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('حدث خطأ'))
+      );
+    });
+    setState(() { _isLoading = false; });
+    if(done)
+      Navigator.pushNamed(context, PrepareProgramScreen.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -239,8 +258,9 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
           CustomButton(
             text: 'تأكيد',
             onClick: (){
-              Navigator.pushNamed(context, PrepareProgramScreen.id);
+              onConfirm(context);
             },
+            isLoading: _isLoading,
           ),
         ],
       ),

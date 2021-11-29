@@ -2,24 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:informa/models/user.dart';
 
 class ActiveUserProvider extends ChangeNotifier{
-  User? _user;
+  AppUser? _user;
 
   ActiveUserProvider(){
-    _user = new User(
-      name: 'Abdelrahman',
-      email: 'new',
-      premium: true,
-      weight: 80,
-      tall: 170,
-      fatsPercent: 0,
-      age: 30,
+    _user = new AppUser(
+      // name: 'Abdelrahman',
+      // email: 'new',
+      // premium: true,
+      // weight: 80,
+      // tall: 170,
+      // fatsPercent: 0,
+      // age: 30,
     );
   }
 
-  User? get user => _user;
+  AppUser? get user => _user;
 
-  setUser(User user){
+  setUser(AppUser user){
     _user = user;
+    notifyListeners();
+  }
+
+  setId(String id){
+    _user!.id = id;
     notifyListeners();
   }
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/constants.dart';
@@ -7,6 +8,7 @@ import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/services/auth_service.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/services/web_services.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
@@ -25,21 +27,37 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
   bool isGoogleLoading = false;
   bool isFacebookLoading = false;
   AuthServices? _authServices = new AuthServices();
+  FirestoreService _firestoreService = new FirestoreService();
 
   facebookLogin(BuildContext context) async{
     setState(() {isFacebookLoading = true;});
-    bool valid = await _authServices!.loginWithFacebook();
-    if(valid){
-      var profile = await _authServices!.fb.getUserProfile();
-      var email = await _authServices!.fb.getUserEmail();
-      User user = new User(
-        name: profile!.name,
-        email: email,
-      );
-      Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-      Provider.of<ActiveUserProvider>(context, listen: false)..setFromSocialMedia(true);
+    var credential = await _authServices!.loginWithFacebook().catchError((e){
       setState(() {isFacebookLoading = false;});
-      Navigator.pushNamed(context, MoreUserInfoScreen.id);
+    });
+    var fbUser = credential!.user;
+    if(fbUser != null){
+      if(!credential.additionalUserInfo!.isNewUser){
+        print('Not a new user');
+        AppUser? user = await _firestoreService.getUserById(fbUser.uid).catchError((e){
+          print('error getting data from fireStore');
+        });
+        setState(() {isFacebookLoading = false;});
+        print(user);
+        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user!);
+        Navigator.pushNamed(context, MainScreen.id);
+      }
+      else {
+        var profile = await _authServices!.fb.getUserProfile();
+        var email = await _authServices!.fb.getUserEmail();
+        Provider.of<ActiveUserProvider>(context, listen: false).setId(fbUser.uid);
+        Provider.of<ActiveUserProvider>(context, listen: false).setName(profile!.name!);
+        Provider.of<ActiveUserProvider>(context, listen: false).setEmail(email!);
+        Provider.of<ActiveUserProvider>(context, listen: false).setFromSocialMedia(true);
+        AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+        await _firestoreService.saveNewAccount(activeUser!);
+        setState(() {isFacebookLoading = false;});
+        Navigator.pushNamed(context, MoreUserInfoScreen.id);
+      }
     }
     else {
       setState(() {isFacebookLoading = false;});
@@ -51,16 +69,35 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
 
   googleLogin(BuildContext context) async{
     setState(() {isGoogleLoading = true;});
-    bool valid = await _authServices!.loginWithGoogle();
-    if(valid){
-      User user = new User(
-        name: _authServices!.user.displayName,
-        email: _authServices!.user.email,
-      );
-      Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-      Provider.of<ActiveUserProvider>(context, listen: false)..setFromSocialMedia(true);
+    var credential = await _authServices!.loginWithGoogle().catchError((e){
       setState(() {isGoogleLoading = false;});
-      Navigator.pushNamed(context, MoreUserInfoScreen.id);
+    });
+    var googleUser = credential!.user;
+    if(googleUser != null){
+      if(!credential.additionalUserInfo!.isNewUser) {
+        print('Not a new user');
+        AppUser? user = await _firestoreService.getUserById(googleUser.uid).catchError((e){
+          print('error getting data from fireStore');
+        });
+        print(user);
+        setState(() {isGoogleLoading = false;});
+        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user!);
+        Navigator.pushNamed(context, MainScreen.id);
+      }
+      else {
+        Provider.of<ActiveUserProvider>(context, listen: false).setId(
+            googleUser.uid);
+        Provider.of<ActiveUserProvider>(context, listen: false).setName(
+            _authServices!.user.displayName!);
+        Provider.of<ActiveUserProvider>(context, listen: false).setEmail(
+            _authServices!.user.email);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setFromSocialMedia(true);
+        AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+        await _firestoreService.saveNewAccount(activeUser!);
+        setState(() {isGoogleLoading = false;});
+        Navigator.pushNamed(context, MoreUserInfoScreen.id);
+      }
     }
     else {
       setState(() {isGoogleLoading = false;});

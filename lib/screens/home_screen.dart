@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: ListView(
         children: [
-          if(activeUser!.premium)
+          if(!activeUser!.premium)
             Container(
             width: double.infinity,
             height: 200,

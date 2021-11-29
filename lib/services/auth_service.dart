@@ -7,13 +7,13 @@ class AuthServices {
   final _fb = FacebookLogin();
   final _googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseAuth _auth = FirebaseAuth.instance;
 
   GoogleSignInAccount get user => _user!;
   FacebookLogin get fb => _fb;
   GoogleSignIn get googleSignIn => _googleSignIn;
 
-  Future<bool> loginWithFacebook() async{
+  Future<UserCredential?> loginWithFacebook() async{
     final res = await _fb.logIn(
       permissions: [
         FacebookPermission.publicProfile,
@@ -24,35 +24,41 @@ class AuthServices {
       case FacebookLoginStatus.success:
         print('It worked');
         final FacebookAccessToken? fbToken = res.accessToken;
+        final AuthCredential facebookCredential =
+          FacebookAuthProvider.credential(fbToken!.token);
+        final userCredential =
+          await _auth.signInWithCredential(facebookCredential);
         final profile = await _fb.getUserProfile();
         print('Profile: ' + profile!.firstName.toString());
         final email = await _fb.getUserEmail();
         print('Email: ' + email!);
-        return true;
+        return userCredential;
         break;
       case FacebookLoginStatus.cancel:
         print('facebook canceled the login here');
-        return false;
+        return null;
         break;
       case FacebookLoginStatus.error:
         print('facebook error here');
-        return false;
+        return null;
         break;
     }
   }
 
-  Future<bool> loginWithGoogle() async{
+  Future<UserCredential?> loginWithGoogle() async{
     final googleUser = await _googleSignIn.signIn();
-    if(googleUser == null) return false;
+    if(googleUser == null) return null;
     _user = googleUser;
     final googleAuth = await googleUser.authentication;
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
     try {
-      await _auth.signInWithCredential(credential);
+      var cred = await _auth.signInWithCredential(credential);
+      print(_user!.email);
+      print(_user!.displayName);
+      return cred;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         // handle the error here
@@ -60,17 +66,14 @@ class AuthServices {
       else if (e.code == 'invalid-credential') {
         // handle the error here
       }
-      return false;
+      return null;
     } catch (e) {
       // handle the error here
-      return false;
+      return null;
     }
-    print(_user!.email);
-    print(_user!.displayName);
-    return true;
   }
 
-  Future<String?> signIn(String email, String password) async {
+  Future<String?> signInWithEmailAndPassword(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return "Signed in";
@@ -79,12 +82,16 @@ class AuthServices {
     }
   }
 
-  Future<String?> signUp(String email, String password) async {
+  Future<String?> createUserWithEmailAndPassword(String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      return "Signed up";
+      var userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      return userCredential.user!.uid;
     } on FirebaseAuthException catch(e) {
-      return e.message;
+      if (e.code == 'weak-password') {
+        return '#' + 'رقم المرور ضعيف';
+      } else if (e.code == 'email-already-in-use') {
+        return '#' + 'الحساب موجود بالفعل';
+      }
     }
   }
 
@@ -93,7 +100,11 @@ class AuthServices {
       await _auth.signOut();
       return "Signed out";
     } on FirebaseAuthException catch(e) {
-      return e.message;
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
     }
   }
 

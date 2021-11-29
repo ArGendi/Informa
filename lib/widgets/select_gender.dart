@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +67,11 @@ class _SelectGenderState extends State<SelectGender> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(7),
                           onTap: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false).setGender(1);
+                            Provider.of<ActiveUserProvider>(context, listen: false).setUser(
+                              new AppUser(
+                                gender: 1,
+                              ),
+                            );
                           },
                           child: Ink(
                             height: 200,
@@ -108,7 +113,11 @@ class _SelectGenderState extends State<SelectGender> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(7),
                           onTap: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false).setGender(2);
+                            Provider.of<ActiveUserProvider>(context, listen: false).setUser(
+                              new AppUser(
+                                gender: 1,
+                              ),
+                            );
                           },
                           child: Ink(
                             height: 200,

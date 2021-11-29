@@ -1,6 +1,10 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/services/auth_service.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
@@ -21,16 +25,55 @@ class _RegisterState extends State<Register> {
   String _email = '';
   String _password = '';
   String _phoneNumber = '';
-  String _dialCode = '';
+  String _dialCode = '+02';
+  bool _isLoading = false;
+  FirestoreService _firestoreService = new FirestoreService();
 
-  onSubmit(BuildContext context){
+  Future<UserCredential?> createAccount() async{
+    try {
+      var credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: _email.trim(), password: _password);
+      return credential;
+    } on FirebaseAuthException catch(e) {
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('رقم المرور ضعيف'))
+        );
+        return null;
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('الحساب موجود بالفعل'))
+        );
+        return null;
+      }
+    }
+    return null;
+  }
+
+  onSubmit(BuildContext context) async{
     FocusScope.of(context).unfocus();
     _formKey.currentState!.save();
     bool valid = _formKey.currentState!.validate();
     if(valid){
-      Provider.of<ActiveUserProvider>(context, listen: false).setName(_fullName);
-      Provider.of<ActiveUserProvider>(context, listen: false).setEmail(_email.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false).setPassword(_password);
+      bool fromSocialMedia = Provider.of<ActiveUserProvider>(context, listen: false).user!.fromSocialMedia;
+      if(!fromSocialMedia){
+        setState(() { _isLoading = true; });
+        var credential = await createAccount();
+        if(credential != null) {
+          Provider.of<ActiveUserProvider>(context, listen: false).setId(credential.user!.uid);
+          Provider.of<ActiveUserProvider>(context, listen: false).setName(_fullName);
+          Provider.of<ActiveUserProvider>(context, listen: false).setEmail(_email.trim());
+          Provider.of<ActiveUserProvider>(context, listen: false).setPassword(_password);
+          AppUser user =  Provider.of<ActiveUserProvider>(context, listen: false).user!;
+          await _firestoreService.saveNewAccount(user);
+          setState(() { _isLoading = false; });
+          widget.onClick();
+        }
+        else{
+          setState(() { _isLoading = false; });
+          return;
+        }
+      }
       Provider.of<ActiveUserProvider>(context, listen: false).setPhoneNumber(_dialCode + _phoneNumber);
       widget.onClick();
     }
@@ -173,6 +216,7 @@ class _RegisterState extends State<Register> {
             onClick: (){
               onSubmit(context);
             },
+            isLoading: _isLoading,
           )
         ],
       ),
