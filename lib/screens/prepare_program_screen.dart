@@ -31,7 +31,7 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
           setState(() {
             timer.cancel();
           });
-          //Navigator.pushNamed(context, MainScreen.id);
+          Navigator.pushNamed(context, MainScreen.id);
         }
         else if (_counter == 22){
           setState(() {
@@ -123,7 +123,7 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
                 ),
                 SizedBox(width: 10,),
                 Text(
-                  'نقوم بعمل تحليل لبيناتك' + '''           ''',
+                  'نقوم بعمل تحليل لبيناتك' + '''          ''',
                   style: TextStyle(
                       fontSize: 13,
                       fontFamily: 'CairoBold',

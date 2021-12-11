@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/plans_screen.dart';
+import 'package:informa/screens/settings_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
@@ -72,7 +73,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                     IconButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.pushNamed(context, SettingsScreen.id);
+                      },
                       icon: SvgPicture.asset(
                         'assets/icons/settings.svg',
                         color: Colors.grey,

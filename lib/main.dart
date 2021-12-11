@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -29,10 +28,10 @@ import 'package:informa/screens/prepare_program_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
 import 'package:informa/screens/register_screens.dart';
 import 'package:informa/screens/reset_password_screen.dart';
+import 'package:informa/screens/settings_screen.dart';
 import 'package:informa/screens/single_workout_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
-
 import 'constants.dart';
 import 'helpers/shared_preference.dart';
 
@@ -83,7 +82,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: RegisterScreens(),
+      home: SettingsScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -97,6 +96,7 @@ class MyApp extends StatelessWidget {
         PlansScreen.id: (context) => PlansScreen(),
         PrepareProgramScreen.id: (context) => PrepareProgramScreen(),
         MoreUserInfoScreen.id: (context) => MoreUserInfoScreen(),
+        SettingsScreen.id: (context) => SettingsScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [
