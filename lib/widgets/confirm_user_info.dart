@@ -30,9 +30,11 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
           SnackBar(content: Text('حدث خطأ'))
       );
     });
-    setState(() { _isLoading = false; });
-    if(done)
+    if(done) {
+      await activeUser.saveInSharedPreference();
+      setState(() { _isLoading = false; });
       Navigator.pushNamed(context, PrepareProgramScreen.id);
+    }
   }
 
   @override

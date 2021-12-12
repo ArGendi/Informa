@@ -10,4 +10,9 @@ class AppLanguageProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  initializeLang(){
+    _lang = 'ar';
+    notifyListeners();
+  }
+
 }

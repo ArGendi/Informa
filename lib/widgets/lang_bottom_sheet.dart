@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
@@ -132,7 +133,8 @@ class _LangBottomSheetState extends State<LangBottomSheet> {
           padding: const EdgeInsets.all(10.0),
           child: CustomButton(
             text: 'حفظ الأعدادات',
-            onClick: (){
+            onClick: () async{
+              await HelpFunction.saveUserLanguage(_lang);
               Provider.of<AppLanguageProvider>(context, listen: false).
                   changeLang(_lang);
               Navigator.pop(context);

@@ -5,21 +5,18 @@ class ActiveUserProvider extends ChangeNotifier{
   AppUser? _user;
 
   ActiveUserProvider(){
-    _user = new AppUser(
-      // name: 'Abdelrahman',
-      // email: 'new',
-      // premium: true,
-      // weight: 80,
-      // tall: 170,
-      // fatsPercent: 0,
-      // age: 30,
-    );
+    _user = new AppUser();
   }
 
   AppUser? get user => _user;
 
   setUser(AppUser user){
     _user = user;
+    notifyListeners();
+  }
+
+  initializeUser(){
+    _user = new AppUser();
     notifyListeners();
   }
 

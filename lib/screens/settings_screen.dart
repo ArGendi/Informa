@@ -1,12 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/user.dart';
+import 'package:informa/models/water.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
+import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/widgets/lang_bottom_sheet.dart';
 import 'package:informa/widgets/setting_card.dart';
+import 'package:informa/widgets/water_settings_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import 'main_register_screen.dart';
@@ -35,9 +39,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  showWaterSettingsBottomSheet(Water water){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      builder: (BuildContext context) {
+        return WaterSettingsBottomSheet(
+          water: water,
+        );
+      },
+    );
+  }
+
   logout(BuildContext context) async{
     print(FirebaseAuth.instance.currentUser!.email);
+    await HelpFunction.saveInitScreen(MainRegisterScreen.id);
     await FirebaseAuth.instance.signOut();
+    Provider.of<ActiveUserProvider>(context, listen: false).initializeUser();
+    Provider.of<AppLanguageProvider>(context, listen: false).initializeLang();
     Navigator.of(context)
         .pushNamedAndRemoveUntil(MainRegisterScreen.id, (Route<dynamic> route) => false);
   }
@@ -52,6 +74,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
     var lang = Provider.of<AppLanguageProvider>(context).lang;
+    var water = Provider.of<WaterProvider>(context).water;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -91,7 +114,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     SettingCard(
                       icon: Icons.water,
                       text: 'أعدادات الماء',
-                      onClick: (){},
+                      onClick: (){
+                        showWaterSettingsBottomSheet(water);
+                      }
                     ),
                     Divider(
                       height: 20,

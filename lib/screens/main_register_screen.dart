@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
@@ -42,9 +43,11 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
           print('error getting data from fireStore');
           setState(() {isFacebookLoading = false;});
         });
+        await user!.saveInSharedPreference();
+        await HelpFunction.saveInitScreen(MainScreen.id);
         setState(() {isFacebookLoading = false;});
         print(user);
-        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user!);
+        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
         Navigator.pushNamed(context, MainScreen.id);
       }
       else {
@@ -81,8 +84,10 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
           print('error getting data from fireStore');
         });
         print(user);
+        await user!.saveInSharedPreference();
+        await HelpFunction.saveInitScreen(MainScreen.id);
         setState(() {isGoogleLoading = false;});
-        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user!);
+        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
         Navigator.pushNamed(context, MainScreen.id);
       }
       else {

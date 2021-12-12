@@ -1,3 +1,5 @@
+import 'package:informa/helpers/shared_preference.dart';
+
 class AppUser {
   String? id;
   String? name;
@@ -80,6 +82,52 @@ class AppUser {
       'iTrainingDays': iTrainingDays,
       'trainingDays': trainingDays,
     };
+  }
+
+  Future saveInSharedPreference() async{
+    await HelpFunction.saveUserName(name!);
+    await HelpFunction.saveUserEmail(email!);
+    await HelpFunction.saveUserPhone(phone!);
+    await HelpFunction.saveUserPremium(premium);
+    await HelpFunction.saveUserGender(gender);
+    await HelpFunction.saveUserProgram(program);
+    await HelpFunction.saveUserGoal(goal);
+    await HelpFunction.saveUserWorkoutPlace(workoutPlace);
+    await HelpFunction.saveUserPoints(points);
+    await HelpFunction.saveUserWeight(weight);
+    await HelpFunction.saveUserGoalWeight(goalWeight);
+    await HelpFunction.saveUserTall(tall);
+    await HelpFunction.saveUserFatsPercent(fatsPercent);
+    await HelpFunction.saveUserAge(age);
+    await HelpFunction.saveUserFitnessLevel(fitnessLevel);
+    await HelpFunction.saveUserTrainingPeriodLevel(trainingPeriodLevel);
+    await HelpFunction.saveUserITrainingDays(iTrainingDays);
+    await HelpFunction.saveUserAchievements(achievements);
+    await HelpFunction.saveUserTrainingTools(trainingTools);
+    await HelpFunction.saveUserTrainingDays(trainingDays);
+  }
+
+  Future getFromSharedPreference() async{
+    name = await HelpFunction.getUserName();
+    email = await HelpFunction.getUserEmail();
+    phone = await HelpFunction.getUserPhone();
+    premium = (await HelpFunction.getUserPremium())!;
+    gender = (await HelpFunction.getUserGender())!;
+    program = (await HelpFunction.getUserProgram())!;
+    goal = (await HelpFunction.getUserGoal())!;
+    workoutPlace = (await HelpFunction.getUserWorkoutPlace())!;
+    points = (await HelpFunction.getUserPoints())!;
+    weight = (await HelpFunction.getUserWeight())!;
+    goalWeight = (await HelpFunction.getUserGoalWeight())!;
+    tall = (await HelpFunction.getUserTall())!;
+    fatsPercent = (await HelpFunction.getUserFatsPercent())!;
+    age = (await HelpFunction.getUserAge())!;
+    fitnessLevel = (await HelpFunction.getUserFitnessLevel())!;
+    trainingPeriodLevel = (await HelpFunction.getUserTrainingPeriodLevel())!;
+    iTrainingDays = (await HelpFunction.getUserITrainingDays())!;
+    achievements = (await HelpFunction.getUserAchievements())!;
+    trainingTools = (await HelpFunction.getUserTrainingTools())!;
+    trainingDays = (await HelpFunction.getUserTrainingDays())!;
   }
 
 }

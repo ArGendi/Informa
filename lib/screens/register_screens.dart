@@ -10,6 +10,7 @@ import 'package:informa/widgets/select_program.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreens extends StatefulWidget {
+  static String id = 'register screens';
   const RegisterScreens({Key? key}) : super(key: key);
 
   @override

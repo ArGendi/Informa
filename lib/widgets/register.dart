@@ -131,7 +131,6 @@ class _RegisterState extends State<Register> {
           AppUser user =  Provider.of<ActiveUserProvider>(context, listen: false).user!;
           await _firestoreService.saveNewAccount(user);
           setState(() { _isLoading = false; });
-          widget.onClick();
         }
         else{
           setState(() { _isLoading = false; });

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/services/auth_service.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _password;
   AuthServices _authServices = new AuthServices();
   bool? _isLoading = false;
+  FirestoreService _firestoreService = new FirestoreService();
 
   onSubmit(BuildContext context) async{
     FocusScope.of(context).unfocus();
@@ -38,9 +41,18 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() { _isLoading = true; });
-      String? response = await _authServices.signInWithEmailAndPassword(_email!.trim(), _password!);
-      if(response == 'Signed in')
-        Navigator.pushNamedAndRemoveUntil(context, MainScreen.id, (route) => false);
+      var cred = await _authServices.signInWithEmailAndPassword(_email!.trim(), _password!);
+      if(cred != null) {
+        AppUser? user = await _firestoreService.getUserById(cred.user!.uid).catchError((e){
+          print('error getting data from fireStore');
+          setState(() {_isLoading = false;});
+        });
+        await user!.saveInSharedPreference();
+        await HelpFunction.saveInitScreen(MainScreen.id);
+        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+        Navigator.pushNamedAndRemoveUntil(
+            context, MainScreen.id, (route) => false);
+      }
       else ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('غير صحيح'))
       );

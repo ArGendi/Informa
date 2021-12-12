@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -31,7 +32,8 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
           setState(() {
             timer.cancel();
           });
-          Navigator.pushNamed(context, MainScreen.id);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
         }
         else if (_counter == 22){
           setState(() {
@@ -66,13 +68,14 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
   }
 
   @override
-  void dispose() {
+  void dispose(){
     _timer!.cancel();
+    HelpFunction.saveInitScreen(MainScreen.id);
     super.dispose();
   }
 
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
     startTimer();

@@ -73,12 +73,12 @@ class AuthServices {
     }
   }
 
-  Future<String?> signInWithEmailAndPassword(String email, String password) async {
+  Future<UserCredential?> signInWithEmailAndPassword(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return "Signed in";
+      var cred = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return cred;
     } on FirebaseAuthException catch(e) {
-      return e.message;
+      return null;
     }
   }
 

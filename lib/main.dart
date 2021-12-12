@@ -10,6 +10,7 @@ import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
 import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
+import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/detailed_meal_screen.dart';
 import 'package:informa/screens/dummy.dart';
@@ -18,6 +19,7 @@ import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/free_workout_screen.dart';
 import 'package:informa/screens/home_screen.dart';
+import 'package:informa/screens/loading_screen.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
@@ -38,7 +40,6 @@ import 'helpers/shared_preference.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  String? lang = await HelpFunction.getUserLanguage();
   runApp(
     MultiProvider(
       providers: [
@@ -56,6 +57,8 @@ void main() async{
         ),
         ChangeNotifierProvider<KitchenProvider>(
           create: (context) => KitchenProvider(),
+        ),ChangeNotifierProvider<WaterProvider>(
+          create: (context) => WaterProvider(),
         ),
       ],
       child: MyApp()
@@ -97,6 +100,7 @@ class MyApp extends StatelessWidget {
         PrepareProgramScreen.id: (context) => PrepareProgramScreen(),
         MoreUserInfoScreen.id: (context) => MoreUserInfoScreen(),
         SettingsScreen.id: (context) => SettingsScreen(),
+        RegisterScreens.id: (context) => RegisterScreens(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [
