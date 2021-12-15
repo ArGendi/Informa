@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/water.dart';
 import 'package:informa/providers/water_provider.dart';
+import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/services/notification_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +25,56 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
   _WaterSettingsBottomSheetState(Water water){
     _isActivated = water.isActivated;
     _numberOfRemind = water.numberOfTimes;
+  }
+
+  onSubmit(BuildContext context) async{
+    Provider.of<WaterProvider>(context, listen: false).setStatus(_isActivated);
+    Provider.of<WaterProvider>(context, listen: false).setNumberOfTimes(_numberOfRemind);
+    await NotificationService.init(initScheduled: true);
+    listenNotification();
+    for(int i=0; i<_numberOfRemind; i++){
+      if(i == 0)
+        NotificationService.showRepeatScheduledNotification(
+          id: i,
+          title: 'أشرب الماء',
+          body: 'صباح الخير 😇, ابدأ يومك بكوب ماء',
+          payload: 'payload',
+          date: 10 + (i * 4),
+        );
+      else if(i == 1)
+        NotificationService.showRepeatScheduledNotification(
+          id: i,
+          title: 'أشرب الماء',
+          body: 'حبينا نفكرك بشرب المياة 💪🏻',
+          payload: 'payload',
+          date: 10 + (i * 4),
+        );
+      else if(i == 2)
+        NotificationService.showRepeatScheduledNotification(
+          id: i,
+          title: 'أشرب الماء',
+          body: 'أشرب مياة اكتر عشان تحسن جسمك 💪🏻',
+          payload: 'payload',
+          date: 10 + (i * 4),
+        );
+      else if(i == 3)
+        NotificationService.showRepeatScheduledNotification(
+          id: i,
+          title: 'أشرب الماء',
+          body: 'المياة قبل النوم مفيدة. تصبح علي خير 😇',
+          payload: 'payload',
+          date: 10 + (i * 4),
+        );
+    }
+    await HelpFunction.saveUserWaterIsActivated(_isActivated);
+    await HelpFunction.saveUserWaterNumberOfTimes(_numberOfRemind);
+    Navigator.pop(context);
+  }
+
+  void listenNotification() {
+    NotificationService.onNotifications.stream.listen((payload) {
+      Navigator.pushNamed(context, MainRegisterScreen.id);
+    });
   }
 
   @override
@@ -233,9 +286,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
           child: CustomButton(
             text: 'حفظ الأعدادات',
             onClick: () async{
-              Provider.of<WaterProvider>(context, listen: false).setStatus(_isActivated);
-              Provider.of<WaterProvider>(context, listen: false).setNumberOfTimes(_numberOfRemind);
-              Navigator.pop(context);
+              onSubmit(context);
             },
           ),
         )

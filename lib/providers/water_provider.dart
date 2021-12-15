@@ -21,4 +21,9 @@ class WaterProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setWater(Water water){
+    _water = water;
+    notifyListeners();
+  }
+
 }

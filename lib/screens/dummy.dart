@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/services/auth_service.dart';
+import 'package:informa/services/notification_service.dart';
 import 'package:informa/services/web_services.dart';
 
 import '../constants.dart';
@@ -36,101 +38,54 @@ class _DummyState extends State<Dummy> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    NotificationService.init(initScheduled: true);
+    listenNotification();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'أنفورما',
-                      style: TextStyle(
-                        fontFamily: 'CairoBold',
-                      ),
-                    ),
-                    Card(
-                      elevation: 0,
-                      color: primaryColor,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(
-                          'بريميم',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(width: 20,),
-                Text(
-                  'أنفورما',
-                  style: TextStyle(
-                    //fontFamily: 'CairoBold',
-                  ),
-                ),
-              ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MaterialButton(
+              onPressed: (){
+                print('clicked');
+                NotificationService.showNotification(
+                  title: 'Drink water',
+                  body: 'its time to drink water',
+                  payload: 'payload'
+                );
+              },
+              child: Text('Simple notification'),
             ),
-          ),
-          Container(
-            width: double.infinity,
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(width: 20,),
-                      CircleAvatar(
-                        radius: 13,
-                        backgroundColor: Colors.green[200],
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.green[600],
-                          size: 22,
-                        ),
-                      ),
-                      SizedBox(width: 75,),
-                      CircleAvatar(
-                        radius: 13,
-                        backgroundColor: Colors.red[200],
-                        child: Icon(
-                          Icons.clear,
-                          color: Colors.red[600],
-                          size: 22,
-                        ),
-                      ),
-                      SizedBox(width: 30,),
-                      Expanded(
-                        child: Text(
-                          'تسجيل ومتابعة اوزانك وتغييرات جسمك',
-                          style: TextStyle(
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(
-                    height: 30,
-                  )
-                ],
-              ),
+            MaterialButton(
+              onPressed: (){
+                print('clicked');
+                NotificationService.showScheduledNotification(
+                    title: 'Drink water',
+                    body: 'its time to drink water',
+                    payload: 'payload',
+                    scheduledDate: DateTime.now().add(Duration(seconds: 20)),
+                );
+              },
+              child: Text('Scheduled notification'),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  void listenNotification() {
+    NotificationService.onNotifications.stream.listen((payload) {
+      Navigator.pushNamed(context, MainRegisterScreen.id);
+    });
   }
 }
 

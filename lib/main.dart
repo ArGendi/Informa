@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: SettingsScreen(),
+      home: LoadingScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),

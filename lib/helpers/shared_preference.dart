@@ -23,6 +23,8 @@ class HelpFunction {
   static String sharedPreferenceUserAchievements = "achievements";
   static String sharedPreferenceUserTrainingTools = "trainingTools";
   static String sharedPreferenceUserTrainingDays = "trainingDays";
+  static String sharedPreferenceWaterIsActivated = "waterIsActivated";
+  static String sharedPreferenceWaterNumberOfTimes = "waterNumberOfTimes";
 
   static Future<bool> saveUserLanguage(String lang) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
@@ -269,6 +271,26 @@ class HelpFunction {
       iList.add(int.parse(item));
     }
     return iList;
+  }
+
+  static Future<bool> saveUserWaterIsActivated(bool value) async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return await preference.setBool(sharedPreferenceWaterIsActivated, value);
+  }
+
+  static Future<bool?> getUserWaterIsActivated() async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return preference.getBool(sharedPreferenceWaterIsActivated);
+  }
+
+  static Future<bool> saveUserWaterNumberOfTimes(int value) async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return await preference.setInt(sharedPreferenceWaterNumberOfTimes, value);
+  }
+
+  static Future<int?> getUserWaterNumberOfTimes() async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return preference.getInt(sharedPreferenceWaterNumberOfTimes);
   }
 
 }

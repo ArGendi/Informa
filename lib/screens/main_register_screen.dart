@@ -48,7 +48,8 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
         setState(() {isFacebookLoading = false;});
         print(user);
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-        Navigator.pushNamed(context, MainScreen.id);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
       }
       else {
         var profile = await _authServices!.fb.getUserProfile();
@@ -88,7 +89,8 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
         await HelpFunction.saveInitScreen(MainScreen.id);
         setState(() {isGoogleLoading = false;});
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-        Navigator.pushNamed(context, MainScreen.id);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
       }
       else {
         Provider.of<ActiveUserProvider>(context, listen: false).setId(

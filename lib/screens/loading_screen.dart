@@ -4,8 +4,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/user.dart';
+import 'package:informa/models/water.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
+import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/register_screens.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +38,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
       var currentUser = FirebaseAuth.instance.currentUser;
       if(currentUser != null){
         AppUser user = new AppUser();
-        user.getFromSharedPreference();
+        await user.getFromSharedPreference();
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+        Water water = new Water();
+        await water.getFromSharedPreference();
+        Provider.of<WaterProvider>(context, listen: false).setWater(water);
       }
       Navigator.pushReplacementNamed(context, initScreen);
     }

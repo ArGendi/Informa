@@ -106,7 +106,7 @@ class _SelectGenderState extends State<SelectGender> {
                         onTap: (){
                           Provider.of<ActiveUserProvider>(context, listen: false).setUser(
                             new AppUser(
-                              gender: 1,
+                              gender: 2,
                             ),
                           );
                         },

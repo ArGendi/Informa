@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/widgets/meal_info_box.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -117,7 +118,9 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.pushNamed(context, PlansScreen.id);
+                          },
                           child: Text(
                             'الترقية الي أنفورما بلس',
                             style: TextStyle(
@@ -170,7 +173,9 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
                 SizedBox(height: 20,),
                 MaterialButton(
                   elevation: 0,
-                  onPressed: (){},
+                  onPressed: (){
+                    Navigator.pushNamed(context, PlansScreen.id);
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)
                   ),
