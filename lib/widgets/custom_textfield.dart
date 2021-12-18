@@ -8,8 +8,9 @@ class CustomTextField extends StatefulWidget {
   final Function(String textInput) setValue;
   final Function(String value) validation;
   final bool anotherFilledColor;
+  final String? initialValue;
 
-  const CustomTextField({Key? key, required this.text, required this.obscureText, required this.textInputType, required this.setValue, required this.validation, this.anotherFilledColor = false}) : super(key: key);
+  const CustomTextField({Key? key, required this.text, required this.obscureText, required this.textInputType, required this.setValue, required this.validation, this.anotherFilledColor = false, this.initialValue}) : super(key: key);
 
   @override
   _CustomTextFieldState createState() =>
@@ -26,6 +27,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return TextFormField(
       cursorColor: Colors.grey.shade600,
       keyboardType: widget.textInputType,
+      initialValue: widget.initialValue,
       style: TextStyle(
         color: Colors.grey.shade600,
       ),

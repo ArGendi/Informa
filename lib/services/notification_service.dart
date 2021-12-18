@@ -73,9 +73,10 @@ class NotificationService{
     return NotificationDetails(
       android: AndroidNotificationDetails(
         'channel id',
-        'channel name',
+        'Informa',
         channelDescription: 'channel description',
-        importance: Importance.max
+        importance: Importance.max,
+        playSound: true
       ),
       iOS: IOSNotificationDetails(),
     );

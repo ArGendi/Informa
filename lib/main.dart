@@ -14,6 +14,7 @@ import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/detailed_meal_screen.dart';
 import 'package:informa/screens/dummy.dart';
+import 'package:informa/screens/edit_profile_screen.dart';
 import 'package:informa/screens/email_confirmation_screen.dart';
 import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
@@ -85,7 +86,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: LoadingScreen(),
+      home: EditProfileScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -101,6 +102,7 @@ class MyApp extends StatelessWidget {
         MoreUserInfoScreen.id: (context) => MoreUserInfoScreen(),
         SettingsScreen.id: (context) => SettingsScreen(),
         RegisterScreens.id: (context) => RegisterScreens(),
+        EditProfileScreen.id: (context) => EditProfileScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

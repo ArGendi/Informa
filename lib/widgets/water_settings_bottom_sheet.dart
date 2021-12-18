@@ -36,7 +36,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
       if(i == 0)
         NotificationService.showRepeatScheduledNotification(
           id: i,
-          title: 'أشرب الماء',
+          title: 'أشرب الماء 🥤',
           body: 'صباح الخير 😇, ابدأ يومك بكوب ماء',
           payload: 'payload',
           date: 10 + (i * 4),
@@ -44,7 +44,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
       else if(i == 1)
         NotificationService.showRepeatScheduledNotification(
           id: i,
-          title: 'أشرب الماء',
+          title: 'أشرب الماء 🥤',
           body: 'حبينا نفكرك بشرب المياة 💪🏻',
           payload: 'payload',
           date: 10 + (i * 4),
@@ -52,7 +52,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
       else if(i == 2)
         NotificationService.showRepeatScheduledNotification(
           id: i,
-          title: 'أشرب الماء',
+          title: 'أشرب الماء 🥤',
           body: 'أشرب مياة اكتر عشان تحسن جسمك 💪🏻',
           payload: 'payload',
           date: 10 + (i * 4),
@@ -60,7 +60,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
       else if(i == 3)
         NotificationService.showRepeatScheduledNotification(
           id: i,
-          title: 'أشرب الماء',
+          title: 'أشرب الماء 🥤',
           body: 'المياة قبل النوم مفيدة. تصبح علي خير 😇',
           payload: 'payload',
           date: 10 + (i * 4),
