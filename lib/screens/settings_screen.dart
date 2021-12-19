@@ -7,6 +7,7 @@ import 'package:informa/models/water.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/water_provider.dart';
+import 'package:informa/screens/edit_profile_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/widgets/lang_bottom_sheet.dart';
 import 'package:informa/widgets/setting_card.dart';
@@ -106,7 +107,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     SettingCard(
                       icon: Icons.person,
                       text: 'البيانات الشخصية',
-                      onClick: (){},
+                      onClick: (){
+                        Navigator.pushNamed(context, EditProfileScreen.id);
+                      },
                     ),
                     Divider(
                       height: 20,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
@@ -27,6 +28,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _gender = 'ذكر';
   String _email = '';
   String _password = '';
+  bool _isChangeHappen = false;
   bool _isNameChanged = false;
   bool _isAgeChanged = false;
   bool _isTallChanged = false;
@@ -36,19 +38,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   bool _isEmailChanged = false;
   bool _isPasswordChanged = false;
 
-  onSaveChanges(){
+  onSaveChanges(BuildContext context){
     FocusScope.of(context).unfocus();
     bool personalValid = _personalInfoKey.currentState!.validate();
     bool accountValid = _accountInfoKey.currentState!.validate();
     if(personalValid && accountValid){
       _personalInfoKey.currentState!.save();
       _accountInfoKey.currentState!.save();
-      print(_name);
+      print("--> " + _name);
+      print("--> " + _age);
+      print("--> " + _tall);
+      print("--> " + _weight);
+      print("--> " + _fatsPercent);
+      print("--> " + _gender);
+      print("--> " + _email);
+      //print("--> " + _name);
+      showConfirmationAlertDialog(context);
     }
-    FirebaseAuth.instance.currentUser!;
   }
 
-  checkChanges(BuildContext context) async{
+  Future checkChangesAndUpdateInFirebase(BuildContext context) async{
+    Map<String, dynamic> map = new Map();
     String? name = Provider.of<ActiveUserProvider>(context, listen: false)
         .user!.name;
     String? age = Provider.of<ActiveUserProvider>(context, listen: false)
@@ -59,16 +69,65 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         .user!.weight.toString();
     String? fatsPercent = Provider.of<ActiveUserProvider>(context, listen: false)
         .user!.fatsPercent.toString();
-    String? gender = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.gender.toString();
+    int? gender = Provider.of<ActiveUserProvider>(context, listen: false)
+        .user!.gender;
     String? email = Provider.of<ActiveUserProvider>(context, listen: false)
         .user!.email;
-    //String? password = '';
-    if(name != name){
+
+    int iGender = _gender == 'ذكر'? 1 : 2;
+
+    if(name != _name.trim()){
+      map['name'] = _name;
+      Provider.of<ActiveUserProvider>(context, listen: false).setName(_name);
+      HelpFunction.saveUserName(_name);
+      _isChangeHappen = true;
+    }
+    if(age != _age.trim()){
+      print('age: ' + _age.trim());
+      map['age'] = int.parse(_age.trim());
+      Provider.of<ActiveUserProvider>(context, listen: false).setAge(int.parse(_age.trim()));
+      HelpFunction.saveUserAge(int.parse(_age.trim()));
+      _isChangeHappen = true;
+    }
+    if(tall != _tall.trim()){
+      map['tall'] = int.parse(_tall.trim());
+      Provider.of<ActiveUserProvider>(context, listen: false).setTall(int.parse(_tall.trim()));
+      HelpFunction.saveUserTall(int.parse(_tall.trim()));
+      _isChangeHappen = true;
+    }
+    if(weight != _weight.trim()){
+      map['weight'] = int.parse(_weight.trim());
+      Provider.of<ActiveUserProvider>(context, listen: false).setWeight(int.parse(_weight.trim()));
+      HelpFunction.saveUserWeight(int.parse(_weight.trim()));
+      _isChangeHappen = true;
+    }
+    if(fatsPercent != _fatsPercent.trim()){
+      map['fatsPercent'] = int.parse(_fatsPercent.trim());
+      Provider.of<ActiveUserProvider>(context, listen: false).setFatPercent(int.parse(_fatsPercent.trim()));
+      HelpFunction.saveUserFatsPercent(int.parse(_fatsPercent.trim()));
+      _isChangeHappen = true;
+    }
+    if(gender != iGender){
+      map['gender'] = iGender;
+      Provider.of<ActiveUserProvider>(context, listen: false).setGender(iGender);
+      HelpFunction.saveUserGender(iGender);
+      _isChangeHappen = true;
+    }
+    if(email != _email.trim()){
+      map['email'] = _email.trim();
+      Provider.of<ActiveUserProvider>(context, listen: false).setEmail(_email.trim());
+      HelpFunction.saveUserEmail(_email.trim());
+      await FirebaseAuth.instance.currentUser!.updateEmail(_email.trim());
+      _isChangeHappen = true;
+    }
+    if(_password.isNotEmpty){
+      await FirebaseAuth.instance.currentUser!.updatePassword(_password);
+    }
+    if(_isChangeHappen){
       var id = FirebaseAuth.instance.currentUser!.uid;
       await FirebaseFirestore.instance.collection('users')
           .doc(id)
-          .update({'name': _name})
+          .update(map)
           .catchError((e){
         print(e);
       });
@@ -91,7 +150,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () async{
+              await checkChangesAndUpdateInFirebase(context);
+              Navigator.pop(context);
+            },
             child: const Text(
               'تأكيد',
               style: TextStyle(
@@ -308,7 +370,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       SizedBox(height: 15,),
                       CustomTextField(
-                        text: 'كلمة السر',
+                        text: 'تغيير كلمة السر',
                         obscureText: true,
                         textInputType: TextInputType.text,
                         setValue: (value){
@@ -330,8 +392,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             CustomButton(
               text: 'حفظ الأعدادات',
               onClick: (){
-                //onSaveChanges();
-                showConfirmationAlertDialog(context);
+                onSaveChanges(context);
               },
             )
           ],
