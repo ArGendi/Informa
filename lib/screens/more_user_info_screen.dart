@@ -60,34 +60,42 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
           ),
         ) : Container(),
       ),
-      body: PageView(
-        physics:new NeverScrollableScrollPhysics(),
-        controller: _controller,
-        children: [
-          Register(
-            onClick: goToNextPage,
-          ),
-          SelectAgeTallWeight(
-            onClick: goToNextPage,
-          ),
-          SelectLevel(
-            onClick: goToNextPage,
-          ),
-          SelectFatPercent(
-            onClick: goToNextPage,
-          ),
-          SelectTrainingPeriod(
-            onClick: goToNextPage,
-          ),
-          if(activeUser!.workoutPlace != 2)
-            SelectTools(
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: PageView(
+          physics:new NeverScrollableScrollPhysics(),
+          controller: _controller,
+          children: [
+            Register(
               onClick: goToNextPage,
             ),
-          SelectTrainingDays(
-            onClick: goToNextPage,
-          ),
-          ConfirmUserInfo(),
-        ],
+            SelectAgeTallWeight(
+              onClick: goToNextPage,
+            ),
+            SelectLevel(
+              onClick: goToNextPage,
+            ),
+            SelectFatPercent(
+              onClick: goToNextPage,
+            ),
+            SelectTrainingPeriod(
+              onClick: goToNextPage,
+            ),
+            if(activeUser!.workoutPlace != 2)
+              SelectTools(
+                onClick: goToNextPage,
+              ),
+            SelectTrainingDays(
+              onClick: goToNextPage,
+            ),
+            ConfirmUserInfo(),
+          ],
+        ),
       ),
     );
   }

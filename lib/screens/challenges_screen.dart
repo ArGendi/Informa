@@ -1,40 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/providers/challenges_provider.dart';
+import 'package:informa/widgets/challenge_card.dart';
 import 'package:informa/widgets/countdown_card.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
 class ChallengesScreen extends StatefulWidget {
-  final Challenge challenge;
-
-  const ChallengesScreen({Key? key, required this.challenge}) : super(key: key);
+  static String id = 'challenges';
+  const ChallengesScreen({Key? key}) : super(key: key);
 
   @override
   _ChallengesScreenState createState() => _ChallengesScreenState();
 }
 
 class _ChallengesScreenState extends State<ChallengesScreen> {
-  var _formKey = GlobalKey<FormState>();
-  String _videoUrl = '';
-  String _btnText = 'أرسل';
-
-  onSubmit(){
-    FocusScope.of(context).unfocus();
-    bool valid = _formKey.currentState!.validate();
-    if(valid){
-      _formKey.currentState!.save();
-      print(_videoUrl);
-      setState(() {
-        _btnText = 'تم';
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    var challenges = Provider.of<ChallengesProvider>(context).challenges;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -50,80 +37,46 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: ListView(
-          children: [
-            Card(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      widget.challenge.name!,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'CairoBold',
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'متبقي علي نهاية التحدي',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.orange
-                          ),
-                        ),
-                        SizedBox(width: 5,),
-                        CountdownCard(
-                          deadline: widget.challenge.deadline!,
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    Container(
-                      width: double.infinity,
-                      height: 200,
-                      color: Colors.grey[400],
-                    ),
-                    SizedBox(height: 10,),
-                    Form(
-                      key: _formKey,
-                      child: CustomTextField(
-                        text: 'رابط الفيديو',
-                        obscureText: false,
-                        textInputType: TextInputType.text,
-                        anotherFilledColor: true,
-                        setValue: (value){
-                          _videoUrl = value;
-                        },
-                        validation: (value){
-                          if (value.isEmpty) return 'أدخل رابط الفيديو';
-                          return null;
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 20,),
-                    Text(
-                      'تأكد من صلاحية الرابط قبل أرسال التحدي حتي يتم تقيمك بصورة صحيحة',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey[600]
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-                    CustomButton(
-                      text: _btnText,
-                      onClick: onSubmit,
-                    )
-                  ],
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: challenges.isNotEmpty ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: challenges.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Column(
+                children: [
+                  ChallengeCard(challenge: challenges[index]),
+                  SizedBox(height: 15,),
+                ],
+              );
+            },
+          ) : Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'لا يوجد تحديات الأن',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'CairoBold'
+                  ),
                 ),
-              ),
+                Text(
+                  'انتظر تحديات أنفورما للفوز بالهدايا 🎁',
+                  style: TextStyle(
+                    fontSize: 13,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

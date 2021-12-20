@@ -56,25 +56,33 @@ class _RegisterScreensState extends State<RegisterScreens> {
           ),
         ) : Container(),
       ),
-      body: PageView(
-        physics:new NeverScrollableScrollPhysics(),
-        controller: _controller,
-        children: [
-          SelectGender(
-            onClick: goToNextPage,
-          ),
-          SelectProgram(
-            onClick: goToNextPage,
-          ),
-          SelectGoal(
-            onClick: goToNextPage,
-          ),
-          SelectPlace(
-            onClick: (){
-              Navigator.pushNamed(context, MainRegisterScreen.id);
-            },
-          )
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: PageView(
+          physics:new NeverScrollableScrollPhysics(),
+          controller: _controller,
+          children: [
+            SelectGender(
+              onClick: goToNextPage,
+            ),
+            SelectProgram(
+              onClick: goToNextPage,
+            ),
+            SelectGoal(
+              onClick: goToNextPage,
+            ),
+            SelectPlace(
+              onClick: (){
+                Navigator.pushNamed(context, MainRegisterScreen.id);
+              },
+            )
+          ],
+        ),
       ),
     );
   }

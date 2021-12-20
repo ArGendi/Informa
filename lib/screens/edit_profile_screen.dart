@@ -188,214 +188,222 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         title: Text('البيانات الشخصية'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: ListView(
-          children: [
-            Text(
-              'المعلومات الشخصية',
-              style: TextStyle(
-                fontFamily: 'CairoBold',
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              width: screenSize.width,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Form(
-                  key: _personalInfoKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: 5,),
-                      CustomTextField(
-                        text: 'الأسم',
-                        obscureText: false,
-                        textInputType: TextInputType.text,
-                        setValue: (value){
-                          _name = value;
-                        },
-                        validation: (value){
-                          if(value.isEmpty) return 'ادخل اسمك';
-                          return null;
-                        },
-                        anotherFilledColor: true,
-                        initialValue: activeUser.user!.name,
-                      ),
-                      SizedBox(height: 15,),
-                      CustomTextField(
-                        text: 'العمر',
-                        obscureText: false,
-                        textInputType: TextInputType.number,
-                        setValue: (value){
-                          _age = value;
-                        },
-                        validation: (value){
-                          if(value.isEmpty) return 'ادخل عمرك';
-                          return null;
-                        },
-                        anotherFilledColor: true,
-                        initialValue: activeUser.user!.age.toString(),
-                      ),
-                      SizedBox(height: 15,),
-                      CustomTextField(
-                        text: 'الطول',
-                        obscureText: false,
-                        textInputType: TextInputType.number,
-                        setValue: (value){
-                          _tall = value;
-                        },
-                        validation: (value){
-                          if(value.isEmpty) return 'ادخل طولك';
-                          return null;
-                        },
-                        anotherFilledColor: true,
-                        initialValue: activeUser.user!.tall.toString(),
-                      ),
-                      SizedBox(height: 15,),
-                      CustomTextField(
-                        text: 'الوزن',
-                        obscureText: false,
-                        textInputType: TextInputType.number,
-                        setValue: (value){
-                          _weight = value;
-                        },
-                        validation: (value){
-                          if(value.isEmpty) return 'ادخل وزنك';
-                          return null;
-                        },
-                        anotherFilledColor: true,
-                        initialValue: activeUser.user!.weight.toString(),
-                      ),
-                      SizedBox(height: 15,),
-                      CustomTextField(
-                        text: 'نسبة الدهون',
-                        obscureText: false,
-                        textInputType: TextInputType.number,
-                        setValue: (value){
-                          _fatsPercent = value;
-                        },
-                        validation: (value){
-                          if(value.isEmpty) return 'ادخل نسبة الدهون';
-                          return null;
-                        },
-                        anotherFilledColor: true,
-                        initialValue: activeUser.user!.fatsPercent.toString(),
-                      ),
-                      SizedBox(height: 15,),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                          border: Border.all(
-                            color: Colors.grey.shade300,
-                            //width: 2.0,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: _gender,
-                            elevation: 10,
-                            style: const TextStyle(
-                              fontSize: 17,
-                              color: Colors.black
-                            ),
-                            underline: Container(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _gender = newValue!;
-                              });
-                            },
-                            items: <String>['ذكر', 'أنثى']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 5,),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20,),
-            Text(
-              'بيانات الحساب',
-              style: TextStyle(
-                fontFamily: 'CairoBold',
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              width: screenSize.width,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Form(
-                  key: _accountInfoKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: 5,),
-                      CustomTextField(
-                        text: 'البريد الألكتروني',
-                        obscureText: false,
-                        textInputType: TextInputType.emailAddress,
-                        setValue: (value){
-                          _email = value;
-                        },
-                        validation: (value){
-                          if(value.isEmpty) return 'ادخل البريد الألكتروني';
-                          if (!value.contains('@') || !value.contains('.'))
-                            return 'بريد الكتروني خاطىء';
-                          return null;
-                        },
-                        anotherFilledColor: true,
-                        initialValue: activeUser.user!.email,
-                      ),
-                      SizedBox(height: 15,),
-                      CustomTextField(
-                        text: 'تغيير كلمة السر',
-                        obscureText: true,
-                        textInputType: TextInputType.text,
-                        setValue: (value){
-                          _password = value;
-                        },
-                        validation: (value){
-                          if(value.isNotEmpty && value.length < 6) return 'كلمة سر ضعيفة';
-                          return null;
-                        },
-                        anotherFilledColor: true,
-                      ),
-                      SizedBox(height: 5,),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 20,),
-            CustomButton(
-              text: 'حفظ الأعدادات',
-              onClick: (){
-                onSaveChanges(context);
-              },
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
             )
-          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: ListView(
+            children: [
+              Text(
+                'المعلومات الشخصية',
+                style: TextStyle(
+                  fontFamily: 'CairoBold',
+                ),
+              ),
+              SizedBox(height: 10,),
+              Container(
+                width: screenSize.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Form(
+                    key: _personalInfoKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 5,),
+                        CustomTextField(
+                          text: 'الأسم',
+                          obscureText: false,
+                          textInputType: TextInputType.text,
+                          setValue: (value){
+                            _name = value;
+                          },
+                          validation: (value){
+                            if(value.isEmpty) return 'ادخل اسمك';
+                            return null;
+                          },
+                          anotherFilledColor: true,
+                          initialValue: activeUser.user!.name,
+                        ),
+                        SizedBox(height: 15,),
+                        CustomTextField(
+                          text: 'العمر',
+                          obscureText: false,
+                          textInputType: TextInputType.number,
+                          setValue: (value){
+                            _age = value;
+                          },
+                          validation: (value){
+                            if(value.isEmpty) return 'ادخل عمرك';
+                            return null;
+                          },
+                          anotherFilledColor: true,
+                          initialValue: activeUser.user!.age.toString(),
+                        ),
+                        SizedBox(height: 15,),
+                        CustomTextField(
+                          text: 'الطول',
+                          obscureText: false,
+                          textInputType: TextInputType.number,
+                          setValue: (value){
+                            _tall = value;
+                          },
+                          validation: (value){
+                            if(value.isEmpty) return 'ادخل طولك';
+                            return null;
+                          },
+                          anotherFilledColor: true,
+                          initialValue: activeUser.user!.tall.toString(),
+                        ),
+                        SizedBox(height: 15,),
+                        CustomTextField(
+                          text: 'الوزن',
+                          obscureText: false,
+                          textInputType: TextInputType.number,
+                          setValue: (value){
+                            _weight = value;
+                          },
+                          validation: (value){
+                            if(value.isEmpty) return 'ادخل وزنك';
+                            return null;
+                          },
+                          anotherFilledColor: true,
+                          initialValue: activeUser.user!.weight.toString(),
+                        ),
+                        SizedBox(height: 15,),
+                        CustomTextField(
+                          text: 'نسبة الدهون',
+                          obscureText: false,
+                          textInputType: TextInputType.number,
+                          setValue: (value){
+                            _fatsPercent = value;
+                          },
+                          validation: (value){
+                            if(value.isEmpty) return 'ادخل نسبة الدهون';
+                            return null;
+                          },
+                          anotherFilledColor: true,
+                          initialValue: activeUser.user!.fatsPercent.toString(),
+                        ),
+                        SizedBox(height: 15,),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            border: Border.all(
+                              color: Colors.grey.shade300,
+                              //width: 2.0,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              value: _gender,
+                              elevation: 10,
+                              style: const TextStyle(
+                                fontSize: 17,
+                                color: Colors.black
+                              ),
+                              underline: Container(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _gender = newValue!;
+                                });
+                              },
+                              items: <String>['ذكر', 'أنثى']
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+              Text(
+                'بيانات الحساب',
+                style: TextStyle(
+                  fontFamily: 'CairoBold',
+                ),
+              ),
+              SizedBox(height: 10,),
+              Container(
+                width: screenSize.width,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Form(
+                    key: _accountInfoKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 5,),
+                        CustomTextField(
+                          text: 'البريد الألكتروني',
+                          obscureText: false,
+                          textInputType: TextInputType.emailAddress,
+                          setValue: (value){
+                            _email = value;
+                          },
+                          validation: (value){
+                            if(value.isEmpty) return 'ادخل البريد الألكتروني';
+                            if (!value.contains('@') || !value.contains('.'))
+                              return 'بريد الكتروني خاطىء';
+                            return null;
+                          },
+                          anotherFilledColor: true,
+                          initialValue: activeUser.user!.email,
+                        ),
+                        SizedBox(height: 15,),
+                        CustomTextField(
+                          text: 'تغيير كلمة السر',
+                          obscureText: true,
+                          textInputType: TextInputType.text,
+                          setValue: (value){
+                            _password = value;
+                          },
+                          validation: (value){
+                            if(value.isNotEmpty && value.length < 6) return 'كلمة سر ضعيفة';
+                            return null;
+                          },
+                          anotherFilledColor: true,
+                        ),
+                        SizedBox(height: 5,),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+              CustomButton(
+                text: 'حفظ الأعدادات',
+                onClick: (){
+                  onSaveChanges(context);
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

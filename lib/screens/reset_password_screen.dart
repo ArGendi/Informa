@@ -37,68 +37,76 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/shield.png',
-                      width: 140,
-                    ),
-                    SizedBox(height: 25,),
-                    Text(
-                      'أدخل كلمة مرور جديدة',
-                      style: TextStyle(
-                        fontSize: 24,
-                        //height: 0.3
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/shield.png',
+                        width: 140,
                       ),
-                    ),
-                    Text(
-                      'قم بأدخال كلمة مرور قوية من رموز واحرف كبيرة وصغيرة تتذكرها بسهولة في المستقبل',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 13,
+                      SizedBox(height: 25,),
+                      Text(
+                        'أدخل كلمة مرور جديدة',
+                        style: TextStyle(
+                          fontSize: 24,
+                          //height: 0.3
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20,),
-                    CustomTextField(
-                      text: 'كلمة المرور',
-                      obscureText: true,
-                      textInputType: TextInputType.text,
-                      setValue: (String value){
-                        _password = value;
-                      },
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل كلمة المرور';
-                        if (value.length < 6) return 'كلمة المرور قصيرة';
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 15,),
-                    CustomTextField(
-                      text: 'تأكيد كلمة المرور',
-                      obscureText: true,
-                      textInputType: TextInputType.text,
-                      setValue: (String value){},
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل كلمة المرور';
-                        if (value.length < 6) return 'كلمة المرور قصيرة';
-                        if(value != _password) return 'كلمة المرور غير متطابقه';
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 15,),
-                    CustomButton(
-                      text: 'تحديث كلمة المرور',
-                      onClick: onSubmit,
-                    ),
-                  ],
+                      Text(
+                        'قم بأدخال كلمة مرور قوية من رموز واحرف كبيرة وصغيرة تتذكرها بسهولة في المستقبل',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 13,
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      CustomTextField(
+                        text: 'كلمة المرور',
+                        obscureText: true,
+                        textInputType: TextInputType.text,
+                        setValue: (String value){
+                          _password = value;
+                        },
+                        validation: (value){
+                          if (value.isEmpty) return 'أدخل كلمة المرور';
+                          if (value.length < 6) return 'كلمة المرور قصيرة';
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 15,),
+                      CustomTextField(
+                        text: 'تأكيد كلمة المرور',
+                        obscureText: true,
+                        textInputType: TextInputType.text,
+                        setValue: (String value){},
+                        validation: (value){
+                          if (value.isEmpty) return 'أدخل كلمة المرور';
+                          if (value.length < 6) return 'كلمة المرور قصيرة';
+                          if(value != _password) return 'كلمة المرور غير متطابقه';
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 15,),
+                      CustomButton(
+                        text: 'تحديث كلمة المرور',
+                        onClick: onSubmit,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

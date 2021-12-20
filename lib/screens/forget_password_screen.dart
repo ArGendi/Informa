@@ -58,59 +58,67 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/lock.png',
-                      width: 140,
-                    ),
-                    SizedBox(height: 15,),
-                    Text(
-                      'نسيت كلمة المرور',
-                      style: TextStyle(
-                          fontSize: 24,
-                          //height: 0.3
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/lock.png',
+                        width: 140,
                       ),
-                    ),
-                    Text(
-                      'أدخل البريد الألكتروني المسجل وسنرسل لك رمز تأكيد لأعادة تعيين كلمة السر',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 13,
+                      SizedBox(height: 15,),
+                      Text(
+                        'نسيت كلمة المرور',
+                        style: TextStyle(
+                            fontSize: 24,
+                            //height: 0.3
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20,),
-                    CustomTextField(
-                      text: 'البريد الألكتروني',
-                      obscureText: false,
-                      textInputType: TextInputType.emailAddress,
-                      setValue: (String value){
-                        _email = value;
-                      },
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل البريد الألكتروني';
-                        if (!value.contains('@') || !value.contains('.'))
-                          return 'بريد الكتروني خاطىء';
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 15,),
-                    CustomButton(
-                      text: 'أرسل رمز التأكيد',
-                      isLoading: _isLoading,
-                      onClick: (){
-                        onSubmit();
-                      },
-                    ),
-                  ],
+                      Text(
+                        'أدخل البريد الألكتروني المسجل وسنرسل لك رمز تأكيد لأعادة تعيين كلمة السر',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 13,
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+                      CustomTextField(
+                        text: 'البريد الألكتروني',
+                        obscureText: false,
+                        textInputType: TextInputType.emailAddress,
+                        setValue: (String value){
+                          _email = value;
+                        },
+                        validation: (value){
+                          if (value.isEmpty) return 'أدخل البريد الألكتروني';
+                          if (!value.contains('@') || !value.contains('.'))
+                            return 'بريد الكتروني خاطىء';
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 15,),
+                      CustomButton(
+                        text: 'أرسل رمز التأكيد',
+                        isLoading: _isLoading,
+                        onClick: (){
+                          onSubmit();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

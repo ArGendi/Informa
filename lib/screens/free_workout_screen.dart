@@ -30,63 +30,71 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          Image.asset(
-            'assets/images/Hands-Clapping-Chaulk-Kettlebell.jpg',
-            width: double.infinity,
-            height: 200,
-            fit: BoxFit.cover,
-          ),
-          //SizedBox(height: 10,),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'تمارين صدر',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'CairoBold'
-                      ),
-                    ),
-                    Text(
-                      '(3) تمرين',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10,),
-                WorkoutBanner(
-                  workout: new Workout(
-                    name: 'تمرين جديد',
-                    level: 2,
-                  ),
-                ),
-                SizedBox(height: 10,),
-                WorkoutBanner(
-                  workout: new Workout(
-                    name: 'تمرين جديد',
-                    level: 3,
-                  ),
-                ),
-                SizedBox(height: 10,),
-                WorkoutBanner(
-                  workout: new Workout(
-                    name: 'تمرين جديد',
-                    level: 1,
-                  ),
-                ),
-              ],
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: ListView(
+          children: [
+            Image.asset(
+              'assets/images/Hands-Clapping-Chaulk-Kettlebell.jpg',
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
             ),
-          ),
-        ],
+            //SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'تمارين صدر',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'CairoBold'
+                        ),
+                      ),
+                      Text(
+                        '(3) تمرين',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  WorkoutBanner(
+                    workout: new Workout(
+                      name: 'تمرين جديد',
+                      level: 2,
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  WorkoutBanner(
+                    workout: new Workout(
+                      name: 'تمرين جديد',
+                      level: 3,
+                    ),
+                  ),
+                  SizedBox(height: 10,),
+                  WorkoutBanner(
+                    workout: new Workout(
+                      name: 'تمرين جديد',
+                      level: 1,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -7,6 +7,7 @@ import 'package:informa/models/challenge.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
+import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
 import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
@@ -37,6 +38,7 @@ import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'helpers/shared_preference.dart';
+import 'loading_screens/challenges_loading_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,8 +60,12 @@ void main() async{
         ),
         ChangeNotifierProvider<KitchenProvider>(
           create: (context) => KitchenProvider(),
-        ),ChangeNotifierProvider<WaterProvider>(
+        ),
+        ChangeNotifierProvider<WaterProvider>(
           create: (context) => WaterProvider(),
+        ),
+        ChangeNotifierProvider<ChallengesProvider>(
+          create: (context) => ChallengesProvider(),
         ),
       ],
       child: MyApp()
@@ -103,6 +109,8 @@ class MyApp extends StatelessWidget {
         SettingsScreen.id: (context) => SettingsScreen(),
         RegisterScreens.id: (context) => RegisterScreens(),
         EditProfileScreen.id: (context) => EditProfileScreen(),
+        ChallengesScreen.id: (context) => ChallengesScreen(),
+        ChallengesLoadingScreen.id: (context) => ChallengesLoadingScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

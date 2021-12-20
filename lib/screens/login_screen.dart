@@ -65,105 +65,113 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/logo1.png',
-                    ),
-                    Text(
-                      'تسجيل الدخول',
-                      style: TextStyle(
-                          fontSize: 22,
-                          height: 0.3,
-                        fontFamily: 'CairoBold'
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/logo1.png',
                       ),
-                    ),
-                    SizedBox(height: 40,),
-                    CustomTextField(
-                      text: 'البريد الألكتروني',
-                      obscureText: false,
-                      textInputType: TextInputType.emailAddress,
-                      setValue: (String value){
-                        _email = value;
-                      },
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل البريد الألكتروني';
-                        if (!value.contains('@') || !value.contains('.'))
-                          return 'بريد الكتروني خاطىء';
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 15,),
-                    CustomTextField(
-                      text: 'كلمة المرور',
-                      obscureText: true,
-                      textInputType: TextInputType.text,
-                      setValue: (String value){
-                        _password = value;
-                      },
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل كلمة المرور';
-                        if (value.length < 6) return 'كلمة المرور قصيرة';
-                        return null;
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: (){
-                            Navigator.pushNamed(context, ForgetPasswordScreen.id);
-                          },
-                          child: Text(
-                            'نسيت كلمة المرور؟',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: primaryColor,
+                      Text(
+                        'تسجيل الدخول',
+                        style: TextStyle(
+                            fontSize: 22,
+                            height: 0.3,
+                          fontFamily: 'CairoBold'
+                        ),
+                      ),
+                      SizedBox(height: 40,),
+                      CustomTextField(
+                        text: 'البريد الألكتروني',
+                        obscureText: false,
+                        textInputType: TextInputType.emailAddress,
+                        setValue: (String value){
+                          _email = value;
+                        },
+                        validation: (value){
+                          if (value.isEmpty) return 'أدخل البريد الألكتروني';
+                          if (!value.contains('@') || !value.contains('.'))
+                            return 'بريد الكتروني خاطىء';
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 15,),
+                      CustomTextField(
+                        text: 'كلمة المرور',
+                        obscureText: true,
+                        textInputType: TextInputType.text,
+                        setValue: (String value){
+                          _password = value;
+                        },
+                        validation: (value){
+                          if (value.isEmpty) return 'أدخل كلمة المرور';
+                          if (value.length < 6) return 'كلمة المرور قصيرة';
+                          return null;
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: (){
+                              Navigator.pushNamed(context, ForgetPasswordScreen.id);
+                            },
+                            child: Text(
+                              'نسيت كلمة المرور؟',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: primaryColor,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 15,),
-                    CustomButton(
-                      text: 'تسجيل الدخول',
-                      onClick: (){
-                        onSubmit(context);
-                      },
-                      isLoading: _isLoading!,
-                    ),
-                    SizedBox(height: 10,),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'مستخدم جديد؟ ',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: (){
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'أنشاء حساب الأن',
+                        ],
+                      ),
+                      SizedBox(height: 15,),
+                      CustomButton(
+                        text: 'تسجيل الدخول',
+                        onClick: (){
+                          onSubmit(context);
+                        },
+                        isLoading: _isLoading!,
+                      ),
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'مستخدم جديد؟ ',
                             style: TextStyle(
-                                //fontSize: 16,
-                                color: primaryColor
+                              fontSize: 16,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          TextButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'أنشاء حساب الأن',
+                              style: TextStyle(
+                                  //fontSize: 16,
+                                  color: primaryColor
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

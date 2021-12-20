@@ -32,40 +32,51 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
     Provider.of<WaterProvider>(context, listen: false).setNumberOfTimes(_numberOfRemind);
     await NotificationService.init(initScheduled: true);
     listenNotification();
-    for(int i=0; i<_numberOfRemind; i++){
-      if(i == 0)
-        NotificationService.showRepeatScheduledNotification(
-          id: i,
-          title: 'أشرب الماء 🥤',
-          body: 'صباح الخير 😇, ابدأ يومك بكوب ماء',
-          payload: 'payload',
-          date: 10 + (i * 4),
-        );
-      else if(i == 1)
-        NotificationService.showRepeatScheduledNotification(
-          id: i,
-          title: 'أشرب الماء 🥤',
-          body: 'حبينا نفكرك بشرب المياة 💪🏻',
-          payload: 'payload',
-          date: 10 + (i * 4),
-        );
-      else if(i == 2)
-        NotificationService.showRepeatScheduledNotification(
-          id: i,
-          title: 'أشرب الماء 🥤',
-          body: 'أشرب مياة اكتر عشان تحسن جسمك 💪🏻',
-          payload: 'payload',
-          date: 10 + (i * 4),
-        );
-      else if(i == 3)
-        NotificationService.showRepeatScheduledNotification(
-          id: i,
-          title: 'أشرب الماء 🥤',
-          body: 'المياة قبل النوم مفيدة. تصبح علي خير 😇',
-          payload: 'payload',
-          date: 10 + (i * 4),
-        );
+
+    //deleting un-needed notifications if exist
+    int? prev = await HelpFunction.getUserWaterNumberOfTimes();
+    if(_isActivated && prev != null && prev > _numberOfRemind){
+      for(int i=prev-1; i>=_numberOfRemind; i--){
+        await NotificationService.cancelNotification(i);
+      }
     }
+
+    //create notifications
+    if(_isActivated)
+      for(int i=0; i<_numberOfRemind; i++){
+        if(i == 0)
+          NotificationService.showRepeatScheduledNotification(
+            id: i,
+            title: 'أشرب الماء 🥤',
+            body: 'صباح الخير 😇, ابدأ يومك بكوب ماء',
+            payload: 'payload',
+            date: 10 + (i * 4),
+          );
+        else if(i == 1)
+          NotificationService.showRepeatScheduledNotification(
+            id: i,
+            title: 'أشرب الماء 🥤',
+            body: 'حبينا نفكرك بشرب المياة 💪🏻',
+            payload: 'payload',
+            date: 10 + (i * 4),
+          );
+        else if(i == 2)
+          NotificationService.showRepeatScheduledNotification(
+            id: i,
+            title: 'أشرب الماء 🥤',
+            body: 'أشرب مياة اكتر عشان تحسن جسمك 💪🏻',
+            payload: 'payload',
+            date: 10 + (i * 4),
+          );
+        else if(i == 3)
+          NotificationService.showRepeatScheduledNotification(
+            id: i,
+            title: 'أشرب الماء 🥤',
+            body: 'المياة قبل النوم مفيدة. تصبح علي خير 😇',
+            payload: 'payload',
+            date: 10 + (i * 4),
+          );
+      }
     await HelpFunction.saveUserWaterIsActivated(_isActivated);
     await HelpFunction.saveUserWaterNumberOfTimes(_numberOfRemind);
     Navigator.pop(context);

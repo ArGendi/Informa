@@ -51,20 +51,8 @@ class HomeBanner extends StatelessWidget {
             ),
             SizedBox(height: 5,),
             if(challenge != null)
-              Row(
-                children: [
-                  Text(
-                    'متبقي علي نهاية التحدي',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.orange
-                    ),
-                  ),
-                  SizedBox(width: 5,),
-                  CountdownCard(
-                    deadline: challenge!.deadline!,
-                  ),
-                ],
+              CountdownCard(
+                deadline: challenge!.deadline!,
               ),
             SizedBox(height: 5,),
             MaterialButton(

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:informa/models/challenge.dart';
 import 'package:informa/models/user.dart';
 
 class FirestoreService{
@@ -61,6 +62,34 @@ class FirestoreService{
       print('Document does not exist on the database');
       return null;
     }
+  }
+
+  Future<List<Challenge>> getAllChallenges() async{
+    List<Challenge> challenges = [];
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('challenges').orderBy('deadline').get();
+    var docs = documentSnapshot.docs;
+    for(var doc in docs){
+      Challenge challenge = new Challenge();
+      challenge.fromJson(doc.data());
+      challenge.id = doc.id;
+      challenges.add(challenge);
+    }
+    return challenges;
+  }
+
+  Future submitChallenge(Challenge challenge) async{
+    await FirebaseFirestore.instance.collection('challenges')
+        .doc(challenge.id)
+        .update({'submits': challenge.submits})
+        .catchError((e){
+      print(e);
+    });
+    print('challenge submitted');
+  }
+
+  Future deleteChallengeDocument() async{
+
   }
 
 }

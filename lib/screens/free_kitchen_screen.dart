@@ -36,52 +36,60 @@ class _FreeKitchenScreenState extends State<FreeKitchenScreen> {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          RecentlyViewedBanner(recentlyViewed: recentlyViewedProvider.items!),
-          //SizedBox(height: 10,),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-            child: Column(
-              children: [
-                //Loop for categories
-                for(var category in kitchenProvider.items!)
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          category.name!,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'CairoBold',
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: ListView(
+          children: [
+            RecentlyViewedBanner(recentlyViewed: recentlyViewedProvider.items!),
+            //SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              child: Column(
+                children: [
+                  //Loop for categories
+                  for(var category in kitchenProvider.items!)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            category.name!,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'CairoBold',
+                            ),
                           ),
-                        ),
-                        Text(
-                          '(${category.meals!.length}) وصفة',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
+                          Text(
+                            '(${category.meals!.length}) وصفة',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.grey,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10,),
-                    //Loop for meals inside category
-                    for(var meal in category.meals!)
-                    Column(
-                      children: [
-                        WideCard(meal: meal,),
-                        SizedBox(height: 10,),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+                      //Loop for meals inside category
+                      for(var meal in category.meals!)
+                      Column(
+                        children: [
+                          WideCard(meal: meal,),
+                          SizedBox(height: 10,),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       )
     );
   }

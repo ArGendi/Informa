@@ -27,156 +27,164 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(
-        children: [
-          PageStorage(
-            bucket: _pageStorageBucket,
-            child: _currentPage,
-          ),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              width: size.width,
-              height: 70,
-              child: Stack(
-                children: [
-                  CustomPaint(
-                    size: Size(size.width, 70),
-                    painter: BNBCustomPainter(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //Profile
-                        MaterialButton(
-                          shape: CircleBorder(),
-                          minWidth: 40,
-                          onPressed: (){
-                            setState(() {
-                              _selectedIndex = 0;
-                              _currentPage = ProfileScreen();
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/user.svg',
-                                semanticsLabel: 'user',
-                                color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
-                                width: 20,
-                                height: 20,
-                              ),
-                              Text(
-                                'حسابي',
-                                style: TextStyle(
-                                    color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
-                                    fontSize: 10
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //Analytics
-                        MaterialButton(
-                          shape: CircleBorder(),
-                          minWidth: 40,
-                          onPressed: (){
-                            setState(() {
-                              _selectedIndex = 1;
-                              _currentPage = AnalyticsScreen();
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/chart-histogram.svg',
-                                semanticsLabel: 'chart',
-                                color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
-                                width: 20,
-                                height: 20,
-                              ),
-                              Text(
-                                'التقدم',
-                                style: TextStyle(
-                                    color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
-                                    fontSize: 10
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: 70,
-                          height: 50,
-                        ),
-                        //Workout
-                        MaterialButton(
-                          shape: CircleBorder(),
-                          minWidth: 40,
-                          onPressed: (){
-                            setState(() {
-                              _selectedIndex = 3;
-                              _currentPage = WorkoutScreen();
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/gym.svg',
-                                semanticsLabel: 'gym',
-                                color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
-                                width: 20,
-                                height: 20,
-                              ),
-                              Text(
-                                'التمارين',
-                                style: TextStyle(
-                                    color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
-                                    fontSize: 10
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //Nutrition
-                        MaterialButton(
-                          shape: CircleBorder(),
-                          minWidth: 40,
-                          onPressed: (){
-                            setState(() {
-                              _selectedIndex = 4;
-                              _currentPage = NutritionScreen();
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/fish.svg',
-                                semanticsLabel: 'user',
-                                color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
-                                width: 20,
-                                height: 20,
-                              ),
-                              Text(
-                                'التغذية',
-                                style: TextStyle(
-                                    color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
-                                    fontSize: 10
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: Stack(
+          children: [
+            PageStorage(
+              bucket: _pageStorageBucket,
+              child: _currentPage,
+            ),
+            Positioned(
+              bottom: 0,
+              child: Container(
+                width: size.width,
+                height: 70,
+                child: Stack(
+                  children: [
+                    CustomPaint(
+                      size: Size(size.width, 70),
+                      painter: BNBCustomPainter(),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //Profile
+                          MaterialButton(
+                            shape: CircleBorder(),
+                            minWidth: 40,
+                            onPressed: (){
+                              setState(() {
+                                _selectedIndex = 0;
+                                _currentPage = ProfileScreen();
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/user.svg',
+                                  semanticsLabel: 'user',
+                                  color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                Text(
+                                  'حسابي',
+                                  style: TextStyle(
+                                      color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
+                                      fontSize: 10
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          //Analytics
+                          MaterialButton(
+                            shape: CircleBorder(),
+                            minWidth: 40,
+                            onPressed: (){
+                              setState(() {
+                                _selectedIndex = 1;
+                                _currentPage = AnalyticsScreen();
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/chart-histogram.svg',
+                                  semanticsLabel: 'chart',
+                                  color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                Text(
+                                  'التقدم',
+                                  style: TextStyle(
+                                      color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
+                                      fontSize: 10
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: 70,
+                            height: 50,
+                          ),
+                          //Workout
+                          MaterialButton(
+                            shape: CircleBorder(),
+                            minWidth: 40,
+                            onPressed: (){
+                              setState(() {
+                                _selectedIndex = 3;
+                                _currentPage = WorkoutScreen();
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/gym.svg',
+                                  semanticsLabel: 'gym',
+                                  color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                Text(
+                                  'التمارين',
+                                  style: TextStyle(
+                                      color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
+                                      fontSize: 10
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          //Nutrition
+                          MaterialButton(
+                            shape: CircleBorder(),
+                            minWidth: 40,
+                            onPressed: (){
+                              setState(() {
+                                _selectedIndex = 4;
+                                _currentPage = NutritionScreen();
+                              });
+                            },
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/fish.svg',
+                                  semanticsLabel: 'user',
+                                  color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                Text(
+                                  'التغذية',
+                                  style: TextStyle(
+                                      color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
+                                      fontSize: 10
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       // bottomNavigationBar: BottomAppBar(
       //   shape: CircularNotchedRectangle(),
