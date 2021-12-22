@@ -26,6 +26,7 @@ class _SelectGenderState extends State<SelectGender> {
           Expanded(
             child: Column(
               children: [
+                SizedBox(height: 50,),
                 Image.asset(
                   'assets/images/ahlan.png',
                   width: 90,
@@ -64,7 +65,7 @@ class _SelectGenderState extends State<SelectGender> {
                             ),
                           );
                         },
-                        child: Ink(
+                        child: Container(
                           height: 200,
                           decoration: BoxDecoration(
                               color: Colors.white,
@@ -110,7 +111,7 @@ class _SelectGenderState extends State<SelectGender> {
                             ),
                           );
                         },
-                        child: Ink(
+                        child: Container(
                           height: 200,
                           decoration: BoxDecoration(
                               color: Colors.white,

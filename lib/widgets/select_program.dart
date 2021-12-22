@@ -9,7 +9,8 @@ import 'custom_button.dart';
 
 class SelectProgram extends StatefulWidget {
   final VoidCallback onClick;
-  const SelectProgram({Key? key, required this.onClick}) : super(key: key);
+  final VoidCallback onBack;
+  const SelectProgram({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
   _SelectProgramState createState() => _SelectProgramState();
@@ -28,14 +29,18 @@ class _SelectProgramState extends State<SelectProgram> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Text(
-                  //   'أهلا',
-                  //   style: TextStyle(
-                  //       fontSize: 26,
-                  //       color: primaryColor,
-                  //       fontFamily: 'CairoBold'
-                  //   ),
-                  // ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: widget.onBack,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: primaryColor,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20,),
                   Image.asset(
                     'assets/images/ahlan.png',
                     width: 90,

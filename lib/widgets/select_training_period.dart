@@ -8,7 +8,8 @@ import 'custom_button.dart';
 
 class SelectTrainingPeriod extends StatefulWidget {
   final VoidCallback onClick;
-  const SelectTrainingPeriod({Key? key, required this.onClick}) : super(key: key);
+  final VoidCallback onBack;
+  const SelectTrainingPeriod({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
   _SelectTrainingPeriodState createState() => _SelectTrainingPeriodState();
@@ -27,6 +28,18 @@ class _SelectTrainingPeriodState extends State<SelectTrainingPeriod> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: widget.onBack,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: primaryColor,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 10,),
                   CircleAvatar(
                     backgroundColor: Colors.grey[300],
                     radius: 40,

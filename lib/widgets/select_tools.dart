@@ -8,7 +8,8 @@ import 'custom_button.dart';
 
 class SelectTools extends StatefulWidget {
   final VoidCallback onClick;
-  const SelectTools({Key? key, required this.onClick}) : super(key: key);
+  final VoidCallback onBack;
+  const SelectTools({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
   _SelectToolsState createState() => _SelectToolsState();
@@ -27,6 +28,18 @@ class _SelectToolsState extends State<SelectTools> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: widget.onBack,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: primaryColor,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 10,),
                   CircleAvatar(
                     backgroundColor: Colors.grey[300],
                     radius: 40,

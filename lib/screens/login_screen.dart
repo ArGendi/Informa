@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
+import 'package:informa/models/challenge.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
+import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/screens/forget_password_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/firestore_service.dart';
@@ -34,12 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
     bool valid = _formKey.currentState!.validate();
     if(valid) {
       _formKey.currentState!.save();
-      AppUser user = new AppUser(
-        email: _email,
-        name: 'No Name',
-        premium: true,
-      );
-      Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
       setState(() { _isLoading = true; });
       var cred = await _authServices.signInWithEmailAndPassword(_email!.trim(), _password!);
       if(cred != null) {
@@ -50,6 +46,10 @@ class _LoginScreenState extends State<LoginScreen> {
         await user!.saveInSharedPreference();
         await HelpFunction.saveInitScreen(MainScreen.id);
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+
+        List<Challenge> challenges = await _firestoreService.getAllChallenges();
+        Provider.of<ChallengesProvider>(context, listen: false).setChallenges(challenges);
+
         Navigator.pushNamedAndRemoveUntil(
             context, MainScreen.id, (route) => false);
       }

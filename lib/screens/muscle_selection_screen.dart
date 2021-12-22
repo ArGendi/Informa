@@ -66,7 +66,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                           _image = 'assets/images/unselected_body.png';
                         });
                       },
-                      child: Ink(
+                      child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(5),
@@ -97,7 +97,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                           _image = 'assets/images/unselected_body_back.png';
                         });
                       },
-                      child: Ink(
+                      child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(5),

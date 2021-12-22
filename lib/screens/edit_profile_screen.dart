@@ -181,7 +181,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false);
+    var activeUserProvider = Provider.of<ActiveUserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -233,7 +233,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUser.user!.name,
+                          initialValue: activeUserProvider.user!.name,
                         ),
                         SizedBox(height: 15,),
                         CustomTextField(
@@ -248,7 +248,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUser.user!.age.toString(),
+                          initialValue: activeUserProvider.user!.age.toString(),
                         ),
                         SizedBox(height: 15,),
                         CustomTextField(
@@ -263,7 +263,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUser.user!.tall.toString(),
+                          initialValue: activeUserProvider.user!.tall.toString(),
                         ),
                         SizedBox(height: 15,),
                         CustomTextField(
@@ -278,7 +278,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUser.user!.weight.toString(),
+                          initialValue: activeUserProvider.user!.weight.toString(),
                         ),
                         SizedBox(height: 15,),
                         CustomTextField(
@@ -293,7 +293,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUser.user!.fatsPercent.toString(),
+                          initialValue: activeUserProvider.user!.fatsPercent.toString(),
                         ),
                         SizedBox(height: 15,),
                         Container(
@@ -373,22 +373,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUser.user!.email,
+                          initialValue: activeUserProvider.user!.email,
                         ),
                         SizedBox(height: 15,),
-                        CustomTextField(
-                          text: 'تغيير كلمة السر',
-                          obscureText: true,
-                          textInputType: TextInputType.text,
-                          setValue: (value){
-                            _password = value;
-                          },
-                          validation: (value){
-                            if(value.isNotEmpty && value.length < 6) return 'كلمة سر ضعيفة';
-                            return null;
-                          },
-                          anotherFilledColor: true,
-                        ),
+                        if(!activeUserProvider.user!.fromSocialMedia)
+                          CustomTextField(
+                            text: 'تغيير كلمة السر',
+                            obscureText: true,
+                            textInputType: TextInputType.text,
+                            setValue: (value){
+                              _password = value;
+                            },
+                            validation: (value){
+                              if(value.isNotEmpty && value.length < 6) return 'كلمة سر ضعيفة';
+                              return null;
+                            },
+                            anotherFilledColor: true,
+                          ),
                         SizedBox(height: 5,),
                       ],
                     ),

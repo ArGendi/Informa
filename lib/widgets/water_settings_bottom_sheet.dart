@@ -33,8 +33,15 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
     await NotificationService.init(initScheduled: true);
     listenNotification();
 
-    //deleting un-needed notifications if exist
     int? prev = await HelpFunction.getUserWaterNumberOfTimes();
+    //close all notifications
+    if(!_isActivated && prev != null){
+      for(int i=prev-1; i>=0; i--){
+        await NotificationService.cancelNotification(i);
+      }
+    }
+
+    //deleting un-needed notifications if exist
     if(_isActivated && prev != null && prev > _numberOfRemind){
       for(int i=prev-1; i>=_numberOfRemind; i--){
         await NotificationService.cancelNotification(i);

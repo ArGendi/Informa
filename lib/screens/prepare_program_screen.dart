@@ -82,7 +82,6 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
   void dispose(){
     _timer!.cancel();
     HelpFunction.saveInitScreen(MainScreen.id);
-    getChallenges();
     super.dispose();
   }
 
@@ -91,6 +90,9 @@ class _PrepareProgramScreenState extends State<PrepareProgramScreen> {
     // TODO: implement initState
     super.initState();
     startTimer();
+    if(mounted){
+      getChallenges();
+    }
   }
 
   @override

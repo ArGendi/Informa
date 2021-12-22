@@ -32,30 +32,20 @@ class _RegisterScreensState extends State<RegisterScreens> {
     });
   }
 
+  goBack(){
+    _controller.animateToPage(
+        _initialPage - 1,
+        duration: Duration(milliseconds: 400),
+        curve: Curves.easeInOut
+    );
+    setState(() {
+      _initialPage -= 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: bgColor,
-        leading: _initialPage != 0 ? IconButton(
-          splashRadius: splashRadius,
-          onPressed: (){
-            _controller.animateToPage(
-                _initialPage - 1,
-                duration: Duration(milliseconds: 400),
-                curve: Curves.easeInOut
-            );
-            setState(() {
-              _initialPage -= 1;
-            });
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            color: primaryColor,
-          ),
-        ) : Container(),
-      ),
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -63,25 +53,30 @@ class _RegisterScreensState extends State<RegisterScreens> {
                 image: AssetImage('assets/images/appBg.png')
             )
         ),
-        child: PageView(
-          physics:new NeverScrollableScrollPhysics(),
-          controller: _controller,
-          children: [
-            SelectGender(
-              onClick: goToNextPage,
-            ),
-            SelectProgram(
-              onClick: goToNextPage,
-            ),
-            SelectGoal(
-              onClick: goToNextPage,
-            ),
-            SelectPlace(
-              onClick: (){
-                Navigator.pushNamed(context, MainRegisterScreen.id);
-              },
-            )
-          ],
+        child: SafeArea(
+          child: PageView(
+            physics:new NeverScrollableScrollPhysics(),
+            controller: _controller,
+            children: [
+              SelectGender(
+                onClick: goToNextPage,
+              ),
+              SelectProgram(
+                onClick: goToNextPage,
+                onBack: goBack,
+              ),
+              SelectGoal(
+                onClick: goToNextPage,
+                onBack: goBack,
+              ),
+              SelectPlace(
+                onClick: (){
+                  Navigator.pushNamed(context, MainRegisterScreen.id);
+                },
+                onBack: goBack,
+              )
+            ],
+          ),
         ),
       ),
     );

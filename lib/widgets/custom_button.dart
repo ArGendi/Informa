@@ -20,7 +20,7 @@ class _CustomButtonState extends State<CustomButton> {
     return InkWell(
       onTap: widget.onClick,
       borderRadius: BorderRadius.circular(borderRadius),
-      child: Ink(
+      child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
             color: widget.bgColor,

@@ -7,6 +7,7 @@ class Challenge {
   DateTime? deadline;
   String? url;
   Map<String, dynamic>? submits;
+  bool isFree = true;
 
   Challenge({this.id, this.name, this.url, this.deadline, this.description});
 
@@ -17,5 +18,6 @@ class Challenge {
     deadline = tsDeadline.toDate();
     url = json['url'];
     submits = json['submits'];
+    isFree = json['isFree'] != null ? json['isFree'] : true;
   }
 }

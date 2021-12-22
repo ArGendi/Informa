@@ -9,7 +9,8 @@ import 'custom_button.dart';
 
 class SelectGoal extends StatefulWidget {
   final VoidCallback onClick;
-  const SelectGoal({Key? key, required this.onClick}) : super(key: key);
+  final VoidCallback onBack;
+  const SelectGoal({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
   _SelectGoalState createState() => _SelectGoalState();
@@ -28,6 +29,18 @@ class _SelectGoalState extends State<SelectGoal> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: widget.onBack,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: primaryColor,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20,),
                   Image.asset(
                     'assets/images/ahlan.png',
                     width: 90,

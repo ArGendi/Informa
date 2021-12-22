@@ -16,7 +16,8 @@ import 'custom_button.dart';
 
 class Register extends StatefulWidget {
   final VoidCallback onClick;
-  const Register({Key? key, required this.onClick}) : super(key: key);
+  final VoidCallback onBack;
+  const Register({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -156,6 +157,18 @@ class _RegisterState extends State<Register> {
                 key: _formKey,
                 child: Column(
                   children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: widget.onBack,
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: primaryColor,
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 10,),
                     CircleAvatar(
                       backgroundColor: Colors.grey[300],
                       radius: 40,
@@ -188,6 +201,7 @@ class _RegisterState extends State<Register> {
                             text: 'الأسم كامل',
                             obscureText: false,
                             textInputType: TextInputType.text,
+                            anotherFilledColor: true,
                             setValue: (value){
                               _fullName = value;
                             },
@@ -201,6 +215,7 @@ class _RegisterState extends State<Register> {
                             text: 'البريد الألكتروني',
                             obscureText: false,
                             textInputType: TextInputType.emailAddress,
+                            anotherFilledColor: true,
                             setValue: (value){
                               _email = value;
                             },
@@ -216,6 +231,7 @@ class _RegisterState extends State<Register> {
                             text: 'كلمة المرور',
                             obscureText: true,
                             textInputType: TextInputType.text,
+                            anotherFilledColor: true,
                             setValue: (value){
                               _password = value;
                             },
@@ -230,6 +246,7 @@ class _RegisterState extends State<Register> {
                             text: 'تأكيد كلمة المرور',
                             obscureText: true,
                             textInputType: TextInputType.text,
+                            anotherFilledColor: true,
                             setValue: (value){},
                             validation: (value){
                               if (value.isEmpty) return 'أدخل كلمة المرور';
@@ -242,15 +259,6 @@ class _RegisterState extends State<Register> {
                       ),
                     Row(
                       children: [
-                        // CountryCodePicker(
-                        //   onChanged: (value){
-                        //     _dialCode = value.dialCode!;
-                        //   },
-                        //   initialSelection: 'EG',
-                        //   showCountryOnly: false,
-                        //   showOnlyCountryWhenClosed: false,
-                        //   alignLeft: false,
-                        // ),
                         FutureBuilder(
                           future: _countryCodeService.getAllCountries(),
                           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -294,6 +302,7 @@ class _RegisterState extends State<Register> {
                             text: 'رقم الهاتف',
                             obscureText: false,
                             textInputType: TextInputType.phone,
+                            anotherFilledColor: true,
                             setValue: (value){
                               _phoneNumber = value;
                             },

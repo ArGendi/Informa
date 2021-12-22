@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/helpers/shared_preference.dart';
+import 'package:informa/models/challenge.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
+import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/services/auth_service.dart';
@@ -48,6 +50,10 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
         setState(() {isFacebookLoading = false;});
         print(user);
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+
+        List<Challenge> challenges = await _firestoreService.getAllChallenges();
+        Provider.of<ChallengesProvider>(context, listen: false).setChallenges(challenges);
+
         Navigator.of(context)
             .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
       }
@@ -89,6 +95,10 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
         await HelpFunction.saveInitScreen(MainScreen.id);
         setState(() {isGoogleLoading = false;});
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+
+        List<Challenge> challenges = await _firestoreService.getAllChallenges();
+        Provider.of<ChallengesProvider>(context, listen: false).setChallenges(challenges);
+
         Navigator.of(context)
             .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
       }

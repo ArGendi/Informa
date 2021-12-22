@@ -21,6 +21,7 @@ class ChallengesScreen extends StatefulWidget {
 class _ChallengesScreenState extends State<ChallengesScreen> {
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     var challenges = Provider.of<ChallengesProvider>(context).challenges;
     return Scaffold(
       appBar: AppBar(
@@ -38,6 +39,8 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
         ),
       ),
       body: Container(
+        width: screenSize.width,
+        height: screenSize.height,
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,

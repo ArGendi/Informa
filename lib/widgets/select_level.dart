@@ -9,7 +9,8 @@ import 'custom_button.dart';
 
 class SelectLevel extends StatefulWidget {
   final VoidCallback onClick;
-  const SelectLevel({Key? key, required this.onClick}) : super(key: key);
+  final VoidCallback onBack;
+  const SelectLevel({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
   _SelectLevelState createState() => _SelectLevelState();
@@ -47,6 +48,18 @@ class _SelectLevelState extends State<SelectLevel> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: widget.onBack,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: primaryColor,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 10,),
                   CircleAvatar(
                     backgroundColor: Colors.grey[300],
                     radius: 40,

@@ -6,6 +6,8 @@ import 'package:informa/widgets/countdown_card.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 
+import '../constants.dart';
+
 class SingleChallengeScreen extends StatefulWidget {
   static String id = 'single challenge';
   final Challenge challenge;
@@ -26,24 +28,69 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
     _challenge = ch;
   }
 
-  onSubmit() async{
+  onSubmit(BuildContext context) async{
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
     if(valid){
       _formKey.currentState!.save();
-      var id = FirebaseAuth.instance.currentUser!.uid;
-      _challenge.submits![id] = _videoUrl;
-      await _firestoreService.submitChallenge(_challenge);
-      setState(() {
-        _btnText = 'تم';
-      });
+      if(widget.challenge.isFree){
+        var id = FirebaseAuth.instance.currentUser!.uid;
+        _challenge.submits![id] = _videoUrl;
+        await _firestoreService.submitChallenge(_challenge);
+        setState(() {
+          _btnText = 'تم';
+        });
+      }
+      else{
+        showLanguageBottomSheet(context);
+      }
     }
+  }
+
+  showLanguageBottomSheet(BuildContext context){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          height: 250,
+          child: Center(
+            child: Text(
+              'هات فلوس',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: Text('تحدي أنفورما'),
+        centerTitle: true,
+        leading: IconButton(
+          splashRadius: splashRadius,
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
+      ),
       body: Container(
+        width: screenSize.width,
+        height: screenSize.height,
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
@@ -65,6 +112,15 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
                       fontFamily: 'CairoBold',
                     ),
                   ),
+                  Text(
+                    widget.challenge.description!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(height: 5,),
                   CountdownCard(
                     deadline: widget.challenge.deadline!,
                   ),
@@ -106,7 +162,9 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
                   SizedBox(height: 10,),
                   CustomButton(
                     text: _btnText,
-                    onClick: onSubmit,
+                    onClick: (){
+                      onSubmit(context);
+                    },
                   )
                 ],
               ),

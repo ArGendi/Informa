@@ -11,11 +11,19 @@ class _NutritionScreenState extends State<NutritionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          'Nutrition',
-          style: TextStyle(
-            fontSize: 40,
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: Center(
+          child: Text(
+            'Nutrition',
+            style: TextStyle(
+              fontSize: 40,
+            ),
           ),
         ),
       ),

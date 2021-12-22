@@ -42,7 +42,7 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
         Provider.of<ActiveUserProvider>(context, listen: false).setFitnessLevel(widget.id);
       },
       borderRadius: BorderRadius.circular(borderRadius),
-      child: Ink(
+      child: Container(
         height: 150,
         decoration: BoxDecoration(
           color: Colors.white,

@@ -24,7 +24,7 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
     return InkWell(
       borderRadius: BorderRadius.circular(7),
       onTap: widget.onClick,
-      child: Ink(
+      child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
             color: Colors.white,

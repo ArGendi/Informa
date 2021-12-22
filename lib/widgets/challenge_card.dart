@@ -41,6 +41,23 @@ class _ChallengeCardState extends State<ChallengeCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: widget.challenge.isFree ? Colors.green : primaryColor,
+                  borderRadius: BorderRadius.circular(borderRadius),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    widget.challenge.isFree ? 'ببلاش' : 'مدفوع',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 5,),
               Text(
                 widget.challenge.name!,
                 style: TextStyle(
@@ -62,7 +79,6 @@ class _ChallengeCardState extends State<ChallengeCard> {
                 onEnd: (){
                   Provider.of<ChallengesProvider>(context, listen: false)
                       .removeChallenge(widget.challenge);
-
                 },
               ),
             ],

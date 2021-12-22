@@ -35,31 +35,21 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
     });
   }
 
+  goBack(){
+    _controller.animateToPage(
+        _initialPage - 1,
+        duration: Duration(milliseconds: 400),
+        curve: Curves.easeInOut
+    );
+    setState(() {
+      _initialPage -= 1;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: bgColor,
-        leading: _initialPage != 0 ? IconButton(
-          splashRadius: splashRadius,
-          onPressed: (){
-            _controller.animateToPage(
-                _initialPage - 1,
-                duration: Duration(milliseconds: 400),
-                curve: Curves.easeInOut
-            );
-            setState(() {
-              _initialPage -= 1;
-            });
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            color: primaryColor,
-          ),
-        ) : Container(),
-      ),
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -67,34 +57,47 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
                 image: AssetImage('assets/images/appBg.png')
             )
         ),
-        child: PageView(
-          physics:new NeverScrollableScrollPhysics(),
-          controller: _controller,
-          children: [
-            Register(
-              onClick: goToNextPage,
-            ),
-            SelectAgeTallWeight(
-              onClick: goToNextPage,
-            ),
-            SelectLevel(
-              onClick: goToNextPage,
-            ),
-            SelectFatPercent(
-              onClick: goToNextPage,
-            ),
-            SelectTrainingPeriod(
-              onClick: goToNextPage,
-            ),
-            if(activeUser!.workoutPlace != 2)
-              SelectTools(
+        child: SafeArea(
+          child: PageView(
+            physics:new NeverScrollableScrollPhysics(),
+            controller: _controller,
+            children: [
+              Register(
                 onClick: goToNextPage,
+                onBack: (){
+                  Navigator.pop(context);
+                },
               ),
-            SelectTrainingDays(
-              onClick: goToNextPage,
-            ),
-            ConfirmUserInfo(),
-          ],
+              SelectAgeTallWeight(
+                onClick: goToNextPage,
+                onBack: goBack,
+              ),
+              SelectLevel(
+                onClick: goToNextPage,
+                onBack: goBack,
+              ),
+              SelectFatPercent(
+                onClick: goToNextPage,
+                onBack: goBack,
+              ),
+              SelectTrainingPeriod(
+                onClick: goToNextPage,
+                onBack: goBack,
+              ),
+              if(activeUser!.workoutPlace != 2)
+                SelectTools(
+                  onClick: goToNextPage,
+                  onBack: goBack,
+                ),
+              SelectTrainingDays(
+                onClick: goToNextPage,
+                onBack: goBack,
+              ),
+              ConfirmUserInfo(
+                onBack: goBack,
+              ),
+            ],
+          ),
         ),
       ),
     );

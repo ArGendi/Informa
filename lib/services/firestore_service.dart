@@ -66,8 +66,9 @@ class FirestoreService{
 
   Future<List<Challenge>> getAllChallenges() async{
     List<Challenge> challenges = [];
+    DateTime now = DateTime.now();
     var documentSnapshot = await FirebaseFirestore.instance
-        .collection('challenges').orderBy('deadline').get();
+        .collection('challenges').where('deadline', isGreaterThan: Timestamp.fromDate(now)).orderBy('deadline').get();
     var docs = documentSnapshot.docs;
     for(var doc in docs){
       Challenge challenge = new Challenge();

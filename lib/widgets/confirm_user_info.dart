@@ -7,8 +7,11 @@ import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
+
 class ConfirmUserInfo extends StatefulWidget {
-  const ConfirmUserInfo({Key? key}) : super(key: key);
+  final VoidCallback onBack;
+  const ConfirmUserInfo({Key? key, required this.onBack}) : super(key: key);
 
   @override
   _ConfirmUserInfoState createState() => _ConfirmUserInfoState();
@@ -44,6 +47,18 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Column(
         children: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: widget.onBack,
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: primaryColor,
+                ),
+              )
+            ],
+          ),
+          SizedBox(height: 10,),
           CircleAvatar(
             backgroundColor: Colors.grey[300],
             radius: 40,

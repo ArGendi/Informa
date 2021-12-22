@@ -8,7 +8,8 @@ import 'custom_button.dart';
 
 class SelectPlace extends StatefulWidget {
   final VoidCallback onClick;
-  const SelectPlace({Key? key, required this.onClick}) : super(key: key);
+  final VoidCallback onBack;
+  const SelectPlace({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
   _SelectPlaceState createState() => _SelectPlaceState();
@@ -27,6 +28,18 @@ class _SelectPlaceState extends State<SelectPlace> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: widget.onBack,
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: primaryColor,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20,),
                   Image.asset(
                     'assets/images/ahlan.png',
                     width: 90,
