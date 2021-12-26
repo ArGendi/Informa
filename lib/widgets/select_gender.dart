@@ -32,7 +32,7 @@ class _SelectGenderState extends State<SelectGender> {
                   width: 90,
                 ),
                 Text(
-                  'دعنا نتعرف عليك أكثر',
+                  'دعنا نتعرف عليك',
                   style: TextStyle(
                     fontSize: 16,
                     color: primaryColor,

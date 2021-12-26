@@ -86,11 +86,6 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           color: primaryColor,
         ),
-        textTheme: TextTheme(
-          caption: TextStyle(
-              fontSize: 13.0
-          ),
-        ),
       ),
       home: LoadingScreen(),
       routes: {

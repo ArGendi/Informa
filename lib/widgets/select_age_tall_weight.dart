@@ -192,45 +192,6 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                     activeColor: primaryColor,
                     inactiveColor: Colors.grey[300],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'الوزن الي محتاج توصله',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(borderRadius),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          child: Text(
-                            activeUserProvider.user!.goalWeight.toString() + ' كجم',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Slider(
-                    value: activeUserProvider.user!.goalWeight.toDouble(),
-                    min: 20,
-                    max: 250,
-                    divisions: 230,
-                    label: activeUserProvider.user!.goalWeight.toString(),
-                    onChanged: (double value) {
-                      activeUserProvider.setGoalWeight(value.round());
-                    },
-                    activeColor: primaryColor,
-                    inactiveColor: Colors.grey[300],
-                  ),
                 ],
               ),
             ),

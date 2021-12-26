@@ -20,7 +20,6 @@ class AppUser {
   int points;
   List achievements = [];
   int weight;
-  int goalWeight;
   int tall;
   int fatsPercent;
   int age;
@@ -32,7 +31,7 @@ class AppUser {
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
-      this.fitnessLevel = 0, this.goalWeight = 80, this.trainingPeriodLevel = 0});
+      this.fitnessLevel = 0, this.trainingPeriodLevel = 0});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];
@@ -47,7 +46,6 @@ class AppUser {
     points = json['points'];
     achievements = json['achievements'];
     weight = json['weight'];
-    goalWeight = json['goalWeight'];
     tall = json['tall'];
     fatsPercent = json['fatsPercent'];
     age = json['age'];
@@ -72,7 +70,6 @@ class AppUser {
       'points': points,
       'achievements': achievements,
       'weight': weight,
-      'goalWeight': goalWeight,
       'tall': tall,
       'fatsPercent': fatsPercent,
       'age': age,
@@ -95,7 +92,6 @@ class AppUser {
     await HelpFunction.saveUserWorkoutPlace(workoutPlace);
     await HelpFunction.saveUserPoints(points);
     await HelpFunction.saveUserWeight(weight);
-    await HelpFunction.saveUserGoalWeight(goalWeight);
     await HelpFunction.saveUserTall(tall);
     await HelpFunction.saveUserFatsPercent(fatsPercent);
     await HelpFunction.saveUserAge(age);
@@ -118,7 +114,6 @@ class AppUser {
     workoutPlace = (await HelpFunction.getUserWorkoutPlace())!;
     points = (await HelpFunction.getUserPoints())!;
     weight = (await HelpFunction.getUserWeight())!;
-    goalWeight = (await HelpFunction.getUserGoalWeight())!;
     tall = (await HelpFunction.getUserTall())!;
     fatsPercent = (await HelpFunction.getUserFatsPercent())!;
     age = (await HelpFunction.getUserAge())!;

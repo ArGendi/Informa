@@ -146,26 +146,6 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'الوزن المستهدف',
-                      style: TextStyle(),
-                    ),
-                    Text(
-                      activeUser.goalWeight.toString() + ' كجم',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
-                Divider(
-                  height: 30,
-                  indent: 20,
-                  endIndent: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
                       'نسبة الدهون',
                       style: TextStyle(),
                     ),

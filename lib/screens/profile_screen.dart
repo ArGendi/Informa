@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     top: 20,
                     right: 20,
                     bottom: 20,
-                    left: 5
+                    left: 20
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,28 +54,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Row(
                         children: [
                           CircleAvatar(
-                            backgroundColor: Colors.grey[400],
+                            backgroundColor: Colors.grey[200],
                             radius: 25,
+                            child: Center(
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
-                          SizedBox(width: 10,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                activeUser!.name.toString(),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: 'CairoBold',
-                                ),
-                              ),
-                              Text(
-                                'المستوي الأول - ' + activeUser.points.toString() + ' نقطة',
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.grey
-                                ),
-                              ),
-                            ],
+                          SizedBox(width: 15,),
+                          Text(
+                            activeUser!.name.toString(),
+                            style: TextStyle(
+                              fontSize: 16,
+                              //fontFamily: 'CairoBold',
+                            ),
                           ),
                         ],
                       ),
@@ -93,6 +87,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               SizedBox(height: 5,),
+              // Card(
+              //   shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(10),
+              //       side: BorderSide(
+              //           color: Colors.grey.shade300
+              //       )
+              //   ),
+              //   elevation: 0,
+              //   color: Colors.white,
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(20.0),
+              //     child: Column(
+              //       children: [
+              //         Row(
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             Text(
+              //               'الأنجازات',
+              //               style: TextStyle(
+              //                 fontSize: 16,
+              //               ),
+              //             ),
+              //             InkWell(
+              //               onTap: (){},
+              //               child: Row(
+              //                 children: [
+              //                   Text(
+              //                     'المزيد',
+              //                     style: TextStyle(
+              //                       fontSize: 14,
+              //                       color: Colors.grey[600]
+              //                     ),
+              //                   ),
+              //                   Icon(
+              //                     Icons.arrow_forward_ios,
+              //                     color: Colors.grey[600],
+              //                     size: 18,
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         SizedBox(height: 10,),
+              //         Container(
+              //           height: 80,
+              //           child: ListView.builder(
+              //             scrollDirection: Axis.horizontal,
+              //             shrinkWrap: true,
+              //             itemCount: 6,//activeUserProvider.user!.achievements!.length,
+              //             itemBuilder: (context, index){
+              //               return Row(
+              //                 children: [
+              //                   CircleAvatar(
+              //                     backgroundColor: Colors.grey[300],
+              //                     radius: 25,
+              //                   ),
+              //                   SizedBox(width: 10,),
+              //                 ],
+              //               );
+              //             },
+              //           ),
+              //         )
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              // SizedBox(height: 5,),
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -106,61 +168,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'الأنجازات',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
+                      InkWell(
+                        onTap: (){},
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/gym.svg',
+                                semanticsLabel: 'gym',
+                                color: Colors.black,
+                                width: 20,
+                                height: 20,
+                              ),
+                              SizedBox(width: 15,),
+                              Text(
+                                'التمارين المفضلة',
+                              ),
+                            ],
                           ),
-                          InkWell(
-                            onTap: (){},
-                            child: Row(
-                              children: [
-                                Text(
-                                  'المزيد',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[600]
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.grey[600],
-                                  size: 18,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10,),
-                      Container(
-                        height: 80,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: 6,//activeUserProvider.user!.achievements!.length,
-                          itemBuilder: (context, index){
-                            return Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.grey[300],
-                                  radius: 25,
-                                ),
-                                SizedBox(width: 10,),
-                              ],
-                            );
-                          },
                         ),
-                      )
+                      ),
+                      Divider(
+                        height: 10,
+                      ),
+                      InkWell(
+                        onTap: (){},
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/fish.svg',
+                                semanticsLabel: 'gym',
+                                color: Colors.black,
+                                width: 20,
+                                height: 20,
+                              ),
+                              SizedBox(width: 15,),
+                              Text(
+                                'الوجبات المفضلة',
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 5,),
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -173,36 +229,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'معلومات شخصية',
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: (){},
-                            child: Row(
-                              children: [
-                                Text(
-                                  'المزيد',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey[600]
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.grey[600],
-                                  size: 18,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      Text(
+                        'معلومات شخصية',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
                       ),
                       SizedBox(height: 20,),
                       Row(
@@ -211,7 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Colors.grey[300],
+                              color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
@@ -242,7 +275,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Colors.grey[300],
+                              color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
@@ -273,7 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Colors.grey[300],
+                              color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),
@@ -304,7 +337,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                              color: Colors.grey[300],
+                              color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(5),
                             ),
                           ),

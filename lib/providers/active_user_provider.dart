@@ -80,11 +80,6 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  setGoalWeight(int weight){
-    _user!.goalWeight = weight;
-    notifyListeners();
-  }
-
   setTall(int tall){
     _user!.tall = tall;
     notifyListeners();

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/main_screen.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/body_fat_card.dart';
 import 'package:provider/provider.dart';
 
@@ -7,15 +10,37 @@ import '../constants.dart';
 import 'custom_button.dart';
 
 class SelectFatPercent extends StatefulWidget {
-  final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectFatPercent({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectFatPercent({Key? key, required this.onBack}) : super(key: key);
 
   @override
   _SelectFatPercentState createState() => _SelectFatPercentState();
 }
 
 class _SelectFatPercentState extends State<SelectFatPercent> {
+  bool _isLoading = false;
+  FirestoreService _firestoreService = new FirestoreService();
+
+  onConfirm(BuildContext context) async{
+    bool done = true;
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    setState(() { _isLoading = true; });
+    await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
+      setState(() { _isLoading = false; });
+      done = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('حدث خطأ'))
+      );
+    });
+    if(done) {
+      await activeUser.saveInSharedPreference();
+      await HelpFunction.saveInitScreen(MainScreen.id);
+      setState(() { _isLoading = false; });
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -143,7 +168,9 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser!.fatsPercent != 0? widget.onClick : (){},
+            onClick: activeUser!.fatsPercent != 0? (){
+              onConfirm(context);
+            } : (){},
             bgColor: activeUser.fatsPercent != 0? primaryColor : Colors.grey.shade400,
           )
         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:informa/app_localization.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/analytics_screen.dart';
@@ -26,6 +27,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var localization = AppLocalization.of(context);
+    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -45,6 +48,16 @@ class _MainScreenState extends State<MainScreen> {
               child: Container(
                 width: size.width,
                 height: 70,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.28),
+                      spreadRadius: 5,
+                      blurRadius: 4,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
                 child: Stack(
                   children: [
                     CustomPaint(
@@ -76,7 +89,7 @@ class _MainScreenState extends State<MainScreen> {
                                   height: 20,
                                 ),
                                 Text(
-                                  'حسابي',
+                                  localization!.translate('حسابي').toString(),
                                   style: TextStyle(
                                       color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
                                       fontSize: 10
@@ -105,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
                                   height: 20,
                                 ),
                                 Text(
-                                  'التقدم',
+                                  localization.translate('التقدم').toString(),
                                   style: TextStyle(
                                       color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
                                       fontSize: 10
@@ -138,7 +151,7 @@ class _MainScreenState extends State<MainScreen> {
                                   height: 20,
                                 ),
                                 Text(
-                                  'التمارين',
+                                  localization.translate('التمارين').toString(),
                                   style: TextStyle(
                                       color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
                                       fontSize: 10
@@ -167,7 +180,7 @@ class _MainScreenState extends State<MainScreen> {
                                   height: 20,
                                 ),
                                 Text(
-                                  'التغذية',
+                                  localization.translate('التغذية').toString(),
                                   style: TextStyle(
                                       color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
                                       fontSize: 10

@@ -8,6 +8,7 @@ import 'package:informa/services/notification_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
+import '../app_localization.dart';
 import '../constants.dart';
 
 class WaterSettingsBottomSheet extends StatefulWidget {
@@ -97,6 +98,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalization.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -112,7 +114,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
           ),
           child: Center(
             child: Text(
-              'أعدادات الماء',
+              localization!.translate('أعدادات الماء').toString(),
               style: TextStyle(
                 fontFamily: 'CairoBold',
               ),
@@ -133,7 +135,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'التذكير بشرب الماء',
+                    localization.translate('التذكير بشرب الماء').toString(),
                     style: TextStyle(),
                   ),
                   CupertinoSwitch(
@@ -159,7 +161,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'عدد مرات التذكير بالماء',
+                    localization.translate('عدد مرات التذكير بالماء').toString(),
                     style: TextStyle(),
                   ),
                   SizedBox(height: 10,),
@@ -183,7 +185,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Center(
                                 child: Text(
-                                  'مرة واحدة',
+                                  localization.translate('مرة واحدة').toString(),
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: _isActivated && _numberOfRemind == 1 ?
@@ -214,7 +216,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Center(
                                 child: Text(
-                                  'مرتين',
+                                  localization.translate('مرتين').toString(),
                                   style: TextStyle(
                                       fontSize: 14,
                                     color: _isActivated && _numberOfRemind == 2 ?
@@ -249,7 +251,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Center(
                                 child: Text(
-                                  'ثلاث مرات',
+                                  localization.translate('ثلاث مرات').toString(),
                                   style: TextStyle(
                                       fontSize: 14,
                                     color: _isActivated && _numberOfRemind == 3 ?
@@ -280,7 +282,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Center(
                                 child: Text(
-                                  'أربع مرات',
+                                  localization.translate('أربع مرات').toString(),
                                   style: TextStyle(
                                       fontSize: 14,
                                     color: _isActivated && _numberOfRemind == 4 ?
@@ -302,7 +304,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: CustomButton(
-            text: 'حفظ الأعدادات',
+            text: localization.translate('حفظ الأعدادات').toString(),
             onClick: () async{
               onSubmit(context);
             },

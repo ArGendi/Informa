@@ -51,7 +51,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         elevation: 0,
-        title: Text('أنفورما'),
+        title: Text('انفورما'),
         centerTitle: true,
       ),
       body: Center(

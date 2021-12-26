@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:informa/app_localization.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/widgets/custom_button.dart';
@@ -22,6 +23,7 @@ class _LangBottomSheetState extends State<LangBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalization.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -37,7 +39,7 @@ class _LangBottomSheetState extends State<LangBottomSheet> {
           ),
           child: Center(
             child: Text(
-              'أعدادات اللغة',
+              localization!.translate('أعدادات اللغة').toString(),
               style: TextStyle(
                 fontFamily: 'CairoBold',
               ),
@@ -69,7 +71,7 @@ class _LangBottomSheetState extends State<LangBottomSheet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'العربية',
+                      localization.translate('العربية').toString(),
                       style: TextStyle(),
                     ),
                     CircleAvatar(
@@ -111,7 +113,7 @@ class _LangBottomSheetState extends State<LangBottomSheet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'الأنجليزية',
+                      localization.translate('الأنجليزية').toString(),
                       style: TextStyle(),
                     ),
                     CircleAvatar(
@@ -132,7 +134,7 @@ class _LangBottomSheetState extends State<LangBottomSheet> {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: CustomButton(
-            text: 'حفظ الأعدادات',
+            text: localization.translate('حفظ الأعدادات').toString(),
             onClick: () async{
               await HelpFunction.saveUserLanguage(_lang);
               Provider.of<AppLanguageProvider>(context, listen: false).

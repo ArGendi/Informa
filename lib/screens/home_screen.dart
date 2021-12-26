@@ -8,10 +8,12 @@ import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
+import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/widgets/home_banner.dart';
 import 'package:informa/widgets/submit_challenge.dart';
 import 'package:provider/provider.dart';
 
+import '../app_localization.dart';
 import 'muscle_selection_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,10 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     var challengesProvider = Provider.of<ChallengesProvider>(context);
+    var localization = AppLocalization.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('الرئيسية',),
+        title: Text(localization!.translate('الرئيسية').toString(),),
         centerTitle: true,
       ),
       body: Container(
@@ -41,6 +44,46 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: ListView(
           children: [
+            Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'شاهد شرح التطبيق',
+                      style: TextStyle(),
+                    ),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => VideoPlayerScreen(
+                            url: 'https://www.youtube.com/watch?v=sLgz57tguKo',
+                          )),
+                        );
+                      },
+                      child: Card(
+                        elevation: 0,
+                        color: primaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Icon(
+                            Icons.play_arrow,
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             if(!activeUser!.premium)
               Container(
               width: double.infinity,
@@ -59,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'أنضم الي عائلة أنفورما',
+                        localization.translate('أنضم الي عائلة أنفورما').toString(),
                         style: TextStyle(
                           fontSize: 20,
                           fontFamily: 'CairoBold',
@@ -68,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       //SizedBox(height: 10,),
                       Text(
-                        'للحصول علي برنامج تغذية وتمارين مخصصة لجسمك بالأضافة الي مميزات غير محدودة',
+                        localization.translate('للحصول علي برنامج تغذية وتمارين مخصصة لجسمك بالأضافة الي مميزات غير محدودة').toString(),
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 12,
@@ -88,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: Text(
-                            'أنضم الأن',
+                            localization.translate('أنضم الأن').toString(),
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'CairoBold',
@@ -108,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   HomeBanner(
                     mainText: 'تمارين انفورما',
-                    subText: 'للحصول علي برنامج تغذية وتمارين ',
+                    subText: 'تصفح التمارين وابدأ الأن',
                     btnText: 'تصفح التمارين',
                     imagePath: 'assets/images/home3.jpg',
                     onClick: (){
@@ -118,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 10,),
                   HomeBanner(
                     mainText: 'مطبخ انفورما',
-                    subText: 'للحصول علي برنامج تغذية وتمارين ',
+                    subText: 'تصفح الوجبات المفيدة الان',
                     btnText: 'تصفح الوجبات',
                     imagePath: 'assets/images/home4.png',
                     onClick: (){
@@ -128,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(height: 10,),
                   HomeBanner(
                     mainText: 'تحديات انفورما',
-                    subText: 'للحصول علي برنامج تغذية وتمارين ',
+                    subText: 'شارك في التحديات وفز بالهدايا',
                     btnText: 'تصفح التحديات',
                     imagePath: 'assets/images/home2.png',
                     challenge: challengesProvider.challenges.isNotEmpty?

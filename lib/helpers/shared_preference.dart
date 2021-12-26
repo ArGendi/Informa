@@ -13,7 +13,6 @@ class HelpFunction {
   static String sharedPreferenceUserWorkoutPlace = "WORKOUTPLACE";
   static String sharedPreferenceUserPoints = "POINTS";
   static String sharedPreferenceUserWeight = "WEIGHT";
-  static String sharedPreferenceUserGoalWeight = "GOALWEIGHT";
   static String sharedPreferenceUserTall = "TALL";
   static String sharedPreferenceUserFatsPercent = "FATSPERCENT";
   static String sharedPreferenceUserAge = "AGE";
@@ -146,15 +145,6 @@ class HelpFunction {
     return preference.getInt(sharedPreferenceUserWeight);
   }
 
-  static Future<bool> saveUserGoalWeight(int value) async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    return await preference.setInt(sharedPreferenceUserGoalWeight, value);
-  }
-
-  static Future<int?> getUserGoalWeight() async {
-    SharedPreferences preference = await SharedPreferences.getInstance();
-    return preference.getInt(sharedPreferenceUserGoalWeight);
-  }
 
   static Future<bool> saveUserTall(int value) async {
     SharedPreferences preference = await SharedPreferences.getInstance();

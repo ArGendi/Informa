@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
+import 'package:informa/providers/app_language_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../app_localization.dart';
 
 class CountdownCard extends StatefulWidget {
   final DateTime deadline;
@@ -13,6 +17,7 @@ class CountdownCard extends StatefulWidget {
 class _CountdownCardState extends State<CountdownCard> {
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalization.of(context);
     return Card(
       elevation: 0,
       color: Colors.orange,
@@ -22,7 +27,7 @@ class _CountdownCardState extends State<CountdownCard> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'متبقي علي نهاية التحدي',
+              localization!.translate('متبقي علي نهاية التحدي').toString(),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 10,

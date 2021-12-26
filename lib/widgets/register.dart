@@ -29,9 +29,11 @@ class _RegisterState extends State<Register> {
   String _email = '';
   String _password = '';
   String _phoneNumber = '';
-  String _dialCode = '20';
+  String _dialCode = '';
+  String _countryName = '';
   bool _isLoading = false;
-  String _flag = 'https://flagcdn.com/w320/eg.png';
+  List _countries = [];
+  String _flag = '';
   FirestoreService _firestoreService = new FirestoreService();
   CountryCodeService _countryCodeService = new CountryCodeService();
 
@@ -56,6 +58,7 @@ class _RegisterState extends State<Register> {
                       setState(() {
                         _flag = data[index]['flags']['png'];
                         _dialCode = data[index]['callingCodes'][0];
+                        _countryName = data[index]['name'];
                       });
                       Navigator.pop(context);
                     },
@@ -111,6 +114,12 @@ class _RegisterState extends State<Register> {
         );
         return null;
       }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.message!))
+        );
+        return null;
+      }
     }
     return null;
   }
@@ -120,6 +129,12 @@ class _RegisterState extends State<Register> {
     _formKey.currentState!.save();
     bool valid = _formKey.currentState!.validate();
     if(valid){
+      if(_dialCode.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('أدخل بلدك'))
+        );
+        return;
+      }
       bool fromSocialMedia = Provider.of<ActiveUserProvider>(context, listen: false).user!.fromSocialMedia;
       if(!fromSocialMedia){
         setState(() { _isLoading = true; });
@@ -254,66 +269,88 @@ class _RegisterState extends State<Register> {
                               return null;
                             },
                           ),
-                          SizedBox(height: 10,),
                         ],
                       ),
-                    Row(
-                      children: [
-                        FutureBuilder(
-                          future: _countryCodeService.getAllCountries(),
-                          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                            if(snapshot.hasData) {
-                              var data = snapshot.data;
-                              print(data);
-                              return InkWell(
-                                onTap: (){
-                                  showSelectCountryBottomSheet(data);
-                                },
-                                child: Container(
-                                  width: 80,
-                                  height: 45,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Image.network(
-                                          _flag,
+                      SizedBox(height: 10,),
+                      InkWell(
+                        onTap: (){
+                          if(_countries.isNotEmpty){
+                            showSelectCountryBottomSheet(_countries);
+                          }
+                        },
+                        child: Container(
+                          width: screenSize.width,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            border: Border.all(color: Colors.grey.shade300,),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                FutureBuilder(
+                                  future: _countryCodeService.getAllCountries(),
+                                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                    if(snapshot.hasData){
+                                      _countries = snapshot.data;
+                                      return Row(
+                                        children: [
+                                          if(_flag.isNotEmpty)
+                                            Row(
+                                              children: [
+                                                Image.network(
+                                                  _flag,
+                                                  width: 40,
+                                                ),
+                                                SizedBox(width: 10,),
+                                              ],
+                                            ),
+                                          Text(
+                                            _dialCode.isNotEmpty ? _dialCode : 'أختار بلدك',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey.shade500,
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }
+                                    else{
+                                      return Text(
+                                        'جاري التحميل..',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey.shade500,
                                         ),
-                                      ),
-                                      SizedBox(width: 5,),
-                                      Text('+' + _dialCode),
-                                    ],
-                                  ),
+                                      );
+                                    }
+                                  },
                                 ),
-                              );
-                            }
-                            else return Container(
-                              width: 80,
-                              height: 45,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            );
-                          },
-                        ),
-                        SizedBox(width: 10,),
-                        Expanded(
-                          child: CustomTextField(
-                            text: 'رقم الهاتف',
-                            obscureText: false,
-                            textInputType: TextInputType.phone,
-                            anotherFilledColor: true,
-                            setValue: (value){
-                              _phoneNumber = value;
-                            },
-                            validation: (value){
-                              if(value.isEmpty) return 'أدخل رقم الهاتف';
-                              return null;
-                            },
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.grey.shade500,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10,),
+                      CustomTextField(
+                        text: 'رقم الهاتف',
+                        obscureText: false,
+                        textInputType: TextInputType.phone,
+                        anotherFilledColor: true,
+                        setValue: (value){
+                          _phoneNumber = value;
+                        },
+                        validation: (value){
+                          if(value.isEmpty) return 'أدخل رقم الهاتف';
+                          return null;
+                        },
+                      ),
                     SizedBox(height: 20,),
                   ],
                 ),

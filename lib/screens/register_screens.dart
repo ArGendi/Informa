@@ -61,14 +61,6 @@ class _RegisterScreensState extends State<RegisterScreens> {
               SelectGender(
                 onClick: goToNextPage,
               ),
-              SelectProgram(
-                onClick: goToNextPage,
-                onBack: goBack,
-              ),
-              SelectGoal(
-                onClick: goToNextPage,
-                onBack: goBack,
-              ),
               SelectPlace(
                 onClick: (){
                   Navigator.pushNamed(context, MainRegisterScreen.id);

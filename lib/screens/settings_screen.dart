@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:informa/app_localization.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/user.dart';
@@ -74,12 +75,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     var lang = Provider.of<AppLanguageProvider>(context).lang;
     var water = Provider.of<WaterProvider>(context).water;
+    var localization = AppLocalization.of(context);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('أعدادات'),
+        title: Text(localization!.translate('أعدادات').toString()),
         centerTitle: true,
       ),
       body: Container(
@@ -94,7 +97,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: ListView(
             children: [
               Text(
-                'المعلومات الشخصية',
+                localization.translate('المعلومات الشخصية').toString(),
                 style: TextStyle(
                   fontFamily: 'CairoBold',
                 ),
@@ -113,7 +116,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       SettingCard(
                         icon: Icons.person,
-                        text: 'البيانات الشخصية',
+                        text: localization.translate('البيانات الشخصية').toString(),
                         onClick: (){
                           Navigator.pushNamed(context, EditProfileScreen.id);
                         },
@@ -123,18 +126,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       SettingCard(
                         icon: Icons.water,
-                        text: 'أعدادات الماء',
+                        text: localization.translate('أعدادات الماء').toString(),
                         onClick: (){
                           showWaterSettingsBottomSheet(water);
                         }
-                      ),
-                      Divider(
-                        height: 20,
-                      ),
-                      SettingCard(
-                        icon: Icons.notifications,
-                        text: 'الأشعارات والتنبيهات',
-                        onClick: (){},
                       ),
                     ],
                   ),
@@ -142,7 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               SizedBox(height: 20,),
               Text(
-                'الأشتراكات',
+                localization.translate('الأشتراكات').toString(),
                 style: TextStyle(
                   fontFamily: 'CairoBold',
                 ),
@@ -162,7 +157,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       SettingCard(
                         icon: Icons.payment,
                         iconColor: primaryColor,
-                        text: 'خطة الاشتراك',
+                        text: localization.translate('خطة الاشتراك').toString(),
                         onClick: (){
                           subscriptionPlan(context);
                         },
@@ -173,7 +168,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               SizedBox(height: 20,),
               Text(
-                'الأعدادات العامة',
+                localization.translate('الأعدادات العامة').toString(),
                 style: TextStyle(
                   fontFamily: 'CairoBold',
                 ),
@@ -192,7 +187,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       SettingCard(
                         icon: Icons.language,
-                        text: 'لغة التطبيق',
+                        text: localization.translate('لغة التطبيق').toString(),
                         onClick: (){
                           showLanguageBottomSheet(lang);
                         },
@@ -202,7 +197,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       SettingCard(
                         icon: Icons.call,
-                        text: 'تواصل مع الدعم',
+                        text: localization.translate(activeUser!.premium ? 'تواصل مع فريق الدعم' : 'تواصل مع المبيعات').toString(),
                         onClick: (){},
                       ),
                     ],
@@ -224,7 +219,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       SettingCard(
                         icon: Icons.exit_to_app,
                         iconColor: Colors.red,
-                        text: 'تسجيل الخروج',
+                        text: localization.translate('تسجيل الخروج').toString(),
                         onClick: (){
                           logout(context);
                         },

@@ -80,6 +80,7 @@ class _SelectToolsState extends State<SelectTools> {
                         Provider.of<ActiveUserProvider>(context, listen: false).removeTrainingTool(1);
                     },
                     mainText: 'دامبل',
+                    subText: 'علي الأقل 2 دامبل',
                     number: 1,
                     userChoice: activeUser!.trainingTools.contains(1) ? 1 : 0,
                     imagePath: 'assets/images/dumbbelle.png',
@@ -96,19 +97,6 @@ class _SelectToolsState extends State<SelectTools> {
                     number: 2,
                     userChoice: activeUser.trainingTools.contains(2) ? 2 : 0,
                     imagePath: 'assets/images/bar1.png',
-                  ),
-                  SizedBox(height: 10,),
-                  ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.trainingTools.contains(3))
-                        Provider.of<ActiveUserProvider>(context, listen: false).addTrainingTool(3);
-                      else
-                        Provider.of<ActiveUserProvider>(context, listen: false).removeTrainingTool(3);
-                    },
-                    mainText: 'كاتل بيل',
-                    number: 3,
-                    userChoice: activeUser.trainingTools.contains(3) ? 3 : 0,
-                    imagePath: 'assets/images/kettlebell.png',
                   ),
                 ],
               ),
