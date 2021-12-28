@@ -13,20 +13,6 @@ class WorkoutBanner extends StatefulWidget {
 }
 
 class _WorkoutBannerState extends State<WorkoutBanner> {
-  String _level = 'لا يوجد';
-
-  setLevel(){
-    if(widget.workout.level == 1) _level = 'ضعيف';
-    else if(widget.workout.level == 2) _level = 'متوسط';
-    else if(widget.workout.level == 3) _level = 'قوي';
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setLevel();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,54 +46,16 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                   Text(
                     widget.workout.name!,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 17,
                     ),
                   ),
                   Text(
-                    'العضلة المستهدفة, الصدر العلوي',
+                    widget.workout.description!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 9,
+                      fontSize: 11,
                       color: Colors.grey
-                    ),
-                  ),
-                  SizedBox(height: 5,),
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: widget.workout.level! >= 1 ? primaryColor : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(5)
-                        ),
-                      ),
-                      SizedBox(width: 5,),
-                      Container(
-                        width: 40,
-                        height: 4,
-                        decoration: BoxDecoration(
-                            color: widget.workout.level! >= 2 ? primaryColor : Colors.grey[300],
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                      ),
-                      SizedBox(width: 5,),
-                      Container(
-                        width: 40,
-                        height: 4,
-                        decoration: BoxDecoration(
-                            color: widget.workout.level! >= 3 ? primaryColor : Colors.grey[300],
-                            borderRadius: BorderRadius.circular(5)
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 2,),
-                  Text(
-                    'مستوي التمرين: ' + _level,
-                    style: TextStyle(
-                      fontSize: 9,
                     ),
                   ),
                 ],
@@ -119,7 +67,7 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                 bottomLeft: Radius.circular(10),
               ),
               child: Image.asset(
-                'assets/images/Hands-Clapping-Chaulk-Kettlebell.jpg',
+                widget.workout.image!,
                 width: 130,
                 //height: 120,
                 fit: BoxFit.cover,

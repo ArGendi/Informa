@@ -169,7 +169,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          if(!activeUser.premium)
+                            Navigator.pushNamed(context, PlansScreen.id);
+                        },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(
@@ -193,7 +196,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 10,
                       ),
                       InkWell(
-                        onTap: (){},
+                        onTap: (){
+                          if(!activeUser.premium)
+                            Navigator.pushNamed(context, PlansScreen.id);
+                        },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: Row(

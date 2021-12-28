@@ -4,6 +4,8 @@ import 'package:informa/constants.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/plans_screen.dart';
+import 'package:informa/screens/target_muscle.dart';
+import 'package:informa/screens/video_player_screen.dart';
 import 'package:provider/provider.dart';
 
 class SingleWorkoutScreen extends StatefulWidget {
@@ -16,13 +18,7 @@ class SingleWorkoutScreen extends StatefulWidget {
 }
 
 class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //widget.workout.targetMuscles.add();
-  }
+  bool _isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,27 +39,51 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
+                  Stack(
                     children: [
-                      Text(
-                        widget.workout.name!,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'CairoBold',
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              widget.workout.name!,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: 'CairoBold',
+                              ),
+                            ),
+                            Text(
+                              widget.workout.description!,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Text(
-                        'مختصر عن التمرين',
-                        style: TextStyle(
-                            fontSize: 11,
-                            color: Colors.grey
+                      Positioned(
+                        left: 0,
+                        child: IconButton(
+                          onPressed: (){
+                            if(!activeUser!.premium){
+                              Navigator.pushNamed(context, PlansScreen.id);
+                            }
+                            else{
+                              setState(() {
+                                _isFavorite = !_isFavorite;
+                              });
+                            }
+                          },
+                          splashRadius: 5,
+                          icon: Icon(
+                            _isFavorite ? Icons.bookmark_outlined : Icons.bookmark_outline,
+                            size: 30,
+                          ),
                         ),
-                      ),
-                      Divider(
-                        height: 30,
                       ),
                     ],
                   ),
+                  SizedBox(height: 10,),
                   Text(
                     'شاهد التمرين',
                     textAlign: TextAlign.start,
@@ -78,24 +98,35 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(borderRadius),
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(widget.workout.image!)
+                      )
                     ),
                     child: MaterialButton(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(borderRadius),
                       ),
-                      onPressed: (){},
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => VideoPlayerScreen(
+                            url: widget.workout.video!,
+                          )),
+                        );
+                      },
                       child: Center(
                         child: Icon(
                           Icons.play_arrow_rounded,
                           color: Colors.grey,
-                          size: 40,
+                          size: 50,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 15,),
                   Text(
-                    'العضلات المستهدفة والمساعدة',
+                    'العضلات المستهدفة',
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: 'CairoBold',
@@ -103,67 +134,54 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                   ),
                   SizedBox(height: 20,),
 
-                  // Target muscles
+                  // Main target muscles
                   Column(
                     children: [
-                      for(int i=0; i<widget.workout.targetMuscles.length; i+=2)
+                      for(int i=0; i<widget.workout.mainTargetMuscles.length; i+=2)
                         Column(
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Column(
-                                  children: [
-                                    Container(
-                                      width: 90,
-                                      height: 90,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(100),
-                                        border: Border.all(color: Colors.grey.shade300)
-                                      ),
-                                      child: Image.asset(
-                                        widget.workout.targetMuscles[i].imageUrl,
-                                        fit: BoxFit.cover,
-                                        width: 300,
-                                      ),
-                                    ),
-                                    SizedBox(height: 5,),
-                                    Text(
-                                      widget.workout.targetMuscles[i].name,
-                                      style: TextStyle(
-                                        color: Colors.grey[600]
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                i+1 != widget.workout.targetMuscles.length ?
+                                TargetMuscle(muscle:widget.workout.mainTargetMuscles[i],),
+                                i+1 != widget.workout.mainTargetMuscles.length ?
                                 Row(
                                   children: [
                                     SizedBox(width: 40,),
-                                    Column(
-                                      children: [
-                                        Container(
-                                          width: 90,
-                                          height: 90,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(100),
-                                              border: Border.all(color: Colors.grey.shade300)
-                                          ),
-                                          child: Image.asset(
-                                            widget.workout.targetMuscles[i+1].imageUrl,
-                                            fit: BoxFit.cover,
-                                            width: 300,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5,),
-                                        Text(
-                                          widget.workout.targetMuscles[i+1].name,
-                                          style: TextStyle(
-                                              color: Colors.grey[600]
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    TargetMuscle(muscle:widget.workout.mainTargetMuscles[i+1],),
+                                  ],
+                                ) : Container(),
+                              ],
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+
+                  SizedBox(height: 15,),
+                  Text(
+                    'العضلات المساعدة',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontFamily: 'CairoBold',
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  // Other target muscles
+                  Column(
+                    children: [
+                      for(int i=0; i<widget.workout.otherTargetMuscles.length; i+=2)
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                TargetMuscle(muscle:widget.workout.otherTargetMuscles[i],),
+                                i+1 != widget.workout.otherTargetMuscles.length ?
+                                Row(
+                                  children: [
+                                    SizedBox(width: 40,),
+                                    TargetMuscle(muscle:widget.workout.otherTargetMuscles[i+1],),
                                   ],
                                 ) : Container(),
                               ],
@@ -173,7 +191,6 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                         ),
                     ],
                   ),
-
                   //Button
                   InkWell(
                     onTap: (){

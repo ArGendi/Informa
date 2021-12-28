@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/models/muscle.dart';
+import 'package:informa/models/muscles_list.dart';
+import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/free_workout_screen.dart';
+import 'package:informa/screens/plans_screen.dart';
+import 'package:informa/widgets/body_model.dart';
 import 'package:informa/widgets/custom_button.dart';
+import 'package:provider/provider.dart';
 
 class MuscleSelectionScreen extends StatefulWidget {
   static String id = 'muscle selection';
@@ -15,12 +21,12 @@ class MuscleSelectionScreen extends StatefulWidget {
 class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
   bool _isFront = true;
   String _image = 'assets/images/unselected_body.png';
-  String _selectedMuscle = 'لا يوجد عضلة مستهدفة';
-  bool _isMuscleSelected = false;
+  Muscle? _muscle;
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -35,6 +41,19 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
             Icons.arrow_back,
           ),
         ),
+        actions: [
+          IconButton(
+            splashRadius: splashRadius,
+            onPressed: (){
+              if(!activeUser!.premium){
+                Navigator.pushNamed(context, PlansScreen.id);
+              }
+            },
+            icon: Icon(
+              Icons.bookmark_outlined,
+            ),
+          ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -64,6 +83,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                         setState(() {
                           _isFront = true;
                           _image = 'assets/images/unselected_body.png';
+                          _muscle = null;
                         });
                       },
                       child: Container(
@@ -95,6 +115,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                         setState(() {
                           _isFront = false;
                           _image = 'assets/images/unselected_body_back.png';
+                          _muscle = null;
                         });
                       },
                       child: Container(
@@ -122,60 +143,76 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                     ),
                   ],
                 ),
-                Container(
-                  width: 400,
-                  height: 500,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        _image,
-                        width: 400,//screenSize.width * .8,
-                      ),
-                      if(_isFront)
-                        Positioned(
-                          top: 115,
-                          right: 140,
-                          child: InkWell(
-                            onTap: (){
-                              print('Chest');
-                              setState(() {
-                                _image = 'assets/images/selected_body_chest.png';
-                                _isMuscleSelected = true;
-                                _selectedMuscle = 'العضلة المستهدفة هي الصدر';
-                              });
-                            },
-                            child: Container(
-                              width: 70,
-                              height: 38,
-                              //color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      if(_isFront)
-                        Positioned(
-                          top: 160,
-                          right: 150,
-                          child: InkWell(
-                            onTap: (){
-                              print('Abs');
-                              setState(() {
-                                _image = 'assets/images/selected_body_abs.png';
-                                _isMuscleSelected = true;
-                                _selectedMuscle = 'العضلة المستهدفة هي البطن';
-                              });
-                            },
-                            child: Container(
-                              width: 50,
-                              height: 75,
-                              //color: Colors.red,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                BodyModel(
+                  image: _image,
+                  isFront: _isFront,
+                  onChest: (){
+                    print('Chest');
+                    setState(() {
+                      _image = 'assets/images/selected_body_chest.png';
+                      _muscle = MusclesList.allMuscles[0];
+                    });
+                  },
+                  onAbs: (){
+                    print('Abs');
+                    setState(() {
+                      _image = 'assets/images/selected_body_abs.png';
+                      _muscle = MusclesList.allMuscles[1];
+                    });
+                  },
                 ),
+                // Container(
+                //   width: 400,
+                //   height: 500,
+                //   child: Stack(
+                //     children: [
+                //       Image.asset(
+                //         _image,
+                //         width: 400,
+                //       ),
+                //       if(_isFront)
+                //         Positioned(
+                //           top: 115,
+                //           right: 140,
+                //           child: InkWell(
+                //             onTap: (){
+                //               print('Chest');
+                //               setState(() {
+                //                 _image = 'assets/images/selected_body_chest.png';
+                //                 _muscle = MusclesList.allMuscles[0];
+                //               });
+                //             },
+                //             child: Container(
+                //               width: 70,
+                //               height: 38,
+                //               //color: Colors.black,
+                //             ),
+                //           ),
+                //         ),
+                //       if(_isFront)
+                //         Positioned(
+                //           top: 160,
+                //           right: 150,
+                //           child: InkWell(
+                //             onTap: (){
+                //               print('Abs');
+                //               setState(() {
+                //                 _image = 'assets/images/selected_body_abs.png';
+                //                 _muscle = MusclesList.allMuscles[1];
+                //               });
+                //             },
+                //             child: Container(
+                //               width: 50,
+                //               height: 75,
+                //               //color: Colors.red,
+                //             ),
+                //           ),
+                //         ),
+                //     ],
+                //   ),
+                // ),
                 Text(
-                  _selectedMuscle,
+                  _muscle != null ? 'العضلة المستهدفة هي ' + _muscle!.name : 'لا يوجد عضلة مستهدفة',
                   style: TextStyle(
                     fontFamily: 'CairoBold',
                   ),
@@ -183,10 +220,15 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                 SizedBox(height: 10,),
                 CustomButton(
                   text: 'تصفح التمارين',
-                  bgColor: _isMuscleSelected ? primaryColor : Colors.grey.shade400,
+                  bgColor: _muscle != null ? primaryColor : Colors.grey.shade400,
                   onClick: (){
-                    if(_isMuscleSelected)
-                      Navigator.pushNamed(context, FreeWorkoutScreen.id);
+                    if(_muscle != null)
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FreeWorkoutScreen(
+                          muscle: _muscle!,
+                        )),
+                      );
                   },
                 )
               ],

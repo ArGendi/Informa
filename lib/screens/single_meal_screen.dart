@@ -1,23 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/models/meal.dart';
+import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/widgets/meal_info_box.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:provider/provider.dart';
 
-class DetailedMealScreen extends StatefulWidget {
+class SingleMealScreen extends StatefulWidget {
   static String id = 'detailed meal';
-  const DetailedMealScreen({Key? key}) : super(key: key);
+  final Meal meal;
+  const SingleMealScreen({Key? key, required this.meal}) : super(key: key);
 
   @override
-  _DetailedMealScreenState createState() => _DetailedMealScreenState();
+  _SingleMealScreenState createState() => _SingleMealScreenState();
 }
 
-class _DetailedMealScreenState extends State<DetailedMealScreen> {
+class _SingleMealScreenState extends State<SingleMealScreen> {
+  bool _isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -34,7 +41,7 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
               child: Stack(
                 children: [
                   Image.asset(
-                    'assets/images/burger.png',
+                    widget.meal.image!,
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 300,
@@ -63,7 +70,7 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => VideoPlayerScreen(
-                            url: 'https://www.youtube.com/watch?v=sLgz57tguKo',
+                            url: widget.meal.video!,
                           )),
                         );
                       },
@@ -102,40 +109,63 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'وصفات الدجاج',
+                        widget.meal.category!,
                         style: TextStyle(
                           color: Colors.grey[600],
                         ),
                       ),
-                      Text(
-                        'تشكن برجر دايت',
-                        style: TextStyle(
-                          fontSize: 24,
-                          height: 1.6
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.meal.name!,
+                            style: TextStyle(
+                              fontSize: 24,
+                              height: 1.6
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: (){
+                              if(!activeUser!.premium){
+                                Navigator.pushNamed(context, PlansScreen.id);
+                              }
+                              else{
+                                setState(() {
+                                  _isFavorite = !_isFavorite;
+                                });
+                              }
+                            },
+                            splashRadius: 5,
+                            icon: Icon(
+                              _isFavorite ? Icons.bookmark_outlined : Icons.bookmark_outline,
+                              size: 30,
+                            ),
+                          ),
+                        ],
                       ),
                       //SizedBox(height: 10,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'النسبة من الهدف اليومي',
+                            'نسب الوجبة',
                             style: TextStyle(
                               fontSize: 12
                             ),
                           ),
-                          TextButton(
-                            onPressed: (){
-                              Navigator.pushNamed(context, PlansScreen.id);
-                            },
-                            child: Text(
-                              'الترقية الي أنفورما بلس',
-                              style: TextStyle(
-                                color: primaryColor,
-                                fontSize: 12,
+                          if(!activeUser!.premium)
+                            TextButton(
+                              onPressed: (){
+                                Navigator.pushNamed(context, PlansScreen.id);
+                              },
+                              child: Text(
+                                'الترقية الي أنفورما بلس',
+                                style: TextStyle(
+                                  color: primaryColor,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                       Row(
@@ -143,22 +173,22 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
                         children: [
                           MealInfoBox(
                             text: 'كاربوهايدرات',
-                            value: 1200,
+                            value: widget.meal.carbohydrates!,
                             percent: 0.6,
                           ),
                           MealInfoBox(
                             text: 'سعرات حرارية',
-                            value: 300,
+                            value: widget.meal.calories!,
                             percent: 0.2,
                           ),
                           MealInfoBox(
                             text: 'بروتين',
-                            value: 500,
+                            value: widget.meal.protein!,
                             percent: 0.2,
                           ),
                           MealInfoBox(
                             text: 'دهون',
-                            value: 800,
+                            value: widget.meal.fats!,
                             percent: 0.1,
                           ),
                         ],
@@ -171,9 +201,9 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
                           color: primaryColor
                         ),
                       ),
-                      for(int i=0; i<5; i++)
+                      for(int i=0; i<widget.meal.components!.length; i++)
                         Text(
-                          'نص كيلو دجاج مخلي'
+                          (i+1).toString() + '- ' + widget.meal.components![i],
                         ),
                     ],
                   ),
@@ -181,7 +211,8 @@ class _DetailedMealScreenState extends State<DetailedMealScreen> {
                   MaterialButton(
                     elevation: 0,
                     onPressed: (){
-                      Navigator.pushNamed(context, PlansScreen.id);
+                      if(!activeUser.premium)
+                        Navigator.pushNamed(context, PlansScreen.id);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)

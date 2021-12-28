@@ -44,15 +44,15 @@ class _MealInfoBoxState extends State<MealInfoBox> {
             size: 15,
           ),
         ),
-        LinearPercentIndicator(
-          width: screenSize.width * .2,
-          animation: true,
-          lineHeight: 3.0,
-          animationDuration: 1000,
-          percent: activeUser.premium ? widget.percent : 0,
-          linearStrokeCap: LinearStrokeCap.roundAll,
-          progressColor: Colors.grey[600],
-        ),
+        // LinearPercentIndicator(
+        //   width: screenSize.width * .2,
+        //   animation: true,
+        //   lineHeight: 3.0,
+        //   animationDuration: 1000,
+        //   percent: activeUser.premium ? widget.percent : 0,
+        //   linearStrokeCap: LinearStrokeCap.roundAll,
+        //   progressColor: Colors.grey[600],
+        // ),
         Text(
           widget.text,
           style: TextStyle(

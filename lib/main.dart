@@ -13,7 +13,7 @@ import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
-import 'package:informa/screens/detailed_meal_screen.dart';
+import 'package:informa/screens/single_meal_screen.dart';
 import 'package:informa/screens/dummy.dart';
 import 'package:informa/screens/edit_profile_screen.dart';
 import 'package:informa/screens/email_confirmation_screen.dart';
@@ -25,6 +25,7 @@ import 'package:informa/screens/loading_screen.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/login_screen.dart';
 import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/meal_category_screen.dart';
 import 'package:informa/screens/more_user_info_screen.dart';
 import 'package:informa/screens/muscle_selection_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
@@ -95,8 +96,8 @@ class MyApp extends StatelessWidget {
         MainScreen.id: (context) => MainScreen(),
         FreeKitchenScreen.id: (context) => FreeKitchenScreen(),
         ForgetPasswordScreen.id: (context) => ForgetPasswordScreen(),
-        DetailedMealScreen.id: (context) => DetailedMealScreen(),
-        FreeWorkoutScreen.id: (context) => FreeWorkoutScreen(),
+        //DetailedMealScreen.id: (context) => DetailedMealScreen(),
+        //FreeWorkoutScreen.id: (context) => FreeWorkoutScreen(),
         MuscleSelectionScreen.id: (context) => MuscleSelectionScreen(),
         PlansScreen.id: (context) => PlansScreen(),
         PrepareProgramScreen.id: (context) => PrepareProgramScreen(),
@@ -106,6 +107,7 @@ class MyApp extends StatelessWidget {
         EditProfileScreen.id: (context) => EditProfileScreen(),
         ChallengesScreen.id: (context) => ChallengesScreen(),
         ChallengesLoadingScreen.id: (context) => ChallengesLoadingScreen(),
+        MealCategoryScreen.id: (context) => MealCategoryScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

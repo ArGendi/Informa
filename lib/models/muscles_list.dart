@@ -1,0 +1,35 @@
+import 'package:informa/models/muscle.dart';
+import 'package:informa/models/workout.dart';
+
+class MusclesList {
+  static List<Muscle> allMuscles = [
+    Muscle(
+      id: '1',
+      name: 'الصدر',
+      image: 'assets/images/Hands-Clapping-Chaulk-Kettlebell.jpg',
+      workouts: [
+        Workout(
+          id: '1',
+          name: 'بنش بريس',
+          image: 'assets/images/Hands-Clapping-Chaulk-Kettlebell.jpg',
+          video: 'https://www.youtube.com/watch?v=GgB3okbbZr0',
+          description: 'بنش بريس هو تمرين يساعد علي اي حاجة',
+        ),
+        Workout(
+          id: '2',
+          name: 'بنش بريس',
+          image: 'assets/images/Hands-Clapping-Chaulk-Kettlebell.jpg',
+          video: 'https://www.youtube.com/watch?v=GgB3okbbZr0',
+          description: 'بنش بريس هو تمرين يساعد علي اي حاجة',
+        ),
+      ],
+    ),
+    Muscle(
+      id: '2',
+      name: 'البطن',
+      image: 'assets/images/selected_body_chest.png',
+      workouts: [],
+    ),
+  ];
+
+}

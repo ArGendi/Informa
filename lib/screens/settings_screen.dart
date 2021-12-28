@@ -197,7 +197,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       SettingCard(
                         icon: Icons.call,
-                        text: localization.translate(activeUser!.premium ? 'تواصل مع فريق الدعم' : 'تواصل مع المبيعات').toString(),
+                        text: localization.translate(activeUser!.premium ? 'تواصل مع خدمة العملاء' : 'تواصل مع فريق المبيعات').toString(),
                         onClick: (){},
                       ),
                     ],

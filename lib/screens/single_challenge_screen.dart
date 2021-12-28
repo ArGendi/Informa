@@ -33,7 +33,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
     bool valid = _formKey.currentState!.validate();
     if(valid){
       _formKey.currentState!.save();
-      if(widget.challenge.isFree){
+      if(widget.challenge.status == 0){
         var id = FirebaseAuth.instance.currentUser!.uid;
         _challenge.submits![id] = _videoUrl;
         await _firestoreService.submitChallenge(_challenge);

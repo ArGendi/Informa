@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:informa/models/meal.dart';
-import 'package:informa/screens/detailed_meal_screen.dart';
+import 'package:informa/screens/single_meal_screen.dart';
 
 import '../constants.dart';
 import 'bottom_shaded_card.dart';
@@ -28,25 +28,25 @@ class RecentlyViewedBanner extends StatelessWidget {
                     fontFamily: 'CairoBold'
                   ),
                 ),
-                InkWell(
-                  onTap: (){},
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'عرض الجميع',
-                        style: TextStyle(
-                          color: primaryColor,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 18,
-                        color: primaryColor,
-                      )
-                    ],
-                  ),
-                ),
+                // InkWell(
+                //   onTap: (){},
+                //   child: Row(
+                //     mainAxisSize: MainAxisSize.min,
+                //     children: [
+                //       Text(
+                //         'عرض الجميع',
+                //         style: TextStyle(
+                //           color: primaryColor,
+                //         ),
+                //       ),
+                //       Icon(
+                //         Icons.arrow_forward_ios,
+                //         size: 18,
+                //         color: primaryColor,
+                //       )
+                //     ],
+                //   ),
+                // ),
               ],
             ),
             SizedBox(height: 10,),
@@ -62,7 +62,7 @@ class RecentlyViewedBanner extends StatelessWidget {
                     child: BottomShadedCard(
                       meal: recentlyViewed[index],
                       onClick: (){
-                        Navigator.pushNamed(context, DetailedMealScreen.id);
+                        Navigator.pushNamed(context, SingleMealScreen.id);
                       },
                     ),
                   );
