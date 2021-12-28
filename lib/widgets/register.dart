@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +25,7 @@ class Register extends StatefulWidget {
   _RegisterState createState() => _RegisterState();
 }
 
-class _RegisterState extends State<Register> {
+class _RegisterState extends State<Register> with SingleTickerProviderStateMixin {
   var _formKey = GlobalKey<FormState>();
   String _fullName = '';
   String _email = '';
@@ -36,6 +38,8 @@ class _RegisterState extends State<Register> {
   String _flag = '';
   FirestoreService _firestoreService = new FirestoreService();
   CountryCodeService _countryCodeService = new CountryCodeService();
+  late AnimationController _controller;
+  late Animation<Offset> _welcomeOffset;
 
   showSelectCountryBottomSheet(List data){
     showModalBottomSheet(
@@ -159,6 +163,32 @@ class _RegisterState extends State<Register> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    _welcomeOffset = Tween<Offset>(
+      begin: Offset(0, -1.8),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.elasticOut,
+    ));
+    Timer(Duration(milliseconds: 400), (){
+      _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     var screenSize = MediaQuery.of(context).size;
@@ -184,9 +214,12 @@ class _RegisterState extends State<Register> {
                       ],
                     ),
                     SizedBox(height: 10,),
-                    CircleAvatar(
-                      backgroundColor: Colors.grey[300],
-                      radius: 40,
+                    SlideTransition(
+                      position: _welcomeOffset,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.grey[300],
+                        radius: 40,
+                      ),
                     ),
                     SizedBox(height: 10,),
                     Text(

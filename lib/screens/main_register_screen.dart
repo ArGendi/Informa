@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,11 +28,14 @@ class MainRegisterScreen extends StatefulWidget {
   _MainRegisterScreenState createState() => _MainRegisterScreenState();
 }
 
-class _MainRegisterScreenState extends State<MainRegisterScreen> {
+class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTickerProviderStateMixin{
   bool isGoogleLoading = false;
   bool isFacebookLoading = false;
   AuthServices? _authServices = new AuthServices();
   FirestoreService _firestoreService = new FirestoreService();
+  late AnimationController _controller;
+  late Animation<Offset> _logoOffset;
+  late Animation<Offset> _btnOffset;
 
   facebookLogin(BuildContext context) async{
     setState(() {isFacebookLoading = true;});
@@ -126,6 +131,39 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _logoOffset = Tween<Offset>(
+      begin: Offset(1.5, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutBack,
+    ));
+    _btnOffset = Tween<Offset>(
+      begin: Offset(-1.5, 0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutBack,
+    ));
+    Timer(Duration(milliseconds: 400), (){
+      _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -142,8 +180,11 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Image.asset(
-                      'assets/images/logo1.png',
+                    SlideTransition(
+                      position: _logoOffset,
+                      child: Image.asset(
+                        'assets/images/logo1.png',
+                      ),
                     ),
                     //SizedBox(height: 20,),
                     Text(
@@ -245,14 +286,17 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> {
                     SizedBox(height: 20,),
 
                     //Login button
-                    CustomButton(
-                      text: 'أنشاء حساب',
-                      onClick: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MoreUserInfoScreen()),
-                        );
-                      },
+                    SlideTransition(
+                      position: _btnOffset,
+                      child: CustomButton(
+                        text: 'أنشاء حساب',
+                        onClick: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MoreUserInfoScreen()),
+                          );
+                        },
+                      ),
                     ),
                     SizedBox(height: 10,),
                     Row(

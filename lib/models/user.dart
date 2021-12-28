@@ -11,7 +11,7 @@ class AppUser {
   bool fromSocialMedia = false;
   //0 = none, 1 = male, 2 = female
   int gender;
-  //0 = none, 1 = workout + nutrition, 2 = workout, 3 = nutrition
+  //0 = none, 1 = workout, 2 = workout + nutrition, 3 = nutrition
   int program;
   // 0 = none,
   int goal;

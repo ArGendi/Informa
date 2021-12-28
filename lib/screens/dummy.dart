@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -15,7 +17,7 @@ class Dummy extends StatefulWidget {
   _DummyState createState() => _DummyState();
 }
 
-class _DummyState extends State<Dummy> {
+class _DummyState extends State<Dummy> with SingleTickerProviderStateMixin{
   List list = [1,2,3];
 
   sendEmail() async{
@@ -37,12 +39,32 @@ class _DummyState extends State<Dummy> {
 
   }
 
+  late AnimationController _controller;
+  late final Animation<Offset> _offsetAnimation = Tween<Offset>(
+    begin: Offset.zero,
+    end: const Offset(1.5, 0.0),
+  ).animate(CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeIn,
+  ));
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    NotificationService.init(initScheduled: true);
-    listenNotification();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 1600),
+      vsync: this,
+    );
+    Timer(Duration(milliseconds: 400), (){
+      _controller.forward();
+    });
   }
 
   @override
@@ -50,33 +72,18 @@ class _DummyState extends State<Dummy> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MaterialButton(
-              onPressed: (){
-                print('clicked');
-                NotificationService.showNotification(
-                  title: 'Drink water',
-                  body: 'its time to drink water',
-                  payload: 'payload'
-                );
-              },
-              child: Text('Simple notification'),
-            ),
-            MaterialButton(
-              onPressed: (){
-                print('clicked');
-                NotificationService.showScheduledNotification(
-                    title: 'Drink water',
-                    body: 'its time to drink water',
-                    payload: 'payload',
-                    scheduledDate: DateTime.now().add(Duration(seconds: 20)),
-                );
-              },
-              child: Text('Scheduled notification'),
-            ),
-          ],
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: Offset(-1.5,0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(
+            parent: _controller,
+            curve: Curves.elasticOut,
+          )),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: FlutterLogo(size: 150.0),
+          ),
         ),
       ),
     );
