@@ -43,7 +43,7 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
       parent: _controller,
       curve: Curves.elasticOut,
     ));
-    Timer(Duration(milliseconds: 400), (){
+    Timer(Duration(milliseconds: 300), (){
       _controller.forward();
     });
   }

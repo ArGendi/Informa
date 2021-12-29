@@ -19,6 +19,7 @@ class ChallengesScreen extends StatefulWidget {
 }
 
 class _ChallengesScreenState extends State<ChallengesScreen> {
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;

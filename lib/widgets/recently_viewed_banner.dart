@@ -28,25 +28,6 @@ class RecentlyViewedBanner extends StatelessWidget {
                     fontFamily: 'CairoBold'
                   ),
                 ),
-                // InkWell(
-                //   onTap: (){},
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: [
-                //       Text(
-                //         'عرض الجميع',
-                //         style: TextStyle(
-                //           color: primaryColor,
-                //         ),
-                //       ),
-                //       Icon(
-                //         Icons.arrow_forward_ios,
-                //         size: 18,
-                //         color: primaryColor,
-                //       )
-                //     ],
-                //   ),
-                // ),
               ],
             ),
             SizedBox(height: 10,),
@@ -62,7 +43,12 @@ class RecentlyViewedBanner extends StatelessWidget {
                     child: BottomShadedCard(
                       meal: recentlyViewed[index],
                       onClick: (){
-                        Navigator.pushNamed(context, SingleMealScreen.id);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SingleMealScreen(
+                            meal: recentlyViewed[index],
+                          )),
+                        );
                       },
                     ),
                   );

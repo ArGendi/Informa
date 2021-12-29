@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: RegisterScreens(),
+      home: LoadingScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),

@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 5,),
+              //SizedBox(height: 5,),
               // Card(
               //   shape: RoundedRectangleBorder(
               //       borderRadius: BorderRadius.circular(10),
@@ -369,7 +369,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 5,),
+              //SizedBox(height: 5,),
               if(!activeUser.premium)
                 Card(
                   shape: RoundedRectangleBorder(

@@ -72,9 +72,10 @@ class FirestoreService{
     var docs = documentSnapshot.docs;
     for(var doc in docs){
       Challenge challenge = new Challenge();
-      challenge.fromJson(doc.data());
       challenge.id = doc.id;
-      challenges.add(challenge);
+      bool valid = challenge.fromJson(doc.data());
+      if(valid)
+        challenges.add(challenge);
     }
     return challenges;
   }

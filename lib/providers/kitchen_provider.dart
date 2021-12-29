@@ -13,6 +13,7 @@ class KitchenProvider extends ChangeNotifier{
         index: 0,
         meals: [
           new Meal(
+            id: '1',
             name: 'تشكن برجر',
             category: 'فراخ',
             image: 'assets/images/burger.png',
@@ -29,6 +30,7 @@ class KitchenProvider extends ChangeNotifier{
             video: 'https://www.youtube.com/watch?v=GgB3okbbZr0',
           ),
           new Meal(
+            id: '2',
             name: 'تشكن برجر',
             category: 'فراخ',
             image: 'assets/images/burger.png',
@@ -45,6 +47,7 @@ class KitchenProvider extends ChangeNotifier{
             video: 'https://www.youtube.com/watch?v=GgB3okbbZr0',
           ),
           new Meal(
+            id: '3',
             name: 'تشكن برجر',
             category: 'فراخ',
             image: 'assets/images/burger.png',
@@ -68,6 +71,7 @@ class KitchenProvider extends ChangeNotifier{
         index: 1,
         meals: [
           new Meal(
+            id: '4',
             name: 'تشكن برجر',
             category: 'فراخ',
             image: 'assets/images/burger.png',
@@ -84,6 +88,7 @@ class KitchenProvider extends ChangeNotifier{
             video: 'https://www.youtube.com/watch?v=GgB3okbbZr0',
           ),
           new Meal(
+            id: '5',
             name: 'تشكن برجر',
             category: 'فراخ',
             image: 'assets/images/burger.png',

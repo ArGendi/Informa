@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
@@ -179,6 +180,60 @@ class _HomeScreenState extends State<HomeScreen> {
                     onClick: (){
                       Navigator.pushNamed(context, ChallengesScreen.id);
                     },
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      border: Border.all(color: Colors.grey.shade300)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'المشتركين معنا',
+                            style: TextStyle(
+                              fontFamily: boldFont,
+                            ),
+                          ),
+                          SizedBox(height: 5,),
+                          CarouselSlider(
+                              items: [
+                                Image.asset(
+                                  'assets/images/before_after.jpg',
+                                  width: 180,
+                                ),
+                                Image.asset(
+                                  'assets/images/before_after.jpg',
+                                  width: 180,
+                                ),
+                                Image.asset(
+                                  'assets/images/before_after.jpg',
+                                  width: 180,
+                                ),
+                                Image.asset(
+                                  'assets/images/before_after.jpg',
+                                  width: 180,
+                                ),
+                              ],
+                              options: CarouselOptions(
+                                //height: 200,
+                                  aspectRatio: 16/7,
+                                  viewportFraction: 0.45,
+                                  initialPage: 0,
+                                  scrollDirection: Axis.horizontal,
+                                  //reverse: false,
+                                  enableInfiniteScroll: true,
+                                autoPlay: true,
+                              )
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/countdown_card.dart';
 import 'package:informa/widgets/custom_button.dart';
@@ -17,12 +20,15 @@ class SingleChallengeScreen extends StatefulWidget {
   _SingleChallengeScreenState createState() => _SingleChallengeScreenState(challenge);
 }
 
-class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
+class _SingleChallengeScreenState extends State<SingleChallengeScreen> with SingleTickerProviderStateMixin{
   var _formKey = GlobalKey<FormState>();
   FirestoreService _firestoreService = new FirestoreService();
-  String _videoUrl = '';
+  String _first = '';
+  String _second = '';
   String _btnText = 'أرسل';
   late Challenge _challenge;
+  late AnimationController _controller;
+  late Animation<Offset> _btnOffset;
 
   _SingleChallengeScreenState(Challenge ch){
     _challenge = ch;
@@ -35,7 +41,15 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
       _formKey.currentState!.save();
       if(widget.challenge.status == 0){
         var id = FirebaseAuth.instance.currentUser!.uid;
-        _challenge.submits![id] = _videoUrl;
+        if(_challenge.submits == null){
+          _challenge.submits = Map<String, dynamic>();
+        }
+        _challenge.submits![id] = {
+          if(widget.challenge.first != null)
+            widget.challenge.first: _first,
+          if(widget.challenge.second != null)
+            widget.challenge.second: _second,
+        };
         await _firestoreService.submitChallenge(_challenge);
         setState(() {
           _btnText = 'تم';
@@ -68,6 +82,32 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _btnOffset = Tween<Offset>(
+      begin: Offset(0, 6),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutQuart,
+    ));
+    Timer(Duration(milliseconds: 300), (){
+      _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -125,30 +165,60 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
                     deadline: widget.challenge.deadline!,
                   ),
                   SizedBox(height: 10,),
-                  Container(
-                    width: double.infinity,
-                    height: 160,
-                    color: Colors.grey[400],
-                    child: widget.challenge.url!.isNotEmpty ?
-                    Image.network(
-                      widget.challenge.url!,
-                      fit: BoxFit.cover,
-                    ) : Container(),
+                  InkWell(
+                    onTap: (){
+                      if(widget.challenge.video != null)
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => VideoPlayerScreen(
+                            url: widget.challenge.video!,
+                          )),
+                        );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 160,
+                      color: Colors.grey[400],
+                      child: widget.challenge.image != null ?
+                      Image.network(
+                        widget.challenge.image!,
+                        fit: BoxFit.cover,
+                      ) : Container(),
+                    ),
                   ),
                   SizedBox(height: 10,),
                   Form(
                     key: _formKey,
-                    child: CustomTextField(
-                      text: 'رابط الفيديو',
-                      obscureText: false,
-                      textInputType: TextInputType.text,
-                      setValue: (value){
-                        _videoUrl = value;
-                      },
-                      validation: (value){
-                        if (value.isEmpty) return 'أدخل رابط الفيديو';
-                        return null;
-                      },
+                    child: Column(
+                      children: [
+                        if(widget.challenge.first != null)
+                          CustomTextField(
+                            text: widget.challenge.first!,
+                            obscureText: false,
+                            textInputType: TextInputType.text,
+                            setValue: (value){
+                              _first = value;
+                            },
+                            validation: (value){
+                              if (value.isEmpty) return 'أدخل ' + widget.challenge.first!;
+                              return null;
+                            },
+                          ),
+                        SizedBox(height: 10,),
+                        if(widget.challenge.second != null)
+                          CustomTextField(
+                            text: widget.challenge.second!,
+                            obscureText: false,
+                            textInputType: TextInputType.text,
+                            setValue: (value){
+                              _second = value;
+                            },
+                            validation: (value){
+                              if (value.isEmpty) return 'أدخل ' + widget.challenge.second!;
+                              return null;
+                            },
+                          ),
+                      ],
                     ),
                   ),
                   SizedBox(height: 20,),
@@ -160,11 +230,14 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  CustomButton(
-                    text: _btnText,
-                    onClick: (){
-                      onSubmit(context);
-                    },
+                  SlideTransition(
+                    position: _btnOffset,
+                    child: CustomButton(
+                      text: _btnText,
+                      onClick: (){
+                        onSubmit(context);
+                      },
+                    ),
                   )
                 ],
               ),

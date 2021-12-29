@@ -40,11 +40,14 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
               height: 300,
               child: Stack(
                 children: [
-                  Image.asset(
-                    widget.meal.image!,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 300,
+                  Hero(
+                    tag: widget.meal.id!,
+                    child: Image.asset(
+                      widget.meal.image!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 300,
+                    ),
                   ),
                   Container(
                     width: double.infinity,

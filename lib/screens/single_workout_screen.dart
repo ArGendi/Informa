@@ -92,34 +92,37 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  Container(
-                    width: screenSize.width,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(borderRadius),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(widget.workout.image!)
-                      )
-                    ),
-                    child: MaterialButton(
-                      shape: RoundedRectangleBorder(
+                  Hero(
+                    tag: widget.workout.id!,
+                    child: Container(
+                      width: screenSize.width,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.circular(borderRadius),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage(widget.workout.image!)
+                        )
                       ),
-                      onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => VideoPlayerScreen(
-                            url: widget.workout.video!,
-                          )),
-                        );
-                      },
-                      child: Center(
-                        child: Icon(
-                          Icons.play_arrow_rounded,
-                          color: Colors.grey,
-                          size: 50,
+                      child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => VideoPlayerScreen(
+                              url: widget.workout.video!,
+                            )),
+                          );
+                        },
+                        child: Center(
+                          child: Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.grey,
+                            size: 50,
+                          ),
                         ),
                       ),
                     ),

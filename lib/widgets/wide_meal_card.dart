@@ -39,11 +39,14 @@ class _WideMealCardState extends State<WideMealCard> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                widget.meal.image!,
-                width: 130,
-                height: 130,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: widget.meal.id!,
+                child: Image.asset(
+                  widget.meal.image!,
+                  width: 130,
+                  height: 130,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Expanded(

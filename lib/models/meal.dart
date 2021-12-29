@@ -1,5 +1,5 @@
 class Meal {
-  int? id;
+  String? id;
   String? name;
   String? image;
   String? video;

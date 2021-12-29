@@ -152,7 +152,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
       parent: _controller,
       curve: Curves.easeOutBack,
     ));
-    Timer(Duration(milliseconds: 400), (){
+    Timer(Duration(milliseconds: 300), (){
       _controller.forward();
     });
   }

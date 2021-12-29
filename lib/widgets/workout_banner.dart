@@ -66,11 +66,14 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
               ),
-              child: Image.asset(
-                widget.workout.image!,
-                width: 130,
-                //height: 120,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: widget.workout.id!,
+                child: Image.asset(
+                  widget.workout.image!,
+                  width: 130,
+                  //height: 120,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ],

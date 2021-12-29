@@ -15,11 +15,14 @@ class BottomShadedCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.asset(
-              meal.image!,
-              fit: BoxFit.cover,
-              width: 200,
-              height: 150,
+            child: Hero(
+              tag: meal.id!,
+              child: Image.asset(
+                meal.image!,
+                fit: BoxFit.cover,
+                width: 200,
+                height: 150,
+              ),
             ),
           ),
           Container(
