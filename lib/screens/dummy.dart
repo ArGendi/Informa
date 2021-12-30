@@ -17,7 +17,7 @@ class Dummy extends StatefulWidget {
   _DummyState createState() => _DummyState();
 }
 
-class _DummyState extends State<Dummy> with SingleTickerProviderStateMixin{
+class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   List list = [1,2,3];
 
   sendEmail() async{
@@ -40,13 +40,9 @@ class _DummyState extends State<Dummy> with SingleTickerProviderStateMixin{
   }
 
   late AnimationController _controller;
-  late final Animation<Offset> _offsetAnimation = Tween<Offset>(
-    begin: Offset.zero,
-    end: const Offset(1.5, 0.0),
-  ).animate(CurvedAnimation(
-    parent: _controller,
-    curve: Curves.easeIn,
-  ));
+  late AnimationController _controller2;
+  late final Animation<Offset> _offsetAnimation;
+  late final Animation<double> _animation;
 
   @override
   void dispose() {
@@ -59,11 +55,29 @@ class _DummyState extends State<Dummy> with SingleTickerProviderStateMixin{
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 1600),
+      duration: Duration(milliseconds: 3000),
       vsync: this,
     );
-    Timer(Duration(milliseconds: 400), (){
+    _controller2 = AnimationController(
+      duration: Duration(milliseconds: 2000),
+      vsync: this,
+    );
+    _offsetAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset(0,-3),
+    ).animate(CurvedAnimation(
+      parent: _controller2,
+      curve: Curves.easeInQuint,
+    ));
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.linearToEaseOut,
+    );
+    Timer(Duration(milliseconds: 500), (){
       _controller.forward();
+    });
+    Timer(Duration(milliseconds: 4000), (){
+      _controller2.forward();
     });
   }
 
@@ -73,15 +87,11 @@ class _DummyState extends State<Dummy> with SingleTickerProviderStateMixin{
     return Scaffold(
       body: Center(
         child: SlideTransition(
-          position: Tween<Offset>(
-            begin: Offset(-1.5,0),
-            end: Offset.zero,
-          ).animate(CurvedAnimation(
-            parent: _controller,
-            curve: Curves.elasticOut,
-          )),
-          child: const Padding(
-            padding: EdgeInsets.all(8.0),
+          position: _offsetAnimation,
+          child: SizeTransition(
+            sizeFactor: _animation,
+            axis: Axis.vertical,
+            axisAlignment: -1,
             child: FlutterLogo(size: 150.0),
           ),
         ),

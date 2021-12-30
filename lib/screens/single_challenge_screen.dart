@@ -89,7 +89,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 1500),
+      duration: Duration(milliseconds: 1400),
       vsync: this,
     );
     _btnOffset = Tween<Offset>(
@@ -99,7 +99,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
       parent: _controller,
       curve: Curves.easeOutQuart,
     ));
-    Timer(Duration(milliseconds: 300), (){
+    Timer(Duration(milliseconds: 100), (){
       _controller.forward();
     });
   }

@@ -35,6 +35,7 @@ import 'package:informa/screens/register_screens.dart';
 import 'package:informa/screens/reset_password_screen.dart';
 import 'package:informa/screens/settings_screen.dart';
 import 'package:informa/screens/single_workout_screen.dart';
+import 'package:informa/screens/splash_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
@@ -88,7 +89,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: LoadingScreen(),
+      home: SplashScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
