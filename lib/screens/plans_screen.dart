@@ -2,6 +2,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/premium_packages_screen.dart';
 import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/plan_card.dart';
@@ -24,6 +25,7 @@ class _PlansScreenState extends State<PlansScreen> {
 
   onSubscribe(BuildContext context){
     Provider.of<ActiveUserProvider>(context, listen: false).setProgram(_selected);
+    Navigator.pushNamed(context, PremiumPackagesScreen.id);
   }
 
   @override

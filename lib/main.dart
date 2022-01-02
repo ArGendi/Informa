@@ -13,6 +13,7 @@ import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
+import 'package:informa/screens/premium_packages_screen.dart';
 import 'package:informa/screens/single_meal_screen.dart';
 import 'package:informa/screens/dummy.dart';
 import 'package:informa/screens/edit_profile_screen.dart';
@@ -36,6 +37,7 @@ import 'package:informa/screens/reset_password_screen.dart';
 import 'package:informa/screens/settings_screen.dart';
 import 'package:informa/screens/single_workout_screen.dart';
 import 'package:informa/screens/splash_screen.dart';
+import 'package:informa/screens/welcome_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
@@ -45,6 +47,7 @@ import 'loading_screens/challenges_loading_screen.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  String? initScreen = await HelpFunction.getInitScreen();
   runApp(
     MultiProvider(
       providers: [
@@ -70,12 +73,18 @@ void main() async{
           create: (context) => ChallengesProvider(),
         ),
       ],
-      child: MyApp()
+      child: MyApp(
+        initScreen: initScreen,
+      )
     )
   );
 }
 
 class MyApp extends StatelessWidget {
+  final String? initScreen;
+
+  const MyApp({Key? key, this.initScreen}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var appLanguageProvider = Provider.of<AppLanguageProvider>(context);
@@ -89,7 +98,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: SplashScreen(),
+      home: initScreen == null ? WelcomeScreen() : SplashScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -109,6 +118,7 @@ class MyApp extends StatelessWidget {
         ChallengesScreen.id: (context) => ChallengesScreen(),
         ChallengesLoadingScreen.id: (context) => ChallengesLoadingScreen(),
         MealCategoryScreen.id: (context) => MealCategoryScreen(),
+        PremiumPackagesScreen.id: (context) => PremiumPackagesScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

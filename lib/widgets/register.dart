@@ -213,12 +213,20 @@ class _RegisterState extends State<Register> with SingleTickerProviderStateMixin
                         )
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(height: 5,),
                     SlideTransition(
                       position: _welcomeOffset,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.grey[300],
-                        radius: 40,
+                      child: Container(
+                        width: 85,
+                        height: 85,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(80),
+                          border: Border.all(color: Colors.grey.shade300),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/images/coach_face.jpg'),
+                          )
+                        ),
                       ),
                     ),
                     SizedBox(height: 10,),
@@ -233,7 +241,7 @@ class _RegisterState extends State<Register> with SingleTickerProviderStateMixin
                       indent: screenSize.width * .3,
                       endIndent: screenSize.width * .3,
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(height: 10,),
                     Text(
                       activeUser!.fromSocialMedia ? 'أدخل رقم الهاتف' : 'أدخل البيانات التالية',
                       style: TextStyle(

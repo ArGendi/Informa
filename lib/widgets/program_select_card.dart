@@ -10,8 +10,9 @@ class ProgramSelectCard extends StatefulWidget {
   final int number;
   final int userChoice;
   final String? imagePath;
+  final Color? borderColor;
 
-  const ProgramSelectCard({Key? key, required this.onClick, required this.mainText, this.subText, required this.number, required this.userChoice, this.imagePath}) : super(key: key);
+  const ProgramSelectCard({Key? key, required this.onClick, required this.mainText, this.subText, required this.number, required this.userChoice, this.imagePath, this.borderColor}) : super(key: key);
 
   @override
   _ProgramSelectCardState createState() => _ProgramSelectCardState();
@@ -30,8 +31,9 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(7),
             border: Border.all(
-                color: widget.userChoice == widget.number? primaryColor : Colors.white,
-                width: 2
+                color: widget.userChoice == widget.number? primaryColor :
+                  widget.borderColor != null ? widget.borderColor! : Colors.white,
+                width: widget.userChoice == widget.number? 2 : 1,
             )
         ),
         child: Padding(
@@ -39,25 +41,27 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                   widget.mainText,
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'CairoBold'
-                    ),
-                  ),
-                  if(widget.subText != null)
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      widget.subText!,
+                     widget.mainText,
                       style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 13
+                          fontSize: 16,
+                          fontFamily: 'CairoBold'
                       ),
                     ),
-                ],
+                    if(widget.subText != null)
+                      Text(
+                        widget.subText!,
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 13
+                        ),
+                      ),
+                  ],
+                ),
               ),
               if(widget.imagePath != null)
                 Image.asset(

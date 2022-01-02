@@ -44,58 +44,41 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   late final Animation<Offset> _offsetAnimation;
   late final Animation<double> _animation;
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  double opacity = 1.0;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _controller = AnimationController(
-      duration: Duration(milliseconds: 3000),
-      vsync: this,
-    );
-    _controller2 = AnimationController(
-      duration: Duration(milliseconds: 2000),
-      vsync: this,
-    );
-    _offsetAnimation = Tween<Offset>(
-      begin: Offset.zero,
-      end: Offset(0,-3),
-    ).animate(CurvedAnimation(
-      parent: _controller2,
-      curve: Curves.easeInQuint,
-    ));
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.linearToEaseOut,
-    );
-    Timer(Duration(milliseconds: 500), (){
-      _controller.forward();
-    });
-    Timer(Duration(milliseconds: 4000), (){
-      _controller2.forward();
+    changeOpacity();
+  }
+
+  changeOpacity() {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        opacity = opacity == 0.0 ? 1.0 : 0.0;
+        changeOpacity();
+      });
     });
   }
 
-  @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Center(
-        child: SlideTransition(
-          position: _offsetAnimation,
-          child: SizeTransition(
-            sizeFactor: _animation,
-            axis: Axis.vertical,
-            axisAlignment: -1,
-            child: FlutterLogo(size: 150.0),
+    return Stack(
+        children: <Widget>[
+          AnimatedOpacity(
+            opacity: opacity,
+            duration: Duration(seconds: 1),
+            child: Container(
+              color: Colors.black,
+            ),
           ),
-        ),
-      ),
+          AnimatedOpacity(
+            opacity: opacity == 1 ? 0 : 1,
+            duration: Duration(seconds: 1),
+            child: Container(
+              color: Colors.red,
+            ),
+          ),
+        ]
     );
   }
 

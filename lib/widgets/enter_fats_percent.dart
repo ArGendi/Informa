@@ -79,10 +79,18 @@ class _FatsPercentState extends State<FatsPercent> {
                         )
                       ],
                     ),
-                    SizedBox(height: 10,),
-                    CircleAvatar(
-                      backgroundColor: Colors.grey[300],
-                      radius: 40,
+                    SizedBox(height: 5,),
+                    Container(
+                      width: 85,
+                      height: 85,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(80),
+                          border: Border.all(color: Colors.grey.shade300),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/images/coach_face.jpg'),
+                          )
+                      ),
                     ),
                     SizedBox(height: 10,),
                     Text(

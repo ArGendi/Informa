@@ -16,22 +16,34 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   late AnimationController _controller2;
   late final Animation<Offset> _offsetAnimation;
   late final Animation<double> _animation;
+
+  startAnimation() async{
+    await _controller.forward();
+    await _controller2.forward();
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) => LoadingScreen(),
+        transitionDuration: Duration(seconds: 0),
+      ),
+    );
+  }
   
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 3500),
+      duration: Duration(milliseconds: 2800),
       vsync: this,
     );
     _controller2 = AnimationController(
-      duration: Duration(milliseconds: 1800),
+      duration: Duration(milliseconds: 1500),
       vsync: this,
     );
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: Offset(0,-2),
+      end: Offset(0,-3),
     ).animate(CurvedAnimation(
       parent: _controller2,
       curve: Curves.easeInQuint,
@@ -40,22 +52,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       parent: _controller,
       curve: Curves.easeOutCubic,
     );
-    Timer(Duration(milliseconds: 500), (){
-      _controller.forward();
+    Timer(Duration(milliseconds: 800), (){
+      startAnimation();
     });
-    Timer(Duration(milliseconds: 3000), (){
-      _controller2.forward();
-    });
-    Timer(Duration(milliseconds: 5000), (){
-      Navigator.pushReplacement(
-        context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) => LoadingScreen(),
-          transitionDuration: Duration(seconds: 0),
-        ),
-      );
-    });
-
   }
 
   @override
