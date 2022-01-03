@@ -7,6 +7,7 @@ import 'package:informa/screens/analytics_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/nutrition_screen.dart';
+import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
 import 'package:informa/screens/workout_screen.dart';
 import 'package:provider/provider.dart';
@@ -103,10 +104,12 @@ class _MainScreenState extends State<MainScreen> {
                             shape: CircleBorder(),
                             minWidth: 40,
                             onPressed: (){
-                              setState(() {
-                                _selectedIndex = 1;
-                                _currentPage = AnalyticsScreen();
-                              });
+                              if(activeUser!.premium)
+                                setState(() {
+                                  _selectedIndex = 1;
+                                  _currentPage = AnalyticsScreen();
+                                });
+                              else Navigator.pushNamed(context, PlansScreen.id);
                             },
                             child: Column(
                               children: [
@@ -136,10 +139,12 @@ class _MainScreenState extends State<MainScreen> {
                             shape: CircleBorder(),
                             minWidth: 40,
                             onPressed: (){
-                              setState(() {
-                                _selectedIndex = 3;
-                                _currentPage = WorkoutScreen();
-                              });
+                              if(activeUser!.premium)
+                                setState(() {
+                                  _selectedIndex = 3;
+                                  _currentPage = WorkoutScreen();
+                                });
+                              else Navigator.pushNamed(context, PlansScreen.id);
                             },
                             child: Column(
                               children: [
@@ -165,10 +170,12 @@ class _MainScreenState extends State<MainScreen> {
                             shape: CircleBorder(),
                             minWidth: 40,
                             onPressed: (){
-                              setState(() {
-                                _selectedIndex = 4;
-                                _currentPage = NutritionScreen();
-                              });
+                              if(activeUser!.premium)
+                                setState(() {
+                                  _selectedIndex = 4;
+                                  _currentPage = NutritionScreen();
+                                });
+                              else Navigator.pushNamed(context, PlansScreen.id);
                             },
                             child: Column(
                               children: [
@@ -199,142 +206,6 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   shape: CircularNotchedRectangle(),
-      //   notchMargin: 10,
-      //   child: Container(
-      //     width: size.width,
-      //     height: 70,
-      //     child: Padding(
-      //       padding: const EdgeInsets.all(15.0),
-      //       child: Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: [
-      //           //Profile
-      //           MaterialButton(
-      //             shape: CircleBorder(),
-      //             minWidth: 40,
-      //             onPressed: (){
-      //               setState(() {
-      //                 _selectedIndex = 0;
-      //                 _currentPage = ProfileScreen();
-      //               });
-      //             },
-      //             child: Column(
-      //               children: [
-      //                 SvgPicture.asset(
-      //                   'assets/icons/user.svg',
-      //                   semanticsLabel: 'user',
-      //                   color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
-      //                   width: 20,
-      //                   height: 20,
-      //                 ),
-      //                 Text(
-      //                   'حسابي',
-      //                   style: TextStyle(
-      //                       color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
-      //                       fontSize: 10
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //           //Analytics
-      //           MaterialButton(
-      //             shape: CircleBorder(),
-      //             minWidth: 40,
-      //             onPressed: (){
-      //               setState(() {
-      //                 _selectedIndex = 1;
-      //                 _currentPage = AnalyticsScreen();
-      //               });
-      //             },
-      //             child: Column(
-      //               children: [
-      //                 SvgPicture.asset(
-      //                   'assets/icons/chart-histogram.svg',
-      //                   semanticsLabel: 'chart',
-      //                   color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
-      //                   width: 20,
-      //                   height: 20,
-      //                 ),
-      //                 Text(
-      //                   'التقدم',
-      //                   style: TextStyle(
-      //                       color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
-      //                       fontSize: 10
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //           Container(
-      //             width: 70,
-      //             height: 50,
-      //           ),
-      //           //Workout
-      //           MaterialButton(
-      //             shape: CircleBorder(),
-      //             minWidth: 40,
-      //             onPressed: (){
-      //               setState(() {
-      //                 _selectedIndex = 3;
-      //                 _currentPage = WorkoutScreen();
-      //               });
-      //             },
-      //             child: Column(
-      //               children: [
-      //                 SvgPicture.asset(
-      //                   'assets/icons/gym.svg',
-      //                   semanticsLabel: 'gym',
-      //                   color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
-      //                   width: 20,
-      //                   height: 20,
-      //                 ),
-      //                 Text(
-      //                   'التمارين',
-      //                   style: TextStyle(
-      //                       color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
-      //                       fontSize: 10
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //           //Nutrition
-      //           MaterialButton(
-      //             shape: CircleBorder(),
-      //             minWidth: 40,
-      //             onPressed: (){
-      //               setState(() {
-      //                 _selectedIndex = 4;
-      //                 _currentPage = NutritionScreen();
-      //               });
-      //             },
-      //             child: Column(
-      //               children: [
-      //                 SvgPicture.asset(
-      //                   'assets/icons/fish.svg',
-      //                   semanticsLabel: 'user',
-      //                   color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
-      //                   width: 20,
-      //                   height: 20,
-      //                 ),
-      //                 Text(
-      //                   'التغذية',
-      //                   style: TextStyle(
-      //                       color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
-      //                       fontSize: 10
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 35),
         child: FloatingActionButton(

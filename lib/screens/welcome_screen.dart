@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:informa/constants.dart';
 import 'package:informa/screens/register_screens.dart';
 import 'package:informa/widgets/custom_button.dart';
 
@@ -28,7 +29,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 4000),
+      duration: Duration(milliseconds: 2600),
       vsync: this,
     );
     _btnController = AnimationController(
@@ -56,7 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
       parent: _controller,
       curve: Curves.easeInOutQuart,
     ));
-    Timer(Duration(milliseconds: 600), (){
+    Timer(Duration(milliseconds: 200), (){
       startAnimation();
     });
   }
@@ -92,14 +93,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                         Text(
                           'مرحباً بك في انفورما',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 22,
+                            fontFamily: boldFont
                           ),
                         ),
                         Text(
                           'أبدأ معانا وأعرف تمارين مخصصة ليك ونضام غذائي بأكلات لذيذة ومفيدة',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 13,
                             color: Colors.grey[600],
                           ),
                         ),
