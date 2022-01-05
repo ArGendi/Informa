@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/loading_screens/challenges_loading_screen.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
+import 'package:informa/screens/dummy.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/video_player_screen.dart';
+import 'package:informa/services/payment_service.dart';
 import 'package:informa/widgets/home_banner.dart';
 import 'package:informa/widgets/submit_challenge.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +28,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  PaymentService _paymentService = new PaymentService();
+
+  callPaymentAPIs(AppUser user) async{
+    bool errorOccur = false;
+    String? token = await _paymentService.authRequest();
+    if(token != null){
+      String? id = await _paymentService.orderRegRequest(token, 10, []);
+      if(id != null){
+        String? token2 = await _paymentService.paymentKeyRequest(token, id, 10, user);
+        if(token2 != null){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Dummy(token: token2)),
+          );
+        } else errorOccur = true;
+      } else errorOccur = true;
+    } else errorOccur = true;
+
+    if(errorOccur)
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('حدث خطأ'))
+      );
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -35,6 +62,14 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         title: Text(localization!.translate('الرئيسية').toString(),),
         centerTitle: true,
+        // actions: [
+        //   IconButton(
+        //     onPressed: (){
+        //       callPaymentAPIs(activeUser!);
+        //     },
+        //     icon: Icon(Icons.add),
+        //   )
+        // ],
       ),
       body: Container(
         decoration: BoxDecoration(

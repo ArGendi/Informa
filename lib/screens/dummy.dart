@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,11 +7,13 @@ import 'package:informa/screens/main_register_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/services/web_services.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../constants.dart';
 
 class Dummy extends StatefulWidget {
-  const Dummy({Key? key}) : super(key: key);
+  final String token;
+  const Dummy({Key? key, required this.token}) : super(key: key);
 
   @override
   _DummyState createState() => _DummyState();
@@ -49,7 +51,7 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
-    changeOpacity();
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
   changeOpacity() {
@@ -62,23 +64,10 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   }
 
   Widget build(BuildContext context) {
-    return Stack(
-        children: <Widget>[
-          AnimatedOpacity(
-            opacity: opacity,
-            duration: Duration(seconds: 1),
-            child: Container(
-              color: Colors.black,
-            ),
-          ),
-          AnimatedOpacity(
-            opacity: opacity == 1 ? 0 : 1,
-            duration: Duration(seconds: 1),
-            child: Container(
-              color: Colors.red,
-            ),
-          ),
-        ]
+    return Scaffold(
+      body: WebView(
+        initialUrl: 'https://accept.paymob.com/api/acceptance/iframes/331839?payment_token=${widget.token}',
+      ),
     );
   }
 

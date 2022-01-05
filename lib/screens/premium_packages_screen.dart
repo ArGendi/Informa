@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/custom_button.dart';
+import 'package:informa/widgets/payment_bottom_sheet.dart';
 import 'package:informa/widgets/period_price_card.dart';
 import 'package:informa/widgets/program_card.dart';
 import 'package:informa/widgets/program_select_card.dart';
@@ -55,6 +56,19 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
       else if(period == 12) return '3000';
     }
     return null.toString();
+  }
+
+  showPaymentBottomSheet(BuildContext context){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      builder: (BuildContext context) {
+        return PaymentBottomSheet();
+      },
+    );
   }
 
   @override
@@ -209,7 +223,9 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
             SizedBox(height: 20,),
             CustomButton(
               text: 'المتابعة',
-              onClick: (){},
+              onClick: (){
+                showPaymentBottomSheet(context);
+              },
             )
           ],
         ),
