@@ -90,8 +90,37 @@ class FirestoreService{
     print('challenge submitted');
   }
 
-  Future deleteChallengeDocument() async{
+  Future<String?> getUserActivateCode(String id) async{
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('activation')
+        .doc(id)
+        .get();
+    if(documentSnapshot.exists){
+      print('Document exist on the database');
+      var data = documentSnapshot.data() as Map<String, dynamic>;
+      String code = data['code'];
+      return code;
+    }
+    else {
+      print('Document does not exist on the database');
+      return null;
+    }
+  }
 
+  Future<bool> updateUserData(String id, Map<String, dynamic> data) async{
+    bool updated = true;
+    await FirebaseFirestore.instance.collection('users')
+        .doc(id)
+        .update(data)
+        .catchError((e){
+      print(e);
+      updated = false;
+    });
+    if(updated){
+      print('user data updated');
+      return true;
+    }
+    return false;
   }
 
 }

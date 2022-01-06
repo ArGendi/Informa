@@ -14,6 +14,7 @@ import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/premium_packages_screen.dart';
+import 'package:informa/screens/ready_fill_premium_form_screen.dart';
 import 'package:informa/screens/sales_payment_screen.dart';
 import 'package:informa/screens/single_meal_screen.dart';
 import 'package:informa/screens/dummy.dart';
@@ -99,7 +100,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: SalesPaymentScreen(),//initScreen == null ? WelcomeScreen() : SplashScreen(),
+      home: initScreen == null ? WelcomeScreen() : SplashScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -120,6 +121,8 @@ class MyApp extends StatelessWidget {
         ChallengesLoadingScreen.id: (context) => ChallengesLoadingScreen(),
         MealCategoryScreen.id: (context) => MealCategoryScreen(),
         PremiumPackagesScreen.id: (context) => PremiumPackagesScreen(),
+        ReadyFillPremiumForm.id: (context) => ReadyFillPremiumForm(),
+        SalesPaymentScreen.id:(context) => SalesPaymentScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

@@ -8,6 +8,7 @@ class AppUser {
   String? phone;
   String? token;
   bool premium;
+  bool fillPremiumForm;
   bool fromSocialMedia = false;
   //0 = none, 1 = male, 2 = female
   int gender;
@@ -31,7 +32,7 @@ class AppUser {
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
-      this.fitnessLevel = 0, this.trainingPeriodLevel = 0});
+      this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];

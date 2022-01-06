@@ -223,6 +223,7 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
             SizedBox(height: 20,),
             CustomButton(
               text: 'المتابعة',
+              bgColor: _selectedPlan != 0 ? primaryColor : Colors.grey.shade400,
               onClick: (){
                 showPaymentBottomSheet(context);
               },

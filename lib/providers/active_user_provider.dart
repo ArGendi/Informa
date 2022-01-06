@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:informa/models/user.dart';
+import 'package:informa/services/firestore_service.dart';
 
 class ActiveUserProvider extends ChangeNotifier{
   AppUser? _user;
+  FirestoreService _firestoreService = new FirestoreService();
 
   ActiveUserProvider(){
     _user = new AppUser();
@@ -38,6 +40,22 @@ class ActiveUserProvider extends ChangeNotifier{
   setPassword(String pass){
     _user!.password = pass;
     notifyListeners();
+  }
+
+  Future setPremium(bool value, String id) async{
+    _user!.premium = value;
+    notifyListeners();
+    await _firestoreService.updateUserData(id, {
+      'premium': value,
+    });
+  }
+
+  Future premiumFormFilled(String id) async{
+    _user!.fillPremiumForm = true;
+    notifyListeners();
+    await _firestoreService.updateUserData(id, {
+      'premiumForm': true,
+    });
   }
 
   setFromSocialMedia(bool value){

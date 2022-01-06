@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:informa/screens/sales_payment_screen.dart';
 
 import '../constants.dart';
 
@@ -69,7 +70,10 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
         SizedBox(height: 5,),
         InkWell(
           borderRadius: BorderRadius.circular(borderRadius),
-          onTap: (){},
+          onTap: (){
+            Navigator.pop(context);
+            Navigator.pushNamed(context, SalesPaymentScreen.id);
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Container(

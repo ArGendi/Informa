@@ -1,6 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:informa/helpers/shared_preference.dart';
+import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/ready_fill_premium_form_screen.dart';
+import 'package:informa/services/firestore_service.dart';
+import 'package:informa/widgets/custom_button.dart';
+import 'package:informa/widgets/custom_textfield.dart';
+import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import '../constants.dart';
 
 class SalesPaymentScreen extends StatefulWidget {
@@ -12,6 +20,39 @@ class SalesPaymentScreen extends StatefulWidget {
 }
 
 class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
+  String _activateCode = '';
+  var _formKey = GlobalKey<FormState>();
+  FirestoreService _firestoreService = new FirestoreService();
+  bool _isLoading = false;
+
+  onShare(){
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    Share.share(id);
+  }
+
+  onActivate(BuildContext context) async{
+    FocusScope.of(context).unfocus();
+    bool valid = _formKey.currentState!.validate();
+    if(valid){
+      _formKey.currentState!.save();
+      setState(() { _isLoading = true; });
+      String id = FirebaseAuth.instance.currentUser!.uid;
+      String? originalCode = await _firestoreService.getUserActivateCode(id);
+      if(originalCode != null){
+        if(_activateCode.trim() == originalCode.trim()){
+          await Provider.of<ActiveUserProvider>(context, listen: false).setPremium(true, id);
+          await HelpFunction.saveUserPremium(true);
+          setState(() { _isLoading = false; });
+          Navigator.pushNamed(context, ReadyFillPremiumForm.id);
+        }
+      }
+      else ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('انت غير مشترك من فضلك تواصل مع فريق الدعم'))
+      );
+      setState(() { _isLoading = false; });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,52 +73,100 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'تقدر تتواصل مع فريق المبيعات وتدفع عن طريق فودافون كاش او تحويل بنكي',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: boldFont,
-              ),
-            ),
-            SizedBox(height: 20,),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'أرسال الكود الخاص بيك لفريق المبيعات',
-                  style: TextStyle(),
-                ),
-                SizedBox(height: 5,),
-                InkWell(
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  onTap: (){},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(borderRadius),
-                      border: Border.all(color: Colors.grey.shade300,),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.message,
-                            color: primaryColor,
-                          ),
-                          SizedBox(width: 10,),
-                          Text(
-                            'أرسال الكود',
-                            style: TextStyle(),
-                          ),
-                        ],
-                      ),
-                    ),
+                  'تقدر تتواصل مع فريق المبيعات وتدفع عن طريق فودافون كاش او تحويل بنكي',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: boldFont,
                   ),
                 ),
+                SizedBox(height: 20,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'أرسل الكود الخاص بيك لفريق المبيعات',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      'هذا الكود خاص بحسابك تقوم بأرساله لفريق المبيعات عند طلبهم منك',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    SizedBox(height: 5,),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      onTap: onShare,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          border: Border.all(color: Colors.grey.shade300,),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.share,
+                                color: primaryColor,
+                              ),
+                              SizedBox(width: 10,),
+                              Text(
+                                'أرسال الكود',
+                                style: TextStyle(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15,),
+                    Text(
+                      'أدخل كود التفعيل',
+                      style: TextStyle(),
+                    ),
+                    Text(
+                      'كود التفعيل هو كود تقوم بأستلامة من فريق المبيعات لتأكيد الدفع',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    SizedBox(height: 5,),
+                    Form(
+                      key: _formKey,
+                      child: CustomTextField(
+                        text: 'كود التفعيل',
+                        obscureText: false,
+                        textInputType: TextInputType.text,
+                        anotherFilledColor: true,
+                        setValue: (value){
+                          _activateCode = value;
+                        },
+                        validation: (value){
+                          if(value.isEmpty) return 'أدخل كود التفعيل';
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ],
+            ),
+            CustomButton(
+              text: 'تفعيل الحساب',
+              isLoading: _isLoading,
+              onClick: (){
+                onActivate(context);
+              },
             ),
           ],
         ),

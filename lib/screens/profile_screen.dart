@@ -155,6 +155,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
               //   ),
               // ),
               // SizedBox(height: 5,),
+              if(activeUser.premium && !activeUser.fillPremiumForm)
+                Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(
+                          color: Colors.grey.shade300
+                      )
+                  ),
+                  elevation: 0,
+                  color: Colors.white,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: (){},
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.format_list_bulleted,
+                            color: primaryColor,
+                          ),
+                          SizedBox(width: 15,),
+                          Text(
+                            'أبدأ الأسئلة',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
