@@ -6,9 +6,9 @@ class ProgramCard extends StatefulWidget {
   final int id;
   final int selected;
   final String mainText;
-  final String description;
+  final String? description;
   final VoidCallback onClick;
-  const ProgramCard({Key? key, required this.id, required this.selected, required this.onClick, required this.mainText, required this.description}) : super(key: key);
+  const ProgramCard({Key? key, required this.id, required this.selected, required this.onClick, required this.mainText, this.description}) : super(key: key);
 
   @override
   _ProgramCardState createState() => _ProgramCardState();
@@ -44,14 +44,15 @@ class _ProgramCardState extends State<ProgramCard> {
                     fontFamily: boldFont,
                   ),
                 ),
-                Text(
-                  widget.description,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
+                if(widget.description != null)
+                  Text(
+                    widget.description!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 12,
+                    ),
                   ),
-                ),
               ],
             ),
           ),

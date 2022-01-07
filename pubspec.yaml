@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  firebase_storage: ^10.2.4
+  image_picker: ^0.8.4+1
   share: ^2.0.4
   webview_flutter: ^2.0.13
   flutter_native_timezone: ^2.0.0

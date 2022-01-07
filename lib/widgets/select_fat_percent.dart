@@ -11,34 +11,41 @@ import 'custom_button.dart';
 
 class SelectFatPercent extends StatefulWidget {
   final VoidCallback onBack;
-  const SelectFatPercent({Key? key, required this.onBack}) : super(key: key);
+  final VoidCallback onNext;
+  final bool? loading;
+  const SelectFatPercent({Key? key, required this.onBack, required this.onNext, this.loading = false}) : super(key: key);
 
   @override
   _SelectFatPercentState createState() => _SelectFatPercentState();
 }
 
 class _SelectFatPercentState extends State<SelectFatPercent> {
-  bool _isLoading = false;
   FirestoreService _firestoreService = new FirestoreService();
+  int _selected = 0;
 
-  onConfirm(BuildContext context) async{
-    bool done = true;
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-    setState(() { _isLoading = true; });
-    await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
-      setState(() { _isLoading = false; });
-      done = false;
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ'))
-      );
-    });
-    if(done) {
-      await activeUser.saveInSharedPreference();
-      await HelpFunction.saveInitScreen(MainScreen.id);
-      setState(() { _isLoading = false; });
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
-    }
+  // onConfirm(BuildContext context) async{
+  //   bool done = true;
+  //   var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+  //   setState(() { _isLoading = true; });
+  //   await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
+  //     setState(() { _isLoading = false; });
+  //     done = false;
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('حدث خطأ'))
+  //     );
+  //   });
+  //   if(done) {
+  //     await activeUser.saveInSharedPreference();
+  //     await HelpFunction.saveInitScreen(MainScreen.id);
+  //     setState(() { _isLoading = false; });
+  //     Navigator.of(context)
+  //         .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
+  //   }
+  // }
+
+  onNext(BuildContext context){
+    Provider.of<ActiveUserProvider>(context, listen: false).setFatPercent(_selected);
+    widget.onNext();
   }
 
   @override
@@ -104,6 +111,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         child: BodyFatCard(
                           imagePath: 'assets/images/body_fat/6.PNG',
                           percent: 6,
+                          selected: _selected,
+                          onClick: (){
+                            setState(() {
+                              _selected = 6;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(width: 10,),
@@ -111,6 +124,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         child: BodyFatCard(
                           imagePath: 'assets/images/body_fat/10.PNG',
                           percent: 10,
+                          selected: _selected,
+                          onClick: (){
+                            setState(() {
+                              _selected = 10;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -122,6 +141,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         child: BodyFatCard(
                           imagePath: 'assets/images/body_fat/15.PNG',
                           percent: 15,
+                          selected: _selected,
+                          onClick: (){
+                            setState(() {
+                              _selected = 15;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(width: 10,),
@@ -129,6 +154,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         child: BodyFatCard(
                           imagePath: 'assets/images/body_fat/20.PNG',
                           percent: 20,
+                          selected: _selected,
+                          onClick: (){
+                            setState(() {
+                              _selected = 20;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -140,6 +171,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         child: BodyFatCard(
                           imagePath: 'assets/images/body_fat/25.PNG',
                           percent: 25,
+                          selected: _selected,
+                          onClick: (){
+                            setState(() {
+                              _selected = 25;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(width: 10,),
@@ -147,6 +184,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         child: BodyFatCard(
                           imagePath: 'assets/images/body_fat/30.PNG',
                           percent: 30,
+                          selected: _selected,
+                          onClick: (){
+                            setState(() {
+                              _selected = 30;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -158,6 +201,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         child: BodyFatCard(
                           imagePath: 'assets/images/body_fat/35.PNG',
                           percent: 35,
+                          selected: _selected,
+                          onClick: (){
+                            setState(() {
+                              _selected = 35;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(width: 10,),
@@ -165,6 +214,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
                         child: BodyFatCard(
                           imagePath: 'assets/images/body_fat/40.PNG',
                           percent: 40,
+                          selected: _selected,
+                          onClick: (){
+                            setState(() {
+                              _selected = 40;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -176,11 +231,12 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser!.fatsPercent != 0? (){
-              onConfirm(context);
+            onClick: _selected != 0? (){
+              onNext(context);
             } : (){},
-            bgColor: activeUser.fatsPercent != 0? primaryColor : Colors.grey.shade400,
-          )
+            bgColor: _selected != 0? primaryColor : Colors.grey.shade400,
+            isLoading: widget.loading!,
+          ),
         ],
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/confirm_user_info.dart';
 import 'package:informa/widgets/enter_fats_percent.dart';
 import 'package:informa/widgets/register.dart';
@@ -25,6 +27,8 @@ class MoreUserInfoScreen extends StatefulWidget {
 class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
   int _initialPage = 0;
   final PageController _controller = PageController(initialPage: 0);
+  FirestoreService _firestoreService = new FirestoreService();
+  bool _isLoading = false;
 
   goToNextPage(){
     _controller.animateToPage(
@@ -46,6 +50,26 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
     setState(() {
       _initialPage -= 1;
     });
+  }
+
+  onConfirm(BuildContext context) async{
+    bool done = true;
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    setState(() { _isLoading = true; });
+    await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
+      setState(() { _isLoading = false; });
+      done = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('حدث خطأ'))
+      );
+    });
+    if(done) {
+      await activeUser.saveInSharedPreference();
+      await HelpFunction.saveInitScreen(MainScreen.id);
+      setState(() { _isLoading = false; });
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
+    }
   }
 
   @override
@@ -80,6 +104,10 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
               ),
               SelectFatPercent(
                 onBack: goBack,
+                onNext: (){
+                  onConfirm(context);
+                },
+                loading: _isLoading,
               ),
               // SelectLevel(
               //   onClick: goToNextPage,

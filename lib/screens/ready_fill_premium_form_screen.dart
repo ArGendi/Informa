@@ -27,7 +27,7 @@ class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> {
     await NotificationService.showRepeatScheduledNotification(
       id: 10,
       title: 'أدخل جاوب علي الأسئلة',
-      body: 'جاوب عالأسئلة عشان تساعدنا نعملك برنامج مخصص ليك',
+      body: 'جاوب عالأسئلة عشان تساعدنا نعملك برنامج مخصص ليك وتوصل لهدفك 💪🏻',
       payload: 'payload',
       date: 16,
     );

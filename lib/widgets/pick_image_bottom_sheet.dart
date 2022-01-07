@@ -1,17 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:informa/screens/sales_payment_screen.dart';
 
 import '../constants.dart';
 
-class PaymentBottomSheet extends StatefulWidget {
-  const PaymentBottomSheet({Key? key}) : super(key: key);
+class PickImageBottomSheet extends StatefulWidget {
+  final VoidCallback onCamera;
+  final VoidCallback onPhotos;
+  const PickImageBottomSheet({Key? key, required this.onCamera, required this.onPhotos}) : super(key: key);
 
   @override
-  _PaymentBottomSheetState createState() => _PaymentBottomSheetState();
+  _PickImageBottomSheetState createState() => _PickImageBottomSheetState();
 }
 
-class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
+class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -29,7 +29,7 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
           ),
           child: Center(
             child: Text(
-              'طرق الدفع',
+              'ورينا صورة الأختبار',
               style: TextStyle(
                 fontFamily: 'CairoBold',
               ),
@@ -39,40 +39,9 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
         SizedBox(height: 15,),
         InkWell(
           borderRadius: BorderRadius.circular(borderRadius),
-          onTap: (){},
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(color: Colors.grey.shade300,),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.credit_card,
-                      color: primaryColor,
-                    ),
-                    SizedBox(width: 10,),
-                    Text(
-                      'عن طريق بطاقة إئتمان',
-                      style: TextStyle(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(height: 5,),
-        InkWell(
-          borderRadius: BorderRadius.circular(borderRadius),
           onTap: (){
+            widget.onCamera();
             Navigator.pop(context);
-            Navigator.pushNamed(context, SalesPaymentScreen.id);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -87,12 +56,46 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
                 child: Row(
                   children: [
                     Icon(
-                      Icons.monetization_on_outlined,
+                      Icons.camera_alt,
                       color: primaryColor,
                     ),
                     SizedBox(width: 10,),
                     Text(
-                      'عن طريق فريق المبيعات',
+                      'أفتح الكاميرا',
+                      style: TextStyle(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 5,),
+        InkWell(
+          borderRadius: BorderRadius.circular(borderRadius),
+          onTap: (){
+            widget.onPhotos();
+            Navigator.pop(context);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(borderRadius),
+                border: Border.all(color: Colors.grey.shade300,),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.photo,
+                      color: primaryColor,
+                    ),
+                    SizedBox(width: 10,),
+                    Text(
+                      'أفتح الصور',
                       style: TextStyle(),
                     ),
                   ],
