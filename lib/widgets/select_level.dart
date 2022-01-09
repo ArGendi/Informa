@@ -17,25 +17,6 @@ class SelectLevel extends StatefulWidget {
 }
 
 class _SelectLevelState extends State<SelectLevel> {
-  Widget cardLevel(int level){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for(int i=0; i<4; i++)
-          Row(
-            children: [
-              Container(
-                width: 15,
-                height: 2,
-                color: i < level ? primaryColor : Colors.grey[300],
-              ),
-              SizedBox(width: 5,),
-            ],
-          ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -60,9 +41,17 @@ class _SelectLevelState extends State<SelectLevel> {
                     ],
                   ),
                   SizedBox(height: 10,),
-                  CircleAvatar(
-                    backgroundColor: Colors.grey[300],
-                    radius: 40,
+                  Container(
+                    width: 85,
+                    height: 85,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(80),
+                        border: Border.all(color: primaryColor),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/coach_face.jpg'),
+                        )
+                    ),
                   ),
                   SizedBox(height: 10,),
                   Text(
@@ -76,7 +65,7 @@ class _SelectLevelState extends State<SelectLevel> {
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
                   Text(
                     'اختار مستواك في التمرين',
                     style: TextStyle(
@@ -89,7 +78,7 @@ class _SelectLevelState extends State<SelectLevel> {
                     children: [
                       Expanded(
                         child: SelectLevelCard(
-                          text: 'خبرتي بسيطة \nوبتعب بسرعة',
+                          text: 'حركة قليلة\n جدا جدا',
                           id: 1,
                           level: 1,
                         ),
@@ -97,7 +86,7 @@ class _SelectLevelState extends State<SelectLevel> {
                       SizedBox(width: 10,),
                       Expanded(
                         child: SelectLevelCard(
-                          text: 'بتمرن بشكل متقتع \nوعندي لياقة معقولة',
+                          text: 'حركة و نشاط\n خفبف نوعا ما',
                           id: 2,
                           level: 2,
                         ),
@@ -109,7 +98,7 @@ class _SelectLevelState extends State<SelectLevel> {
                     children: [
                       Expanded(
                         child: SelectLevelCard(
-                          text: 'بتمرن بشكل منتظم \nولياقتي عالية',
+                          text: 'نشاط\n متوسط',
                           id: 3,
                           level: 3,
                         ),
@@ -117,12 +106,18 @@ class _SelectLevelState extends State<SelectLevel> {
                       SizedBox(width: 10,),
                       Expanded(
                         child: SelectLevelCard(
-                          text: 'شخص رياضي وبقدر \nأعمل تمارين متقدمة',
+                          text: 'حركة و نشاط\n فى اليوم كبير',
                           id: 4,
                           level: 4,
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(height: 10,),
+                  SelectLevelCard(
+                    text: 'طول اليوم حركة و جهد\n و ومجهود كبير جدا',
+                    id: 5,
+                    level: 5,
                   ),
                 ],
               ),

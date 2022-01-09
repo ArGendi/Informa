@@ -83,6 +83,11 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setGoalDescription(String value){
+    _user!.goalDescription = value;
+    notifyListeners();
+  }
+
   setWorkoutPlace(int place){
     _user!.workoutPlace = place;
     notifyListeners();
@@ -125,8 +130,41 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setTrainingTime(DateTime value){
+    _user!.trainingTime = value;
+    notifyListeners();
+  }
+
+
   setFatPercent(int percent){
     _user!.fatsPercent = percent;
+    notifyListeners();
+  }
+
+  setWheyProtein(int value){
+    _user!.wheyProtein = value;
+    notifyListeners();
+  }
+
+  setHaveSupplements(int value){
+    _user!.haveSupplements = value;
+    notifyListeners();
+  }
+
+  setSupplements(String value){
+    _user!.supplements = value;
+    notifyListeners();
+  }
+
+  setNumberOfMeals(int value){
+    _user!.numberOfMeals = value;
+    notifyListeners();
+  }
+
+  addMealDateInIndex(DateTime date, int index){
+    if(_user!.datesOfMeals.length <= index)
+      _user!.datesOfMeals.add(date);
+    else _user!.datesOfMeals[index] = date;
     notifyListeners();
   }
 

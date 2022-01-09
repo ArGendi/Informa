@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/helpers/shared_preference.dart';
 
 class AppUser {
@@ -16,6 +17,7 @@ class AppUser {
   int program;
   // 0 = none,
   int goal;
+  String? goalDescription;
   //0 = none, 1 = home, 2 = gym
   int workoutPlace;
   int points;
@@ -24,15 +26,26 @@ class AppUser {
   int tall;
   int fatsPercent;
   int age;
+  //0 = none, from level 1 to 5
   int fitnessLevel;
   int trainingPeriodLevel;
   List trainingTools = [];
-  int iTrainingDays = 0;
+  int iTrainingDays = -1;
+  DateTime? trainingTime;
   List trainingDays = [];
+  //---------------------------
+  //0 = none, 1 = ok, 2 = no
+  int wheyProtein;
+  //0 = none, 1 = I have, 2 = don't have, 3 = don't have but ready to buy
+  int haveSupplements;
+  String? supplements;
+  int numberOfMeals;
+  List datesOfMeals = [];
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
-      this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false});
+      this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
+      this.numberOfMeals = 0});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];
@@ -43,6 +56,7 @@ class AppUser {
     gender = json['gender'];
     program = json['program'];
     goal = json['goal'];
+    goalDescription = json['goalDescription'];
     workoutPlace = json['workoutPlace'];
     points = json['points'];
     achievements = json['achievements'];
@@ -54,6 +68,8 @@ class AppUser {
     trainingPeriodLevel = json['trainingPeriodLevel'];
     trainingTools = json['trainingTools'] ;
     iTrainingDays = json['iTrainingDays'];
+    var tsTrainingTime = json['deadline'] as Timestamp;
+    trainingTime = tsTrainingTime.toDate();
     trainingDays = json['trainingDays'] ;
   }
 
@@ -67,6 +83,7 @@ class AppUser {
       'gender': gender,
       'program': program,
       'goal': goal,
+      'goalDescription': goalDescription,
       'workoutPlace': workoutPlace,
       'points': points,
       'achievements': achievements,
@@ -78,6 +95,7 @@ class AppUser {
       'trainingPeriodLevel': trainingPeriodLevel,
       'trainingTools': trainingTools,
       'iTrainingDays': iTrainingDays,
+      'trainingTime': Timestamp.fromDate(trainingTime!),
       'trainingDays': trainingDays,
     };
   }

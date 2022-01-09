@@ -32,7 +32,7 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
             borderRadius: BorderRadius.circular(7),
             border: Border.all(
                 color: widget.userChoice == widget.number? primaryColor :
-                  widget.borderColor != null ? widget.borderColor! : Colors.white,
+                  widget.borderColor != null ? widget.borderColor! : Colors.grey.shade300,
                 width: widget.userChoice == widget.number? 2 : 1,
             )
         ),
@@ -48,7 +48,7 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
                     Text(
                      widget.mainText,
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: widget.subText != null ? 16 : 15,
                           fontFamily: 'CairoBold'
                       ),
                     ),

@@ -3,7 +3,13 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/enter_fats_percent.dart';
 import 'package:informa/widgets/premium_fat_percent.dart';
 import 'package:informa/widgets/select_fat_percent.dart';
+import 'package:informa/widgets/select_goal.dart';
+import 'package:informa/widgets/select_level.dart';
+import 'package:informa/widgets/select_meals_per_day.dart';
+import 'package:informa/widgets/select_meals_time.dart';
+import 'package:informa/widgets/select_supplements.dart';
 import 'package:informa/widgets/select_tools.dart';
+import 'package:informa/widgets/select_training_days.dart';
 import 'package:provider/provider.dart';
 
 class PremiumFormScreen extends StatefulWidget {
@@ -93,6 +99,30 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                   onBack: goBack,
                   onNext: goToNextPage,
                 ),
+              SelectGoal(
+                onBack: goBack,
+                onClick: goToNextPage,
+              ),
+              SelectLevel(
+                onBack: goBack,
+                onClick: goToNextPage,
+              ),
+              SelectTrainingDays(
+                onBack: goBack,
+                onClick: goToNextPage,
+              ),
+              SelectSupplements(
+                onBack: goBack,
+                onClick: goToNextPage,
+              ),
+              SelectMealsPerDay(
+                onBack: goBack,
+                onClick: goToNextPage,
+              ),
+              SelectMealsTime(
+                onBack: goBack,
+                onClick: goToNextPage,
+              ),
             ],
           ),
         ),

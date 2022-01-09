@@ -85,7 +85,7 @@ class _FatsPercentState extends State<FatsPercent> {
                       height: 85,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(80),
-                          border: Border.all(color: Colors.grey.shade300),
+                          border: Border.all(color: primaryColor),
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage('assets/images/coach_face.jpg'),

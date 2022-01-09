@@ -19,7 +19,7 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        for(int i=0; i<4; i++)
+        for(int i=0; i<5; i++)
           Row(
             children: [
               Container(
@@ -43,7 +43,6 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
       },
       borderRadius: BorderRadius.circular(borderRadius),
       child: Container(
-        height: 150,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(borderRadius),
@@ -52,19 +51,22 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
               width: 2
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              widget.text,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 25.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.text,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 15,
+                ),
               ),
-            ),
-            SizedBox(height: 10,),
-            cardLevel(widget.level),
-          ],
+              SizedBox(height: 10,),
+              cardLevel(widget.level),
+            ],
+          ),
         ),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/select_day_card.dart';
@@ -16,6 +17,76 @@ class SelectTrainingDays extends StatefulWidget {
 }
 
 class _SelectTrainingDaysState extends State<SelectTrainingDays> {
+  late DateTime _dateTime;
+
+  showPickTimeSheet(BuildContext context){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      builder: (BuildContext context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              color: Colors.white,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    'اختار وقت التمرين',
+                    style: TextStyle(
+                      fontFamily: boldFont,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              height: 180,
+              child: CupertinoDatePicker(
+                initialDateTime: _dateTime,
+                onDateTimeChanged: (datetime){
+                  setState(() {
+                    _dateTime = datetime;
+                  });
+                },
+                mode: CupertinoDatePickerMode.time,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: CustomButton(
+                text: 'التالي',
+                onClick: (){
+                  Provider.of<ActiveUserProvider>(context, listen: false)
+                      .setTrainingTime(_dateTime);
+                  Navigator.pop(context);
+                  widget.onClick();
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  goNext(BuildContext context, int trainingDays){
+    if(trainingDays != 0)
+      showPickTimeSheet(context);
+    else widget.onClick();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _dateTime = DateTime.now();
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -40,9 +111,17 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
                     ],
                   ),
                   SizedBox(height: 10,),
-                  CircleAvatar(
-                    backgroundColor: Colors.grey[300],
-                    radius: 40,
+                  Container(
+                    width: 85,
+                    height: 85,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(80),
+                        border: Border.all(color: primaryColor),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/coach_face.jpg'),
+                        )
+                    ),
                   ),
                   SizedBox(height: 10,),
                   Text(
@@ -71,10 +150,66 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
                       InkWell(
                         borderRadius: BorderRadius.circular(100),
                         onTap: (){
+                          Provider.of<ActiveUserProvider>(context, listen: false).setNumberOfTrainingDays(0);
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: activeUser!.iTrainingDays == 0 ? primaryColor : Colors.grey[300],
+                          radius: 25,
+                          child: Text(
+                            '0',
+                            style: TextStyle(
+                                color: activeUser.iTrainingDays == 0 ? Colors.white : Colors.grey[700]
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10,),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(100),
+                        onTap: (){
+                          Provider.of<ActiveUserProvider>(context, listen: false).setNumberOfTrainingDays(1);
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: activeUser.iTrainingDays == 1 ? primaryColor : Colors.grey[300],
+                          radius: 25,
+                          child: Text(
+                            '1',
+                            style: TextStyle(
+                                color: activeUser.iTrainingDays == 1 ? Colors.white : Colors.grey[700]
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10,),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(100),
+                        onTap: (){
+                          Provider.of<ActiveUserProvider>(context, listen: false).setNumberOfTrainingDays(2);
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: activeUser.iTrainingDays == 2 ? primaryColor : Colors.grey[300],
+                          radius: 25,
+                          child: Text(
+                            '2',
+                            style: TextStyle(
+                                color: activeUser.iTrainingDays == 2 ? Colors.white : Colors.grey[700]
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 5,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        borderRadius: BorderRadius.circular(100),
+                        onTap: (){
                           Provider.of<ActiveUserProvider>(context, listen: false).setNumberOfTrainingDays(3);
                         },
                         child: CircleAvatar(
-                          backgroundColor: activeUser!.iTrainingDays == 3 ? primaryColor : Colors.grey[300],
+                          backgroundColor: activeUser.iTrainingDays == 3 ? primaryColor : Colors.grey[300],
                           radius: 25,
                           child: Text(
                             '3',
@@ -188,9 +323,11 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.trainingDays.length == activeUser.iTrainingDays && activeUser.iTrainingDays != 0 ? widget.onClick : (){},
-            bgColor: activeUser.trainingDays.length == activeUser.iTrainingDays && activeUser.iTrainingDays != 0? primaryColor : Colors.grey.shade400,
-          )
+            onClick: activeUser.trainingDays.length == activeUser.iTrainingDays && activeUser.iTrainingDays != -1 ? (){
+              goNext(context, activeUser.iTrainingDays);
+            } : (){},
+            bgColor: activeUser.trainingDays.length == activeUser.iTrainingDays && activeUser.iTrainingDays != -1? primaryColor : Colors.grey.shade400,
+          ),
         ],
       ),
     );

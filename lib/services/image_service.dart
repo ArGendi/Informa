@@ -10,7 +10,11 @@ class ImageService{
 
   Future<File?> pickImage(ImageSource source) async{
     try{
-      final XFile? image = await _picker.pickImage(source: source);
+      final XFile? image = await _picker.pickImage(
+        source: source,
+        maxWidth: 550,
+        imageQuality: 70,
+      );
       return File(image!.path);
 
     } on PlatformException catch(e){
@@ -32,7 +36,7 @@ class ImageService{
 
   Future<bool> uploadImageToFirebase(File image, String id) async {
     bool uploaded = false;
-    Reference ref = _storage.ref().child("Inbody/" + id);
+    Reference ref = _storage.ref().child("Images/$id/inBody");
     var uploadTask = ref.putFile(image);
     await uploadTask.whenComplete(() {
       uploaded = true;

@@ -9,7 +9,7 @@ import 'package:informa/widgets/program_card.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class PremiumPackagesScreen extends StatefulWidget {
   static String id = 'premium packages';
