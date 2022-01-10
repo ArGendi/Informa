@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/services/web_services.dart';

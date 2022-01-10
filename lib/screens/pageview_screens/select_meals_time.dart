@@ -4,8 +4,8 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import 'custom_button.dart';
+import '../../constants.dart';
+import '../../widgets/custom_button.dart';
 
 class SelectMealsTime extends StatefulWidget {
   final VoidCallback onClick;

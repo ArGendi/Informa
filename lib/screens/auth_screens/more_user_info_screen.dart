@@ -3,18 +3,18 @@ import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/confirm_user_info.dart';
-import 'package:informa/widgets/enter_fats_percent.dart';
-import 'package:informa/widgets/register.dart';
-import 'package:informa/widgets/select_age_tall_weight.dart';
-import 'package:informa/widgets/select_fat_percent.dart';
-import 'package:informa/widgets/select_level.dart';
+import 'package:informa/screens/pageview_screens/enter_fats_percent.dart';
+import 'package:informa/screens/pageview_screens/register.dart';
+import 'package:informa/screens/pageview_screens/select_age_tall_weight.dart';
+import 'package:informa/screens/pageview_screens/select_fat_percent.dart';
+import 'package:informa/screens/pageview_screens/select_level.dart';
 import 'package:informa/widgets/select_tools.dart';
-import 'package:informa/widgets/select_training_days.dart';
+import 'package:informa/screens/pageview_screens/select_training_days.dart';
 import 'package:informa/widgets/select_training_period.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import 'main_screen.dart';
+import '../../constants.dart';
+import '../main_screen.dart';
 
 class MoreUserInfoScreen extends StatefulWidget {
   static String id = 'more user info';
@@ -109,26 +109,6 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
                 },
                 loading: _isLoading,
               ),
-              // SelectLevel(
-              //   onClick: goToNextPage,
-              //   onBack: goBack,
-              // ),
-              // SelectTrainingPeriod(
-              //   onClick: goToNextPage,
-              //   onBack: goBack,
-              // ),
-              // if(activeUser!.workoutPlace != 2)
-              //   SelectTools(
-              //     onClick: goToNextPage,
-              //     onBack: goBack,
-              //   ),
-              // SelectTrainingDays(
-              //   onClick: goToNextPage,
-              //   onBack: goBack,
-              // ),
-              // ConfirmUserInfo(
-              //   onBack: goBack,
-              // ),
             ],
           ),
         ),

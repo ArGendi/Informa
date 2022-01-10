@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:informa/providers/app_language_provider.dart';
-import 'package:informa/screens/email_confirmation_msg_screen.dart';
+import 'package:informa/screens/auth_screens/email_confirmation_msg_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/email_service.dart';
 import 'package:informa/widgets/custom_button.dart';

@@ -110,4 +110,25 @@ class NotificationService{
     await _notifications.cancelAll();
   }
 
+  // Future setNotifications(AppUser user) async{
+  //   await NotificationService.init(initScheduled: true);
+  //   listenNotification();
+  //   NotificationService.showRepeatScheduledNotification(
+  //     id: 20,
+  //     title: 'وقت التمرين',
+  //     body: 'يلا يا بطل استعد عشان نتمرن 💪🏻',
+  //     payload: 'payload',
+  //     date: user.trainingTime!.hour,
+  //   );
+  //   for(int i=0; i<user.numberOfMeals; i++){
+  //     NotificationService.showRepeatScheduledNotification(
+  //       id: 30+i,
+  //       title: 'وجبة ' + (i+1).toString() + ' 🍴',
+  //       body: 'دلوقتي معاد الوجبة ' + (i+1).toString(),
+  //       payload: 'payload',
+  //       date: user.trainingTime!.hour,
+  //     );
+  //   }
+  // }
+
 }

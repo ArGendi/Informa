@@ -11,7 +11,7 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/screens/main_screen.dart';
-import 'package:informa/screens/login_screen.dart';
+import 'package:informa/screens/auth_screens/login_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/services/web_services.dart';
@@ -42,7 +42,11 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
     var credential = await _authServices!.loginWithFacebook().catchError((e){
       setState(() {isFacebookLoading = false;});
     });
-    var fbUser = credential!.user;
+    if(credential == null){
+      setState(() {isFacebookLoading = false;});
+      return;
+    }
+    var fbUser = credential.user;
     if(fbUser != null){
       if(!credential.additionalUserInfo!.isNewUser){
         print('Not a new user');
@@ -88,7 +92,11 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
     var credential = await _authServices!.loginWithGoogle().catchError((e){
       setState(() {isGoogleLoading = false;});
     });
-    var googleUser = credential!.user;
+    if(credential == null){
+      setState(() {isFacebookLoading = false;});
+      return;
+    }
+    var googleUser = credential.user;
     if(googleUser != null){
       if(!credential.additionalUserInfo!.isNewUser) {
         print('Not a new user');

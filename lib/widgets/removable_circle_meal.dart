@@ -20,8 +20,12 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
     // TODO: implement initState
     super.initState();
     var textList = widget.text.split(' ');
-    if(textList.length > 1)
-      _text = textList[0] + '\n' + textList[1];
+    if(textList.length > 1) {
+      _text = textList[0];
+      for(int i=1; i<textList.length; i++){
+        _text += '\n' + textList[i];
+      }
+    }
     else _text = widget.text;
   }
 
@@ -34,15 +38,15 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
       },
       child: AnimatedOpacity(
         opacity: activeUser!.wantedMeals[widget.id].isSelected? 1 : 0.4,
-        duration: Duration(milliseconds: 350),
+        duration: Duration(milliseconds: 400),
         child: Stack(
           children: [
             Container(
-              width: 66,
-              height: 66,
+              width: 70,
+              height: 70,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(100),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.grey.shade300),
               ),
               child: Center(
@@ -52,7 +56,8 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
                   style: TextStyle(
                     color: primaryColor,
                     fontFamily: boldFont,
-                    fontSize: 12
+                    fontSize: 12,
+                    height: 1.5
                   ),
                 ),
               ),
@@ -64,6 +69,7 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
               child: Icon(
                 Icons.cancel,
                 color: Colors.grey[800],
+                size: 20,
               ),
             ),
           ],

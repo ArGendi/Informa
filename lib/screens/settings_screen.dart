@@ -15,7 +15,7 @@ import 'package:informa/widgets/setting_card.dart';
 import 'package:informa/widgets/water_settings_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-import 'main_register_screen.dart';
+import 'auth_screens/main_register_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   static String id = 'settings';

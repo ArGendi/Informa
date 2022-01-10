@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
-
-import '../constants.dart';
-import 'custom_button.dart';
+import '../../constants.dart';
 
 class SelectGoal extends StatefulWidget {
   final VoidCallback onClick;
@@ -55,7 +54,7 @@ class _SelectGoalState extends State<SelectGoal> {
                       )
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
                   Container(
                     width: 85,
                     height: 85,

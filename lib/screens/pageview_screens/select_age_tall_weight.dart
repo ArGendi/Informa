@@ -6,8 +6,8 @@ import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../constants.dart';
-import 'custom_button.dart';
+import '../../constants.dart';
+import '../../widgets/custom_button.dart';
 
 class SelectAgeTallWeight extends StatefulWidget {
   final VoidCallback onClick;

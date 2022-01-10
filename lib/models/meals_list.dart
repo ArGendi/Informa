@@ -174,7 +174,7 @@ class MealsList{
       name: 'خيار',
     ),
     Meal(
-      name: 'خش',
+      name: 'خس',
     ),
     Meal(
       name: 'بصل',

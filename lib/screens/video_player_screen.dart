@@ -54,19 +54,27 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         title: Text('انفورما'),
         centerTitle: true,
       ),
-      body: Center(
-        child: YoutubePlayerBuilder(
-          player: YoutubePlayer(
-            progressColors: ProgressBarColors(
-              playedColor: primaryColor,
-              handleColor: Colors.white
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: Center(
+          child: YoutubePlayerBuilder(
+            player: YoutubePlayer(
+              progressColors: ProgressBarColors(
+                playedColor: primaryColor,
+                handleColor: Colors.white
+              ),
+              progressIndicatorColor: primaryColor,
+              controller: _controller!,
             ),
-            progressIndicatorColor: primaryColor,
-            controller: _controller!,
+            builder: (context , player) {
+              return player;
+            },
           ),
-          builder: (context , player) {
-            return player;
-          },
         ),
       ),
     );

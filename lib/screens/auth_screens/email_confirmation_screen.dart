@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
-import 'package:informa/screens/reset_password_screen.dart';
+import 'package:informa/screens/auth_screens/reset_password_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:pinput/pin_put/pin_put.dart';

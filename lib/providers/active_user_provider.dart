@@ -50,12 +50,9 @@ class ActiveUserProvider extends ChangeNotifier{
     });
   }
 
-  Future premiumFormFilled(String id) async{
+  premiumFormFilled(){
     _user!.fillPremiumForm = true;
     notifyListeners();
-    await _firestoreService.updateUserData(id, {
-      'premiumForm': true,
-    });
   }
 
   setFromSocialMedia(bool value){
@@ -151,8 +148,23 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setMilkProblem(int value){
+    _user!.milkProblem = value;
+    notifyListeners();
+  }
+
+  setDisease(int value){
+    _user!.disease = value;
+    notifyListeners();
+  }
+
   setSupplements(String value){
     _user!.supplements = value;
+    notifyListeners();
+  }
+
+  setDiseaseDescription(String value){
+    _user!.diseaseDescription = value;
     notifyListeners();
   }
 

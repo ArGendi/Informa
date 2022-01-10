@@ -3,19 +3,19 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import 'custom_button.dart';
+import '../../constants.dart';
+import '../../widgets/custom_button.dart';
 
-class SelectMealsPerDay extends StatefulWidget {
+class SelectMilkProductsProblems extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectMealsPerDay({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectMilkProductsProblems({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
-  _SelectMealsPerDayState createState() => _SelectMealsPerDayState();
+  _SelectMilkProductsProblemsState createState() => _SelectMilkProductsProblemsState();
 }
 
-class _SelectMealsPerDayState extends State<SelectMealsPerDay> {
+class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems> {
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -39,7 +39,7 @@ class _SelectMealsPerDayState extends State<SelectMealsPerDay> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 20,),
                   Container(
                     width: 85,
                     height: 85,
@@ -54,7 +54,7 @@ class _SelectMealsPerDayState extends State<SelectMealsPerDay> {
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    'الوجبات اليومية',
+                    'دلوقتي نشوف منتجات الألبان',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -68,7 +68,7 @@ class _SelectMealsPerDayState extends State<SelectMealsPerDay> {
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    'عدد الوجبات الماسب لك فى اليوم؟',
+                    'هل تعانى من هضم منتاجات الالبان؟',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -77,29 +77,47 @@ class _SelectMealsPerDayState extends State<SelectMealsPerDay> {
                   ),
                   SizedBox(height: 10,),
                   ProgramSelectCard(
-                    mainText: 'وجبتين',
+                    mainText: 'نعم عندى حساسية من كل منتجات الالبان',
+                    number: 1,
+                    userChoice: activeUser!.milkProblem,
+                    onClick: (){
+                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(1);
+                    },
+                  ),
+                  SizedBox(height: 10,),
+                  ProgramSelectCard(
+                    mainText: 'لا باكل و بشرب منتجات الالبان عادى',
                     number: 2,
-                    userChoice: activeUser!.numberOfMeals,
+                    userChoice: activeUser.milkProblem,
                     onClick: (){
-                      Provider.of<ActiveUserProvider>(context, listen: false).setNumberOfMeals(2);
+                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(2);
                     },
                   ),
                   SizedBox(height: 10,),
                   ProgramSelectCard(
-                    mainText: '3 وجبات',
+                    mainText: 'مشكلتى مع اللبن فقط لكن الجبن و الزبادى تمام',
                     number: 3,
-                    userChoice: activeUser.numberOfMeals,
+                    userChoice: activeUser.milkProblem,
                     onClick: (){
-                      Provider.of<ActiveUserProvider>(context, listen: false).setNumberOfMeals(3);
+                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(3);
                     },
                   ),
                   SizedBox(height: 10,),
                   ProgramSelectCard(
-                    mainText: '4 وجبات',
+                    mainText: 'مشكلتى مع الجبن فقط لكنى أشرب لبن و اكل زبادى عادى',
                     number: 4,
-                    userChoice: activeUser.numberOfMeals,
+                    userChoice: activeUser.milkProblem,
                     onClick: (){
-                      Provider.of<ActiveUserProvider>(context, listen: false).setNumberOfMeals(4);
+                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(4);
+                    },
+                  ),
+                  SizedBox(height: 10,),
+                  ProgramSelectCard(
+                    mainText: 'مشكلتى مع الزبادى فقط و لكن الجبن تمام و اللبن تمام',
+                    number: 5,
+                    userChoice: activeUser.milkProblem,
+                    onClick: (){
+                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(5);
                     },
                   ),
                   SizedBox(height: 40,),
@@ -109,8 +127,8 @@ class _SelectMealsPerDayState extends State<SelectMealsPerDay> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.numberOfMeals != 0? widget.onClick : (){},
-            bgColor: activeUser.numberOfMeals != 0? primaryColor : Colors.grey.shade400,
+            onClick: activeUser.milkProblem != 0 ? widget.onClick : (){},
+            bgColor: activeUser.milkProblem != 0 ? primaryColor : Colors.grey.shade400,
           )
         ],
       ),

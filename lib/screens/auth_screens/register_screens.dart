@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/screens/main_screen.dart';
-import 'package:informa/widgets/select_gender.dart';
-import 'package:informa/widgets/select_goal.dart';
-import 'package:informa/widgets/select_place.dart';
+import 'package:informa/screens/pageview_screens/select_gender.dart';
+import 'package:informa/screens/pageview_screens/select_place.dart';
 import 'package:informa/widgets/select_program.dart';
 import 'package:provider/provider.dart';
 

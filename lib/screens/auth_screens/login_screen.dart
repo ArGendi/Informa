@@ -5,15 +5,15 @@ import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
-import 'package:informa/screens/forget_password_screen.dart';
+import 'package:informa/screens/auth_screens/forget_password_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import 'main_screen.dart';
+import '../../constants.dart';
+import '../main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login';

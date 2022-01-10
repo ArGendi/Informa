@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
-import 'package:informa/screens/register_screens.dart';
+import 'package:informa/screens/auth_screens/register_screens.dart';
 import 'package:informa/widgets/custom_button.dart';
 
 class WelcomeScreen extends StatefulWidget {

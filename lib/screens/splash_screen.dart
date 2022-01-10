@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:informa/screens/loading_screen.dart';
-import 'package:informa/screens/register_screens.dart';
+import 'package:informa/screens/auth_screens/register_screens.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/screens/main_screen.dart';
-import 'package:informa/screens/premium/premium_form_screen.dart';
+import 'package:informa/screens/premium_screens/premium_form_screen.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 

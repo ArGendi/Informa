@@ -42,7 +42,7 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
         Provider.of<ActiveUserProvider>(context, listen: false).setFitnessLevel(widget.id);
       },
       borderRadius: BorderRadius.circular(borderRadius),
-      child: Container(
+      child: AnimatedContainer(
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(borderRadius),
@@ -51,6 +51,7 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
               width: 2
           ),
         ),
+        duration: Duration(milliseconds: 400),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 25.0),
           child: Column(

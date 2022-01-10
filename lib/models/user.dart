@@ -43,11 +43,22 @@ class AppUser {
   int numberOfMeals;
   List datesOfMeals = [];
   List wantedMeals = List.from(MealsList.allMeals);
+  //0 = none,
+  //1 = yes have with all kind of milk,
+  //2 = no, don't have any problem,
+  //3 = with milk only (cheese & yogurt ok)
+  //4 = with cheese only (milk & yogurt ok)
+  //5 = with yogurt only (milk & cheese ok)
+  int milkProblem;
+  //0 = none, 1 = no, 2 = yes
+  int disease;
+  String? diseaseDescription;
+  DateTime? premiumCountDown;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
       this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
-      this.numberOfMeals = 0});
+      this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];
@@ -55,6 +66,7 @@ class AppUser {
     phone = json['phone'];
     fromSocialMedia = json['fromSocialMedia'];
     premium = json['premium'];
+    fillPremiumForm = json['fillPremiumForm'];
     gender = json['gender'];
     program = json['program'];
     goal = json['goal'];
@@ -72,7 +84,25 @@ class AppUser {
     iTrainingDays = json['iTrainingDays'];
     var tsTrainingTime = json['deadline'] as Timestamp;
     trainingTime = tsTrainingTime.toDate();
-    trainingDays = json['trainingDays'] ;
+    trainingDays = json['trainingDays'];
+    wheyProtein = json['wheyProtein'];
+    haveSupplements = json['haveSupplements'];
+    supplements = json['supplements'];
+    numberOfMeals = json['numberOfMeals'];
+    datesOfMeals = json['datesOfMeals'];
+    wantedMeals = json['wantedMeals'];
+    milkProblem = json['milkProblem'];
+    disease = json['disease'];
+    diseaseDescription = json['diseaseDescription'];
+    DateTime? dateTime;
+    if(json['premiumCountDown'] != null) {
+      DateTime now = DateTime.now();
+      var temp = json['premiumCountDown'] as Timestamp;
+      dateTime = temp.toDate();
+      bool before = dateTime.isBefore(now);
+      if(before) dateTime = null;
+    }
+    premiumCountDown = dateTime;
   }
 
   Map<String, dynamic> toJson(){
@@ -82,6 +112,7 @@ class AppUser {
       'phone': phone,
       'fromSocialMedia': fromSocialMedia,
       'premium': premium,
+      'fillPremiumForm': fillPremiumForm,
       'gender': gender,
       'program': program,
       'goal': goal,
@@ -99,6 +130,17 @@ class AppUser {
       'iTrainingDays': iTrainingDays,
       'trainingTime': Timestamp.fromDate(trainingTime!),
       'trainingDays': trainingDays,
+      'wheyProtein': wheyProtein,
+      'haveSupplements': haveSupplements,
+      'supplements': supplements,
+      'numberOfMeals': numberOfMeals,
+      'datesOfMeals': datesOfMeals,
+      'wantedMeals': wantedMeals,
+      'milkProblem': milkProblem,
+      'disease': disease,
+      'diseaseDescription': diseaseDescription,
+      'premiumCountDown': premiumCountDown != null? Timestamp.fromDate(premiumCountDown!):
+        null,
     };
   }
 

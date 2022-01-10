@@ -4,8 +4,8 @@ import 'package:informa/widgets/custom_textfield.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import 'custom_button.dart';
+import '../../constants.dart';
+import '../../widgets/custom_button.dart';
 
 class SelectSupplements extends StatefulWidget {
   final VoidCallback onClick;
@@ -115,44 +115,48 @@ class _SelectSupplementsState extends State<SelectSupplements> {
                   ),
                   SizedBox(height: 20,),
                   if(activeUser.wheyProtein == 1)
-                  Column(
-                    children: [
-                      Text(
-                        ' هل تمتلك حاليا اى نوع من المكملات ؟',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: boldFont,
+                  AnimatedOpacity(
+                    duration: Duration(milliseconds: 300),
+                    opacity: activeUser.wheyProtein == 1 ? 1 : 0,
+                    child: Column(
+                      children: [
+                        Text(
+                          ' هل تمتلك حاليا اى نوع من المكملات ؟',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: boldFont,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10,),
-                      ProgramSelectCard(
-                        mainText: 'معايا مكملات',
-                        number: 1,
-                        userChoice: activeUser.haveSupplements,
-                        onClick: (){
-                          Provider.of<ActiveUserProvider>(context, listen: false).setHaveSupplements(1);
-                        },
-                      ),
-                      SizedBox(height: 10,),
-                      ProgramSelectCard(
-                        mainText: 'معنديش',
-                        number: 2,
-                        userChoice: activeUser.haveSupplements,
-                        onClick: (){
-                          Provider.of<ActiveUserProvider>(context, listen: false).setHaveSupplements(2);
-                        },
-                      ),
-                      SizedBox(height: 10,),
-                      ProgramSelectCard(
-                        mainText: 'معنديش بس ممكن اشتري',
-                        number: 3,
-                        userChoice: activeUser.haveSupplements,
-                        onClick: (){
-                          Provider.of<ActiveUserProvider>(context, listen: false).setHaveSupplements(3);
-                        },
-                      ),
-                    ],
+                        SizedBox(height: 10,),
+                        ProgramSelectCard(
+                          mainText: 'معايا مكملات',
+                          number: 1,
+                          userChoice: activeUser.haveSupplements,
+                          onClick: (){
+                            Provider.of<ActiveUserProvider>(context, listen: false).setHaveSupplements(1);
+                          },
+                        ),
+                        SizedBox(height: 10,),
+                        ProgramSelectCard(
+                          mainText: 'معنديش',
+                          number: 2,
+                          userChoice: activeUser.haveSupplements,
+                          onClick: (){
+                            Provider.of<ActiveUserProvider>(context, listen: false).setHaveSupplements(2);
+                          },
+                        ),
+                        SizedBox(height: 10,),
+                        ProgramSelectCard(
+                          mainText: 'معنديش بس ممكن اشتري',
+                          number: 3,
+                          userChoice: activeUser.haveSupplements,
+                          onClick: (){
+                            Provider.of<ActiveUserProvider>(context, listen: false).setHaveSupplements(3);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   if(activeUser.haveSupplements == 1 && activeUser.wheyProtein == 1)
                   Column(

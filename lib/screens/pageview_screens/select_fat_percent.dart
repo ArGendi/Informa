@@ -6,8 +6,8 @@ import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/body_fat_card.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import 'custom_button.dart';
+import '../../constants.dart';
+import '../../widgets/custom_button.dart';
 
 class SelectFatPercent extends StatefulWidget {
   final VoidCallback onBack;

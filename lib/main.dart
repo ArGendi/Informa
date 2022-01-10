@@ -13,30 +13,30 @@ import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
-import 'package:informa/screens/premium/premium_form_screen.dart';
-import 'package:informa/screens/premium/premium_packages_screen.dart';
-import 'package:informa/screens/premium/ready_fill_premium_form_screen.dart';
+import 'package:informa/screens/premium_screens/premium_form_screen.dart';
+import 'package:informa/screens/premium_screens/premium_packages_screen.dart';
+import 'package:informa/screens/premium_screens/ready_fill_premium_form_screen.dart';
 import 'package:informa/screens/sales_payment_screen.dart';
 import 'package:informa/screens/single_meal_screen.dart';
 import 'package:informa/screens/dummy.dart';
 import 'package:informa/screens/edit_profile_screen.dart';
-import 'package:informa/screens/email_confirmation_screen.dart';
-import 'package:informa/screens/forget_password_screen.dart';
+import 'package:informa/screens/auth_screens/email_confirmation_screen.dart';
+import 'package:informa/screens/auth_screens/forget_password_screen.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/free_workout_screen.dart';
 import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/loading_screen.dart';
 import 'package:informa/screens/main_screen.dart';
-import 'package:informa/screens/login_screen.dart';
-import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/auth_screens/login_screen.dart';
+import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/screens/meal_category_screen.dart';
-import 'package:informa/screens/more_user_info_screen.dart';
+import 'package:informa/screens/auth_screens/more_user_info_screen.dart';
 import 'package:informa/screens/muscle_selection_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/prepare_program_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
-import 'package:informa/screens/register_screens.dart';
-import 'package:informa/screens/reset_password_screen.dart';
+import 'package:informa/screens/auth_screens/register_screens.dart';
+import 'package:informa/screens/auth_screens/reset_password_screen.dart';
 import 'package:informa/screens/settings_screen.dart';
 import 'package:informa/screens/single_workout_screen.dart';
 import 'package:informa/screens/splash_screen.dart';
@@ -45,7 +45,6 @@ import 'package:informa/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'constants.dart';
 import 'helpers/shared_preference.dart';
-import 'loading_screens/challenges_loading_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,7 +100,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: PremiumFormScreen(),//initScreen == null ? WelcomeScreen() : SplashScreen(),
+      home: initScreen == null ? WelcomeScreen() : SplashScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -119,7 +118,6 @@ class MyApp extends StatelessWidget {
         RegisterScreens.id: (context) => RegisterScreens(),
         EditProfileScreen.id: (context) => EditProfileScreen(),
         ChallengesScreen.id: (context) => ChallengesScreen(),
-        ChallengesLoadingScreen.id: (context) => ChallengesLoadingScreen(),
         MealCategoryScreen.id: (context) => MealCategoryScreen(),
         PremiumPackagesScreen.id: (context) => PremiumPackagesScreen(),
         ReadyFillPremiumForm.id: (context) => ReadyFillPremiumForm(),

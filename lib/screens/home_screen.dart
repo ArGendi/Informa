@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:informa/constants.dart';
-import 'package:informa/loading_screens/challenges_loading_screen.dart';
 import 'package:informa/models/challenge.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -120,7 +120,48 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            if(!activeUser!.premium)
+            SizedBox(height: 3,),
+            if(activeUser!.premiumCountDown != null)
+              Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'الوقت المتبقي علي برنامجك',
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: CountdownTimer(
+                        endTime: activeUser.premiumCountDown!.millisecondsSinceEpoch,
+                        textStyle: TextStyle(
+                            color: Colors.green,
+                          fontSize: 14,
+                          fontFamily: boldFont,
+                        ),
+                        endWidget: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Text(
+                            '',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12
+                            ),
+                          ),
+                        ),
+                        onEnd: (){},
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if(!activeUser.premium)
               Container(
               width: double.infinity,
               height: 200,

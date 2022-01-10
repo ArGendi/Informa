@@ -11,8 +11,8 @@ import 'package:informa/widgets/program_card.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
-import 'custom_button.dart';
+import '../../constants.dart';
+import '../../widgets/custom_button.dart';
 
 class PremiumFatPercent extends StatefulWidget {
   final VoidCallback onBack;

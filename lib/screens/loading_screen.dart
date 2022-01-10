@@ -10,7 +10,7 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/providers/water_provider.dart';
-import 'package:informa/screens/register_screens.dart';
+import 'package:informa/screens/auth_screens/register_screens.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:provider/provider.dart';
 

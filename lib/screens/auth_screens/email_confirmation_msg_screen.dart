@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:informa/screens/login_screen.dart';
+import 'package:informa/screens/auth_screens/login_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class EmailConfirmationMsgScreen extends StatefulWidget {
   final String email;

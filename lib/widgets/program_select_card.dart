@@ -25,7 +25,7 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
     return InkWell(
       borderRadius: BorderRadius.circular(7),
       onTap: widget.onClick,
-      child: Container(
+      child: AnimatedContainer(
         width: double.infinity,
         decoration: BoxDecoration(
             color: Colors.white,
@@ -36,6 +36,7 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
                 width: widget.userChoice == widget.number? 2 : 1,
             )
         ),
+        duration: Duration(milliseconds: 400),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Row(
@@ -48,8 +49,8 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
                     Text(
                      widget.mainText,
                       style: TextStyle(
-                          fontSize: widget.subText != null ? 16 : 15,
-                          fontFamily: 'CairoBold'
+                          fontSize: widget.subText != null ? 16 : null,
+                          fontFamily: widget.subText != null ? boldFont : null,
                       ),
                     ),
                     if(widget.subText != null)

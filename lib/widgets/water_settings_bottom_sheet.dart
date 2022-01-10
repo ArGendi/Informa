@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/water.dart';
 import 'package:informa/providers/water_provider.dart';
-import 'package:informa/screens/main_register_screen.dart';
+import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
@@ -90,9 +90,10 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
     Navigator.pop(context);
   }
 
-  void listenNotification() {
+  void listenNotification() async{
+    var initScreen = await HelpFunction.getInitScreen();
     NotificationService.onNotifications.stream.listen((payload) {
-      Navigator.pushNamed(context, MainRegisterScreen.id);
+      Navigator.pushNamed(context, initScreen!);
     });
   }
 

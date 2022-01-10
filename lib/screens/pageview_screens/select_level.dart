@@ -5,7 +5,7 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/select_level_card.dart';
 import 'package:provider/provider.dart';
 
-import 'custom_button.dart';
+import '../../widgets/custom_button.dart';
 
 class SelectLevel extends StatefulWidget {
   final VoidCallback onClick;
