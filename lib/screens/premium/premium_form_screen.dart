@@ -10,6 +10,7 @@ import 'package:informa/widgets/select_meals_time.dart';
 import 'package:informa/widgets/select_supplements.dart';
 import 'package:informa/widgets/select_tools.dart';
 import 'package:informa/widgets/select_training_days.dart';
+import 'package:informa/widgets/select_unwanted_meals.dart';
 import 'package:provider/provider.dart';
 
 class PremiumFormScreen extends StatefulWidget {
@@ -77,52 +78,56 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
             physics:new NeverScrollableScrollPhysics(),
             controller: _controller,
             children: [
-              PremiumFatPercent(
-                onBack: (){
-                  Navigator.pop(context);
-                },
-                goToFatsImages: (){
-                  setState(() {
-                    _showFatsImagesPage = true;
-                  });
-                  goToNextPage();
-                },
-                onNext: (){
-                  setState(() {
-                    _showFatsImagesPage = false;
-                  });
-                  goToNextPage();
-                },
-              ),
-              if(_showFatsImagesPage)
-                SelectFatPercent(
-                  onBack: goBack,
-                  onNext: goToNextPage,
-                ),
-              SelectGoal(
+              // PremiumFatPercent(
+              //   onBack: (){
+              //     Navigator.pop(context);
+              //   },
+              //   goToFatsImages: (){
+              //     setState(() {
+              //       _showFatsImagesPage = true;
+              //     });
+              //     goToNextPage();
+              //   },
+              //   onNext: (){
+              //     setState(() {
+              //       _showFatsImagesPage = false;
+              //     });
+              //     goToNextPage();
+              //   },
+              // ),
+              // if(_showFatsImagesPage)
+              //   SelectFatPercent(
+              //     onBack: goBack,
+              //     onNext: goToNextPage,
+              //   ),
+              // SelectGoal(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
+              // SelectLevel(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
+              // SelectTrainingDays(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
+              // SelectSupplements(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
+              // SelectMealsPerDay(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
+              // SelectMealsTime(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
+              SelectUnWantedMeals(
                 onBack: goBack,
                 onClick: goToNextPage,
-              ),
-              SelectLevel(
-                onBack: goBack,
-                onClick: goToNextPage,
-              ),
-              SelectTrainingDays(
-                onBack: goBack,
-                onClick: goToNextPage,
-              ),
-              SelectSupplements(
-                onBack: goBack,
-                onClick: goToNextPage,
-              ),
-              SelectMealsPerDay(
-                onBack: goBack,
-                onClick: goToNextPage,
-              ),
-              SelectMealsTime(
-                onBack: goBack,
-                onClick: goToNextPage,
-              ),
+              )
             ],
           ),
         ),

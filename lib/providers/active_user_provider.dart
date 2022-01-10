@@ -161,6 +161,16 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  changeMealStateUnWantedMeal(int index){
+    _user!.wantedMeals[index].isSelected = !_user!.wantedMeals[index].isSelected;
+    notifyListeners();
+  }
+
+  addToUnWantedMeal(int index){
+    _user!.wantedMeals[index].isSelected = true;
+    notifyListeners();
+  }
+
   addMealDateInIndex(DateTime date, int index){
     if(_user!.datesOfMeals.length <= index)
       _user!.datesOfMeals.add(date);

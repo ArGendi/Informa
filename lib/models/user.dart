@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/helpers/shared_preference.dart';
+import 'package:informa/models/meals_list.dart';
 
 class AppUser {
   String? id;
@@ -41,6 +42,7 @@ class AppUser {
   String? supplements;
   int numberOfMeals;
   List datesOfMeals = [];
+  List wantedMeals = List.from(MealsList.allMeals);
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
