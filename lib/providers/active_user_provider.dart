@@ -158,6 +158,16 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setPackage(int value){
+    _user!.package = value;
+    notifyListeners();
+  }
+
+  setPlan(int value){
+    _user!.plan = value;
+    notifyListeners();
+  }
+
   setSupplements(String value){
     _user!.supplements = value;
     notifyListeners();
@@ -214,6 +224,15 @@ class ActiveUserProvider extends ChangeNotifier{
   removeTrainingDay(int day){
     if(_user!.trainingDays.contains(day))
       _user!.trainingDays.remove(day);
+    notifyListeners();
+  }
+
+  removeAllUnwantedMeals(){
+    List onlyWantedMeals = [];
+    for(var meal in _user!.wantedMeals){
+      if(meal.isSelected) onlyWantedMeals.add(meal);
+    }
+    _user!.wantedMeals = onlyWantedMeals;
     notifyListeners();
   }
 

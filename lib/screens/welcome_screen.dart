@@ -29,11 +29,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 2600),
+      duration: Duration(milliseconds: 2500),
       vsync: this,
     );
     _btnController = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 800),
       vsync: this,
     );
     _btnOffset = Tween<Offset>(

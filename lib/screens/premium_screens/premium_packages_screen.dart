@@ -225,6 +225,8 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
               text: 'المتابعة',
               bgColor: _selectedPlan != 0 ? primaryColor : Colors.grey.shade400,
               onClick: (){
+                Provider.of<ActiveUserProvider>(context, listen: false).setPackage(_selectedPackage);
+                Provider.of<ActiveUserProvider>(context, listen: false).setPlan(_selectedPlan);
                 showPaymentBottomSheet(context);
               },
             )

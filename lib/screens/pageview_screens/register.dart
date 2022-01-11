@@ -42,6 +42,7 @@ class _RegisterState extends State<Register> with SingleTickerProviderStateMixin
   late Animation<Offset> _welcomeOffset;
 
   showSelectCountryBottomSheet(List data){
+    FocusScope.of(context).unfocus();
     showModalBottomSheet(
       context: context,
       backgroundColor: bgColor,
@@ -71,15 +72,17 @@ class _RegisterState extends State<Register> with SingleTickerProviderStateMixin
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Image.network(
-                                data[index]['flags']['png'],
-                                width: 40.0,
-                              ),
-                              SizedBox(width: 10,),
-                              Text('+' + data[index]['callingCodes'][0]),
-                            ],
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Image.network(
+                                  data[index]['flags']['png'],
+                                  width: 40.0,
+                                ),
+                                SizedBox(width: 10,),
+                                Text('+' + data[index]['callingCodes'][0]),
+                              ],
+                            ),
                           ),
                           Flexible(
                             child: Text(
@@ -101,33 +104,6 @@ class _RegisterState extends State<Register> with SingleTickerProviderStateMixin
     );
   }
 
-  Future<UserCredential?> createAccount() async{
-    try {
-      var credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: _email.trim(), password: _password);
-      return credential;
-    } on FirebaseAuthException catch(e) {
-      if (e.code == 'weak-password') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('رقم المرور ضعيف'))
-        );
-        return null;
-      } else if (e.code == 'email-already-in-use') {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('الحساب موجود بالفعل'))
-        );
-        return null;
-      }
-      else{
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.message!))
-        );
-        return null;
-      }
-    }
-    return null;
-  }
-
   onSubmit(BuildContext context) async{
     FocusScope.of(context).unfocus();
     _formKey.currentState!.save();
@@ -142,20 +118,9 @@ class _RegisterState extends State<Register> with SingleTickerProviderStateMixin
       bool fromSocialMedia = Provider.of<ActiveUserProvider>(context, listen: false).user!.fromSocialMedia;
       if(!fromSocialMedia){
         setState(() { _isLoading = true; });
-        var credential = await createAccount();
-        if(credential != null) {
-          Provider.of<ActiveUserProvider>(context, listen: false).setId(credential.user!.uid);
-          Provider.of<ActiveUserProvider>(context, listen: false).setName(_fullName);
-          Provider.of<ActiveUserProvider>(context, listen: false).setEmail(_email.trim());
-          Provider.of<ActiveUserProvider>(context, listen: false).setPassword(_password);
-          AppUser user =  Provider.of<ActiveUserProvider>(context, listen: false).user!;
-          await _firestoreService.saveNewAccount(user);
-          setState(() { _isLoading = false; });
-        }
-        else{
-          setState(() { _isLoading = false; });
-          return;
-        }
+        Provider.of<ActiveUserProvider>(context, listen: false).setName(_fullName);
+        Provider.of<ActiveUserProvider>(context, listen: false).setEmail(_email.trim());
+        Provider.of<ActiveUserProvider>(context, listen: false).setPassword(_password);
       }
       Provider.of<ActiveUserProvider>(context, listen: false).setPhoneNumber("+" + _dialCode + _phoneNumber);
       widget.onClick();

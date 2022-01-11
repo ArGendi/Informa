@@ -73,8 +73,8 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
         Provider.of<ActiveUserProvider>(context, listen: false).setName(profile!.name!);
         Provider.of<ActiveUserProvider>(context, listen: false).setEmail(email!);
         Provider.of<ActiveUserProvider>(context, listen: false).setFromSocialMedia(true);
-        AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-        await _firestoreService.saveNewAccount(activeUser!);
+        //AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+        //await _firestoreService.saveNewAccount(activeUser!);
         setState(() {isFacebookLoading = false;});
         Navigator.pushNamed(context, MoreUserInfoScreen.id);
       }
@@ -93,7 +93,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
       setState(() {isGoogleLoading = false;});
     });
     if(credential == null){
-      setState(() {isFacebookLoading = false;});
+      setState(() {isGoogleLoading = false;});
       return;
     }
     var googleUser = credential.user;
@@ -124,8 +124,8 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
             _authServices!.user.email);
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setFromSocialMedia(true);
-        AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-        await _firestoreService.saveNewAccount(activeUser!);
+        //AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+        //await _firestoreService.saveNewAccount(activeUser!);
         setState(() {isGoogleLoading = false;});
         Navigator.pushNamed(context, MoreUserInfoScreen.id);
       }

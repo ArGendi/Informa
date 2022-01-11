@@ -57,9 +57,10 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
   }
 
   onDone(BuildContext context) async{
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
     String? id = FirebaseAuth.instance.currentUser!.uid;
     Provider.of<ActiveUserProvider>(context, listen: false).premiumFormFilled();
+    Provider.of<ActiveUserProvider>(context, listen: false).removeAllUnwantedMeals();
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
     setState(() {_isLoading = true;});
     await NotificationService.cancelNotification(10);
     DateTime now = DateTime.now();

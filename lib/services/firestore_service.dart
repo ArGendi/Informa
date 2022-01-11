@@ -5,6 +5,8 @@ import 'package:informa/models/user.dart';
 class FirestoreService{
 
   Future<void> saveNewAccountWithFullInfo(AppUser user) async{
+    print(user.id);
+    print(user.toJson());
     await FirebaseFirestore.instance.collection('users')
         .doc(user.id!.toString())
         .set(user.toJson())

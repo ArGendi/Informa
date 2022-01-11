@@ -8,6 +8,7 @@ import 'package:informa/models/water.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/water_provider.dart';
+import 'package:informa/screens/auth_screens/register_screens.dart';
 import 'package:informa/screens/edit_profile_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/widgets/lang_bottom_sheet.dart';
@@ -63,7 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Provider.of<ActiveUserProvider>(context, listen: false).initializeUser();
     Provider.of<AppLanguageProvider>(context, listen: false).initializeLang();
     Navigator.of(context)
-        .pushNamedAndRemoveUntil(MainRegisterScreen.id, (Route<dynamic> route) => false);
+        .pushNamedAndRemoveUntil(RegisterScreens.id, (Route<dynamic> route) => false);
   }
 
   subscriptionPlan(BuildContext context){

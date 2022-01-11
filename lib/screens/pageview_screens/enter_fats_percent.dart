@@ -11,8 +11,10 @@ import '../../widgets/custom_button.dart';
 
 class FatsPercent extends StatefulWidget {
   final VoidCallback onBack;
-  final VoidCallback onClick;
-  const FatsPercent({Key? key, required this.onBack, required this.onClick}) : super(key: key);
+  final VoidCallback onGetImages;
+  final VoidCallback onNext;
+  final bool? isLoading;
+  const FatsPercent({Key? key, required this.onBack, required this.onGetImages, required this.onNext, this.isLoading = false,}) : super(key: key);
 
   @override
   _FatsPercentState createState() => _FatsPercentState();
@@ -21,7 +23,6 @@ class FatsPercent extends StatefulWidget {
 class _FatsPercentState extends State<FatsPercent> {
   String _fatPercent = '';
   var _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
   FirestoreService _firestoreService = new FirestoreService();
 
   onSubmit(BuildContext context){
@@ -30,29 +31,29 @@ class _FatsPercentState extends State<FatsPercent> {
     if(valid){
       _formKey.currentState!.save();
       Provider.of<ActiveUserProvider>(context, listen: false).setFatPercent(int.parse(_fatPercent.trim()));
-      onConfirm(context);
+      widget.onNext();
     }
   }
-
-  onConfirm(BuildContext context) async{
-    bool done = true;
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-    setState(() { _isLoading = true; });
-    await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
-      setState(() { _isLoading = false; });
-      done = false;
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ'))
-      );
-    });
-    if(done) {
-      await activeUser.saveInSharedPreference();
-      await HelpFunction.saveInitScreen(MainScreen.id);
-      setState(() { _isLoading = false; });
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
-    }
-  }
+  //
+  // onConfirm(BuildContext context) async{
+  //   bool done = true;
+  //   var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+  //   setState(() { _isLoading = true; });
+  //   await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
+  //     setState(() { _isLoading = false; });
+  //     done = false;
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('حدث خطأ'))
+  //     );
+  //   });
+  //   if(done) {
+  //     await activeUser.saveInSharedPreference();
+  //     await HelpFunction.saveInitScreen(MainScreen.id);
+  //     setState(() { _isLoading = false; });
+  //     Navigator.of(context)
+  //         .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +130,7 @@ class _FatsPercentState extends State<FatsPercent> {
                     SizedBox(height: 20,),
                     InkWell(
                       borderRadius: BorderRadius.circular(borderRadius),
-                      onTap: widget.onClick,
+                      onTap: widget.onGetImages,
                       child: Container(
                         width: screenSize.width,
                         decoration: BoxDecoration(
@@ -160,7 +161,7 @@ class _FatsPercentState extends State<FatsPercent> {
             onClick: (){
               onSubmit(context);
             },
-            isLoading: _isLoading,
+            isLoading: widget.isLoading!,
           )
         ],
       ),

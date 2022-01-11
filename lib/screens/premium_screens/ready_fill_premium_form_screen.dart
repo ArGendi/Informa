@@ -78,7 +78,7 @@ class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> {
               ),
               SizedBox(height: 10,),
               CustomButton(
-                bgColor: Colors.grey.shade400,
+                bgColor: Colors.grey.shade500,
                 text: 'بعدين',
                 onClick: (){
                   onLater(context);

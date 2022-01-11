@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/helpers/shared_preference.dart';
+import 'package:informa/models/meal.dart';
 import 'package:informa/models/meals_list.dart';
+import 'package:informa/services/firestore_service.dart';
 
 class AppUser {
   String? id;
@@ -54,11 +56,14 @@ class AppUser {
   int disease;
   String? diseaseDescription;
   DateTime? premiumCountDown;
+  MealsList _mealsList = new MealsList();
+  int package;
+  int plan;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
       this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
-      this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0});
+      this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];
@@ -82,15 +87,16 @@ class AppUser {
     trainingPeriodLevel = json['trainingPeriodLevel'];
     trainingTools = json['trainingTools'] ;
     iTrainingDays = json['iTrainingDays'];
-    var tsTrainingTime = json['deadline'] as Timestamp;
-    trainingTime = tsTrainingTime.toDate();
+    var tsTrainingTime = json['trainingTime'] != null? json['trainingTime'] as Timestamp : null;
+    trainingTime = tsTrainingTime != null? tsTrainingTime.toDate() : null;
     trainingDays = json['trainingDays'];
     wheyProtein = json['wheyProtein'];
     haveSupplements = json['haveSupplements'];
     supplements = json['supplements'];
     numberOfMeals = json['numberOfMeals'];
     datesOfMeals = json['datesOfMeals'];
-    wantedMeals = json['wantedMeals'];
+    wantedMeals = premium && fillPremiumForm?
+        _mealsList.getMealsByIds(json['wantedMeals']) : List.from(MealsList.allMeals);
     milkProblem = json['milkProblem'];
     disease = json['disease'];
     diseaseDescription = json['diseaseDescription'];
@@ -103,6 +109,8 @@ class AppUser {
       if(before) dateTime = null;
     }
     premiumCountDown = dateTime;
+    package = json['package'];
+    plan = json['plan'];
   }
 
   Map<String, dynamic> toJson(){
@@ -128,19 +136,22 @@ class AppUser {
       'trainingPeriodLevel': trainingPeriodLevel,
       'trainingTools': trainingTools,
       'iTrainingDays': iTrainingDays,
-      'trainingTime': Timestamp.fromDate(trainingTime!),
+      'trainingTime': trainingTime != null? Timestamp.fromDate(trainingTime!) : null,
       'trainingDays': trainingDays,
       'wheyProtein': wheyProtein,
       'haveSupplements': haveSupplements,
       'supplements': supplements,
       'numberOfMeals': numberOfMeals,
       'datesOfMeals': datesOfMeals,
-      'wantedMeals': wantedMeals,
+      'wantedMeals': premium && fillPremiumForm?
+            _mealsList.getMealsIds(wantedMeals) : [],
       'milkProblem': milkProblem,
       'disease': disease,
       'diseaseDescription': diseaseDescription,
       'premiumCountDown': premiumCountDown != null? Timestamp.fromDate(premiumCountDown!):
         null,
+      'package': package,
+      'plan': plan,
     };
   }
 

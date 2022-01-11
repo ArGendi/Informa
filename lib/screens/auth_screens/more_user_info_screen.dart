@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/active_user_provider.dart';
@@ -52,23 +53,65 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
     });
   }
 
+  Future<UserCredential?> createAccount(String email, String password) async{
+    try {
+      var credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email.trim(), password: password);
+      return credential;
+    } on FirebaseAuthException catch(e) {
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('رقم المرور ضعيف'))
+        );
+        return null;
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('الحساب موجود بالفعل'))
+        );
+        return null;
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.message!))
+        );
+        return null;
+      }
+    }
+  }
+
   onConfirm(BuildContext context) async{
     bool done = true;
     var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
     setState(() { _isLoading = true; });
-    await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
-      setState(() { _isLoading = false; });
-      done = false;
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ'))
-      );
-    });
+    if(activeUser!.fromSocialMedia){
+      await _firestoreService.saveNewAccountWithFullInfo(activeUser).catchError((e){
+        setState(() { _isLoading = false; });
+        done = false;
+      });
+    }
+    else{
+      var credential = await createAccount(activeUser.email!, activeUser.password!);
+      if(credential != null){
+        Provider.of<ActiveUserProvider>(context, listen: false).setId(credential.user!.uid);
+        await _firestoreService.saveNewAccountWithFullInfo(activeUser).catchError((e){
+          setState(() { _isLoading = false; });
+          done = false;
+        });
+      }
+      else done = false;
+    }
     if(done) {
       await activeUser.saveInSharedPreference();
       await HelpFunction.saveInitScreen(MainScreen.id);
       setState(() { _isLoading = false; });
       Navigator.of(context)
           .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
+    }
+    else{
+      setState(() { _isLoading = false; });
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('حدث خطأ'))
+      );
     }
   }
 
@@ -100,7 +143,11 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
               ),
               FatsPercent(
                 onBack: goBack,
-                onClick: goToNextPage,
+                onGetImages: goToNextPage,
+                onNext: (){
+                  onConfirm(context);
+                },
+                isLoading: _isLoading,
               ),
               SelectFatPercent(
                 onBack: goBack,

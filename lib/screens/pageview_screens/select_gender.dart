@@ -111,8 +111,9 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                             ),
                           );
                         },
-                        child: Container(
+                        child: AnimatedContainer(
                           height: 200,
+                          duration: Duration(milliseconds: 400),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(7),
@@ -157,8 +158,9 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                             ),
                           );
                         },
-                        child: Container(
+                        child: AnimatedContainer(
                           height: 200,
+                          duration: Duration(milliseconds: 400),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(7),

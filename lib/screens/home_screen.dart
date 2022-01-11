@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // actions: [
         //   IconButton(
         //     onPressed: (){
-        //       callPaymentAPIs(activeUser!);
+        //       print('map: ' + activeUser!.toJson().toString());
         //     },
         //     icon: Icon(Icons.add),
         //   )
@@ -120,12 +120,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 3,),
+            //SizedBox(height: 3,),
             if(activeUser!.premiumCountDown != null)
               Container(
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: CountdownTimer(
                         endTime: activeUser.premiumCountDown!.millisecondsSinceEpoch,
                         textStyle: TextStyle(
-                            color: Colors.green,
+                            color: primaryColor,
                           fontSize: 14,
                           fontFamily: boldFont,
                         ),
