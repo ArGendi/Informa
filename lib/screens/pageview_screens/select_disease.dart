@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../widgets/custom_button.dart';
+import '../main_screen.dart';
 
 class SelectDisease extends StatefulWidget {
   final VoidCallback onClick;
@@ -17,14 +18,18 @@ class SelectDisease extends StatefulWidget {
   _SelectDiseaseState createState() => _SelectDiseaseState();
 }
 
-class _SelectDiseaseState extends State<SelectDisease> {
+class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProviderStateMixin{
   String _diseaseWithDesc = '';
   var _formKey = GlobalKey<FormState>();
+  late AnimationController _controller;
+  late Animation<Offset> _offset;
 
-  onNext(int disease){
+  onNext(int disease) async{
     FocusScope.of(context).unfocus();
     if(disease == 1){
       widget.onClick();
+      await _controller.forward();
+      Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
     }
     else{
       bool valid = _formKey.currentState!.validate();
@@ -33,8 +38,34 @@ class _SelectDiseaseState extends State<SelectDisease> {
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setDiseaseDescription(_diseaseWithDesc);
         widget.onClick();
+        await _controller.forward();
+        Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
       }
     }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 1000),
+    );
+    _offset = Tween<Offset>(
+      begin: Offset.zero,
+      end: Offset(0,-3),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutBack,
+    ));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -61,16 +92,19 @@ class _SelectDiseaseState extends State<SelectDisease> {
                     ],
                   ),
                   SizedBox(height: 10,),
-                  Container(
-                    width: 85,
-                    height: 85,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(80),
-                        border: Border.all(color: primaryColor),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/images/coach_face.jpg'),
-                        )
+                  SlideTransition(
+                    position: _offset,
+                    child: Container(
+                      width: 85,
+                      height: 85,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(80),
+                          border: Border.all(color: primaryColor),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage('assets/images/coach_face.jpg'),
+                          )
+                      ),
                     ),
                   ),
                   SizedBox(height: 10,),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:informa/app_localization.dart';
@@ -25,205 +27,263 @@ class _MainScreenState extends State<MainScreen> {
   final _pageStorageBucket = PageStorageBucket();
   Widget _currentPage = HomeScreen();
 
+  _showEndDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'متأكد من اغلاق التطبيق؟',
+            style: TextStyle(
+              color: primaryColor,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text(
+                  'لو هتقفل أرجع تاني منتظرينك يا بطل',
+                  style: TextStyle(
+                    fontSize: 13,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                exit(0);
+              },
+              child: const Text(
+                'أغلاق',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text(
+                'العودة',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var localization = AppLocalization.of(context);
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
-        child: Stack(
-          children: [
-            PageStorage(
-              bucket: _pageStorageBucket,
-              child: _currentPage,
-            ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                width: size.width,
-                height: 70,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.28),
-                      spreadRadius: 5,
-                      blurRadius: 4,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Stack(
-                  children: [
-                    CustomPaint(
-                      size: Size(size.width, 70),
-                      painter: BNBCustomPainter(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          //Profile
-                          MaterialButton(
-                            shape: CircleBorder(),
-                            minWidth: 40,
-                            onPressed: (){
-                              setState(() {
-                                _selectedIndex = 0;
-                                _currentPage = ProfileScreen();
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/user.svg',
-                                  semanticsLabel: 'user',
-                                  color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                Text(
-                                  localization!.translate('حسابي').toString(),
-                                  style: TextStyle(
-                                      color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
-                                      fontSize: 10
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //Analytics
-                          MaterialButton(
-                            shape: CircleBorder(),
-                            minWidth: 40,
-                            onPressed: (){
-                              if(activeUser!.premium)
-                                setState(() {
-                                  _selectedIndex = 1;
-                                  _currentPage = AnalyticsScreen();
-                                });
-                              else Navigator.pushNamed(context, PlansScreen.id);
-                            },
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/chart-histogram.svg',
-                                  semanticsLabel: 'chart',
-                                  color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                Text(
-                                  localization.translate('التقدم').toString(),
-                                  style: TextStyle(
-                                      color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
-                                      fontSize: 10
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            width: 70,
-                            height: 50,
-                          ),
-                          //Workout
-                          MaterialButton(
-                            shape: CircleBorder(),
-                            minWidth: 40,
-                            onPressed: (){
-                              if(activeUser!.premium)
-                                setState(() {
-                                  _selectedIndex = 3;
-                                  _currentPage = WorkoutScreen();
-                                });
-                              else Navigator.pushNamed(context, PlansScreen.id);
-                            },
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/gym.svg',
-                                  semanticsLabel: 'gym',
-                                  color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                Text(
-                                  localization.translate('التمارين').toString(),
-                                  style: TextStyle(
-                                      color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
-                                      fontSize: 10
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //Nutrition
-                          MaterialButton(
-                            shape: CircleBorder(),
-                            minWidth: 40,
-                            onPressed: (){
-                              if(activeUser!.premium)
-                                setState(() {
-                                  _selectedIndex = 4;
-                                  _currentPage = NutritionScreen();
-                                });
-                              else Navigator.pushNamed(context, PlansScreen.id);
-                            },
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/fish.svg',
-                                  semanticsLabel: 'user',
-                                  color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                Text(
-                                  localization.translate('التغذية').toString(),
-                                  style: TextStyle(
-                                      color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
-                                      fontSize: 10
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+    return WillPopScope(
+      onWillPop: (){
+        return _showEndDialog(context);
+      },
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/images/appBg.png')
+              )
+          ),
+          child: Stack(
+            children: [
+              PageStorage(
+                bucket: _pageStorageBucket,
+                child: _currentPage,
+              ),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  width: size.width,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.28),
+                        spreadRadius: 5,
+                        blurRadius: 4,
+                        offset: Offset(0, 3), // changes position of shadow
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: Stack(
+                    children: [
+                      CustomPaint(
+                        size: Size(size.width, 70),
+                        painter: BNBCustomPainter(),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //Profile
+                            MaterialButton(
+                              shape: CircleBorder(),
+                              minWidth: 40,
+                              onPressed: (){
+                                setState(() {
+                                  _selectedIndex = 0;
+                                  _currentPage = ProfileScreen();
+                                });
+                              },
+                              child: Column(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/user.svg',
+                                    semanticsLabel: 'user',
+                                    color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    localization!.translate('حسابي').toString(),
+                                    style: TextStyle(
+                                        color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
+                                        fontSize: 10
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            //Analytics
+                            MaterialButton(
+                              shape: CircleBorder(),
+                              minWidth: 40,
+                              onPressed: (){
+                                if(activeUser!.premium)
+                                  setState(() {
+                                    _selectedIndex = 1;
+                                    _currentPage = AnalyticsScreen();
+                                  });
+                                else Navigator.pushNamed(context, PlansScreen.id);
+                              },
+                              child: Column(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/chart-histogram.svg',
+                                    semanticsLabel: 'chart',
+                                    color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    localization.translate('التقدم').toString(),
+                                    style: TextStyle(
+                                        color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
+                                        fontSize: 10
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 70,
+                              height: 50,
+                            ),
+                            //Workout
+                            MaterialButton(
+                              shape: CircleBorder(),
+                              minWidth: 40,
+                              onPressed: (){
+                                if(activeUser!.premium)
+                                  setState(() {
+                                    _selectedIndex = 3;
+                                    _currentPage = WorkoutScreen();
+                                  });
+                                else Navigator.pushNamed(context, PlansScreen.id);
+                              },
+                              child: Column(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/gym.svg',
+                                    semanticsLabel: 'gym',
+                                    color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    localization.translate('التمارين').toString(),
+                                    style: TextStyle(
+                                        color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
+                                        fontSize: 10
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            //Nutrition
+                            MaterialButton(
+                              shape: CircleBorder(),
+                              minWidth: 40,
+                              onPressed: (){
+                                if(activeUser!.premium)
+                                  setState(() {
+                                    _selectedIndex = 4;
+                                    _currentPage = NutritionScreen();
+                                  });
+                                else Navigator.pushNamed(context, PlansScreen.id);
+                              },
+                              child: Column(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/icons/fish.svg',
+                                    semanticsLabel: 'user',
+                                    color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    localization.translate('التغذية').toString(),
+                                    style: TextStyle(
+                                        color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
+                                        fontSize: 10
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 35),
-        child: FloatingActionButton(
-          backgroundColor: primaryColor,
-          onPressed: () {
-            setState(() {
-              _selectedIndex = 2;
-              _currentPage = HomeScreen();
-            });
-          },
-          child: SvgPicture.asset(
-            'assets/icons/home.svg',
-            semanticsLabel: 'home',
-            color: Colors.white,
+            ],
           ),
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 35),
+          child: FloatingActionButton(
+            backgroundColor: primaryColor,
+            onPressed: () {
+              setState(() {
+                _selectedIndex = 2;
+                _currentPage = HomeScreen();
+              });
+            },
+            child: SvgPicture.asset(
+              'assets/icons/home.svg',
+              semanticsLabel: 'home',
+              color: Colors.white,
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

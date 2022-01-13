@@ -13,6 +13,7 @@ import 'package:informa/screens/pageview_screens/select_meals_per_day.dart';
 import 'package:informa/screens/pageview_screens/select_meals_time.dart';
 import 'package:informa/screens/pageview_screens/select_milk_products_problems.dart';
 import 'package:informa/screens/pageview_screens/select_supplements.dart';
+import 'package:informa/screens/pageview_screens/upload_body_photos.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/widgets/select_tools.dart';
@@ -70,7 +71,6 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     var map = activeUser.toJson();
     await firestoreService.updateUserData(id, map);
     setState(() {_isLoading = false;});
-    Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
   }
 
   @override
@@ -89,7 +89,7 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
+    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -124,6 +124,11 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                 SelectFatPercent(
                   onBack: goBack,
                   onNext: goToNextPage,
+                ),
+              if(activeUser!.gender == 1)
+                UploadBodyPhotos(
+                  onBack: goBack,
+                  onClick: goToNextPage,
                 ),
               SelectGoal(
                 onBack: goBack,

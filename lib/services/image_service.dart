@@ -24,9 +24,12 @@ class ImageService{
   }
 
 
-  Future pickMultiImages() async{
+  Future<List<XFile>?> pickMultiImages() async{
     try{
-      final List<XFile>? images = await _picker.pickMultiImage();
+      final List<XFile>? images = await _picker.pickMultiImage(
+        maxWidth: 550,
+        imageQuality: 70,
+      );
       return images;
     } on PlatformException catch(e){
       print('image pick error: ' + e.message!);
@@ -34,9 +37,9 @@ class ImageService{
     }
   }
 
-  Future<bool> uploadImageToFirebase(File image, String id) async {
+  Future<bool> uploadImageToFirebase(File image, String id, String name) async {
     bool uploaded = false;
-    Reference ref = _storage.ref().child("Images/$id/inBody");
+    Reference ref = _storage.ref().child("Images/$id/$name");
     var uploadTask = ref.putFile(image);
     await uploadTask.whenComplete(() {
       uploaded = true;

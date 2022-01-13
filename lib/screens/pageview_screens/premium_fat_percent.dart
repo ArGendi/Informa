@@ -37,7 +37,7 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
     if(_image != null){
       String id = FirebaseAuth.instance.currentUser!.uid;
       setState(() {_isLoading = true;});
-      bool uploaded = await imageService.uploadImageToFirebase(_image!, id);
+      bool uploaded = await imageService.uploadImageToFirebase(_image!, id, "inBody");
       setState(() {_isLoading = false;});
       if(uploaded) {
         widget.onNext();

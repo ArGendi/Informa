@@ -68,7 +68,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   subscriptionPlan(BuildContext context){
-    var activeUser = Provider.of<ActiveUserProvider>(context).user;
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
     if(!activeUser!.premium)
       Navigator.pushNamed(context, PlansScreen.id);
   }
