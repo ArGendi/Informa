@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/main_screen.dart';
+import 'package:informa/screens/pageview_screens/dont_know_goal.dart';
 import 'package:informa/screens/pageview_screens/enter_fats_percent.dart';
 import 'package:informa/screens/pageview_screens/premium_fat_percent.dart';
 import 'package:informa/screens/pageview_screens/select_disease.dart';
@@ -34,6 +35,8 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
   late final PageController _controller;
   bool _showFatsImagesPage = false;
   bool _isLoading = false;
+  bool _selectFromPhotos = false;
+  bool _unknownGoal = false;
 
   goToNextPage(){
     _controller.animateToPage(
@@ -46,8 +49,8 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     });
   }
 
-  goBack(){
-    _controller.animateToPage(
+  Future goBack() async{
+    await _controller.animateToPage(
         _initialPage - 1,
         duration: Duration(milliseconds: 400),
         curve: Curves.easeInOut
@@ -119,11 +122,18 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                   });
                   goToNextPage();
                 },
+                selectFromPhotos: _selectFromPhotos,
               ),
               if(_showFatsImagesPage)
                 SelectFatPercent(
                   onBack: goBack,
-                  onNext: goToNextPage,
+                  onNext: () async{
+                    await goBack();
+                    setState(() {
+                      _showFatsImagesPage = false;
+                      _selectFromPhotos = true;
+                    });
+                  },
                 ),
               if(activeUser!.gender == 1)
                 UploadBodyPhotos(
@@ -133,7 +143,15 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
               SelectGoal(
                 onBack: goBack,
                 onClick: goToNextPage,
+                unknownGoal: (value){
+                  _unknownGoal = value;
+                },
               ),
+              if(_unknownGoal)
+                DoNotKnowGoal(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
               SelectLevel(
                 onBack: goBack,
                 onClick: goToNextPage,

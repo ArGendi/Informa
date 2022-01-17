@@ -7,8 +7,9 @@ class CustomButton extends StatefulWidget {
   final VoidCallback onClick;
   final bool isLoading;
   final Color bgColor;
+  final bool? iconExist;
 
-  const CustomButton({Key? key, required this.text, required this.onClick, this.isLoading = false, this.bgColor = primaryColor}) : super(key: key);
+  const CustomButton({Key? key, required this.text, required this.onClick, this.isLoading = false, this.bgColor = primaryColor, this.iconExist}) : super(key: key);
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -20,12 +21,13 @@ class _CustomButtonState extends State<CustomButton> {
     return InkWell(
       onTap: widget.onClick,
       borderRadius: BorderRadius.circular(borderRadius),
-      child: Container(
+      child: AnimatedContainer(
         width: double.infinity,
         decoration: BoxDecoration(
             color: widget.bgColor,
             borderRadius: BorderRadius.circular(borderRadius)
         ),
+        duration: Duration(milliseconds: 400),
         child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: !widget.isLoading ? Row(
@@ -39,6 +41,7 @@ class _CustomButtonState extends State<CustomButton> {
                 ),
               ),
               SizedBox(width: 10,),
+              if(widget.iconExist == null || widget.iconExist == true)
               Icon(
                 Icons.arrow_forward,
                 color: Colors.white,

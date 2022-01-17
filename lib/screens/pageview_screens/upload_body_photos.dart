@@ -106,7 +106,9 @@ class _UploadBodyPhotosState extends State<UploadBodyPhotos> {
                     ),
                   ),
                   SizedBox(height: 25,),
-
+                  Image.asset(
+                    'assets/images/shirtlessGroup.png',
+                  )
                 ],
               ),
             ),

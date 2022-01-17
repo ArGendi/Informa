@@ -18,6 +18,7 @@ class SelectMealsTime extends StatefulWidget {
 
 class _SelectMealsTimeState extends State<SelectMealsTime> {
   late DateTime _dateTime;
+  int _selected = 0;
 
   showPickTimeSheet(BuildContext context, int index){
     var datesOfMeals = Provider.of<ActiveUserProvider>(context, listen: false).user!.datesOfMeals;
@@ -64,6 +65,7 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
                 onClick: (){
                   Provider.of<ActiveUserProvider>(context, listen: false)
                       .addMealDateInIndex(_dateTime, index);
+                  setState(() {_selected = 0;});
                   Navigator.pop(context);
                 },
               ),
@@ -72,6 +74,22 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
         );
       },
     );
+  }
+
+  String convertDateTimeToString(date){
+    String time = '';
+    bool am = true;
+    if(date.hour > 12){
+      time += (date.hour - 12).toString() + ':';
+      am = false;
+    }
+    else time += date.hour.toString() + ':';
+    if(date.minute < 10)
+      time += '0' + date.minute.toString();
+    else time += date.minute.toString();
+    if(am) time += ' ص';
+    else time += ' م';
+    return time;
   }
 
   @override
@@ -140,12 +158,29 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
                       fontFamily: boldFont,
                     ),
                   ),
+                  SizedBox(height: 10,),
+                  ProgramSelectCard(
+                    mainText: 'لا يوجد اوقات محددة',
+                    number: 10,
+                    userChoice: _selected,
+                    onClick: (){
+                      setState(() {
+                        _selected = 10;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 5,),
+                  Divider(
+                    height: 10,
+                  ),
                   for(int i=0; i<activeUser!.numberOfMeals; i++)
                   Column(
                     children: [
-                      SizedBox(height: 10,),
+                      SizedBox(height: 5,),
                       ProgramSelectCard(
                         mainText: 'وجبة ' + (i+1).toString(),
+                        subText: activeUser.datesOfMeals.length > i ?
+                        convertDateTimeToString(activeUser.datesOfMeals[i]) : null,
                         number: i+1,
                         userChoice: 0,
                         onClick: (){
@@ -161,8 +196,8 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.numberOfMeals == activeUser.datesOfMeals.length? widget.onClick : (){},
-            bgColor: activeUser.numberOfMeals == activeUser.datesOfMeals.length? primaryColor : Colors.grey.shade400,
+            onClick: activeUser.numberOfMeals == activeUser.datesOfMeals.length || _selected == 10? widget.onClick : (){},
+            bgColor: activeUser.numberOfMeals == activeUser.datesOfMeals.length || _selected == 10? primaryColor : Colors.grey.shade400,
           )
         ],
       ),

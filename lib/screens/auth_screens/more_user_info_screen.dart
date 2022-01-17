@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
+import 'package:informa/models/challenge.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/confirm_user_info.dart';
 import 'package:informa/screens/pageview_screens/enter_fats_percent.dart';
@@ -103,6 +107,11 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
     if(done) {
       await activeUser.saveInSharedPreference();
       await HelpFunction.saveInitScreen(MainScreen.id);
+      //Get challenges
+      List<Challenge> challenges = await _firestoreService
+          .getAllChallenges();
+      Provider.of<ChallengesProvider>(context, listen: false)
+          .setChallenges(challenges);
       setState(() { _isLoading = false; });
       Navigator.of(context)
           .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);

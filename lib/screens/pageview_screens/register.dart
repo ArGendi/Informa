@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/country_code_service.dart';
 import 'package:informa/services/firestore_service.dart';
+import 'package:informa/widgets/country_code_row.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
@@ -52,52 +54,90 @@ class _RegisterState extends State<Register> with SingleTickerProviderStateMixin
       builder: (BuildContext context) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-          child: ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index){
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: (){
-                      setState(() {
-                        _flag = data[index]['flags']['png'];
-                        _dialCode = data[index]['callingCodes'][0];
-                        _countryName = data[index]['name'];
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Image.network(
-                                  data[index]['flags']['png'],
-                                  width: 40.0,
+          child: ListView(
+            children: [
+              CountryCodeRow(
+                data: data,
+                index: 67,
+                onClick: (){
+                  setState(() {
+                    _flag = data[67]['flags']['png'];
+                    _dialCode = data[67]['callingCodes'][0];
+                    _countryName = utf8.decode(data[67]['nativeName'].toString().codeUnits);
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(height: 10,),
+              CountryCodeRow(
+                data: data,
+                index: 197,
+                onClick: (){
+                  setState(() {
+                    _flag = data[197]['flags']['png'];
+                    _dialCode = data[197]['callingCodes'][0];
+                    _countryName = utf8.decode(data[197]['nativeName'].toString().codeUnits);
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              Divider(
+                height: 10,
+                color: primaryColor,
+              ),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: data.length,
+                itemBuilder: (context, index){
+                  if(data[index]['callingCodes'][0] == '966') {
+                    print('index: ' + index.toString());
+                    print('name: ' + utf8.decode(data[index]['nativeName'].toString().codeUnits));
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: (){
+                          setState(() {
+                            _flag = data[index]['flags']['png'];
+                            _dialCode = data[index]['callingCodes'][0];
+                            _countryName = utf8.decode(data[index]['nativeName'].toString().codeUnits);
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.network(
+                                    data[index]['flags']['png'],
+                                    width: 40.0,
+                                  ),
+                                  SizedBox(width: 10,),
+                                  Text('+' + data[index]['callingCodes'][0]),
+                                ],
+                              ),
+                              Expanded(
+                                child: Text(
+                                  utf8.decode(data[index]['nativeName'].toString().codeUnits),
+                                  textAlign: TextAlign.end,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                SizedBox(width: 10,),
-                                Text('+' + data[index]['callingCodes'][0]),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          Flexible(
-                            child: Text(
-                              data[index]['name'],
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                  Divider(height: 10,),
-                ],
-              );
-            },
+                      Divider(height: 10,),
+                    ],
+                  );
+                },
+              ),
+            ],
           ),
         );
       },

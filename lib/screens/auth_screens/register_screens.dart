@@ -58,14 +58,16 @@ class _RegisterScreensState extends State<RegisterScreens> {
             controller: _controller,
             children: [
               SelectGender(
-                onClick: goToNextPage,
-              ),
-              SelectPlace(
                 onClick: (){
                   Navigator.pushNamed(context, MainRegisterScreen.id);
                 },
-                onBack: goBack,
-              )
+              ),
+              // SelectPlace(
+              //   onClick: (){
+              //     Navigator.pushNamed(context, MainRegisterScreen.id);
+              //   },
+              //   onBack: goBack,
+              // )
             ],
           ),
         ),

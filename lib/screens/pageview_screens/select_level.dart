@@ -67,7 +67,7 @@ class _SelectLevelState extends State<SelectLevel> {
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    'اختار مستواك في التمرين',
+                    'اختار مستواك نشاطك',
                     style: TextStyle(
                         fontSize: 16,
                         fontFamily: 'CairoBold'

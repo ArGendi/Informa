@@ -59,8 +59,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   logout(BuildContext context) async{
     print(FirebaseAuth.instance.currentUser!.email);
-    await HelpFunction.saveInitScreen(MainRegisterScreen.id);
-    await FirebaseAuth.instance.signOut();
+    await HelpFunction.saveInitScreen(RegisterScreens.id);
+    FirebaseAuth.instance.signOut();
     Provider.of<ActiveUserProvider>(context, listen: false).initializeUser();
     Provider.of<AppLanguageProvider>(context, listen: false).initializeLang();
     Navigator.of(context)

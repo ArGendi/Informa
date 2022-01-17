@@ -18,7 +18,8 @@ class PremiumFatPercent extends StatefulWidget {
   final VoidCallback onBack;
   final VoidCallback goToFatsImages;
   final VoidCallback onNext;
-  const PremiumFatPercent({Key? key, required this.onBack, required this.goToFatsImages, required this.onNext}) : super(key: key);
+  final bool selectFromPhotos;
+  const PremiumFatPercent({Key? key, required this.onBack, required this.goToFatsImages, required this.onNext, this.selectFromPhotos = false}) : super(key: key);
 
   @override
   _PremiumFatPercentState createState() => _PremiumFatPercentState();
@@ -242,16 +243,6 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                         'عرفت نسبة الدهون منين؟',
                         style: TextStyle(),
                       ),
-                      TextButton(
-                        onPressed: widget.goToFatsImages,
-                        child: Text(
-                          'معرفش نسبة دهوني',
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 14
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                   SizedBox(height: 5,),
@@ -318,15 +309,22 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                       ),
                     ),
                   ),
+                  SizedBox(height: 5,),
+                  CustomButton(
+                    text: 'معرفش نسبة دهوني',
+                    onClick: widget.goToFatsImages,
+                    iconExist: false,
+                  )
                 ],
               ),
             ),
           ),
           CustomButton(
             text: 'التالي',
-            bgColor: _selected != 0? primaryColor : Colors.grey.shade400,
-            onClick: _selected != 0? (){
-              showPickImageBottomSheet(context);
+            bgColor: _selected != 0 || widget.selectFromPhotos? primaryColor : Colors.grey.shade400,
+            onClick: _selected != 0 || widget.selectFromPhotos? (){
+              if(widget.selectFromPhotos) widget.onNext();
+              else showPickImageBottomSheet(context);
             } : (){},
             isLoading: _isLoading,
           ),

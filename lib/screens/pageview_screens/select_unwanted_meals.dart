@@ -126,11 +126,13 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                               text: activeUser.wantedMeals[i+1].name,
                             ),
                             SizedBox(width: 7,),
-                            RemovableCircleMeal(
-                              id: i+2,
-                              text: activeUser.wantedMeals[i+2].name,
-                            ),
+                            if(i+2 < 18)
+                              RemovableCircleMeal(
+                                id: i+2,
+                                text: activeUser.wantedMeals[i+2].name,
+                              ),
                             SizedBox(width: 7,),
+                            if(i+3 < 18)
                             RemovableCircleMeal(
                               id: i+3,
                               text: activeUser.wantedMeals[i+3].name,
@@ -199,10 +201,11 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                               text: activeUser.wantedMeals[i+2].name,
                             ),
                             SizedBox(width: 7,),
-                            RemovableCircleMeal(
-                              id: i+3,
-                              text: activeUser.wantedMeals[i+3].name,
-                            ),
+                            if(i+3 < 37)
+                              RemovableCircleMeal(
+                                id: i+3,
+                                text: activeUser.wantedMeals[i+3].name,
+                              ),
                           ],
                         ),
                         SizedBox(height: 10,),

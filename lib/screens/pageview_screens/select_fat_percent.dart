@@ -230,12 +230,13 @@ class _SelectFatPercentState extends State<SelectFatPercent> {
             ),
           ),
           CustomButton(
-            text: 'التالي',
+            text: 'تم',
             onClick: _selected != 0? (){
               onNext(context);
             } : (){},
             bgColor: _selected != 0? primaryColor : Colors.grey.shade400,
             isLoading: widget.loading!,
+            iconExist: false,
           ),
         ],
       ),

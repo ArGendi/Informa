@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
@@ -10,7 +11,8 @@ import '../../constants.dart';
 class SelectGoal extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectGoal({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  final Function(bool)? unknownGoal;
+  const SelectGoal({Key? key, required this.onClick, required this.onBack, this.unknownGoal}) : super(key: key);
 
   @override
   _SelectGoalState createState() => _SelectGoalState();
@@ -19,16 +21,20 @@ class SelectGoal extends StatefulWidget {
 class _SelectGoalState extends State<SelectGoal> {
   String _goalDescription = '';
   var _formKey = GlobalKey<FormState>();
+  final ScrollController _controller = ScrollController();
 
-  onNext(BuildContext context){
-    FocusScope.of(context).unfocus();
-    bool valid = _formKey.currentState!.validate();
-    if(valid){
-      _formKey.currentState!.save();
-      Provider.of<ActiveUserProvider>(context, listen: false)
-          .setGoalDescription(_goalDescription);
-      widget.onClick();
-    }
+  void _scrollDown() {
+    _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  onNext(AppUser user){
+    if(user.goal == 6) widget.unknownGoal!(true);
+    else widget.unknownGoal!(false);
+    widget.onClick();
   }
 
   @override
@@ -41,6 +47,7 @@ class _SelectGoalState extends State<SelectGoal> {
         children: [
           Expanded(
             child: SingleChildScrollView(
+              controller: _controller,
               child: Column(
                 children: [
                   Row(
@@ -150,32 +157,32 @@ class _SelectGoalState extends State<SelectGoal> {
                       Provider.of<ActiveUserProvider>(context, listen: false).setGoal(6);
                     },
                   ),
-                  SizedBox(height: 20,),
-                  Text(
-                    'أشرح هدفك بالتفصيل',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: boldFont,
-                    ),
-                  ),
-                  SizedBox(height: 10,),
-                  Form(
-                    key: _formKey,
-                    child: CustomTextField(
-                      text: 'أشرح هدفك',
-                      obscureText: false,
-                      textInputType: TextInputType.text,
-                      anotherFilledColor: true,
-                      setValue: (value){
-                        _goalDescription = value;
-                      },
-                      validation: (value){
-                        if(value.isEmpty) return 'أكتب هدفك بالتفصيل';
-                        return null;
-                      },
-                    ),
-                  ),
+                  // SizedBox(height: 20,),
+                  // Text(
+                  //   'أشرح هدفك بالتفصيل',
+                  //   textAlign: TextAlign.center,
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     fontFamily: boldFont,
+                  //   ),
+                  // ),
+                  // SizedBox(height: 10,),
+                  // Form(
+                  //   key: _formKey,
+                  //   child: CustomTextField(
+                  //     text: 'أشرح هدفك',
+                  //     obscureText: false,
+                  //     textInputType: TextInputType.text,
+                  //     anotherFilledColor: true,
+                  //     setValue: (value){
+                  //       _goalDescription = value;
+                  //     },
+                  //     validation: (value){
+                  //       if(value.isEmpty) return 'أكتب هدفك بالتفصيل';
+                  //       return null;
+                  //     },
+                  //   ),
+                  // ),
                   SizedBox(height: 40,),
                 ],
               ),
@@ -184,7 +191,7 @@ class _SelectGoalState extends State<SelectGoal> {
           CustomButton(
             text: 'التالي',
             onClick: activeUser.goal != 0 ? (){
-              onNext(context);
+              onNext(activeUser);
             } : (){},
             bgColor: activeUser.goal != 0 ? primaryColor : Colors.grey.shade400,
           )
