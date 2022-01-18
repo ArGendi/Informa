@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: PremiumFormScreen(),//initScreen == null ? WelcomeScreen() : SplashScreen(),
+      home: Dummy(),//initScreen == null ? WelcomeScreen() : SplashScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),

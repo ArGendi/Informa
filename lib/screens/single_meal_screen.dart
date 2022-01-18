@@ -176,7 +176,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                         children: [
                           MealInfoBox(
                             text: 'كاربوهايدرات',
-                            value: widget.meal.carbohydrates!,
+                            value: widget.meal.carb!,
                             percent: 0.6,
                           ),
                           MealInfoBox(

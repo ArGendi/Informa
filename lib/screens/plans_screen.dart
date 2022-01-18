@@ -31,22 +31,78 @@ class _PlansScreenState extends State<PlansScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: ListView(
         children: [
-          Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'شاهد مميزات البريميم',
-                    style: TextStyle(),
+          // Container(
+          //   color: Colors.white,
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         Text(
+          //           'شاهد مميزات البريميم',
+          //           style: TextStyle(),
+          //         ),
+          //         InkWell(
+          //           onTap: (){
+          //             Navigator.push(
+          //               context,
+          //               MaterialPageRoute(builder: (context) => VideoPlayerScreen(
+          //                 url: 'https://www.youtube.com/watch?v=sLgz57tguKo',
+          //               )),
+          //             );
+          //           },
+          //           child: Card(
+          //             elevation: 0,
+          //             color: primaryColor,
+          //             shape: RoundedRectangleBorder(
+          //                 borderRadius: BorderRadius.circular(10)
+          //             ),
+          //             child: Padding(
+          //               padding: const EdgeInsets.all(5.0),
+          //               child: Icon(
+          //                 Icons.play_arrow,
+          //                 color: Colors.white,
+          //                 size: 25,
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                Text(
+                  'شاهد مميزات البريميم',
+                  style: TextStyle(
+                      fontFamily: 'CairoBold',
+                      //fontSize: 20
                   ),
-                  InkWell(
-                    onTap: (){
+                ),
+                SizedBox(height: 5,),
+                Container(
+                  width: screenSize.width,
+                  height: 200,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/home3.jpg')
+                      )
+                  ),
+                  child: MaterialButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(borderRadius),
+                    ),
+                    onPressed: (){
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => VideoPlayerScreen(
@@ -54,37 +110,29 @@ class _PlansScreenState extends State<PlansScreen> {
                         )),
                       );
                     },
-                    child: Card(
-                      elevation: 0,
-                      color: primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
+                    child: Center(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.6),
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
                         child: Icon(
-                          Icons.play_arrow,
-                          color: Colors.white,
-                          size: 25,
+                          Icons.play_arrow_rounded,
+                          color: Colors.grey[800],
+                          size: 45,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: [
+                ),
+                SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'انفورما',
                       style: TextStyle(
-                          fontFamily: 'CairoBold',
+                          fontFamily: boldFont,
                           fontSize: 20
                       ),
                     ),

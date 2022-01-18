@@ -22,7 +22,7 @@ class KitchenProvider extends ChangeNotifier{
             fats: 20,
             protein: 25,
             calories: 200,
-            carbohydrates: 30,
+            carb: 30,
             components: [
               'صدر فرخة',
               'شرائح بصل'
@@ -39,7 +39,7 @@ class KitchenProvider extends ChangeNotifier{
             fats: 20,
             protein: 25,
             calories: 200,
-            carbohydrates: 30,
+            carb: 30,
             components: [
               'صدر فرخة',
               'شرائح بصل'
@@ -56,7 +56,7 @@ class KitchenProvider extends ChangeNotifier{
             fats: 20,
             protein: 25,
             calories: 200,
-            carbohydrates: 30,
+            carb: 30,
             components: [
               'صدر فرخة',
               'شرائح بصل'
@@ -80,7 +80,7 @@ class KitchenProvider extends ChangeNotifier{
             fats: 20,
             protein: 25,
             calories: 200,
-            carbohydrates: 30,
+            carb: 30,
             components: [
               'صدر فرخة',
               'شرائح بصل'
@@ -97,7 +97,7 @@ class KitchenProvider extends ChangeNotifier{
             fats: 20,
             protein: 25,
             calories: 200,
-            carbohydrates: 30,
+            carb: 30,
             components: [
               'صدر فرخة',
               'شرائح بصل'

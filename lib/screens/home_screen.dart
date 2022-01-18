@@ -38,10 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
       if(id != null){
         String? token2 = await _paymentService.paymentKeyRequest(token, id, 10, user);
         if(token2 != null){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Dummy(token: token2)),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => Dummy(token: token2)),
+          // );
         } else errorOccur = true;
       } else errorOccur = true;
     } else errorOccur = true;
@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'الوقت المتبقي علي برنامجك',
+                      'الوقت المتبقي علي تجهيز البرنامج',
                       style: TextStyle(
                         fontSize: 14,
                       ),

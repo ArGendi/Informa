@@ -5,7 +5,8 @@ import '../constants.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final String url;
-  const VideoPlayerScreen({Key? key, required this.url}) : super(key: key);
+  final String? id;
+  const VideoPlayerScreen({Key? key, required this.url, this.id}) : super(key: key);
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();

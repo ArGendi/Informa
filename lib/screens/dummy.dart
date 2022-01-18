@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:informa/models/user.dart';
 import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/services/auth_service.dart';
+import 'package:informa/services/informa_service.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/services/web_services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -12,8 +14,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../constants.dart';
 
 class Dummy extends StatefulWidget {
-  final String token;
-  const Dummy({Key? key, required this.token}) : super(key: key);
+
+  const Dummy({Key? key,}) : super(key: key);
 
   @override
   _DummyState createState() => _DummyState();
@@ -21,6 +23,8 @@ class Dummy extends StatefulWidget {
 
 class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   List list = [1,2,3];
+  late InformaService _informaService;
+  late AppUser _user;
 
   sendEmail() async{
     WebServices webServices = new WebServices();
@@ -41,35 +45,33 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
 
   }
 
-  late AnimationController _controller;
-  late AnimationController _controller2;
-  late final Animation<Offset> _offsetAnimation;
-  late final Animation<double> _animation;
-
-  double opacity = 1.0;
-
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    _user = AppUser(
+      gender: 1,
+      weight: 70,
+      fatsPercent: 14,
+      age: 22,
+      tall: 186,
+      fitnessLevel: 1,
+      goal: 4
+    );
+    _user.iTrainingDays = 4;
+    _user.inBody = true;
+    _informaService = InformaService(_user);
+    print("Calories: " + _informaService.calculateNeededCalories().toString());
   }
 
-  changeOpacity() {
-    Future.delayed(Duration(seconds: 1), () {
-      setState(() {
-        opacity = opacity == 0.0 ? 1.0 : 0.0;
-        changeOpacity();
-      });
-    });
-  }
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WebView(
-        initialUrl: 'https://accept.paymob.com/api/acceptance/iframes/331839?payment_token=${widget.token}',
-      ),
+      body: Container(),
     );
   }
+
+
 
   void listenNotification() {
     NotificationService.onNotifications.stream.listen((payload) {
