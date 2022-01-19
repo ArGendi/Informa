@@ -89,7 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Text(
                       'شاهد شرح التطبيق',
-                      style: TextStyle(),
+                      style: TextStyle(
+                        fontFamily: boldFont,
+                      ),
                     ),
                     InkWell(
                       onTap: (){
@@ -121,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             //SizedBox(height: 3,),
-            if(activeUser!.premiumCountDown != null)
+            if(activeUser!.premiumStartDate != null)
               Container(
               color: Colors.white,
               child: Padding(
@@ -138,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Directionality(
                       textDirection: TextDirection.ltr,
                       child: CountdownTimer(
-                        endTime: activeUser.premiumCountDown!.millisecondsSinceEpoch,
+                        endTime: activeUser.premiumStartDate!.millisecondsSinceEpoch,
                         textStyle: TextStyle(
                             color: primaryColor,
                           fontSize: 14,
@@ -222,6 +224,58 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+            if(activeUser.premium && !activeUser.fillPremiumForm)
+              Container(
+                width: double.infinity,
+                height: 130,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
+                    image: AssetImage('assets/images/home1.png',),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'جاوب عالأسئلة عشان نعملك برنامجك الخاص بيك',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'CairoBold',
+                            color: Colors.white,
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        MaterialButton(
+                          onPressed: (){
+                            Navigator.pushNamed(context, PlansScreen.id);
+                          },
+                          color: primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(borderRadius)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              'أبدأ الأسئلة',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'CairoBold',
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(

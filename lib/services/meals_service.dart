@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/meals_list.dart';
+import 'package:informa/models/snacks_list.dart';
+import 'package:informa/models/user.dart';
 
 class MealsService{
   Future<List<List<dynamic>>> loadAsset(String fileName) async{
@@ -109,6 +111,71 @@ class MealsService{
       }
     }
     return result;
+  }
+
+  calculateSnacks(AppUser user, int proteinNeeded, int carbNeeded){
+    Map<Meal, int>? snacks = new Map();
+    //List<Meal>? snacks = [];
+    if(user.wheyProtein == 1 && proteinNeeded >= 250) {
+      snacks[SnacksList.snacks[0]] = 2;
+      snacks[SnacksList.snacks[1]] = 1;
+      snacks[SnacksList.snacks[2]] = 1;
+      snacks[SnacksList.snacks[3]] = 1;
+    }
+    else if(user.wheyProtein == 1 && proteinNeeded >= 200){
+      snacks[SnacksList.snacks[0]] = 1;
+      snacks[SnacksList.snacks[1]] = 1;
+      snacks[SnacksList.snacks[2]] = 1;
+      snacks[SnacksList.snacks[3]] = 1;
+    }
+    else if(user.wheyProtein == 1 && proteinNeeded >= 150) {
+      snacks[SnacksList.snacks[1]] = 1;
+      snacks[SnacksList.snacks[2]] = 1;
+      snacks[SnacksList.snacks[3]] = 1;
+    }
+    else if(user.wheyProtein == 2 && proteinNeeded >= 250) {
+      snacks[SnacksList.snacks[4]] = 2;
+      snacks[SnacksList.snacks[5]] = 2;
+      snacks[SnacksList.snacks[6]] = 2;
+      snacks[SnacksList.snacks[7]] = 2;
+      snacks[SnacksList.snacks[8]] = 2;
+    }
+    else if(user.wheyProtein == 2 && proteinNeeded >= 150) {
+      snacks[SnacksList.snacks[4]] = 1;
+      snacks[SnacksList.snacks[5]] = 1;
+      snacks[SnacksList.snacks[6]] = 1;
+      snacks[SnacksList.snacks[7]] = 1;
+      snacks[SnacksList.snacks[8]] = 1;
+    }
+
+    if(carbNeeded >= 350) {
+      snacks[SnacksList.snacks[9]] = 1;
+      snacks[SnacksList.snacks[12]] = 1;
+    }
+    else if(carbNeeded >= 300) {
+      snacks[SnacksList.snacks[9]] = 1;
+      snacks[SnacksList.snacks[11]] = 1;
+    }
+    else if(carbNeeded >= 250) {
+      snacks[SnacksList.snacks[9]] = 1;
+    }
+    else if(carbNeeded >= 200) {
+      snacks[SnacksList.snacks[10]] = 1;
+      snacks[SnacksList.snacks[12]] = 1;
+    }
+    else if(carbNeeded >= 125) {
+      snacks[SnacksList.snacks[11]] = 1;
+    }
+  }
+
+  List<int> calculateMealsPercents(AppUser user){
+    if(user.numberOfMeals == 2)
+      return [65, 35];
+    else if(user.numberOfMeals == 3)
+      return [20, 55, 25];
+    else if(user.numberOfMeals == 4)
+      return [20, 30, 30, 20];
+    return [];
   }
 
 }

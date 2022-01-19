@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/payment_bottom_sheet.dart';
 import 'package:informa/widgets/period_price_card.dart';
@@ -23,6 +25,8 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
   int _selectedPackage = 1;
   int _selectedPlan = 0;
   double _opacity = 1;
+  bool _isLoading = false;
+  FirestoreService _firestoreService = new FirestoreService();
 
   changePackage(int package) {
     setState(() {
@@ -69,6 +73,21 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
         return PaymentBottomSheet();
       },
     );
+  }
+
+  onNext(BuildContext context) async{
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    Provider.of<ActiveUserProvider>(context, listen: false).setPackage(_selectedPackage);
+    Provider.of<ActiveUserProvider>(context, listen: false).setPlan(_selectedPlan);
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    setState(() {_isLoading = true;});
+    await _firestoreService.updateUserData(id, {
+      'package': _selectedPackage,
+      'plan': _selectedPlan,
+      'program': activeUser!.program,
+    });
+    setState(() {_isLoading = false;});
+    showPaymentBottomSheet(context);
   }
 
   @override
@@ -130,7 +149,7 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
             if(activeUser!.program == 2)
               ProgramSelectCard(
                 mainText: 'ميجا',
-                subText: 'متابعة عبر التطبيق + متابعة كل يوم عبر الواتساب (ما عدا الجمعة) مع كابتن معتمد من فريق انفورما + متباعة مرة أسبوعياً مع كابتن حسين شخصياً (كابتن انفورما)',
+                subText: 'متابعة عبر التطبيق + متابعة كل يوم عبر الواتساب (من السبت للخميس) مع كابتن معتمد من فريق انفورما + متباعة مرة أسبوعياً مع كابتن حسين شخصياً (كابتن انفورما)',
                 onClick: (){
                   setState(() {
                     changePackage(3);
@@ -224,10 +243,9 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
             CustomButton(
               text: 'المتابعة',
               bgColor: _selectedPlan != 0 ? primaryColor : Colors.grey.shade400,
+              isLoading: _isLoading,
               onClick: (){
-                Provider.of<ActiveUserProvider>(context, listen: false).setPackage(_selectedPackage);
-                Provider.of<ActiveUserProvider>(context, listen: false).setPlan(_selectedPlan);
-                showPaymentBottomSheet(context);
+                onNext(context);
               },
             )
           ],

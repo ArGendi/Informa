@@ -23,8 +23,6 @@ class AppUser {
   String? goalDescription;
   //0 = none, 1 = home, 2 = gym
   int workoutPlace;
-  int points;
-  List achievements = [];
   int weight;
   int tall;
   int fatsPercent;
@@ -55,14 +53,14 @@ class AppUser {
   //0 = none, 1 = no, 2 = yes
   int disease;
   String? diseaseDescription;
-  DateTime? premiumCountDown;
+  DateTime? premiumStartDate;
   MealsList _mealsList = new MealsList();
   int package;
   int plan;
   bool? inBody;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
-      this.goal = 0, this.points = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
+      this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
       this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
       this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0});
 
@@ -78,8 +76,6 @@ class AppUser {
     goal = json['goal'];
     goalDescription = json['goalDescription'];
     workoutPlace = json['workoutPlace'];
-    points = json['points'];
-    achievements = json['achievements'];
     weight = json['weight'];
     tall = json['tall'];
     fatsPercent = json['fatsPercent'];
@@ -102,14 +98,14 @@ class AppUser {
     disease = json['disease'];
     diseaseDescription = json['diseaseDescription'];
     DateTime? dateTime;
-    if(json['premiumCountDown'] != null) {
+    if(json['premiumStartDate'] != null) {
       DateTime now = DateTime.now();
-      var temp = json['premiumCountDown'] as Timestamp;
+      var temp = json['premiumStartDate'] as Timestamp;
       dateTime = temp.toDate();
       bool before = dateTime.isBefore(now);
       if(before) dateTime = null;
     }
-    premiumCountDown = dateTime;
+    premiumStartDate = dateTime;
     package = json['package'];
     plan = json['plan'];
   }
@@ -127,8 +123,6 @@ class AppUser {
       'goal': goal,
       'goalDescription': goalDescription,
       'workoutPlace': workoutPlace,
-      'points': points,
-      'achievements': achievements,
       'weight': weight,
       'tall': tall,
       'fatsPercent': fatsPercent,
@@ -149,7 +143,7 @@ class AppUser {
       'milkProblem': milkProblem,
       'disease': disease,
       'diseaseDescription': diseaseDescription,
-      'premiumCountDown': premiumCountDown != null? Timestamp.fromDate(premiumCountDown!):
+      'premiumStartDate': premiumStartDate != null? Timestamp.fromDate(premiumStartDate!):
         null,
       'package': package,
       'plan': plan,
@@ -165,7 +159,6 @@ class AppUser {
     await HelpFunction.saveUserProgram(program);
     await HelpFunction.saveUserGoal(goal);
     await HelpFunction.saveUserWorkoutPlace(workoutPlace);
-    await HelpFunction.saveUserPoints(points);
     await HelpFunction.saveUserWeight(weight);
     await HelpFunction.saveUserTall(tall);
     await HelpFunction.saveUserFatsPercent(fatsPercent);
@@ -173,7 +166,6 @@ class AppUser {
     await HelpFunction.saveUserFitnessLevel(fitnessLevel);
     await HelpFunction.saveUserTrainingPeriodLevel(trainingPeriodLevel);
     await HelpFunction.saveUserITrainingDays(iTrainingDays);
-    await HelpFunction.saveUserAchievements(achievements);
     await HelpFunction.saveUserTrainingTools(trainingTools);
     await HelpFunction.saveUserTrainingDays(trainingDays);
   }
@@ -187,7 +179,6 @@ class AppUser {
     program = (await HelpFunction.getUserProgram())!;
     goal = (await HelpFunction.getUserGoal())!;
     workoutPlace = (await HelpFunction.getUserWorkoutPlace())!;
-    points = (await HelpFunction.getUserPoints())!;
     weight = (await HelpFunction.getUserWeight())!;
     tall = (await HelpFunction.getUserTall())!;
     fatsPercent = (await HelpFunction.getUserFatsPercent())!;
@@ -195,7 +186,6 @@ class AppUser {
     fitnessLevel = (await HelpFunction.getUserFitnessLevel())!;
     trainingPeriodLevel = (await HelpFunction.getUserTrainingPeriodLevel())!;
     iTrainingDays = (await HelpFunction.getUserITrainingDays())!;
-    achievements = (await HelpFunction.getUserAchievements())!;
     trainingTools = (await HelpFunction.getUserTrainingTools())!;
     trainingDays = (await HelpFunction.getUserTrainingDays())!;
   }

@@ -69,7 +69,7 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     await NotificationService.cancelNotification(10);
     DateTime now = DateTime.now();
     var after3days = DateTime(now.year, now.month, now.day, now.hour+72);
-    activeUser!.premiumCountDown = after3days;
+    activeUser!.premiumStartDate = after3days;
     FirestoreService firestoreService = new FirestoreService();
     var map = activeUser.toJson();
     await firestoreService.updateUserData(id, map);
@@ -172,11 +172,11 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                 onBack: goBack,
                 onClick: goToNextPage,
               ),
-              SelectUnWantedMeals(
+              SelectMilkProductsProblems(
                 onBack: goBack,
                 onClick: goToNextPage,
               ),
-              SelectMilkProductsProblems(
+              SelectUnWantedMeals(
                 onBack: goBack,
                 onClick: goToNextPage,
               ),

@@ -34,15 +34,7 @@ class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> with Single
       payload: 'payload',
       date: 16,
     );
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('يمكنك الدخول علي الأسئلة من حسابك فالصفحة الرئيسية'),
-          duration: Duration(milliseconds: 3800),
-        )
-    );
-    Timer(Duration(seconds: 4), (){
-      Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
-    });
+    Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
   }
   
   @override

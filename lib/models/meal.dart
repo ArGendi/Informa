@@ -14,8 +14,10 @@ class Meal {
   bool isSelected;
   List<String>? components;
   double serving = 0;
+  String? unit;
 
   Meal({this.id, this.name, this.category, this.image, this.description,
         this.fats, this.protein, this.calories, this.components, this.carb,
-        this.video, this.isSelected = true, this.engName, this.serving = 0});
+        this.video, this.isSelected = true, this.engName, this.serving = 0,
+        this.unit});
 }

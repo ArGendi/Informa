@@ -123,19 +123,4 @@ class InformaService{
     return carbNeeded.toInt();
   }
 
-  calculateSnacks(int proteinNeeded, int carbNeeded){
-    List<Meal>? snack = [];
-    if(_user.wheyProtein == 1 && proteinNeeded >= 250) snack = null;
-    else if(_user.wheyProtein == 1 && proteinNeeded >= 200) snack = null;
-    else if(_user.wheyProtein == 1 && proteinNeeded >= 150) snack = null;
-    else if(_user.wheyProtein == 2 && proteinNeeded >= 250) snack = null;
-    else if(_user.wheyProtein == 2 && proteinNeeded >= 150) snack = null;
-
-    if(carbNeeded >= 350) snack = null;
-    else if(carbNeeded >= 300) snack = null;
-    else if(carbNeeded >= 250) snack = null;
-    else if(carbNeeded >= 200) snack = null;
-    else if(carbNeeded >= 125) snack = null;
-  }
-
 }

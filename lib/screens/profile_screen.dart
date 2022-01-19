@@ -287,8 +287,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Center(
-                              child: Image.asset(
-                                'assets/images/weight_sm.png',
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Image.asset(
+                                  'assets/images/weight_sm.png',
+                                ),
                               ),
                             ),
                           ),
@@ -322,8 +325,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.grey[100],
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            child: Image.asset(
-                              'assets/images/ruler_sm.png',
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Image.asset(
+                                'assets/images/ruler_sm.png',
+                              ),
                             ),
                           ),
                           SizedBox(width: 10,),
@@ -357,7 +363,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(9.0),
                               child: Image.asset(
                                 'assets/images/percentage_sm.png',
                                 width: 35,
@@ -395,7 +401,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               borderRadius: BorderRadius.circular(5),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: Image.asset(
                                 'assets/images/hourglass_sm.png',
                                 width: 35,

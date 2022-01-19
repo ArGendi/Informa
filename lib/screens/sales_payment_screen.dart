@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/premium_screens/ready_fill_premium_form_screen.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
@@ -90,6 +92,38 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                      'التحدث مع فريق المبيعات',
+                      style: TextStyle(),
+                    ),
+                    SizedBox(height: 5,),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      onTap: (){},
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          border: Border.all(color: Colors.grey.shade300,),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            children: [
+                              FaIcon(
+                                FontAwesomeIcons.whatsapp,
+                              ),
+                              SizedBox(width: 10,),
+                              Text(
+                                'التحدث الي فريق المبيعات',
+                                style: TextStyle(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 15,),
+                    Text(
                       'أرسل الكود الخاص بيك لفريق المبيعات',
                       style: TextStyle(),
                     ),
@@ -129,43 +163,15 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                       ),
                     ),
                     SizedBox(height: 15,),
-                    Text(
-                      'أدخل كود التفعيل',
-                      style: TextStyle(),
-                    ),
-                    Text(
-                      'كود التفعيل هو كود تقوم بأستلامة من فريق المبيعات لتأكيد الدفع',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(height: 5,),
-                    Form(
-                      key: _formKey,
-                      child: CustomTextField(
-                        text: 'كود التفعيل',
-                        obscureText: false,
-                        textInputType: TextInputType.text,
-                        anotherFilledColor: true,
-                        setValue: (value){
-                          _activateCode = value;
-                        },
-                        validation: (value){
-                          if(value.isEmpty) return 'أدخل كود التفعيل';
-                          return null;
-                        },
-                      ),
-                    ),
                   ],
                 ),
               ],
             ),
             CustomButton(
-              text: 'تفعيل الحساب',
-              isLoading: _isLoading,
+              text: 'تم',
+              //isLoading: _isLoading,
               onClick: (){
-                onActivate(context);
+                Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
               },
             ),
           ],

@@ -10,6 +10,7 @@ import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/nutrition_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
+import 'package:informa/screens/premium_screens/ready_fill_premium_form_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
 import 'package:informa/screens/workout_screen.dart';
 import 'package:provider/provider.dart';
@@ -163,11 +164,13 @@ class _MainScreenState extends State<MainScreen> {
                               shape: CircleBorder(),
                               minWidth: 40,
                               onPressed: (){
-                                if(activeUser!.premium)
+                                if(activeUser!.premium && activeUser.fillPremiumForm)
                                   setState(() {
                                     _selectedIndex = 1;
                                     _currentPage = AnalyticsScreen();
                                   });
+                                else if(activeUser.premium && !activeUser.fillPremiumForm)
+                                  Navigator.pushNamed(context, ReadyFillPremiumForm.id);
                                 else Navigator.pushNamed(context, PlansScreen.id);
                               },
                               child: Column(
@@ -198,11 +201,13 @@ class _MainScreenState extends State<MainScreen> {
                               shape: CircleBorder(),
                               minWidth: 40,
                               onPressed: (){
-                                if(activeUser!.premium)
+                                if(activeUser!.premium && activeUser.fillPremiumForm)
                                   setState(() {
                                     _selectedIndex = 3;
                                     _currentPage = WorkoutScreen();
                                   });
+                                else if(activeUser.premium && !activeUser.fillPremiumForm)
+                                  Navigator.pushNamed(context, ReadyFillPremiumForm.id);
                                 else Navigator.pushNamed(context, PlansScreen.id);
                               },
                               child: Column(
@@ -215,7 +220,7 @@ class _MainScreenState extends State<MainScreen> {
                                     height: 20,
                                   ),
                                   Text(
-                                    localization.translate('التمارين').toString(),
+                                    localization.translate('تمارينك').toString(),
                                     style: TextStyle(
                                         color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
                                         fontSize: 10
@@ -229,11 +234,13 @@ class _MainScreenState extends State<MainScreen> {
                               shape: CircleBorder(),
                               minWidth: 40,
                               onPressed: (){
-                                if(activeUser!.premium)
+                                if(activeUser!.premium && activeUser.fillPremiumForm)
                                   setState(() {
                                     _selectedIndex = 4;
                                     _currentPage = NutritionScreen();
                                   });
+                                else if(activeUser.premium && !activeUser.fillPremiumForm)
+                                  Navigator.pushNamed(context, ReadyFillPremiumForm.id);
                                 else Navigator.pushNamed(context, PlansScreen.id);
                               },
                               child: Column(
@@ -246,7 +253,7 @@ class _MainScreenState extends State<MainScreen> {
                                     height: 20,
                                   ),
                                   Text(
-                                    localization.translate('التغذية').toString(),
+                                    localization.translate('الدايت').toString(),
                                     style: TextStyle(
                                         color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
                                         fontSize: 10
