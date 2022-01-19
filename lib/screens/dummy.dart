@@ -3,13 +3,19 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:informa/models/meal.dart';
+import 'package:informa/models/meal_category.dart';
+import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/informa_service.dart';
+import 'package:informa/services/meals_service.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/services/web_services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:csv/csv.dart';
 
 import '../constants.dart';
 
@@ -40,10 +46,87 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     print('response: ' + response.statusCode.toString());
   }
 
-  firebaseSendEmail(){
-    AuthServices authServices = new AuthServices();
-
+  Future<List<List<dynamic>>> loadAsset(String fileName) async {
+    var data = await rootBundle.loadString(fileName);
+    return CsvToListConverter().convert(data);
   }
+
+  Future setAllMeals() async{
+    List<List<dynamic>> breakfast = await loadAsset('assets/files/breakfast.csv');
+    List<List<dynamic>> lunch = await loadAsset('assets/files/lunch.csv');
+    List<List<dynamic>> dinner = await loadAsset('assets/files/dinner.csv');
+    for(int i=1; i<breakfast.length; i++){
+      MealsList.breakfast.add(
+        Meal(
+          id: i.toString(),
+          name: breakfast[i][1].toString().trim(),
+          engName: breakfast[i][1].toString().trim(),
+          serving: breakfast[i][2],
+          protein: breakfast[i][4],
+          carb: breakfast[i][5],
+          fats: breakfast[i][6],
+          calories: breakfast[i][7],
+        ),
+      );
+    }
+    for(int i=1; i<lunch.length; i++){
+      MealsList.lunch.add(
+        Meal(
+          id: (i+breakfast.length).toString(),
+          name: lunch[i][1].toString().trim(),
+          engName: lunch[i][1].toString().trim(),
+          serving: lunch[i][2].toDouble(),
+          protein: lunch[i][4].toDouble(),
+          carb: lunch[i][5].toDouble(),
+          fats: lunch[i][6].toDouble(),
+          calories: lunch[i][7].toDouble(),
+        ),
+      );
+    }
+    for(int i=1; i<dinner.length; i++){
+      MealsList.dinner.add(
+        Meal(
+          id: (i+breakfast.length+dinner.length).toString(),
+          name: dinner[i][1].toString().trim(),
+          engName: dinner[i][1].toString().trim(),
+          serving: dinner[i][2],
+          protein: dinner[i][4],
+          carb: dinner[i][5],
+          fats: dinner[i][6],
+          calories: dinner[i][7],
+        ),
+      );
+    }
+  }
+
+  fullMeal(){
+    MealCategory mealCategory = new MealCategory();
+    mealCategory.meals = [];
+    mealCategory.meals!.add(MealsList.breakfast[0]);
+    mealCategory.meals!.add(MealsList.breakfast[1]);
+    mealCategory.meals!.add(MealsList.breakfast[25]);
+    mealCategory.meals!.add(MealsList.breakfast[34]);
+    mealCategory.meals!.add(MealsList.breakfast[13]);
+    mealCategory.extra = MealsList.breakfast[60];
+    //mealCategory.meals!.add(MealsList.breakfast[21]);
+    MealsService mealsService = new MealsService();
+    var map = mealsService.calculateFullMealNumbers(mealCategory, 31, 33, 11);
+    map.forEach((key, value) {
+      print(key.name! + ": " + value.toString());
+    });
+  }
+
+  // Future<String> _read() async {
+  //   String text = 'lol';
+  //   try {
+  //     final Directory directory = await getApplicationDocumentsDirectory();
+  //     final File file = File('${directory.path}/my_file.txt');
+  //     text = await file.readAsString();
+  //   } catch (e) {
+  //     print("Couldn't read file");
+  //   }
+  //   return text;
+  // }
 
   @override
   void initState() {
@@ -67,7 +150,17 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      body: Center(
+        child: IconButton(
+          onPressed: () async{
+            await setAllMeals();
+            print('---------setAllMeals-----------');
+            fullMeal();
+            print('---------fullMeal-----------');
+          },
+          icon: Icon(Icons.add),
+        ),
+      ),
     );
   }
 

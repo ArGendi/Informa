@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/user.dart';
@@ -134,26 +136,6 @@ class InformaService{
     else if(carbNeeded >= 250) snack = null;
     else if(carbNeeded >= 200) snack = null;
     else if(carbNeeded >= 125) snack = null;
-  }
-
-  calculateMealNumbers(MealCategory mealCategory, int protein, int carb, int fats){
-    mealCategory.meals!.sort((a, b) => a.calories!.compareTo(b.calories!));
-    double myProtein = 0, myCarb = 0, myFats = 0;
-    for(int i=0; i<mealCategory.meals!.length; i++){
-      myProtein += mealCategory.meals![i].protein!.toDouble();
-      myCarb += mealCategory.meals![i].carb!.toDouble();
-      myFats += mealCategory.meals![i].fats!.toDouble();
-    }
-    int i=0;
-    while(i++<1000){
-      bool p = false, c = false, f = false;
-      if((myProtein - protein).abs() == 1) p = true;
-      if((myCarb - carb).abs() == 1) c = true;
-      if((myFats - fats).abs() == 1) f = true;
-      if(p && c && f) break;
-
-
-    }
   }
 
 }

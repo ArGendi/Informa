@@ -78,23 +78,23 @@ class _WideMealCardState extends State<WideMealCard> {
                       ],
                     ),
                     //SizedBox(height: 5,),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.watch_later,
-                          color: Colors.grey[600],
-                          size: 15,
-                        ),
-                        SizedBox(width: 5,),
-                        Text(
-                          widget.meal.period! + ' دقيقة',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                            fontSize: 12
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     Icon(
+                    //       Icons.watch_later,
+                    //       color: Colors.grey[600],
+                    //       size: 15,
+                    //     ),
+                    //     SizedBox(width: 5,),
+                    //     Text(
+                    //       widget.meal.period! + ' دقيقة',
+                    //       style: TextStyle(
+                    //         color: Colors.grey[600],
+                    //         fontSize: 12
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

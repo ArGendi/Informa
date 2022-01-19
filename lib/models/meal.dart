@@ -6,16 +6,16 @@ class Meal {
   String? video;
   String? category;
   String? description;
-  String? period;
-  int? carb;
-  int? calories;
-  int? protein;
-  int? fats;
+  //String? period;
+  double? carb;
+  double? calories;
+  double? protein;
+  double? fats;
   bool isSelected;
   List<String>? components;
-  bool measurable = true;
+  double serving = 0;
 
-  Meal({this.id, this.name, this.category, this.image, this.period, this.description,
+  Meal({this.id, this.name, this.category, this.image, this.description,
         this.fats, this.protein, this.calories, this.components, this.carb,
-        this.video, this.isSelected = true, this.engName});
+        this.video, this.isSelected = true, this.engName, this.serving = 0});
 }

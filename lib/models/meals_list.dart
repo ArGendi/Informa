@@ -244,6 +244,10 @@ class MealsList{
     ),
   ];
 
+  static List<Meal> breakfast = [];
+  static List<Meal> lunch = [];
+  static List<Meal> dinner = [];
+
   List<String> getMealsIds(List meals){
     List<String> temp = [];
     for(var meal in meals)
@@ -259,4 +263,6 @@ class MealsList{
     }
     return meals;
   }
+
+
 }

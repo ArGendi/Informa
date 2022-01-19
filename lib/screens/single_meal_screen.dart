@@ -176,22 +176,22 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                         children: [
                           MealInfoBox(
                             text: 'كاربوهايدرات',
-                            value: widget.meal.carb!,
+                            value: widget.meal.carb!.toInt(),
                             percent: 0.6,
                           ),
                           MealInfoBox(
                             text: 'سعرات حرارية',
-                            value: widget.meal.calories!,
+                            value: widget.meal.calories!.toInt(),
                             percent: 0.2,
                           ),
                           MealInfoBox(
                             text: 'بروتين',
-                            value: widget.meal.protein!,
+                            value: widget.meal.protein!.toInt(),
                             percent: 0.2,
                           ),
                           MealInfoBox(
                             text: 'دهون',
-                            value: widget.meal.fats!,
+                            value: widget.meal.fats!.toInt(),
                             percent: 0.1,
                           ),
                         ],

@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  csv: ^5.0.1
   firebase_storage: ^10.2.4
   image_picker: ^0.8.4+1
   share: ^2.0.4
@@ -79,6 +80,7 @@ flutter:
     - assets/images/
     - assets/images/body_fat/
     - assets/icons/
+    - assets/files/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
