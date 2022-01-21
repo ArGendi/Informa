@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/screens/premium_screens/premium_program_counter_screen.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +30,7 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
     if(disease == 1){
       widget.onClick();
       await _controller.forward();
-      Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
+      Navigator.pushNamed(context, PremiumProgramCounterScreen.id);
     }
     else{
       bool valid = _formKey.currentState!.validate();
@@ -39,7 +40,7 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
             .setDiseaseDescription(_diseaseWithDesc);
         widget.onClick();
         await _controller.forward();
-        Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
+        Navigator.pushNamed(context, PremiumProgramCounterScreen.id);
       }
     }
   }

@@ -113,25 +113,46 @@ class MealsService{
     return result;
   }
 
-  calculateSnacks(AppUser user, int proteinNeeded, int carbNeeded){
-    Map<Meal, int>? snacks = new Map();
-    //List<Meal>? snacks = [];
+  List<dynamic> calculateSnacks(AppUser user, int proteinNeeded, int carbNeeded){
+    Map<Meal, int> snacks = new Map();
+    double protein = 0;
+    double carb = 0;
+    double fats = 0;
+    List<dynamic> snacksWithRest = [];
     if(user.wheyProtein == 1 && proteinNeeded >= 250) {
       snacks[SnacksList.snacks[0]] = 2;
       snacks[SnacksList.snacks[1]] = 1;
       snacks[SnacksList.snacks[2]] = 1;
       snacks[SnacksList.snacks[3]] = 1;
+
+      protein += SnacksList.snacks[0].protein! * 2;
+      protein += SnacksList.snacks[1].protein! * 1;
+      carb += SnacksList.snacks[0].carb! * 2;
+      carb += SnacksList.snacks[1].carb! * 1;
+      fats += SnacksList.snacks[0].fats! * 2;
+      fats += SnacksList.snacks[1].fats! * 1;
     }
     else if(user.wheyProtein == 1 && proteinNeeded >= 200){
       snacks[SnacksList.snacks[0]] = 1;
       snacks[SnacksList.snacks[1]] = 1;
       snacks[SnacksList.snacks[2]] = 1;
       snacks[SnacksList.snacks[3]] = 1;
+
+      protein += SnacksList.snacks[0].protein! * 1;
+      protein += SnacksList.snacks[1].protein! * 1;
+      carb += SnacksList.snacks[0].carb! * 1;
+      carb += SnacksList.snacks[1].carb! * 1;
+      fats += SnacksList.snacks[0].fats! * 1;
+      fats += SnacksList.snacks[1].fats! * 1;
     }
     else if(user.wheyProtein == 1 && proteinNeeded >= 150) {
       snacks[SnacksList.snacks[1]] = 1;
       snacks[SnacksList.snacks[2]] = 1;
       snacks[SnacksList.snacks[3]] = 1;
+
+      protein += SnacksList.snacks[1].protein! * 1;
+      carb += SnacksList.snacks[1].carb! * 1;
+      fats += SnacksList.snacks[1].fats! * 1;
     }
     else if(user.wheyProtein == 2 && proteinNeeded >= 250) {
       snacks[SnacksList.snacks[4]] = 2;
@@ -139,6 +160,10 @@ class MealsService{
       snacks[SnacksList.snacks[6]] = 2;
       snacks[SnacksList.snacks[7]] = 2;
       snacks[SnacksList.snacks[8]] = 2;
+
+      protein += SnacksList.snacks[4].protein! * 2;
+      carb += SnacksList.snacks[4].carb! * 2;
+      fats += SnacksList.snacks[4].fats! * 2;
     }
     else if(user.wheyProtein == 2 && proteinNeeded >= 150) {
       snacks[SnacksList.snacks[4]] = 1;
@@ -146,36 +171,59 @@ class MealsService{
       snacks[SnacksList.snacks[6]] = 1;
       snacks[SnacksList.snacks[7]] = 1;
       snacks[SnacksList.snacks[8]] = 1;
+
+      protein += SnacksList.snacks[4].protein! * 1;
+      carb += SnacksList.snacks[4].carb! * 1;
+      fats += SnacksList.snacks[4].fats! * 1;
     }
 
     if(carbNeeded >= 350) {
       snacks[SnacksList.snacks[9]] = 1;
       snacks[SnacksList.snacks[12]] = 1;
+
+      protein += SnacksList.snacks[9].protein! * 1;
+      protein += SnacksList.snacks[12].protein! * 1;
+      carb += SnacksList.snacks[9].carb! * 1;
+      carb += SnacksList.snacks[12].carb! * 1;
+      fats += SnacksList.snacks[9].fats! * 1;
+      fats += SnacksList.snacks[12].fats! * 1;
     }
     else if(carbNeeded >= 300) {
       snacks[SnacksList.snacks[9]] = 1;
       snacks[SnacksList.snacks[11]] = 1;
+
+      protein += SnacksList.snacks[9].protein! * 1;
+      protein += SnacksList.snacks[11].protein! * 1;
+      carb += SnacksList.snacks[9].carb! * 1;
+      carb += SnacksList.snacks[11].carb! * 1;
+      fats += SnacksList.snacks[9].fats! * 1;
+      fats += SnacksList.snacks[11].fats! * 1;
     }
     else if(carbNeeded >= 250) {
       snacks[SnacksList.snacks[9]] = 1;
+
+      protein += SnacksList.snacks[9].protein! * 1;
+      carb += SnacksList.snacks[9].carb! * 1;
+      fats += SnacksList.snacks[9].fats! * 1;
     }
     else if(carbNeeded >= 200) {
-      snacks[SnacksList.snacks[10]] = 1;
       snacks[SnacksList.snacks[12]] = 1;
+
+      protein += SnacksList.snacks[12].protein! * 1;
+      carb += SnacksList.snacks[12].carb! * 1;
+      fats += SnacksList.snacks[12].fats! * 1;
     }
     else if(carbNeeded >= 125) {
       snacks[SnacksList.snacks[11]] = 1;
+
+      protein += SnacksList.snacks[11].protein! * 1;
+      carb += SnacksList.snacks[11].carb! * 1;
+      fats += SnacksList.snacks[11].fats! * 1;
     }
+    snacksWithRest.add(snacks);
+    snacksWithRest.add([protein, carb, fats]);
+    return snacksWithRest;
   }
 
-  List<int> calculateMealsPercents(AppUser user){
-    if(user.numberOfMeals == 2)
-      return [65, 35];
-    else if(user.numberOfMeals == 3)
-      return [20, 55, 25];
-    else if(user.numberOfMeals == 4)
-      return [20, 30, 30, 20];
-    return [];
-  }
 
 }

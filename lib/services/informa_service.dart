@@ -22,7 +22,7 @@ class InformaService{
   ];
   List<double> _fatFactor = [0.225, 0.25, 0.25, 0.3, 0.35];
 
-  InformaService(AppUser user){
+  setUser(AppUser user){
     _user = user;
   }
 
@@ -121,6 +121,16 @@ class InformaService{
   int calculateCarbNeeded(int caloriesNeeded, int protein, int fats){
     double carbNeeded = (caloriesNeeded - ((protein * 4) + (fats * 9))) / 4;
     return carbNeeded.toInt();
+  }
+
+  List<int> calculateEveryMealPercent(){
+    if(_user.numberOfMeals == 2){
+      if(_user.whichTwoMeals == 1) return [35, 65];
+      else if(_user.whichTwoMeals == 2) return [65, 35];
+    }
+    else if(_user.numberOfMeals == 3) return [20, 55, 25];
+    else if(_user.numberOfMeals == 4) return [20, 30, 30, 20];
+    return [];
   }
 
 }

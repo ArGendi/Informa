@@ -41,6 +41,7 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
       bool uploaded = await imageService.uploadImageToFirebase(_image!, id, "inBody");
       setState(() {_isLoading = false;});
       if(uploaded) {
+        Provider.of<ActiveUserProvider>(context, listen: false).setInBody(true);
         widget.onNext();
         return;
       }
@@ -323,7 +324,10 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
             text: 'التالي',
             bgColor: _selected != 0 || widget.selectFromPhotos? primaryColor : Colors.grey.shade400,
             onClick: _selected != 0 || widget.selectFromPhotos? (){
-              if(widget.selectFromPhotos) widget.onNext();
+              if(widget.selectFromPhotos) {
+                Provider.of<ActiveUserProvider>(context, listen: false).setInBody(false);
+                widget.onNext();
+              }
               else showPickImageBottomSheet(context);
             } : (){},
             isLoading: _isLoading,

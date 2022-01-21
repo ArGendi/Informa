@@ -108,147 +108,155 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: ListView(
-          children: [
-            Text(
-              'طريقة المتابعة',
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: boldFont,
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: ListView(
+            children: [
+              Text(
+                'طريقة المتابعة',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: boldFont,
+                ),
               ),
-            ),
-            SizedBox(height: 10,),
-            ProgramSelectCard(
-              mainText: 'سيلفر',
-              subText: 'متابعة عبر التطبيق فقط',
-              onClick: (){
-                setState(() {
-                  changePackage(1);
-                });
-              },
-              userChoice: _selectedPackage,
-              number: 1,
-              borderColor: Colors.grey.shade300,
-            ),
-            SizedBox(height: 10,),
-            ProgramSelectCard(
-              mainText: 'جولد',
-              subText: 'متابعة عبر التطبيق + متابعة يوم ويوم عبر الواتساب مع كابتن معتمد من فريق انفورما',
-              onClick: (){
-                setState(() {
-                  changePackage(2);
-                });
-              },
-              userChoice: _selectedPackage,
-              number: 2,
-              borderColor: Colors.grey.shade300,
-            ),
-            SizedBox(height: 10,),
-            if(activeUser!.program == 2)
+              SizedBox(height: 10,),
               ProgramSelectCard(
-                mainText: 'ميجا',
-                subText: 'متابعة عبر التطبيق + متابعة كل يوم عبر الواتساب (من السبت للخميس) مع كابتن معتمد من فريق انفورما + متباعة مرة أسبوعياً مع كابتن حسين شخصياً (كابتن انفورما)',
+                mainText: 'سيلفر',
+                subText: 'متابعة عبر التطبيق فقط',
                 onClick: (){
                   setState(() {
-                    changePackage(3);
+                    changePackage(1);
                   });
                 },
                 userChoice: _selectedPackage,
-                number: 3,
+                number: 1,
                 borderColor: Colors.grey.shade300,
               ),
-            SizedBox(height: 10,),
-            Text(
-              'حدد الفترة',
-              style: TextStyle(
-                fontSize: 16,
-                fontFamily: boldFont,
+              SizedBox(height: 10,),
+              ProgramSelectCard(
+                mainText: 'جولد',
+                subText: 'متابعة عبر التطبيق + متابعة يوم ويوم عبر الواتساب مع كابتن معتمد من فريق انفورما',
+                onClick: (){
+                  setState(() {
+                    changePackage(2);
+                  });
+                },
+                userChoice: _selectedPackage,
+                number: 2,
+                borderColor: Colors.grey.shade300,
               ),
-            ),
-            SizedBox(height: 10,),
-            AnimatedOpacity(
-              opacity: _opacity,
-              duration: Duration(milliseconds: 200),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: PeriodPriceCard(
-                          id: 1,
-                          selected: _selectedPlan,
-                          period: 'شهر واحد',
-                          price: getPrice(1),
-                          onClick: () {
-                            setState(() {
-                              _selectedPlan = 1;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 5,),
-                      Expanded(
-                        child: PeriodPriceCard(
-                          id: 3,
-                          selected: _selectedPlan,
-                          period: 'ثلاث اشهر',
-                          price: getPrice(3),
-                          onClick: () {
-                            setState(() {
-                              _selectedPlan = 3;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5,),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: PeriodPriceCard(
-                          id: 6,
-                          selected: _selectedPlan,
-                          period: 'نص سنة',
-                          price: getPrice(6),
-                          onClick: () {
-                            setState(() {
-                              _selectedPlan = 6;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 5,),
-                      Expanded(
-                        child: PeriodPriceCard(
-                          id: 12,
-                          selected: _selectedPlan,
-                          period: 'سنة كاملة',
-                          price: getPrice(12),
-                          onClick: () {
-                            setState(() {
-                              _selectedPlan = 12;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              SizedBox(height: 10,),
+              if(activeUser!.program == 2)
+                ProgramSelectCard(
+                  mainText: 'ميجا',
+                  subText: 'متابعة عبر التطبيق + متابعة كل يوم عبر الواتساب (من السبت للخميس) مع كابتن معتمد من فريق انفورما + متباعة مرة أسبوعياً مع كابتن حسين شخصياً (كابتن انفورما)',
+                  onClick: (){
+                    setState(() {
+                      changePackage(3);
+                    });
+                  },
+                  userChoice: _selectedPackage,
+                  number: 3,
+                  borderColor: Colors.grey.shade300,
+                ),
+              SizedBox(height: 10,),
+              Text(
+                'حدد الفترة',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontFamily: boldFont,
+                ),
               ),
-            ),
-            SizedBox(height: 20,),
-            CustomButton(
-              text: 'المتابعة',
-              bgColor: _selectedPlan != 0 ? primaryColor : Colors.grey.shade400,
-              isLoading: _isLoading,
-              onClick: (){
-                onNext(context);
-              },
-            )
-          ],
+              SizedBox(height: 10,),
+              AnimatedOpacity(
+                opacity: _opacity,
+                duration: Duration(milliseconds: 200),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: PeriodPriceCard(
+                            id: 1,
+                            selected: _selectedPlan,
+                            period: 'شهر واحد',
+                            price: getPrice(1),
+                            onClick: () {
+                              setState(() {
+                                _selectedPlan = 1;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 5,),
+                        Expanded(
+                          child: PeriodPriceCard(
+                            id: 3,
+                            selected: _selectedPlan,
+                            period: 'ثلاث اشهر',
+                            price: getPrice(3),
+                            onClick: () {
+                              setState(() {
+                                _selectedPlan = 3;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5,),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: PeriodPriceCard(
+                            id: 6,
+                            selected: _selectedPlan,
+                            period: 'نص سنة',
+                            price: getPrice(6),
+                            onClick: () {
+                              setState(() {
+                                _selectedPlan = 6;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 5,),
+                        Expanded(
+                          child: PeriodPriceCard(
+                            id: 12,
+                            selected: _selectedPlan,
+                            period: 'سنة كاملة',
+                            price: getPrice(12),
+                            onClick: () {
+                              setState(() {
+                                _selectedPlan = 12;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20,),
+              CustomButton(
+                text: 'المتابعة',
+                bgColor: _selectedPlan != 0 ? primaryColor : Colors.grey.shade400,
+                isLoading: _isLoading,
+                onClick: (){
+                  onNext(context);
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

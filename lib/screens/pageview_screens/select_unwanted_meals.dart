@@ -16,6 +16,15 @@ class SelectUnWantedMeals extends StatefulWidget {
 }
 
 class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
+  onNext(BuildContext context){
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    for(var meal in activeUser!.allMeals){
+      if(!meal.isSelected)
+        Provider.of<ActiveUserProvider>(context, listen: false).addUnWantedMeal(meal.id);
+    }
+    widget.onClick();
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -84,22 +93,22 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                           children: [
                             RemovableCircleMeal(
                               id: i,
-                              text: activeUser!.wantedMeals[i].name,
+                              text: activeUser!.allMeals[i].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+1,
-                              text: activeUser.wantedMeals[i+1].name,
+                              text: activeUser.allMeals[i+1].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+2,
-                              text: activeUser.wantedMeals[i+2].name,
+                              text: activeUser.allMeals[i+2].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+3,
-                              text: activeUser.wantedMeals[i+3].name,
+                              text: activeUser.allMeals[i+3].name,
                             ),
                           ],
                         ),
@@ -118,24 +127,24 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                           children: [
                             RemovableCircleMeal(
                               id: i,
-                              text: activeUser!.wantedMeals[i].name,
+                              text: activeUser!.allMeals[i].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+1,
-                              text: activeUser.wantedMeals[i+1].name,
+                              text: activeUser.allMeals[i+1].name,
                             ),
                             SizedBox(width: 7,),
                             if(i+2 < 18)
                               RemovableCircleMeal(
                                 id: i+2,
-                                text: activeUser.wantedMeals[i+2].name,
+                                text: activeUser.allMeals[i+2].name,
                               ),
                             SizedBox(width: 7,),
                             if(i+3 < 18)
                             RemovableCircleMeal(
                               id: i+3,
-                              text: activeUser.wantedMeals[i+3].name,
+                              text: activeUser.allMeals[i+3].name,
                             ),
                           ],
                         ),
@@ -154,22 +163,22 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                           children: [
                             RemovableCircleMeal(
                               id: i,
-                              text: activeUser!.wantedMeals[i].name,
+                              text: activeUser!.allMeals[i].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+1,
-                              text: activeUser.wantedMeals[i+1].name,
+                              text: activeUser.allMeals[i+1].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+2,
-                              text: activeUser.wantedMeals[i+2].name,
+                              text: activeUser.allMeals[i+2].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+3,
-                              text: activeUser.wantedMeals[i+3].name,
+                              text: activeUser.allMeals[i+3].name,
                             ),
                           ],
                         ),
@@ -188,23 +197,23 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                           children: [
                             RemovableCircleMeal(
                               id: i,
-                              text: activeUser!.wantedMeals[i].name,
+                              text: activeUser!.allMeals[i].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+1,
-                              text: activeUser.wantedMeals[i+1].name,
+                              text: activeUser.allMeals[i+1].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+2,
-                              text: activeUser.wantedMeals[i+2].name,
+                              text: activeUser.allMeals[i+2].name,
                             ),
                             SizedBox(width: 7,),
                             if(i+3 < 37)
                               RemovableCircleMeal(
                                 id: i+3,
-                                text: activeUser.wantedMeals[i+3].name,
+                                text: activeUser.allMeals[i+3].name,
                               ),
                           ],
                         ),
@@ -223,22 +232,22 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                           children: [
                             RemovableCircleMeal(
                               id: i,
-                              text: activeUser!.wantedMeals[i].name,
+                              text: activeUser!.allMeals[i].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+1,
-                              text: activeUser.wantedMeals[i+1].name,
+                              text: activeUser.allMeals[i+1].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+2,
-                              text: activeUser.wantedMeals[i+2].name,
+                              text: activeUser.allMeals[i+2].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+3,
-                              text: activeUser.wantedMeals[i+3].name,
+                              text: activeUser.allMeals[i+3].name,
                             ),
                           ],
                         ),
@@ -249,7 +258,7 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                     height: 15,
                   ),
                   SizedBox(height: 10,),
-                  for(int i=49; i<activeUser!.wantedMeals.length; i+=4)
+                  for(int i=49; i<activeUser!.allMeals.length; i+=4)
                     Column(
                       children: [
                         Row(
@@ -257,23 +266,23 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                           children: [
                             RemovableCircleMeal(
                               id: i,
-                              text: activeUser.wantedMeals[i].name,
+                              text: activeUser.allMeals[i].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+1,
-                              text: activeUser.wantedMeals[i+1].name,
+                              text: activeUser.allMeals[i+1].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+2,
-                              text: activeUser.wantedMeals[i+2].name,
+                              text: activeUser.allMeals[i+2].name,
                             ),
                             SizedBox(width: 7,),
-                            if(i+3 < activeUser.wantedMeals.length)
+                            if(i+3 < activeUser.allMeals.length)
                               RemovableCircleMeal(
                                 id: i+3,
-                                text: activeUser.wantedMeals[i+3].name,
+                                text: activeUser.allMeals[i+3].name,
                               ),
                           ],
                         ),
@@ -287,7 +296,9 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: widget.onClick,
+            onClick: (){
+              onNext(context);
+            },
           )
         ],
       ),

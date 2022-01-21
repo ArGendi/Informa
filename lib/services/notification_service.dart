@@ -41,10 +41,12 @@ class NotificationService{
     String? body,
     String? payload,
     required int date,
+    int? minute,
   }) async{
+    int min = minute != null? minute : 0;
     _notifications.zonedSchedule(
       id,title, body,
-      _scheduleDaily(Time(date)),
+      _scheduleDaily(Time(date, min)),
       await _notificationDetails(), payload: payload,
       androidAllowWhileIdle: true,
       uiLocalNotificationDateInterpretation:

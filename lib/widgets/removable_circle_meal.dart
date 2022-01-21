@@ -37,7 +37,7 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
         Provider.of<ActiveUserProvider>(context, listen: false).changeMealStateUnWantedMeal(widget.id);
       },
       child: AnimatedOpacity(
-        opacity: activeUser!.wantedMeals[widget.id].isSelected? 1 : 0.4,
+        opacity: activeUser!.allMeals[widget.id].isSelected? 1 : 0.4,
         duration: Duration(milliseconds: 400),
         child: Stack(
           children: [
@@ -62,7 +62,7 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
                 ),
               ),
             ),
-            if(activeUser.wantedMeals[widget.id].isSelected)
+            if(activeUser.allMeals[widget.id].isSelected)
             Positioned(
               top: 0,
               right: 0,

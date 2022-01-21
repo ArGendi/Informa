@@ -8,6 +8,8 @@ import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/screens/auth_screens/main_register_screen.dart';
+import 'package:informa/screens/auth_screens/register_screens.dart';
+import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/informa_service.dart';
 import 'package:informa/services/meals_service.dart';
@@ -128,6 +130,54 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   //   return text;
   // }
 
+  makeNotification() async{
+    await NotificationService.init(initScheduled: true);
+    listenNotification1();
+    NotificationService.showRepeatScheduledNotification(
+      id: 200,
+      title: 'notification id 200',
+      body: 'makeNotification',
+      payload: 'payload',
+      date: DateTime.now().hour,
+      minute: DateTime.now().minute + 10,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Notification after 10 min'),
+    ));
+  }
+
+  makeNotification2() async{
+    await NotificationService.init(initScheduled: true);
+    listenNotification2();
+    NotificationService.showRepeatScheduledNotification(
+      id: 201,
+      title: 'notification id 201',
+      body: 'makeNotification 2',
+      payload: 'payload',
+      date: DateTime.now().hour,
+      minute: DateTime.now().minute + 10,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Notification after 10 min'),
+    ));
+  }
+
+  makeNotification3() async{
+    await NotificationService.init(initScheduled: true);
+    listenNotification3();
+    NotificationService.showRepeatScheduledNotification(
+      id: 202,
+      title: 'notification id 202',
+      body: 'makeNotification 3',
+      payload: 'payload',
+      date: DateTime.now().hour,
+      minute: DateTime.now().minute + 10,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Notification after 10 min'),
+    ));
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -143,7 +193,7 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     );
     _user.iTrainingDays = 4;
     _user.inBody = true;
-    _informaService = InformaService(_user);
+    _informaService = InformaService();
     print("Calories: " + _informaService.calculateNeededCalories().toString());
   }
 
@@ -151,14 +201,25 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: IconButton(
-          onPressed: () async{
-            await setAllMeals();
-            print('---------setAllMeals-----------');
-            fullMeal();
-            print('---------fullMeal-----------');
-          },
-          icon: Icon(Icons.add),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: makeNotification,
+              icon: Icon(Icons.add),
+              color: Colors.red,
+            ),
+            IconButton(
+              onPressed: makeNotification2,
+              icon: Icon(Icons.add),
+              color: Colors.blue,
+            ),
+            IconButton(
+              onPressed: makeNotification3,
+              icon: Icon(Icons.add),
+              color: Colors.green,
+            ),
+          ],
         ),
       ),
     );
@@ -166,9 +227,21 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
 
 
 
-  void listenNotification() {
+  void listenNotification1() {
     NotificationService.onNotifications.stream.listen((payload) {
       Navigator.pushNamed(context, MainRegisterScreen.id);
+    });
+  }
+
+  void listenNotification2() {
+    NotificationService.onNotifications.stream.listen((payload) {
+      Navigator.pushNamed(context, RegisterScreens.id);
+    });
+  }
+
+  void listenNotification3() {
+    NotificationService.onNotifications.stream.listen((payload) {
+      Navigator.pushNamed(context, PlansScreen.id);
     });
   }
 }

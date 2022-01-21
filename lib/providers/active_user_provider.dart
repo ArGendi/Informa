@@ -80,8 +80,33 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setInBody(bool value){
+    _user!.inBody = value;
+    notifyListeners();
+  }
+
   setGoalDescription(String value){
     _user!.goalDescription = value;
+    notifyListeners();
+  }
+
+  setMyProtein(int value){
+    _user!.myProtein = value;
+    notifyListeners();
+  }
+
+  setMyCarb(int value){
+    _user!.myCarb = value;
+    notifyListeners();
+  }
+
+  setMyFats(int value){
+    _user!.myFats = value;
+    notifyListeners();
+  }
+
+  setMyCalories(int value){
+    _user!.myCalories = value;
     notifyListeners();
   }
 
@@ -127,11 +152,20 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  addUnWantedMeal(String id){
+    _user!.unWantedMeals.add(id);
+    notifyListeners();
+  }
+
   setTrainingTime(DateTime value){
     _user!.trainingTime = value;
     notifyListeners();
   }
 
+  setWhichTwoMeals(int value){
+    _user!.whichTwoMeals = value;
+    notifyListeners();
+  }
 
   setFatPercent(int percent){
     _user!.fatsPercent = percent;
@@ -184,12 +218,12 @@ class ActiveUserProvider extends ChangeNotifier{
   }
 
   changeMealStateUnWantedMeal(int index){
-    _user!.wantedMeals[index].isSelected = !_user!.wantedMeals[index].isSelected;
+    _user!.allMeals[index].isSelected = !_user!.allMeals[index].isSelected;
     notifyListeners();
   }
 
-  addToUnWantedMeal(int index){
-    _user!.wantedMeals[index].isSelected = true;
+  changeMealToUnWantedInAllMeals(int index){
+    _user!.allMeals[index].isSelected = true;
     notifyListeners();
   }
 
@@ -229,10 +263,10 @@ class ActiveUserProvider extends ChangeNotifier{
 
   removeAllUnwantedMeals(){
     List onlyWantedMeals = [];
-    for(var meal in _user!.wantedMeals){
+    for(var meal in _user!.allMeals){
       if(meal.isSelected) onlyWantedMeals.add(meal);
     }
-    _user!.wantedMeals = onlyWantedMeals;
+    _user!.allMeals = onlyWantedMeals;
     notifyListeners();
   }
 

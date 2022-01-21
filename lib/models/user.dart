@@ -42,7 +42,8 @@ class AppUser {
   String? supplements;
   int numberOfMeals;
   List datesOfMeals = [];
-  List wantedMeals = List.from(MealsList.allMeals);
+  List allMeals = List.from(MealsList.allMeals);
+  List unWantedMeals = [];
   //0 = none,
   //1 = yes have with all kind of milk,
   //2 = no, don't have any problem,
@@ -57,12 +58,20 @@ class AppUser {
   MealsList _mealsList = new MealsList();
   int package;
   int plan;
+  //---------------------
   bool? inBody;
+  //0 = none, 1 = breakfast & lunch, 2 = lunch & dinner
+  int whichTwoMeals;
+  int? myProtein;
+  int? myCarb;
+  int? myFats;
+  int? myCalories;
+  DateTime? mealsUpdatedDate;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
       this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
-      this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0});
+      this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0, this.whichTwoMeals = 0});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];
@@ -92,8 +101,9 @@ class AppUser {
     supplements = json['supplements'];
     numberOfMeals = json['numberOfMeals'];
     datesOfMeals = json['datesOfMeals'];
-    wantedMeals = premium && fillPremiumForm?
-        _mealsList.getMealsByIds(json['wantedMeals']) : List.from(MealsList.allMeals);
+    // allMeals = premium && fillPremiumForm?
+    //     _mealsList.getMealsByIds(json['wantedMeals']) : List.from(MealsList.allMeals);
+    unWantedMeals = json['unWantedMeals'] != null? json['unWantedMeals'] : [];
     milkProblem = json['milkProblem'];
     disease = json['disease'];
     diseaseDescription = json['diseaseDescription'];
@@ -138,8 +148,9 @@ class AppUser {
       'supplements': supplements,
       'numberOfMeals': numberOfMeals,
       'datesOfMeals': datesOfMeals,
-      'wantedMeals': premium && fillPremiumForm?
-            _mealsList.getMealsIds(wantedMeals) : [],
+      // 'wantedMeals': premium && fillPremiumForm?
+      //       _mealsList.getMealsIds(allMeals) : [],
+      'unWantedMeals': unWantedMeals,
       'milkProblem': milkProblem,
       'disease': disease,
       'diseaseDescription': diseaseDescription,

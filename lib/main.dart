@@ -10,11 +10,13 @@ import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
 import 'package:informa/providers/kitchen_provider.dart';
+import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/premium_screens/premium_form_screen.dart';
 import 'package:informa/screens/premium_screens/premium_packages_screen.dart';
+import 'package:informa/screens/premium_screens/premium_program_counter_screen.dart';
 import 'package:informa/screens/premium_screens/ready_fill_premium_form_screen.dart';
 import 'package:informa/screens/sales_payment_screen.dart';
 import 'package:informa/screens/single_meal_screen.dart';
@@ -74,6 +76,9 @@ void main() async{
         ChangeNotifierProvider<ChallengesProvider>(
           create: (context) => ChallengesProvider(),
         ),
+        ChangeNotifierProvider<PremiumNutritionProvider>(
+          create: (context) => PremiumNutritionProvider(),
+        ),
       ],
       child: MyApp(
         initScreen: initScreen,
@@ -100,7 +105,7 @@ class MyApp extends StatelessWidget {
           color: primaryColor,
         ),
       ),
-      home: initScreen == null ? WelcomeScreen() : SplashScreen(),
+      home: PremiumProgramCounterScreen(),//initScreen == null ? WelcomeScreen() : SplashScreen(),
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -123,6 +128,7 @@ class MyApp extends StatelessWidget {
         ReadyFillPremiumForm.id: (context) => ReadyFillPremiumForm(),
         SalesPaymentScreen.id:(context) => SalesPaymentScreen(),
         PremiumFormScreen.id: (context) => PremiumFormScreen(),
+        PremiumProgramCounterScreen.id: (context) => PremiumProgramCounterScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

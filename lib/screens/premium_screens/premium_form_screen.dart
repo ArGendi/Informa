@@ -14,6 +14,7 @@ import 'package:informa/screens/pageview_screens/select_meals_per_day.dart';
 import 'package:informa/screens/pageview_screens/select_meals_time.dart';
 import 'package:informa/screens/pageview_screens/select_milk_products_problems.dart';
 import 'package:informa/screens/pageview_screens/select_supplements.dart';
+import 'package:informa/screens/pageview_screens/select_which_two_meals.dart';
 import 'package:informa/screens/pageview_screens/upload_body_photos.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/services/notification_service.dart';
@@ -58,6 +59,25 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     setState(() {
       _initialPage -= 1;
     });
+  }
+
+  void listenNotification() {
+    NotificationService.onNotifications.stream.listen((payload) {
+      Navigator.pushNamed(context, MainScreen.id);
+    });
+  }
+
+  createNotification() async{
+    DateTime now = DateTime.now();
+    await NotificationService.init(initScheduled: true);
+    listenNotification();
+    await NotificationService.showScheduledNotification(
+      id: 55,
+      title: 'برنامجك الخاص جاهز 🎉🎉',
+      body: 'يلا يا بطل أدخل دلوقتي شوف برنامجك جاهز 👌',
+      payload: 'payload',
+      scheduledDate: DateTime(now.year, now.month, now.day, now.hour+72),
+    );
   }
 
   onDone(BuildContext context) async{
@@ -168,6 +188,11 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                 onBack: goBack,
                 onClick: goToNextPage,
               ),
+              if(activeUser.numberOfMeals == 2)
+                SelectWhichTwoMeals(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
               SelectMealsTime(
                 onBack: goBack,
                 onClick: goToNextPage,
