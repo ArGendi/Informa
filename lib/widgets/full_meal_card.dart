@@ -1,31 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:informa/constants.dart';
+import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/single_meal_screen.dart';
-import 'package:informa/screens/plans_screen.dart';
 import 'package:provider/provider.dart';
 
-class WideMealCard extends StatefulWidget {
-  final Meal meal;
-  const WideMealCard({Key? key, required this.meal}) : super(key: key);
+import '../constants.dart';
+
+class FullMealCard extends StatefulWidget {
+  final FullMeal fullMeal;
+  const FullMealCard({Key? key, required this.fullMeal}) : super(key: key);
 
   @override
-  _WideMealCardState createState() => _WideMealCardState();
+  _FullMealCardState createState() => _FullMealCardState();
 }
 
-class _WideMealCardState extends State<WideMealCard> {
+class _FullMealCardState extends State<FullMealCard> {
   bool _isFavorite = false;
+
+  List<int> calculateFullMealInfo(){
+    double calories = 0, protein = 0, carb = 0, fats = 0;
+    widget.fullMeal.components!.forEach((key, value) {
+      if(key.serving != 1){
+        calories += key.calories! * (value / 100);
+        protein += key.protein! * (value / 100);
+        carb += key.carb! * (value / 100);
+        fats += key.fats! * (value / 100);
+      }
+      else{
+        calories += key.calories! * value;
+        protein += key.protein! * value;
+        carb += key.carb! * value;
+        fats += key.fats! * value;
+      }
+    });
+    return [calories.toInt(), protein.toInt(), carb.toInt(), fats.toInt()];
+  }
+
+  List<String> convertComponents(){
+    List<String> components = [];
+    widget.fullMeal.components!.forEach((key, value) {
+      String unit = '';
+      if(key.unit!.trim() == 'gm') unit = 'جرام ';
+      else if(key.unit!.trim() == 'tsp') unit = 'معلقة صغيرة ';
+      String temp = value.toString() + ' ' + unit + key.name!;
+      components.add(temp);
+    });
+    return components;
+  }
 
   @override
   Widget build(BuildContext context) {
-    var activeUser = Provider.of<ActiveUserProvider>(context).user;
+    //var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return InkWell(
       borderRadius: BorderRadius.circular(borderRadius),
       onTap: (){
+        List<int> info = calculateFullMealInfo();
+        Meal meal = new Meal(
+          id: widget.fullMeal.id,
+          name: widget.fullMeal.name,
+          engName: widget.fullMeal.engName,
+          image: widget.fullMeal.image,
+          calories: info[0].toDouble(),
+          protein: info[1].toDouble(),
+          carb: info[2].toDouble(),
+          fats: info[3].toDouble(),
+          components: convertComponents(),
+        );
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SingleMealScreen(meal: widget.meal)),
+          MaterialPageRoute(builder: (context) => SingleMealScreen(meal: meal)),
         );
       },
       child: Container(
@@ -40,9 +84,10 @@ class _WideMealCardState extends State<WideMealCard> {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Hero(
-                tag: widget.meal.id!,
-                child: widget.meal.image != null? Image.asset(
-                  widget.meal.image!,
+                tag: widget.fullMeal.id!,
+                child: widget.fullMeal.image != null ?
+                Image.network(
+                  widget.fullMeal.image!,
                   width: 130,
                   height: 130,
                   fit: BoxFit.cover,
@@ -64,15 +109,15 @@ class _WideMealCardState extends State<WideMealCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.meal.name!,
+                          widget.fullMeal.name!,
                           style: TextStyle(
-                            fontSize: 16,
-                            height: 1
+                              fontSize: 16,
+                              height: 1
                           ),
                         ),
-                        if(widget.meal.description != null)
+                        if(widget.fullMeal.description != null)
                           Text(
-                            widget.meal.description!,
+                            widget.fullMeal.description!,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: TextStyle(
@@ -82,38 +127,15 @@ class _WideMealCardState extends State<WideMealCard> {
                           ),
                       ],
                     ),
-                    //SizedBox(height: 5,),
-                    // Row(
-                    //   children: [
-                    //     Icon(
-                    //       Icons.watch_later,
-                    //       color: Colors.grey[600],
-                    //       size: 15,
-                    //     ),
-                    //     SizedBox(width: 5,),
-                    //     Text(
-                    //       widget.meal.period! + ' دقيقة',
-                    //       style: TextStyle(
-                    //         color: Colors.grey[600],
-                    //         fontSize: 12
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),
             ),
             IconButton(
               onPressed: (){
-                if(!activeUser!.premium){
-                  Navigator.pushNamed(context, PlansScreen.id);
-                }
-                else{
-                  setState(() {
-                    _isFavorite = !_isFavorite;
-                  });
-                }
+                setState(() {
+                  _isFavorite = !_isFavorite;
+                });
               },
               splashRadius: 5,
               icon: Icon(

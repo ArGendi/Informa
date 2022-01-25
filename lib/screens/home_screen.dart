@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
@@ -11,6 +12,7 @@ import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/dummy.dart';
 import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
+import 'package:informa/screens/premium_screens/premium_form_screen.dart';
 import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/services/payment_service.dart';
 import 'package:informa/widgets/home_banner.dart';
@@ -253,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: 5,),
                         MaterialButton(
                           onPressed: (){
-                            Navigator.pushNamed(context, PlansScreen.id);
+                            Navigator.pushNamed(context, PremiumFormScreen.id);
                           },
                           color: primaryColor,
                           shape: RoundedRectangleBorder(

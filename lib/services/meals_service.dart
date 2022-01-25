@@ -2,13 +2,18 @@ import 'dart:collection';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
+import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
+import 'package:informa/models/meal_category_list.dart';
 import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/snacks_list.dart';
 import 'package:informa/models/user.dart';
+import 'package:informa/services/informa_service.dart';
 
 class MealsService{
+  InformaService _informaService = new InformaService();
+
   Future<List<List<dynamic>>> loadAsset(String fileName) async{
     var data = await rootBundle.loadString(fileName);
     return CsvToListConverter().convert(data);
@@ -18,17 +23,20 @@ class MealsService{
     List<List<dynamic>> breakfast = await loadAsset('assets/files/breakfast.csv');
     List<List<dynamic>> lunch = await loadAsset('assets/files/lunch.csv');
     List<List<dynamic>> dinner = await loadAsset('assets/files/dinner.csv');
+    List<List<dynamic>> allMeals = await loadAsset('assets/files/allMeals.csv');
     for(int i=1; i<breakfast.length; i++){
       MealsList.breakfast.add(
         Meal(
           id: i.toString(),
-          name: breakfast[i][1].toString().trim(),
+          otherId: breakfast[i][9].toString(),
+          name: breakfast[i][8].toString().trim(),
           engName: breakfast[i][1].toString().trim(),
           serving: breakfast[i][2],
-          protein: breakfast[i][4],
-          carb: breakfast[i][5],
-          fats: breakfast[i][6],
-          calories: breakfast[i][7],
+          unit: breakfast[i][3],
+          protein: breakfast[i][4].toDouble(),
+          carb: breakfast[i][5].toDouble(),
+          fats: breakfast[i][6].toDouble(),
+          calories: breakfast[i][7].toDouble(),
         ),
       );
     }
@@ -36,13 +44,15 @@ class MealsService{
       MealsList.lunch.add(
         Meal(
           id: (i+breakfast.length).toString(),
-          name: lunch[i][1].toString().trim(),
+          otherId: lunch[i][9].toString(),
+          name: lunch[i][8].toString().trim(),
           engName: lunch[i][1].toString().trim(),
           serving: lunch[i][2],
-          protein: lunch[i][4],
-          carb: lunch[i][5],
-          fats: lunch[i][6],
-          calories: lunch[i][7],
+          unit: lunch[i][3],
+          protein: lunch[i][4].toDouble(),
+          carb: lunch[i][5].toDouble(),
+          fats: lunch[i][6].toDouble(),
+          calories: lunch[i][7].toDouble(),
         ),
       );
     }
@@ -50,15 +60,27 @@ class MealsService{
       MealsList.dinner.add(
         Meal(
           id: (i+breakfast.length+dinner.length).toString(),
-          name: dinner[i][1].toString().trim(),
+          otherId: dinner[i][9].toString(),
+          name: dinner[i][8].toString().trim(),
           engName: dinner[i][1].toString().trim(),
           serving: dinner[i][2],
-          protein: dinner[i][4],
-          carb: dinner[i][5],
-          fats: dinner[i][6],
-          calories: dinner[i][7],
+          unit: dinner[i][3],
+          protein: dinner[i][4].toDouble(),
+          carb: dinner[i][5].toDouble(),
+          fats: dinner[i][6].toDouble(),
+          calories: dinner[i][7].toDouble(),
         ),
       );
+    }
+    for(int i=1; i<allMeals.length; i++){
+      if(allMeals[i][1] != 52 && allMeals[i][1] < 70)
+        MealsList.allMealsList.add(
+          Meal(
+            otherId: allMeals[i][1].toString(),
+            name: allMeals[i][2].toString().trim(),
+            engName: allMeals[i][0].toString().trim(),
+          ),
+        );
     }
   }
 
@@ -156,10 +178,10 @@ class MealsService{
     }
     else if(user.wheyProtein == 2 && proteinNeeded >= 250) {
       snacks[SnacksList.snacks[4]] = 2;
-      snacks[SnacksList.snacks[5]] = 2;
-      snacks[SnacksList.snacks[6]] = 2;
-      snacks[SnacksList.snacks[7]] = 2;
-      snacks[SnacksList.snacks[8]] = 2;
+      // snacks[SnacksList.snacks[5]] = 2;
+      // snacks[SnacksList.snacks[6]] = 2;
+      // snacks[SnacksList.snacks[7]] = 2;
+      // snacks[SnacksList.snacks[8]] = 2;
 
       protein += SnacksList.snacks[4].protein! * 2;
       carb += SnacksList.snacks[4].carb! * 2;
@@ -167,10 +189,10 @@ class MealsService{
     }
     else if(user.wheyProtein == 2 && proteinNeeded >= 150) {
       snacks[SnacksList.snacks[4]] = 1;
-      snacks[SnacksList.snacks[5]] = 1;
-      snacks[SnacksList.snacks[6]] = 1;
-      snacks[SnacksList.snacks[7]] = 1;
-      snacks[SnacksList.snacks[8]] = 1;
+      // snacks[SnacksList.snacks[5]] = 1;
+      // snacks[SnacksList.snacks[6]] = 1;
+      // snacks[SnacksList.snacks[7]] = 1;
+      // snacks[SnacksList.snacks[8]] = 1;
 
       protein += SnacksList.snacks[4].protein! * 1;
       carb += SnacksList.snacks[4].carb! * 1;
@@ -178,52 +200,135 @@ class MealsService{
     }
 
     if(carbNeeded >= 350) {
-      snacks[SnacksList.snacks[9]] = 1;
-      snacks[SnacksList.snacks[12]] = 1;
+      snacks[SnacksList.snacks[5]] = 1;
+      snacks[SnacksList.snacks[8]] = 1;
 
-      protein += SnacksList.snacks[9].protein! * 1;
-      protein += SnacksList.snacks[12].protein! * 1;
-      carb += SnacksList.snacks[9].carb! * 1;
-      carb += SnacksList.snacks[12].carb! * 1;
-      fats += SnacksList.snacks[9].fats! * 1;
-      fats += SnacksList.snacks[12].fats! * 1;
+      protein += SnacksList.snacks[5].protein! * 1;
+      protein += SnacksList.snacks[8].protein! * 1;
+      carb += SnacksList.snacks[5].carb! * 1;
+      carb += SnacksList.snacks[8].carb! * 1;
+      fats += SnacksList.snacks[5].fats! * 1;
+      fats += SnacksList.snacks[8].fats! * 1;
     }
     else if(carbNeeded >= 300) {
-      snacks[SnacksList.snacks[9]] = 1;
-      snacks[SnacksList.snacks[11]] = 1;
+      snacks[SnacksList.snacks[5]] = 1;
+      snacks[SnacksList.snacks[7]] = 1;
 
-      protein += SnacksList.snacks[9].protein! * 1;
-      protein += SnacksList.snacks[11].protein! * 1;
-      carb += SnacksList.snacks[9].carb! * 1;
-      carb += SnacksList.snacks[11].carb! * 1;
-      fats += SnacksList.snacks[9].fats! * 1;
-      fats += SnacksList.snacks[11].fats! * 1;
+      protein += SnacksList.snacks[5].protein! * 1;
+      protein += SnacksList.snacks[7].protein! * 1;
+      carb += SnacksList.snacks[5].carb! * 1;
+      carb += SnacksList.snacks[7].carb! * 1;
+      fats += SnacksList.snacks[5].fats! * 1;
+      fats += SnacksList.snacks[7].fats! * 1;
     }
     else if(carbNeeded >= 250) {
-      snacks[SnacksList.snacks[9]] = 1;
+      snacks[SnacksList.snacks[5]] = 1;
 
-      protein += SnacksList.snacks[9].protein! * 1;
-      carb += SnacksList.snacks[9].carb! * 1;
-      fats += SnacksList.snacks[9].fats! * 1;
+      protein += SnacksList.snacks[5].protein! * 1;
+      carb += SnacksList.snacks[5].carb! * 1;
+      fats += SnacksList.snacks[5].fats! * 1;
     }
     else if(carbNeeded >= 200) {
-      snacks[SnacksList.snacks[12]] = 1;
+      snacks[SnacksList.snacks[8]] = 1;
 
-      protein += SnacksList.snacks[12].protein! * 1;
-      carb += SnacksList.snacks[12].carb! * 1;
-      fats += SnacksList.snacks[12].fats! * 1;
+      protein += SnacksList.snacks[8].protein! * 1;
+      carb += SnacksList.snacks[8].carb! * 1;
+      fats += SnacksList.snacks[8].fats! * 1;
     }
     else if(carbNeeded >= 125) {
-      snacks[SnacksList.snacks[11]] = 1;
+      snacks[SnacksList.snacks[7]] = 1;
 
-      protein += SnacksList.snacks[11].protein! * 1;
-      carb += SnacksList.snacks[11].carb! * 1;
-      fats += SnacksList.snacks[11].fats! * 1;
+      protein += SnacksList.snacks[7].protein! * 1;
+      carb += SnacksList.snacks[7].carb! * 1;
+      fats += SnacksList.snacks[7].fats! * 1;
     }
     snacksWithRest.add(snacks);
     snacksWithRest.add([protein, carb, fats]);
     return snacksWithRest;
   }
 
+  List<FullMeal> calculateBreakfast(int protein, int carb, int fats, int percent, AppUser user){
+    List<FullMeal> allFullMeals = [];
+    double newProtein = protein * (percent / 100);
+    double newCarb = carb * (percent / 100);
+    double newFats = fats * (percent / 100);
+
+    for(var mealCategory in MealCategoryList.breakfast){
+      bool unWantedMealCategory = false;
+      for(var meal in mealCategory.meals!){
+        if(user.unWantedMeals.contains(meal.otherId)) {
+          unWantedMealCategory = true;
+          break;
+        }
+      }
+      if(unWantedMealCategory) continue;
+      Map<Meal, int> result = calculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      FullMeal fullMeal = new FullMeal(
+        id: mealCategory.id,
+        name: mealCategory.name,
+        engName: mealCategory.engName,
+        components: result,
+      );
+      allFullMeals.add(fullMeal);
+    }
+
+    return allFullMeals;
+  }
+
+  List<FullMeal> calculateLunch(int protein, int carb, int fats, int percent, AppUser user){
+    List<FullMeal> allFullMeals = [];
+    double newProtein = protein * (percent / 100);
+    double newCarb = carb * (percent / 100);
+    double newFats = fats * (percent / 100);
+
+    for(var mealCategory in MealCategoryList.lunch){
+      bool unWantedMealCategory = false;
+      for(var meal in mealCategory.meals!){
+        if(user.unWantedMeals.contains(meal.otherId)) {
+          unWantedMealCategory = true;
+          break;
+        }
+      }
+      if(unWantedMealCategory) continue;
+      Map<Meal, int> result = calculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      FullMeal fullMeal = new FullMeal(
+        id: mealCategory.id,
+        name: mealCategory.name,
+        engName: mealCategory.engName,
+        components: result,
+      );
+      allFullMeals.add(fullMeal);
+    }
+
+    return allFullMeals;
+  }
+
+  List<FullMeal> calculateDinner(int protein, int carb, int fats, int percent, AppUser user){
+    List<FullMeal> allFullMeals = [];
+    double newProtein = protein * (percent / 100);
+    double newCarb = carb * (percent / 100);
+    double newFats = fats * (percent / 100);
+
+    for(var mealCategory in MealCategoryList.dinner){
+      bool unWantedMealCategory = false;
+      for(var meal in mealCategory.meals!){
+        if(user.unWantedMeals.contains(meal.otherId)) {
+          unWantedMealCategory = true;
+          break;
+        }
+      }
+      if(unWantedMealCategory) continue;
+      Map<Meal, int> result = calculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      FullMeal fullMeal = new FullMeal(
+        id: mealCategory.id,
+        name: mealCategory.name,
+        engName: mealCategory.engName,
+        components: result,
+      );
+      allFullMeals.add(fullMeal);
+    }
+
+    return allFullMeals;
+  }
 
 }

@@ -11,7 +11,11 @@ class SnacksList{
       carb: 2,
       calories: 117,
       serving: 1,
-      unit: 'scoop'
+      unit: 'scoop',
+      category: 'وجبات خفيفة',
+      components: [
+        '1 أسكوب واي بروتين'
+      ],
     ),
     //Molten cakes
     Meal(
@@ -23,6 +27,7 @@ class SnacksList{
       carb: 10,
       calories: 161,
       serving: 1,
+      category: 'وجبات خفيفة',
       components: [
         '1 سكوب واي بروتين',
         'معلقة baking powder صغيرة',
@@ -39,6 +44,7 @@ class SnacksList{
       carb: 10,
       calories: 161,
       serving: 1,
+      category: 'وجبات خفيفة',
       components: [
         '1 سكوب واي بروتين',
         'معلقة كاكاو صغيرة',
@@ -56,6 +62,7 @@ class SnacksList{
       carb: 10,
       calories: 161,
       serving: 1,
+      category: 'وجبات خفيفة',
       components: [
         '1 سكوب واي بروتين',
         'معلقة قرفة صغيرة',
@@ -74,72 +81,73 @@ class SnacksList{
       carb: 17,
       calories: 141,
       serving: 1,
+      category: 'وجبات خفيفة',
       components: [
         '180 جرام زبادي يوناني لايت',
-        '150 جرام فروالة',
+        '150 جرام فروالة او 50 جرام موز او 125 جرام فروالة او 70 جرام مانجة او 85 جرام تفاح',
         'يمكن تحلية الذبادي بسكر دايت',
       ],
     ),
-    Meal(
-      id: '1005',
-      name: 'زبادي يوناني بالموز',
-      engName: 'Greek yogurt with banana',
-      protein: 16,
-      fats: 1,
-      carb: 17,
-      calories: 141,
-      serving: 1,
-      components: [
-        '180 جرام زبادي يوناني لايت',
-        '50 جرام موز',
-        'يمكن تحلية الذبادي بسكر دايت',
-      ],
-    ),
-    Meal(
-      id: '1006',
-      name: 'زبادي يوناني بالخوخ',
-      engName: 'Greek yogurt with peach',
-      protein: 16,
-      fats: 1,
-      carb: 17,
-      calories: 141,
-      serving: 1,
-      components: [
-        '180 جرام زبادي يوناني لايت',
-        '125 جرام فروالة',
-        'يمكن تحلية الذبادي بسكر دايت',
-      ],
-    ),
-    Meal(
-      id: '1007',
-      name: 'زبادي يوناني بالمانجو',
-      engName: 'Greek yogurt with ةشىلخ',
-      protein: 16,
-      fats: 1,
-      carb: 17,
-      calories: 141,
-      serving: 1,
-      components: [
-        '180 جرام زبادي يوناني لايت',
-        '70 جرام فروالة',
-        'يمكن تحلية الذبادي بسكر دايت',
-      ],
-    ),
-    Meal(
-      id: '1008',
-      name: 'زبادي يوناني بالتفاح',
-      engName: 'Greek yogurt with apple',
-      protein: 16,
-      fats: 1,
-      carb: 17,
-      calories: 141,
-      serving: 1,
-      components: [
-        '180 جرام زبادي يوناني لايت',
-        '85 جرام فروالة',
-        'يمكن تحلية الذبادي بسكر دايت',
-      ],
-    ),
+    // Meal(
+    //   id: '1005',
+    //   name: 'زبادي يوناني بالموز',
+    //   engName: 'Greek yogurt with banana',
+    //   protein: 16,
+    //   fats: 1,
+    //   carb: 17,
+    //   calories: 141,
+    //   serving: 1,
+    //   components: [
+    //     '180 جرام زبادي يوناني لايت',
+    //     '50 جرام موز',
+    //     'يمكن تحلية الذبادي بسكر دايت',
+    //   ],
+    // ),
+    // Meal(
+    //   id: '1006',
+    //   name: 'زبادي يوناني بالخوخ',
+    //   engName: 'Greek yogurt with peach',
+    //   protein: 16,
+    //   fats: 1,
+    //   carb: 17,
+    //   calories: 141,
+    //   serving: 1,
+    //   components: [
+    //     '180 جرام زبادي يوناني لايت',
+    //     '125 جرام فروالة',
+    //     'يمكن تحلية الذبادي بسكر دايت',
+    //   ],
+    // ),
+    // Meal(
+    //   id: '1007',
+    //   name: 'زبادي يوناني بالمانجو',
+    //   engName: 'Greek yogurt with mango',
+    //   protein: 16,
+    //   fats: 1,
+    //   carb: 17,
+    //   calories: 141,
+    //   serving: 1,
+    //   components: [
+    //     '180 جرام زبادي يوناني لايت',
+    //     '70 جرام مانجة',
+    //     'يمكن تحلية الذبادي بسكر دايت',
+    //   ],
+    // ),
+    // Meal(
+    //   id: '1008',
+    //   name: 'زبادي يوناني بالتفاح',
+    //   engName: 'Greek yogurt with apple',
+    //   protein: 16,
+    //   fats: 1,
+    //   carb: 17,
+    //   calories: 141,
+    //   serving: 1,
+    //   components: [
+    //     '180 جرام زبادي يوناني لايت',
+    //     '85 جرام تفاح',
+    //     'يمكن تحلية الذبادي بسكر دايت',
+    //   ],
+    // ),
     //Super shake
     Meal(
       id: '1009',
@@ -150,6 +158,7 @@ class SnacksList{
       carb: 115,
       calories: 943,
       serving: 1,
+      category: 'وجبات خفيفة',
       components: [
         '50 جرام شوفان',
         '120 جرام موز',
@@ -170,6 +179,7 @@ class SnacksList{
       carb: 77,
       calories: 161,
       serving: 1,
+      category: 'وجبات خفيفة',
       components: [
         '45 جرام شوفان',
         '100 جرام موز',
@@ -186,6 +196,7 @@ class SnacksList{
       fats: 0,
       carb: 25,
       serving: 1,
+      category: 'وجبات خفيفة',
       components: [
         '25 جرام من الفاكهة',
       ],
@@ -198,6 +209,7 @@ class SnacksList{
       fats: 0,
       carb: 40,
       serving: 1,
+      category: 'وجبات خفيفة',
       components: [
         '40 جرام من الفاكهة',
       ],

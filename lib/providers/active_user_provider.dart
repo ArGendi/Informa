@@ -222,8 +222,9 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  changeMealToUnWantedInAllMeals(int index){
-    _user!.allMeals[index].isSelected = true;
+  changeListOfMealStateUnWantedMeal(List<int> list){
+    for(int index in list)
+      _user!.allMeals[index].isSelected = !_user!.allMeals[index].isSelected;
     notifyListeners();
   }
 

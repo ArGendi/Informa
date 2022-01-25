@@ -1,5 +1,6 @@
 class Meal {
   String? id;
+  String? otherId;
   String? name;
   String? engName;
   String? image;
@@ -19,5 +20,5 @@ class Meal {
   Meal({this.id, this.name, this.category, this.image, this.description,
         this.fats, this.protein, this.calories, this.components, this.carb,
         this.video, this.isSelected = true, this.engName, this.serving = 0,
-        this.unit});
+        this.unit, this.otherId});
 }

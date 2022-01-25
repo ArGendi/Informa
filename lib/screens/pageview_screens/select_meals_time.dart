@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:informa/helpers/shared_preference.dart';
+import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/services/notification_service.dart';
 import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +22,27 @@ class SelectMealsTime extends StatefulWidget {
 class _SelectMealsTimeState extends State<SelectMealsTime> {
   late DateTime _dateTime;
   int _selected = 0;
+
+  void listenNotification() async{
+    var initScreen = await HelpFunction.getInitScreen();
+    NotificationService.onNotifications.stream.listen((payload) {
+      Navigator.pushNamed(context, initScreen!);
+    });
+  }
+
+  setNotifications(AppUser user) async{
+    await NotificationService.init(initScheduled: true);
+    listenNotification();
+
+    for(int i=0; i<user.datesOfMeals.length; i++)
+      NotificationService.showRepeatScheduledNotification(
+        id: 300 + i,
+        title: 'وجبة' + (i+1).toString() + ' 🍔',
+        body: 'متبقي ساعة علي الوجبة قم بتحضرها الأن',
+        payload: 'payload',
+        date: user.datesOfMeals[i].hour,
+      );
+  }
 
   showPickTimeSheet(BuildContext context, int index){
     var datesOfMeals = Provider.of<ActiveUserProvider>(context, listen: false).user!.datesOfMeals;
@@ -90,6 +114,11 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
     if(am) time += ' ص';
     else time += ' م';
     return time;
+  }
+
+  onNext(AppUser user){
+    setNotifications(user);
+    widget.onClick();
   }
 
   @override
@@ -196,7 +225,9 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.numberOfMeals == activeUser.datesOfMeals.length || _selected == 10? widget.onClick : (){},
+            onClick: activeUser.numberOfMeals == activeUser.datesOfMeals.length || _selected == 10? (){
+              onNext(activeUser);
+            } : (){},
             bgColor: activeUser.numberOfMeals == activeUser.datesOfMeals.length || _selected == 10? primaryColor : Colors.grey.shade400,
           )
         ],

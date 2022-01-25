@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:informa/models/meals_list.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/removable_circle_meal.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
     var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
     for(var meal in activeUser!.allMeals){
       if(!meal.isSelected)
-        Provider.of<ActiveUserProvider>(context, listen: false).addUnWantedMeal(meal.id);
+        Provider.of<ActiveUserProvider>(context, listen: false).addUnWantedMeal(meal.otherId);
     }
     widget.onClick();
   }
@@ -85,7 +86,38 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                     ),
                   ),
                   SizedBox(height: 15,),
-                  for(int i=0; i<12; i+=4)
+                  // for(int i=0; i<activeUser!.allMeals.length; i+=20)
+                  //   Column(
+                  //     children: [
+                  //       SizedBox(height: 7,),
+                  //       for(int j=0; j<20; j+=4)
+                  //           Column(
+                  //             children: [
+                  //               Row(
+                  //                 mainAxisAlignment: MainAxisAlignment.center,
+                  //                 children: [
+                  //                   for(int k=0; k<4; k++)
+                  //                     if(i+j+k < activeUser.allMeals.length && j+k < 20)
+                  //                       Row(
+                  //                         children: [
+                  //                           RemovableCircleMeal(
+                  //                             text: activeUser.allMeals[i+j+k].name,
+                  //                             id: i+j+k,
+                  //                           ),
+                  //                           SizedBox(width: 7,),
+                  //                         ],
+                  //                       ),
+                  //                 ],
+                  //               ),
+                  //               SizedBox(height: 7,),
+                  //             ],
+                  //           ),
+                  //       Divider(
+                  //         height: 15,
+                  //       ),
+                  //     ],
+                  //   ),
+                  for(int i=0; i<20; i+=4)
                     Column(
                       children: [
                         Row(
@@ -119,43 +151,7 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                     height: 15,
                   ),
                   SizedBox(height: 10,),
-                  for(int i=12; i<18; i+=4)
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RemovableCircleMeal(
-                              id: i,
-                              text: activeUser!.allMeals[i].name,
-                            ),
-                            SizedBox(width: 7,),
-                            RemovableCircleMeal(
-                              id: i+1,
-                              text: activeUser.allMeals[i+1].name,
-                            ),
-                            SizedBox(width: 7,),
-                            if(i+2 < 18)
-                              RemovableCircleMeal(
-                                id: i+2,
-                                text: activeUser.allMeals[i+2].name,
-                              ),
-                            SizedBox(width: 7,),
-                            if(i+3 < 18)
-                            RemovableCircleMeal(
-                              id: i+3,
-                              text: activeUser.allMeals[i+3].name,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10,),
-                      ],
-                    ),
-                  Divider(
-                    height: 15,
-                  ),
-                  SizedBox(height: 10,),
-                  for(int i=18; i<30; i+=4)
+                  for(int i=20; i<40; i+=4)
                     Column(
                       children: [
                         Row(
@@ -189,42 +185,7 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                     height: 15,
                   ),
                   SizedBox(height: 10,),
-                  for(int i=30; i<37; i+=4)
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            RemovableCircleMeal(
-                              id: i,
-                              text: activeUser!.allMeals[i].name,
-                            ),
-                            SizedBox(width: 7,),
-                            RemovableCircleMeal(
-                              id: i+1,
-                              text: activeUser.allMeals[i+1].name,
-                            ),
-                            SizedBox(width: 7,),
-                            RemovableCircleMeal(
-                              id: i+2,
-                              text: activeUser.allMeals[i+2].name,
-                            ),
-                            SizedBox(width: 7,),
-                            if(i+3 < 37)
-                              RemovableCircleMeal(
-                                id: i+3,
-                                text: activeUser.allMeals[i+3].name,
-                              ),
-                          ],
-                        ),
-                        SizedBox(height: 10,),
-                      ],
-                    ),
-                  Divider(
-                    height: 15,
-                  ),
-                  SizedBox(height: 10,),
-                  for(int i=37; i<49; i+=4)
+                  for(int i=40; i<60; i+=4)
                     Column(
                       children: [
                         Row(
@@ -258,7 +219,7 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                     height: 15,
                   ),
                   SizedBox(height: 10,),
-                  for(int i=49; i<activeUser!.allMeals.length; i+=4)
+                  for(int i=60; i<activeUser!.allMeals.length; i+=4)
                     Column(
                       children: [
                         Row(
@@ -269,15 +230,17 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                               text: activeUser.allMeals[i].name,
                             ),
                             SizedBox(width: 7,),
-                            RemovableCircleMeal(
-                              id: i+1,
-                              text: activeUser.allMeals[i+1].name,
-                            ),
+                            if(i+1 < activeUser.allMeals.length)
+                              RemovableCircleMeal(
+                                id: i+1,
+                                text: activeUser.allMeals[i+1].name,
+                              ),
                             SizedBox(width: 7,),
-                            RemovableCircleMeal(
-                              id: i+2,
-                              text: activeUser.allMeals[i+2].name,
-                            ),
+                            if(i+2 < activeUser.allMeals.length)
+                              RemovableCircleMeal(
+                                id: i+2,
+                                text: activeUser.allMeals[i+2].name,
+                              ),
                             SizedBox(width: 7,),
                             if(i+3 < activeUser.allMeals.length)
                               RemovableCircleMeal(
@@ -289,7 +252,76 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                         SizedBox(height: 10,),
                       ],
                     ),
-                  SizedBox(height: 20,),
+                  // Divider(
+                  //   height: 15,
+                  // ),
+                  // SizedBox(height: 10,),
+                  // for(int i=37; i<49; i+=4)
+                  //   Column(
+                  //     children: [
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           RemovableCircleMeal(
+                  //             id: i,
+                  //             text: activeUser!.allMeals[i].name,
+                  //           ),
+                  //           SizedBox(width: 7,),
+                  //           RemovableCircleMeal(
+                  //             id: i+1,
+                  //             text: activeUser.allMeals[i+1].name,
+                  //           ),
+                  //           SizedBox(width: 7,),
+                  //           RemovableCircleMeal(
+                  //             id: i+2,
+                  //             text: activeUser.allMeals[i+2].name,
+                  //           ),
+                  //           SizedBox(width: 7,),
+                  //           RemovableCircleMeal(
+                  //             id: i+3,
+                  //             text: activeUser.allMeals[i+3].name,
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       SizedBox(height: 10,),
+                  //     ],
+                  //   ),
+                  // Divider(
+                  //   height: 15,
+                  // ),
+                  // SizedBox(height: 10,),
+                  // for(int i=49; i<activeUser!.allMeals.length; i+=4)
+                  //   Column(
+                  //     children: [
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           RemovableCircleMeal(
+                  //             id: i,
+                  //             text: activeUser.allMeals[i].name,
+                  //           ),
+                  //           SizedBox(width: 7,),
+                  //           RemovableCircleMeal(
+                  //             id: i+1,
+                  //             text: activeUser.allMeals[i+1].name,
+                  //           ),
+                  //           SizedBox(width: 7,),
+                  //           RemovableCircleMeal(
+                  //             id: i+2,
+                  //             text: activeUser.allMeals[i+2].name,
+                  //           ),
+                  //           SizedBox(width: 7,),
+                  //           if(i+3 < activeUser.allMeals.length)
+                  //             RemovableCircleMeal(
+                  //               id: i+3,
+                  //               text: activeUser.allMeals[i+3].name,
+                  //             ),
+                  //         ],
+                  //       ),
+                  //       SizedBox(height: 10,),
+                  //     ],
+                  //   ),
+                  // SizedBox(height: 20,),
                 ],
               ),
             ),

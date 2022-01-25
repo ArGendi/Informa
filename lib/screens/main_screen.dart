@@ -34,19 +34,20 @@ class _MainScreenState extends State<MainScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
+          title: Text(
             'متأكد من اغلاق التطبيق؟',
             style: TextStyle(
               color: primaryColor,
+              fontSize: 16,
             ),
           ),
           content: SingleChildScrollView(
             child: ListBody(
               children: const <Widget>[
                 Text(
-                  'لو هتقفل أرجع تاني منتظرينك يا بطل',
+                  'أرجعلنا تاني مستنيينك يا بطل',
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 14,
                   ),
                 ),
               ],
@@ -71,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
               child: const Text(
                 'العودة',
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.grey,
                 ),
               ),
             ),
@@ -234,14 +235,18 @@ class _MainScreenState extends State<MainScreen> {
                               shape: CircleBorder(),
                               minWidth: 40,
                               onPressed: (){
-                                if(activeUser!.premium && activeUser.fillPremiumForm)
-                                  setState(() {
-                                    _selectedIndex = 4;
-                                    _currentPage = NutritionScreen();
-                                  });
-                                else if(activeUser.premium && !activeUser.fillPremiumForm)
-                                  Navigator.pushNamed(context, ReadyFillPremiumForm.id);
-                                else Navigator.pushNamed(context, PlansScreen.id);
+                                setState(() {
+                                  _selectedIndex = 4;
+                                  _currentPage = NutritionScreen();
+                                });
+                                // if(activeUser!.premium && activeUser.fillPremiumForm)
+                                //   setState(() {
+                                //     _selectedIndex = 4;
+                                //     _currentPage = NutritionScreen();
+                                //   });
+                                // else if(activeUser.premium && !activeUser.fillPremiumForm)
+                                //   Navigator.pushNamed(context, ReadyFillPremiumForm.id);
+                                // else Navigator.pushNamed(context, PlansScreen.id);
                               },
                               child: Column(
                                 children: [

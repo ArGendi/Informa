@@ -244,6 +244,7 @@ class MealsList{
     ),
   ];
 
+  static List<Meal> allMealsList = [];
   static List<Meal> breakfast = [];
   static List<Meal> lunch = [];
   static List<Meal> dinner = [];

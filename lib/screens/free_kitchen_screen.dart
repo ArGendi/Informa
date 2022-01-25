@@ -27,7 +27,7 @@ class _FreeKitchenScreenState extends State<FreeKitchenScreen> {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       appBar: AppBar(
-        title: Text('مطبخ أنفورما'),
+        title: Text('مطبخ انفورما'),
         centerTitle: true,
         elevation: 0,
         leading: IconButton(

@@ -42,7 +42,7 @@ class AppUser {
   String? supplements;
   int numberOfMeals;
   List datesOfMeals = [];
-  List allMeals = List.from(MealsList.allMeals);
+  List allMeals = List.from(MealsList.allMealsList);
   List unWantedMeals = [];
   //0 = none,
   //1 = yes have with all kind of milk,

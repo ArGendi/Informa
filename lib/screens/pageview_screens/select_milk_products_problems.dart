@@ -16,6 +16,13 @@ class SelectMilkProductsProblems extends StatefulWidget {
 }
 
 class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems> {
+  onNext(BuildContext context){
+    List<int> shouldRemoved = [2,3,4,5,7,8,11,13,14];
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .changeListOfMealStateUnWantedMeal(shouldRemoved);
+    widget.onClick();
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -81,6 +88,9 @@ class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems>
                     number: 1,
                     userChoice: activeUser!.milkProblem,
                     onClick: (){
+                      List<int> shouldRemoved = [2,3,4,5,7,8,11,13,14];
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .changeListOfMealStateUnWantedMeal(shouldRemoved);
                       Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(1);
                     },
                   ),
@@ -99,6 +109,9 @@ class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems>
                     number: 3,
                     userChoice: activeUser.milkProblem,
                     onClick: (){
+                      List<int> shouldRemoved = [11];
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .changeListOfMealStateUnWantedMeal(shouldRemoved);
                       Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(3);
                     },
                   ),
@@ -108,6 +121,9 @@ class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems>
                     number: 4,
                     userChoice: activeUser.milkProblem,
                     onClick: (){
+                      List<int> shouldRemoved = [2,3,4,5,7,8];
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .changeListOfMealStateUnWantedMeal(shouldRemoved);
                       Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(4);
                     },
                   ),
@@ -117,6 +133,9 @@ class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems>
                     number: 5,
                     userChoice: activeUser.milkProblem,
                     onClick: (){
+                      List<int> shouldRemoved = [13,14];
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .changeListOfMealStateUnWantedMeal(shouldRemoved);
                       Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(5);
                     },
                   ),

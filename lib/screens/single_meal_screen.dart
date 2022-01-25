@@ -42,11 +42,15 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                 children: [
                   Hero(
                     tag: widget.meal.id!,
-                    child: Image.asset(
+                    child: widget.meal.image != null ? Image.asset(
                       widget.meal.image!,
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: 300,
+                    ) : Container(
+                      width: double.infinity,
+                      height: 300,
+                      color: Colors.grey[300],
                     ),
                   ),
                   Container(
@@ -111,12 +115,13 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.meal.category!,
-                        style: TextStyle(
-                          color: Colors.grey[600],
+                      if(widget.meal.category != null)
+                        Text(
+                          widget.meal.category!,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                          ),
                         ),
-                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -175,24 +180,24 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           MealInfoBox(
-                            text: 'كاربوهايدرات',
-                            value: widget.meal.carb!.toInt(),
-                            percent: 0.6,
-                          ),
-                          MealInfoBox(
                             text: 'سعرات حرارية',
                             value: widget.meal.calories!.toInt(),
-                            percent: 0.2,
+                            percent: 0.0,
                           ),
                           MealInfoBox(
                             text: 'بروتين',
                             value: widget.meal.protein!.toInt(),
-                            percent: 0.2,
+                            percent: 0.0,
+                          ),
+                          MealInfoBox(
+                            text: 'كاربوهايدرات',
+                            value: widget.meal.carb!.toInt(),
+                            percent: 0.0,
                           ),
                           MealInfoBox(
                             text: 'دهون',
                             value: widget.meal.fats!.toInt(),
-                            percent: 0.1,
+                            percent: 0.0,
                           ),
                         ],
                       ),
@@ -224,7 +229,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       child: Text(
-                        'أضف الوجبة الي نظامي الغذائي',
+                        'أنتهيت من الوجبة',
                         style: TextStyle(
                             color: Colors.white
                         ),
