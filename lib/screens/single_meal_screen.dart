@@ -231,7 +231,8 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                       child: Text(
                         'أنتهيت من الوجبة',
                         style: TextStyle(
-                            color: Colors.white
+                            color: Colors.white,
+                          fontFamily: boldFont
                         ),
                       ),
                     ),

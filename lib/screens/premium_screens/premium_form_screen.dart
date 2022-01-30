@@ -99,9 +99,17 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     var after3days = DateTime(now.year, now.month, now.day, now.hour+72);
     activeUser.premiumStartDate = after3days;
     FirestoreService firestoreService = new FirestoreService();
+    mainMealFunction(activeUser);
     var map = activeUser.toJson();
     await firestoreService.updateUserData(id, map);
-    mainMealFunction(activeUser);
+    var premiumNutritionProvider = Provider.of<PremiumNutritionProvider>(context, listen: false);
+    await firestoreService.saveNutritionMeals(
+        id,
+        premiumNutritionProvider.breakfast,
+        premiumNutritionProvider.lunch,
+        premiumNutritionProvider.dinner,
+        premiumNutritionProvider.snacks,
+    );
     setState(() {_isLoading = false;});
   }
 
@@ -131,7 +139,7 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
       engName: 'Snacks',
       components: snacks,
     );
-    Provider.of<PremiumNutritionProvider>(context, listen: false).setSnack(fullMeal);
+    Provider.of<PremiumNutritionProvider>(context, listen: false).setSnack(true);
     //addProteinCarbFatsToProvider(protein - info[0], carb - info[1], fats - info[2]);
     return [(protein - info[0]).toInt(), (carb - info[1]).toInt(), (fats - info[2]).toInt()];
   }
@@ -163,6 +171,9 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
       }
     }
     else if(user.numberOfMeals == 3) {
+      print('Protein: ' + infoAfterSnacks[0].toString());
+      print('Carb: ' + infoAfterSnacks[1].toString());
+      print('Fat: ' + infoAfterSnacks[2].toString());
       //breakfast
       List<FullMeal> breakfast
       = _mealsService.calculateBreakfast(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user);

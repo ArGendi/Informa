@@ -4,15 +4,20 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/models/full_meal.dart';
+import 'package:informa/models/meal.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/models/water.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
+import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/auth_screens/register_screens.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/services/firestore_service.dart';
+import 'package:informa/services/informa_service.dart';
+import 'package:informa/services/meals_service.dart';
 import 'package:provider/provider.dart';
 
 class LoadingScreen extends StatefulWidget {
@@ -24,10 +29,13 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   FirestoreService _firestoreService = new FirestoreService();
+  InformaService _informaService = new InformaService();
+  MealsService _mealsService = new MealsService();
 
   getAppData() async{
     String? lang = await HelpFunction.getUserLanguage();
     String? initScreen = await HelpFunction.getInitScreen();
+    await _mealsService.setAllMeals();
     if(lang != null)
       Provider.of<AppLanguageProvider>(context, listen: false).changeLang(lang);
     if(initScreen != null) {
@@ -37,8 +45,23 @@ class _LoadingScreenState extends State<LoadingScreen> {
         await user.getFromSharedPreference();
         if(user.premium){
           AppUser? premiumUser = await _firestoreService.getUserById(currentUser.uid);
-          if(premiumUser != null)
-            Provider.of<ActiveUserProvider>(context, listen: false).setUser(premiumUser);
+          if(premiumUser != null) {
+            Provider.of<ActiveUserProvider>(context, listen: false).setUser(
+                premiumUser);
+            if(premiumUser.premium && premiumUser.fillPremiumForm){
+              List? nutrition = await _firestoreService.getNutritionMeals(currentUser.uid);
+              if(nutrition != null){
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setBreakfast(nutrition[0]);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setLunch(nutrition[1]);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setDinner(nutrition[2]);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setSnack(nutrition[3]);
+              }
+            }
+          }
           else Navigator.pushReplacementNamed(context, RegisterScreens.id);
         }
         else Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);

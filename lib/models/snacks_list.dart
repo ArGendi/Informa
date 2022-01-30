@@ -55,7 +55,7 @@ class SnacksList{
     ),
     Meal(
       id: '1003',
-      name: 'لصة اللوتس',
+      name: 'صوص اللوتس',
       engName: 'Lotus sauce',
       protein: 28,
       fats: 1,

@@ -105,6 +105,7 @@ class InformaService{
       else if(_user.fatsPercent >= 20 && _user.fatsPercent < 25) index = 3;
       else if(_user.fatsPercent >= 25) index = 4;
       proteinFactor = _proteinFactors[_user.goal-1][index];
+      if(_user.goal == _user.oldGoal) proteinFactor *= 0.2;
     }
     double leanBodyMass = _user.weight * (1 - (_user.fatsPercent/100));
     double dProteinNeeded = (leanBodyMass * 2.2) * proteinFactor;

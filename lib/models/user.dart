@@ -58,20 +58,22 @@ class AppUser {
   MealsList _mealsList = new MealsList();
   int package;
   int plan;
-  //---------------------
   bool? inBody;
   //0 = none, 1 = breakfast & lunch, 2 = lunch & dinner
-  int whichTwoMeals;
+  int? whichTwoMeals;
   int? myProtein;
   int? myCarb;
   int? myFats;
   int? myCalories;
-  DateTime? mealsUpdatedDate;
+  //DateTime? mealsUpdatedDate;
+  //---------------
+  int? oldGoal;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
       this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
-      this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0, this.whichTwoMeals = 0});
+      this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0, this.whichTwoMeals = 0,
+      this.oldGoal = 0});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];
@@ -118,6 +120,12 @@ class AppUser {
     premiumStartDate = dateTime;
     package = json['package'];
     plan = json['plan'];
+    inBody = json['inBody'];
+    whichTwoMeals = json['whichTwoMeals'];
+    myProtein = json['myProtein'];
+    myCarb = json['myCarb'];
+    myFats = json['myFats'];
+    myCalories = json['myCalories'];
   }
 
   Map<String, dynamic> toJson(){
@@ -158,6 +166,12 @@ class AppUser {
         null,
       'package': package,
       'plan': plan,
+      'inBody': inBody,
+      'whichTwoMeals': whichTwoMeals,
+      'myProtein': myProtein,
+      'myCarb': myCarb,
+      'myFats': myFats,
+      'myCalories': myCalories,
     };
   }
 

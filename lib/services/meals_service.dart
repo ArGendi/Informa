@@ -37,13 +37,14 @@ class MealsService{
           carb: breakfast[i][5].toDouble(),
           fats: breakfast[i][6].toDouble(),
           calories: breakfast[i][7].toDouble(),
+          category: 'الفطار',
         ),
       );
     }
     for(int i=1; i<lunch.length; i++){
       MealsList.lunch.add(
         Meal(
-          id: (i+breakfast.length).toString(),
+          id: (i + 100).toString(),
           otherId: lunch[i][9].toString(),
           name: lunch[i][8].toString().trim(),
           engName: lunch[i][1].toString().trim(),
@@ -53,13 +54,14 @@ class MealsService{
           carb: lunch[i][5].toDouble(),
           fats: lunch[i][6].toDouble(),
           calories: lunch[i][7].toDouble(),
+          category: 'الغداء',
         ),
       );
     }
     for(int i=1; i<dinner.length; i++){
       MealsList.dinner.add(
         Meal(
-          id: (i+breakfast.length+dinner.length).toString(),
+          id: (i + 200).toString(),
           otherId: dinner[i][9].toString(),
           name: dinner[i][8].toString().trim(),
           engName: dinner[i][1].toString().trim(),
@@ -69,6 +71,7 @@ class MealsService{
           carb: dinner[i][5].toDouble(),
           fats: dinner[i][6].toDouble(),
           calories: dinner[i][7].toDouble(),
+          category: 'العشاء',
         ),
       );
     }
@@ -98,7 +101,7 @@ class MealsService{
           (myFats - fats).abs() == 2) break;
       Meal meal = queue.removeFirst();
       double p = 0, c = 0, f = 0;
-      if(meal.serving != 1){
+      if(meal.serving != 2){
         p = meal.protein! * 0.05;
         c = meal.carb! * 0.05;
         f = meal.fats! * 0.05;
@@ -133,6 +136,81 @@ class MealsService{
       }
     }
     return result;
+  }
+
+  Map<Meal, int>? otherCalculateFullMealNumbers(MealCategory mealCategory, int protein, int carb, int fats){
+    int counter = 0, pointer = 0;
+    double myProtein = 0, myCarb = 0, myFats = 0;
+    Map<Meal, int> result = Map();
+    List<Meal> outMeals = [];
+    print('Starting the loop');
+    while(outMeals.length < mealCategory.meals!.length){
+      if(counter > 400) break;
+      if((myProtein - protein).abs() < 1 && (myCarb - carb).abs() < 1 &&
+          (myFats - fats).abs() < 1) break;
+
+      double p = 0, c = 0, f = 0;
+      Meal meal = mealCategory.meals![pointer];
+      print(meal.name);
+      bool isBalanced = isMealBalanced(meal, protein, carb, fats);
+      if(((!isBalanced || meal.serving == 1) && (counter%4 != 0)) || outMeals.contains(meal)){
+        print(meal.name! + ' not balanced');
+        if(pointer+1 >= mealCategory.meals!.length) counter++;
+        pointer = (pointer+1) % mealCategory.meals!.length;
+        continue;
+      }
+      if(meal.serving != 1){
+        print(meal.name! + ' take 5 gram');
+        p = meal.protein! * 0.05;
+        c = meal.carb! * 0.05;
+        f = meal.fats! * 0.05;
+      }
+      else{
+        p = meal.protein!;
+        c = meal.carb!;
+        f = meal.fats!;
+      }
+
+      if((myProtein + p < protein + 1) && (myCarb + c < carb + 1) && (myFats + f < fats + 1)){
+        print(meal.name! + ' confirmed');
+        myProtein += p;
+        myCarb += c;
+        myFats += f;
+        if(result.containsKey(meal)){
+          int? value = result[meal];
+          if(meal.serving != 1) result[meal] = value! + 5;
+          else result[meal] = value! + 1;
+        }
+        else{
+          if(meal.serving != 1) result[meal] = 5;
+          else result[meal] = 1;
+        }
+      }
+      else {
+        print(meal.name! + ' go to out meal');
+        outMeals.add(meal);
+      }
+      if(pointer+1 >= mealCategory.meals!.length) counter++;
+      pointer = (pointer+1) % mealCategory.meals!.length;
+    }
+    print('Out of calculation loop');
+    if(mealCategory.extra != null){
+      if(fats > myFats){
+        int diff = fats - myFats.round();
+        if(diff > 0)
+          result[mealCategory.extra!] = diff;
+      }
+    }
+    if((myProtein < protein - 2) || (myCarb < carb - 2) || (myFats < fats - 2))
+      return null;
+    return result;
+  }
+
+  bool isMealBalanced(Meal meal, int protein, int carb, int fats){
+    if((meal.protein! / protein) > 1) return false;
+    else if((meal.carb! / carb) > 1) return false;
+    else if((meal.fats! / fats) > 1) return false;
+    return true;
   }
 
   List<dynamic> calculateSnacks(AppUser user, int proteinNeeded, int carbNeeded){
@@ -262,14 +340,16 @@ class MealsService{
         }
       }
       if(unWantedMealCategory) continue;
-      Map<Meal, int> result = calculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
-      FullMeal fullMeal = new FullMeal(
-        id: mealCategory.id,
-        name: mealCategory.name,
-        engName: mealCategory.engName,
-        components: result,
-      );
-      allFullMeals.add(fullMeal);
+      Map<Meal, int>? result = otherCalculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      if(result != null){
+        FullMeal fullMeal = new FullMeal(
+          id: mealCategory.id,
+          name: mealCategory.name,
+          engName: mealCategory.engName,
+          components: result,
+        );
+        allFullMeals.add(fullMeal);
+      }
     }
 
     return allFullMeals;
@@ -290,14 +370,16 @@ class MealsService{
         }
       }
       if(unWantedMealCategory) continue;
-      Map<Meal, int> result = calculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
-      FullMeal fullMeal = new FullMeal(
-        id: mealCategory.id,
-        name: mealCategory.name,
-        engName: mealCategory.engName,
-        components: result,
-      );
-      allFullMeals.add(fullMeal);
+      Map<Meal, int>? result = otherCalculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      if(result != null){
+        FullMeal fullMeal = new FullMeal(
+          id: mealCategory.id,
+          name: mealCategory.name,
+          engName: mealCategory.engName,
+          components: result,
+        );
+        allFullMeals.add(fullMeal);
+      }
     }
 
     return allFullMeals;
@@ -318,14 +400,16 @@ class MealsService{
         }
       }
       if(unWantedMealCategory) continue;
-      Map<Meal, int> result = calculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
-      FullMeal fullMeal = new FullMeal(
-        id: mealCategory.id,
-        name: mealCategory.name,
-        engName: mealCategory.engName,
-        components: result,
-      );
-      allFullMeals.add(fullMeal);
+      Map<Meal, int>? result = otherCalculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      if(result != null){
+        FullMeal fullMeal = new FullMeal(
+          id: mealCategory.id,
+          name: mealCategory.name,
+          engName: mealCategory.engName,
+          components: result,
+        );
+        allFullMeals.add(fullMeal);
+      }
     }
 
     return allFullMeals;

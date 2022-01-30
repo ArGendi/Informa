@@ -41,8 +41,7 @@ class _FullMealCardState extends State<FullMealCard> {
     List<String> components = [];
     widget.fullMeal.components!.forEach((key, value) {
       String unit = '';
-      if(key.unit!.trim() == 'gm') unit = 'جرام ';
-      else if(key.unit!.trim() == 'tsp') unit = 'معلقة صغيرة ';
+      if(key.unit!.trim() == 'gm' || key.unit!.trim() == 'tsp') unit = 'جرام ';
       String temp = value.toString() + ' ' + unit + key.name!;
       components.add(temp);
     });

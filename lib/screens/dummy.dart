@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
+import 'package:informa/models/meal_category_list.dart';
 import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/screens/auth_screens/main_register_screen.dart';
@@ -112,7 +113,7 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     mealCategory.extra = MealsList.breakfast[60];
     //mealCategory.meals!.add(MealsList.breakfast[21]);
     MealsService mealsService = new MealsService();
-    var map = mealsService.calculateFullMealNumbers(mealCategory, 31, 33, 11);
+    var map = mealsService.calculateFullMealNumbers(MealCategoryList.breakfast[0], 31, 33, 11);
     map.forEach((key, value) {
       print(key.name! + ": " + value.toString());
     });
@@ -184,16 +185,17 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     super.initState();
     _user = AppUser(
       gender: 1,
-      weight: 70,
-      fatsPercent: 14,
-      age: 22,
-      tall: 186,
-      fitnessLevel: 1,
-      goal: 4
+      weight: 86,
+      fatsPercent: 20,
+      age: 40,
+      tall: 178,
+      fitnessLevel: 2,
+      goal: 3
     );
     _user.iTrainingDays = 4;
     _user.inBody = true;
     _informaService = InformaService();
+    _informaService.setUser(_user);
     print("Calories: " + _informaService.calculateNeededCalories().toString());
   }
 
@@ -205,19 +207,17 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              onPressed: makeNotification,
+              onPressed: () async{
+                MealsService mealService = new MealsService();
+                await mealService.setAllMeals();
+                var map = mealService.otherCalculateFullMealNumbers(MealCategoryList.lunch[1], 91, 53, 25);
+                if(map != null)
+                  map.forEach((key, value) {
+                    print(key.name! + ": " + value.toString());
+                  });
+              },
               icon: Icon(Icons.add),
               color: Colors.red,
-            ),
-            IconButton(
-              onPressed: makeNotification2,
-              icon: Icon(Icons.add),
-              color: Colors.blue,
-            ),
-            IconButton(
-              onPressed: makeNotification3,
-              icon: Icon(Icons.add),
-              color: Colors.green,
             ),
           ],
         ),

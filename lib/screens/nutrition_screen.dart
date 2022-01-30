@@ -46,7 +46,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
             ),
           ) : ListView(
             children: [
-              if(premiumNutritionProvider.snacks != null)
+              if(premiumNutritionProvider.snacks)
                 MainMealCard(
                   text: 'وجبات خفيفة',
                   description: 'وجبات خفيفة لزيزة بين الوجبات الاساسية',

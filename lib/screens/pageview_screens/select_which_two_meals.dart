@@ -79,7 +79,7 @@ class _SelectWhichTwoMealsState extends State<SelectWhichTwoMeals> {
                   ProgramSelectCard(
                     mainText: 'فطار وغدا',
                     number: 1,
-                    userChoice: activeUser!.whichTwoMeals,
+                    userChoice: activeUser!.whichTwoMeals!,
                     onClick: (){
                       Provider.of<ActiveUserProvider>(context, listen: false).setWhichTwoMeals(1);
                     },
@@ -88,7 +88,7 @@ class _SelectWhichTwoMealsState extends State<SelectWhichTwoMeals> {
                   ProgramSelectCard(
                     mainText: 'غدا وعشاء',
                     number: 2,
-                    userChoice: activeUser.whichTwoMeals,
+                    userChoice: activeUser.whichTwoMeals!,
                     onClick: (){
                       Provider.of<ActiveUserProvider>(context, listen: false).setWhichTwoMeals(2);
                     },
