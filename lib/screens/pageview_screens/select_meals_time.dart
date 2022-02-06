@@ -117,7 +117,8 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
   }
 
   onNext(AppUser user){
-    setNotifications(user);
+    if(user.numberOfMeals == user.datesOfMeals.length)
+      setNotifications(user);
     widget.onClick();
   }
 

@@ -57,7 +57,9 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
                     color: primaryColor,
                     fontFamily: boldFont,
                     fontSize: 12,
-                    height: 1.5
+                    height: 1.5,
+                    decoration: activeUser.allMeals[widget.id].isSelected ?
+                        TextDecoration.none : TextDecoration.lineThrough,
                   ),
                 ),
               ),

@@ -210,11 +210,14 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
               onPressed: () async{
                 MealsService mealService = new MealsService();
                 await mealService.setAllMeals();
-                var map = mealService.otherCalculateFullMealNumbers(MealCategoryList.lunch[1], 91, 53, 25);
+                var map = mealService.otherCalculateFullMealNumbers(MealCategoryList.lunch[1], 91, 53, 27);
+                print(MealCategoryList.lunch[1].meals![1].fats);
+                print('--------------------');
                 if(map != null)
                   map.forEach((key, value) {
                     print(key.name! + ": " + value.toString());
                   });
+                else print('Nothing');
               },
               icon: Icon(Icons.add),
               color: Colors.red,

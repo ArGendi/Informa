@@ -100,7 +100,8 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     activeUser.premiumStartDate = after3days;
     FirestoreService firestoreService = new FirestoreService();
     mainMealFunction(activeUser);
-    var map = activeUser.toJson();
+    var activeUserAfterUpdate = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    var map = activeUserAfterUpdate!.toJson();
     await firestoreService.updateUserData(id, map);
     var premiumNutritionProvider = Provider.of<PremiumNutritionProvider>(context, listen: false);
     await firestoreService.saveNutritionMeals(
@@ -113,11 +114,6 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     setState(() {_isLoading = false;});
   }
 
-  addProteinCarbFatsToProvider(int protein, int carb, int fats){
-    Provider.of<ActiveUserProvider>(context, listen: false).setMyProtein(protein);
-    Provider.of<ActiveUserProvider>(context, listen: false).setMyCarb(carb);
-    Provider.of<ActiveUserProvider>(context, listen: false).setMyFats(fats);
-  }
 
   List<int> getCaloriesProteinCarbFats(){
     int calories = _informaService.calculateNeededCalories();
@@ -125,8 +121,14 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     int fats = _informaService.calculateFatsNeeded(calories);
     int carb = _informaService.calculateCarbNeeded(calories, protein, fats);
 
-    addProteinCarbFatsToProvider(protein, carb, fats);
     Provider.of<ActiveUserProvider>(context, listen: false).setMyCalories(calories);
+    Provider.of<ActiveUserProvider>(context, listen: false).setDailyCalories(calories);
+    Provider.of<ActiveUserProvider>(context, listen: false).setMyProtein(protein);
+    Provider.of<ActiveUserProvider>(context, listen: false).setDailyProtein(protein);
+    Provider.of<ActiveUserProvider>(context, listen: false).setMyCarb(carb);
+    Provider.of<ActiveUserProvider>(context, listen: false).setDailyCarb(carb);
+    Provider.of<ActiveUserProvider>(context, listen: false).setMyFats(fats);
+    Provider.of<ActiveUserProvider>(context, listen: false).setDailyFats(fats);
     return [protein, carb, fats];
   }
 
@@ -134,13 +136,7 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     List<dynamic> snacksWithInfo = _mealsService.calculateSnacks(user, protein, carb);
     Map<Meal, int> snacks = snacksWithInfo[0];
     List<double> info = snacksWithInfo[1];
-    FullMeal fullMeal = new FullMeal(
-      name: 'الوجبات الخفيفة',
-      engName: 'Snacks',
-      components: snacks,
-    );
     Provider.of<PremiumNutritionProvider>(context, listen: false).setSnack(true);
-    //addProteinCarbFatsToProvider(protein - info[0], carb - info[1], fats - info[2]);
     return [(protein - info[0]).toInt(), (carb - info[1]).toInt(), (fats - info[2]).toInt()];
   }
 
@@ -192,10 +188,12 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
       List<FullMeal> breakfast
         = _mealsService.calculateBreakfast(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user);
       Provider.of<PremiumNutritionProvider>(context, listen: false).setBreakfast(breakfast);
-      //lunch
+      //lunch 1
       List<FullMeal> lunch
         = _mealsService.calculateLunch(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 30, user);
       Provider.of<PremiumNutritionProvider>(context, listen: false).setLunch(lunch);
+      //lunch 2
+      Provider.of<PremiumNutritionProvider>(context, listen: false).setLunch2(lunch);
       //dinner
       List<FullMeal> dinner
         = _mealsService.calculateDinner(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user);

@@ -6,7 +6,9 @@ class FullMealsScreen extends StatefulWidget {
   static String id = 'full meals screen';
   final String screenName;
   final List<FullMeal> fullMeals;
-  const FullMealsScreen({Key? key, required this.screenName, required this.fullMeals}) : super(key: key);
+  final int? mealDone;
+  final int? whichMeal;
+  const FullMealsScreen({Key? key, required this.screenName, required this.fullMeals, this.mealDone, this.whichMeal}) : super(key: key);
 
   @override
   _FullMealsScreenState createState() => _FullMealsScreenState();
@@ -41,6 +43,9 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
                 children: [
                   FullMealCard(
                     fullMeal: widget.fullMeals[index],
+                    mealDoneNumber: widget.mealDone != null? widget.mealDone : null,
+                    id: index,
+                    whichMeal: widget.whichMeal,
                   ),
                   SizedBox(height: 10,),
                 ],

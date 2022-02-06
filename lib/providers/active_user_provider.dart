@@ -110,6 +110,26 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setDailyCalories(int value){
+    _user!.dailyCalories = value;
+    notifyListeners();
+  }
+
+  setDailyProtein(int value){
+    _user!.dailyProtein = value;
+    notifyListeners();
+  }
+
+  setDailyCarb(int value){
+    _user!.dailyCarb = value;
+    notifyListeners();
+  }
+
+  setDailyFats(int value){
+    _user!.dailyFats = value;
+    notifyListeners();
+  }
+
   setWorkoutPlace(int place){
     _user!.workoutPlace = place;
     notifyListeners();
@@ -222,9 +242,9 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  changeListOfMealStateUnWantedMeal(List<int> list){
+  setListOfMealSelection(List<int> list, bool value){
     for(int index in list)
-      _user!.allMeals[index].isSelected = !_user!.allMeals[index].isSelected;
+      _user!.allMeals[index].isSelected = value;
     notifyListeners();
   }
 

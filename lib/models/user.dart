@@ -65,9 +65,13 @@ class AppUser {
   int? myCarb;
   int? myFats;
   int? myCalories;
-  //DateTime? mealsUpdatedDate;
-  //---------------
+  int? dailyCalories;
+  int? dailyProtein;
+  int? dailyCarb;
+  int? dailyFats;
   int? oldGoal;
+  //------------
+  DateTime? lastDataUpdatedDate;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
@@ -102,7 +106,11 @@ class AppUser {
     haveSupplements = json['haveSupplements'];
     supplements = json['supplements'];
     numberOfMeals = json['numberOfMeals'];
-    datesOfMeals = json['datesOfMeals'];
+    datesOfMeals = [];
+    for(var date in json['datesOfMeals']){
+      var temp = date as Timestamp;
+      datesOfMeals.add(temp.toDate());
+    }
     // allMeals = premium && fillPremiumForm?
     //     _mealsList.getMealsByIds(json['wantedMeals']) : List.from(MealsList.allMeals);
     unWantedMeals = json['unWantedMeals'] != null? json['unWantedMeals'] : [];
@@ -126,6 +134,17 @@ class AppUser {
     myCarb = json['myCarb'];
     myFats = json['myFats'];
     myCalories = json['myCalories'];
+    dailyCalories = json['dailyCalories'];
+    dailyProtein = json['dailyProtein'];
+    dailyCarb = json['dailyCarb'];
+    dailyFats = json['dailyFats'];
+    oldGoal = json['oldGoal'];
+    DateTime? dtLastDataUpdatedDate;
+    if(json['lastDataUpdatedDate'] != null) {
+      var temp = json['lastDataUpdatedDate'] as Timestamp;
+      dtLastDataUpdatedDate = temp.toDate();
+    }
+    lastDataUpdatedDate = dtLastDataUpdatedDate;
   }
 
   Map<String, dynamic> toJson(){
@@ -172,6 +191,13 @@ class AppUser {
       'myCarb': myCarb,
       'myFats': myFats,
       'myCalories': myCalories,
+      'dailyCalories': dailyCalories,
+      'dailyProtein': dailyProtein,
+      'dailyCarb': dailyCarb,
+      'dailyFats': dailyFats,
+      'oldGoal': oldGoal,
+      'lastDataUpdatedDate': lastDataUpdatedDate != null? Timestamp.fromDate(lastDataUpdatedDate!):
+        null,
     };
   }
 

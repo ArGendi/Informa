@@ -58,8 +58,19 @@ class MealCategoryList{
       engName: 'CD beef',
       meals: [
         MealsList.lunch[0],
-        MealsList.lunch[10],
+        //MealsList.lunch[10],
         MealsList.lunch[16],
+      ],
+      extra: MealsList.breakfast[63],
+    ),
+    MealCategory(
+      id: '3',
+      name: 'فتة شاورما لحمة',
+      engName: 'CD beef',
+      meals: [
+        MealsList.lunch[0],
+        MealsList.lunch[13],
+        //MealsList.lunch[16],
       ],
       extra: MealsList.breakfast[63],
     ),

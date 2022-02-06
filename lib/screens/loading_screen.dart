@@ -32,6 +32,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
   InformaService _informaService = new InformaService();
   MealsService _mealsService = new MealsService();
 
+  resetMacros(AppUser user){
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyCalories(user.myCalories!);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyProtein(user.myProtein!);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyCarb(user.myCarb!);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyFats(user.myFats!);
+  }
+
   getAppData() async{
     String? lang = await HelpFunction.getUserLanguage();
     String? initScreen = await HelpFunction.getInitScreen();
@@ -49,12 +60,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
             Provider.of<ActiveUserProvider>(context, listen: false).setUser(
                 premiumUser);
             if(premiumUser.premium && premiumUser.fillPremiumForm){
+              bool update = await _firestoreService.checkAndUpdateNewDayData(currentUser.uid, premiumUser);
+              if(update) resetMacros(premiumUser);
               List? nutrition = await _firestoreService.getNutritionMeals(currentUser.uid);
               if(nutrition != null){
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setBreakfast(nutrition[0]);
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setLunch(nutrition[1]);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setLunch2(nutrition[1]);
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setDinner(nutrition[2]);
                 Provider.of<PremiumNutritionProvider>(context, listen: false)

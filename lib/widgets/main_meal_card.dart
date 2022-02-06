@@ -11,7 +11,8 @@ class MainMealCard extends StatefulWidget {
   final String? description;
   final String? image;
   final VoidCallback onClick;
-  const MainMealCard({Key? key, required this.text, this.description, this.image, required this.onClick}) : super(key: key);
+  final int? mealNumber;
+  const MainMealCard({Key? key, required this.text, this.description, this.image, required this.onClick, this.mealNumber}) : super(key: key);
 
   @override
   _MainMealCardState createState() => _MainMealCardState();
@@ -56,12 +57,26 @@ class _MainMealCardState extends State<MainMealCard> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.text,
-                          style: TextStyle(
-                              fontSize: 16,
-                              height: 1
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              widget.text,
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  height: 1
+                              ),
+                            ),
+                            SizedBox(width: 5,),
+                            if(widget.mealNumber != null)
+                              Text(
+                                '(الوجبة ' + widget.mealNumber!.toString() + ')',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    height: 1,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                          ],
                         ),
                         if(widget.description != null)
                           Text(

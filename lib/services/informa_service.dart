@@ -27,6 +27,7 @@ class InformaService{
   }
 
   double calculateBMRFromInBody(){
+    print('BMR from in body: ' + (_user.weight * (1-(_user.fatsPercent/100.0)) * 21.6 + 370).toString());
     return _user.weight * (1-(_user.fatsPercent/100.0)) * 21.6 + 370;
   }
 
@@ -37,6 +38,7 @@ class InformaService{
     else
       initialBMR = (10 * _user.weight) + (6.25 * _user.tall) - (5 * _user.age) - 161;
     double inBodyBMR = calculateBMRFromInBody();
+    print("BMR from photo: " + ((inBodyBMR + initialBMR) / 2).toString());
     return (inBodyBMR + initialBMR) / 2;
   }
 
@@ -58,6 +60,8 @@ class InformaService{
     else if(_user.fitnessLevel == 5) total += 0.05;
 
     if(total < 1.2) total = 1.2;
+
+    print("Activity level: " + total.toString());
     return total;
   }
 
@@ -68,6 +72,8 @@ class InformaService{
       bmr = calculateBMRFromInBody();
     else bmr = calculateBMRFromPhotos();
     activityLevel = calculateActivityLevel();
+
+    print("Calories burn: " + (bmr * activityLevel).toString());
     return bmr * activityLevel;
   }
 
@@ -88,6 +94,8 @@ class InformaService{
 
     if(_user.goal == 1 && caloriesNeeded < 1000) caloriesNeeded = 1000;
     else if(_user.goal == 2 && caloriesNeeded < 1250) caloriesNeeded = 1250;
+
+    print('Calories needed: ' + caloriesNeeded.toString());
 
     return caloriesNeeded;
   }
@@ -110,17 +118,22 @@ class InformaService{
     double leanBodyMass = _user.weight * (1 - (_user.fatsPercent/100));
     double dProteinNeeded = (leanBodyMass * 2.2) * proteinFactor;
     int iProteinNeeded = dProteinNeeded.toInt();
+
+    print('Protein needed: ' + iProteinNeeded.toString());
     return iProteinNeeded;
   }
 
   int calculateFatsNeeded(int caloriesNeeded){
     double fatFac = _fatFactor[_user.goal-1];
     double fatsNeeded = (fatFac * caloriesNeeded) / 9;
+
+    print('Fats needed: ' + fatsNeeded.toString());
     return fatsNeeded.toInt();
   }
 
   int calculateCarbNeeded(int caloriesNeeded, int protein, int fats){
     double carbNeeded = (caloriesNeeded - ((protein * 4) + (fats * 9))) / 4;
+    print('Carb needed: ' + carbNeeded.toString());
     return carbNeeded.toInt();
   }
 

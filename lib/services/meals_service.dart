@@ -197,11 +197,15 @@ class MealsService{
     if(mealCategory.extra != null){
       if(fats > myFats){
         int diff = fats - myFats.round();
+        myFats += diff;
         if(diff > 0)
           result[mealCategory.extra!] = diff;
       }
     }
-    if((myProtein < protein - 2) || (myCarb < carb - 2) || (myFats < fats - 2))
+    result.forEach((key, value) {
+      print(key.name! + ": " + value.toString());
+    });
+    if((myProtein < protein - 3) || (myCarb < carb - 3) || (myFats < fats - 3))
       return null;
     return result;
   }
@@ -347,6 +351,10 @@ class MealsService{
           name: mealCategory.name,
           engName: mealCategory.engName,
           components: result,
+          protein: newProtein.toInt(),
+          carb: newCarb.toInt(),
+          fats: newFats.toInt(),
+          calories: (newProtein.toInt() * 4 + newCarb.toInt() * 4 + newFats.toInt() * 9),
         );
         allFullMeals.add(fullMeal);
       }
@@ -377,6 +385,10 @@ class MealsService{
           name: mealCategory.name,
           engName: mealCategory.engName,
           components: result,
+          protein: newProtein.toInt(),
+          carb: newCarb.toInt(),
+          fats: newFats.toInt(),
+          calories: (newProtein.toInt() * 4 + newCarb.toInt() * 4 + newFats.toInt() * 9),
         );
         allFullMeals.add(fullMeal);
       }
@@ -407,6 +419,10 @@ class MealsService{
           name: mealCategory.name,
           engName: mealCategory.engName,
           components: result,
+          protein: newProtein.toInt(),
+          carb: newCarb.toInt(),
+          fats: newFats.toInt(),
+          calories: (newProtein.toInt() * 4 + newCarb.toInt() * 4 + newFats.toInt() * 9),
         );
         allFullMeals.add(fullMeal);
       }

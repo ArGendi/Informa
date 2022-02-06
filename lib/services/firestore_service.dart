@@ -210,4 +210,27 @@ class FirestoreService{
     }
   }
 
+  Future<bool> checkAndUpdateNewDayData(String id, AppUser user) async{
+    DateTime now = DateTime.now();
+    if(user.lastDataUpdatedDate != null){
+      int diff = (now.difference(user.lastDataUpdatedDate!).inHours / 24).round();
+      if((diff == 1 && now.hour >= 3) || diff > 1){
+        await FirebaseFirestore.instance.collection('users')
+            .doc(id)
+            .update({
+          'dailyCalories': user.myCalories,
+          'dailyProtein': user.myProtein,
+          'dailyCarb': user.myCarb,
+          'dailyFats': user.myFats,
+        })
+            .catchError((e){
+          print(e);
+        });
+        print('New day data updated');
+        return true;
+      }
+    }
+    return false;
+  }
+
 }
