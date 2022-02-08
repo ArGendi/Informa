@@ -51,32 +51,45 @@ class PremiumNutritionProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  setSnackDone(int value){
+  setSnackDone(int? value){
     _snackDone = value;
     notifyListeners();
   }
 
-  setBreakfastDone(int value){
+  setBreakfastDone(int? value){
     _breakfastDone = value;
-    _breakfast[value].isDone = true;
+    //_breakfast[value!].isDone = true;
     notifyListeners();
   }
 
-  setLunchDone(int value){
+  setLunchDone(int? value){
     _lunchDone = value;
-    _lunch[value].isDone = true;
+    //_lunch[value!].isDone = true;
     notifyListeners();
   }
 
-  setLunch2Done(int value){
+  setLunch2Done(int? value){
     _lunch2Done = value;
-    _lunch2[value].isDone = true;
+    //_lunch2[value].isDone = true;
     notifyListeners();
   }
 
-  setDinnerDone(int value){
+  setDinnerDone(int? value){
     _dinnerDone = value;
-    _dinner[value].isDone = true;
+    //_dinner[value].isDone = true;
+    notifyListeners();
+  }
+
+  int? getDoneNumberByMeal(int? mealNumber){
+    if(mealNumber == null) return null;
+    if(mealNumber == 1) return _breakfastDone;
+    else if(mealNumber == 2) return _lunchDone;
+    else if(mealNumber == 3) return _lunch2Done;
+    else if(mealNumber == 4) return _dinnerDone;
+  }
+
+  resetDoneMeals(){
+    _breakfastDone = _lunchDone = _lunch2Done = _dinnerDone = _snackDone = null;
     notifyListeners();
   }
 }

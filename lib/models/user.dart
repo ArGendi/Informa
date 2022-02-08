@@ -70,8 +70,10 @@ class AppUser {
   int? dailyCarb;
   int? dailyFats;
   int? oldGoal;
-  //------------
   DateTime? lastDataUpdatedDate;
+  //------------
+  double? myWater;
+  double? dailyWater;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
@@ -145,6 +147,8 @@ class AppUser {
       dtLastDataUpdatedDate = temp.toDate();
     }
     lastDataUpdatedDate = dtLastDataUpdatedDate;
+    myWater = json['myWater'];
+    dailyWater = json['dailyWater'];
   }
 
   Map<String, dynamic> toJson(){
@@ -198,6 +202,8 @@ class AppUser {
       'oldGoal': oldGoal,
       'lastDataUpdatedDate': lastDataUpdatedDate != null? Timestamp.fromDate(lastDataUpdatedDate!):
         null,
+      'myWater': myWater,
+      'dailyWater': dailyWater,
     };
   }
 

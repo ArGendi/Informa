@@ -43,6 +43,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
         .setDailyFats(user.myFats!);
   }
 
+
+
   getAppData() async{
     String? lang = await HelpFunction.getUserLanguage();
     String? initScreen = await HelpFunction.getInitScreen();
@@ -61,7 +63,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 premiumUser);
             if(premiumUser.premium && premiumUser.fillPremiumForm){
               bool update = await _firestoreService.checkAndUpdateNewDayData(currentUser.uid, premiumUser);
-              if(update) resetMacros(premiumUser);
+              if(update) {
+                resetMacros(premiumUser);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .resetDoneMeals();
+              }
               List? nutrition = await _firestoreService.getNutritionMeals(currentUser.uid);
               if(nutrition != null){
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
@@ -74,6 +80,17 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     .setDinner(nutrition[2]);
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setSnack(nutrition[3]);
+
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setBreakfastDone(nutrition[4]);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setLunchDone(nutrition[5]);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setLunch2Done(nutrition[6]);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setDinnerDone(nutrition[7]);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setSnackDone(nutrition[8]);
               }
             }
           }

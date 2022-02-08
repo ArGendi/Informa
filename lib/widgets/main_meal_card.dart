@@ -12,7 +12,8 @@ class MainMealCard extends StatefulWidget {
   final String? image;
   final VoidCallback onClick;
   final int? mealNumber;
-  const MainMealCard({Key? key, required this.text, this.description, this.image, required this.onClick, this.mealNumber}) : super(key: key);
+  final bool? isDone;
+  const MainMealCard({Key? key, required this.text, this.description, this.image, required this.onClick, this.mealNumber, this.isDone}) : super(key: key);
 
   @override
   _MainMealCardState createState() => _MainMealCardState();
@@ -34,18 +35,41 @@ class _MainMealCardState extends State<MainMealCard> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: widget.image != null ? Image.asset(
-                widget.image!,
-                width: 130,
-                height: 130,
-                fit: BoxFit.cover,
-              ) : Container(
-                width: 130,
-                height: 130,
-                color: Colors.grey[300],
-              ),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: widget.image != null ? Image.asset(
+                    widget.image!,
+                    width: 130,
+                    height: 130,
+                    fit: BoxFit.cover,
+                  ) : Container(
+                    width: 130,
+                    height: 130,
+                    color: Colors.grey[300],
+                  ),
+                ),
+                if(widget.isDone != null && widget.isDone!)
+                Opacity(
+                  opacity: 0.7,
+                  child: Container(
+                    width: 130,
+                    height: 130,
+                    decoration: BoxDecoration(
+                      color: Colors.green[400],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Expanded(
               child: Padding(

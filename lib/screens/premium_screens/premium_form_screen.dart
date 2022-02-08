@@ -100,6 +100,11 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     activeUser.premiumStartDate = after3days;
     FirestoreService firestoreService = new FirestoreService();
     mainMealFunction(activeUser);
+
+    //Water calculation
+    Provider.of<ActiveUserProvider>(context, listen: false).setMyWater(activeUser.weight * 0.045);
+    Provider.of<ActiveUserProvider>(context, listen: false).setDailyWater(activeUser.weight * 0.045);
+
     var activeUserAfterUpdate = Provider.of<ActiveUserProvider>(context, listen: false).user;
     var map = activeUserAfterUpdate!.toJson();
     await firestoreService.updateUserData(id, map);
@@ -110,6 +115,11 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
         premiumNutritionProvider.lunch,
         premiumNutritionProvider.dinner,
         premiumNutritionProvider.snacks,
+        premiumNutritionProvider.breakfastDone,
+        premiumNutritionProvider.lunchDone,
+        premiumNutritionProvider.lunch2Done,
+        premiumNutritionProvider.dinnerDone,
+        premiumNutritionProvider.snackDone,
     );
     setState(() {_isLoading = false;});
   }

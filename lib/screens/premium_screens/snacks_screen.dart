@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/full_meal.dart';
@@ -5,6 +6,7 @@ import 'package:informa/models/meal.dart';
 import 'package:informa/models/snacks_list.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/wide_meal_card.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +21,7 @@ class SnacksScreen extends StatefulWidget {
 class _SnacksScreenState extends State<SnacksScreen> {
   List<Meal> _mainList = [];
   List<Meal> _orList = [];
+  FirestoreService _firestoreService = new FirestoreService();
 
   getSnacks(){
     //FullMeal? snacks = Provider.of<PremiumNutritionProvider>(context ,listen: false).snacks;
@@ -95,30 +98,33 @@ class _SnacksScreenState extends State<SnacksScreen> {
           padding: const EdgeInsets.all(15.0),
           child: ListView(
             children: [
-              for(var snack in _mainList)
-                Column(
-                  children: [
-                    WideMealCard(meal: snack),
-                    SizedBox(height: 10,),
-                  ],
-                ),
-              if(_mainList.isNotEmpty)
-                SizedBox(height: 15,),
               if(_orList.isNotEmpty)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'أختار وجبة واحدة فقط',
-                      style: TextStyle(
-                        fontFamily: boldFont,
-                      ),
-                    ),
-                    SizedBox(height: 10,),
+                    // SizedBox(height: 10,),
+                    // Text(
+                    //   'أختار وجبة واحدة فقط',
+                    //   style: TextStyle(
+                    //     fontFamily: boldFont,
+                    //   ),
+                    // ),
+                    // SizedBox(height: 10,),
                     for(var snack in _orList)
                       Column(
                         children: [
-                          WideMealCard(meal: snack),
+                          WideMealCard(
+                            meal: snack,
+                            mealDoneNumber: Provider.of<PremiumNutritionProvider>(context).snackDone,
+                            onClick: () async{
+                              String id = FirebaseAuth.instance.currentUser!.uid;
+                              await _firestoreService.updateDoneMeals(id, {
+                                'snacksDone': int.parse(snack.id!),
+                              });
+                              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                                  .setSnackDone(int.parse(snack.id!));
+                            },
+                          ),
                           SizedBox(height: 10,),
                         ],
                       ),

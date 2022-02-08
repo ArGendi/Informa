@@ -132,6 +132,11 @@ class FirestoreService{
       List<FullMeal> lunch,
       List<FullMeal> dinner,
       bool snacks,
+      int? breakfastDone,
+      int? lunchDone,
+      int? lunch2Done,
+      int? dinnerDone,
+      int? snacksDone,
       ) async{
     bool uploaded = true;
     Map<String, dynamic> data = new Map();
@@ -149,6 +154,12 @@ class FirestoreService{
     data['lunch'] = lunchList;
     data['dinner'] = dinnerList;
     data['snacks'] = snacks;
+
+    data['breakfastDone'] = breakfastDone;
+    data['lunchDone'] = lunchDone;
+    data['lunch2Done'] = lunch2Done;
+    data['dinnerDone'] = dinnerDone;
+    data['snacksDone'] = snacksDone;
 
     await FirebaseFirestore.instance.collection('nutrition')
         .doc(id)
@@ -202,7 +213,8 @@ class FirestoreService{
           dinner.add(fullMeal);
         }
       } else print('dinner = null !!!!!');
-      return [breakfast, lunch, dinner, data['snacks']];
+      return [breakfast, lunch, dinner, data['snacks'], data['breakfastDone'],
+        data['lunchDone'], data['lunch2Done'], data['dinnerDone'], data['snacksDone']];
     }
     else {
       print('Document does not exist on the database');
@@ -212,6 +224,7 @@ class FirestoreService{
 
   Future<bool> checkAndUpdateNewDayData(String id, AppUser user) async{
     DateTime now = DateTime.now();
+    DateTime threeAmToday = DateTime(now.year, now.month, now.day, 3);
     if(user.lastDataUpdatedDate != null){
       int diff = (now.difference(user.lastDataUpdatedDate!).inHours / 24).round();
       if((diff == 1 && now.hour >= 3) || diff > 1){
@@ -222,15 +235,54 @@ class FirestoreService{
           'dailyProtein': user.myProtein,
           'dailyCarb': user.myCarb,
           'dailyFats': user.myFats,
-        })
-            .catchError((e){
+          'lastDataUpdatedDate': Timestamp.fromDate(threeAmToday),
+        }).catchError((e){
           print(e);
+        });
+        await updateDoneMeals(id, {
+          'breakfastDone': null,
+          'lunchDone': null,
+          'lunch2Done': null,
+          'dinnerDone': null,
+          'snacksDone': null,
         });
         print('New day data updated');
         return true;
       }
     }
+    else{
+      await FirebaseFirestore.instance.collection('users')
+          .doc(id)
+          .update({
+        'dailyCalories': user.myCalories,
+        'dailyProtein': user.myProtein,
+        'dailyCarb': user.myCarb,
+        'dailyFats': user.myFats,
+        'lastDataUpdatedDate': Timestamp.fromDate(threeAmToday),
+      }).catchError((e){
+        print(e);
+      });
+      await updateDoneMeals(id, {
+        'breakfastDone': null,
+        'lunchDone': null,
+        'lunch2Done': null,
+        'dinnerDone': null,
+        'snacksDone': null,
+      });
+      print('New day data updated');
+      return true;
+    }
     return false;
+  }
+
+  Future updateDoneMeals(String id, Map<String, dynamic> data) async{
+    await FirebaseFirestore.instance.collection('nutrition')
+        .doc(id)
+        .update(data)
+        .catchError((e){
+      print(e);
+    });
+    print('Nutrition data updated');
   }
 
 }

@@ -13,7 +13,8 @@ class FullMealCard extends StatefulWidget {
   final int id;
   final int? mealDoneNumber;
   final int? whichMeal;
-  const FullMealCard({Key? key, required this.fullMeal, this.mealDoneNumber, required this.id, this.whichMeal}) : super(key: key);
+  final VoidCallback? onClick;
+  const FullMealCard({Key? key, required this.fullMeal, this.mealDoneNumber, required this.id, this.whichMeal, this.onClick}) : super(key: key);
 
   @override
   _FullMealCardState createState() => _FullMealCardState();
@@ -77,16 +78,13 @@ class _FullMealCardState extends State<FullMealCard> {
             meal: meal,
             mealDoneNumber: widget.mealDoneNumber,
             otherId: widget.id,
-            onClick: (){
-              Provider.of<PremiumNutritionProvider>(context, listen: false)
-                  .setBreakfastDone(widget.id);
-            },
+            onClick: widget.onClick,
           )),
         );
       },
       child: Opacity(
-        opacity: widget.mealDoneNumber != null && widget.mealDoneNumber == widget.id?
-            1 : 0.4,
+        opacity: widget.mealDoneNumber != null && widget.mealDoneNumber != widget.id?
+            0.4 : 1,
         child: Container(
           height: 130,
           decoration: BoxDecoration(

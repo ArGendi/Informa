@@ -7,9 +7,16 @@ class FullMeal{
   String? engName;
   String? description;
   String? image;
+  int? calories;
+  int? protein;
+  int? carb;
+  int? fats;
   Map<Meal, int>? components;
+  bool isDone;
 
-  FullMeal({this.id, this.name, this.image, this.components, this.engName});
+  FullMeal({this.id, this.name, this.image, this.components, this.engName,
+          this.carb, this.protein, this.fats, this.calories,this.description,
+          this.isDone = false});
 
   Map<String, int> convertComponentsToStringInt(){
     Map<String, int> map = Map();
@@ -42,6 +49,11 @@ class FullMeal{
       'description': description,
       'image': image,
       'components': convertComponentsToStringInt(),
+      'calories': calories,
+      'protein': protein,
+      'carb': carb,
+      'fats': fats,
+      //'isDone':
     };
   }
 
@@ -51,6 +63,10 @@ class FullMeal{
     description = json['description'];
     image = json['image'];
     components = convertComponentsToMealInt(json['components']);
+    calories = json['calories'];
+    protein = json['protein'];
+    carb = json['carb'];
+    fats = json['fats'];
   }
 
 }

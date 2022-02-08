@@ -130,6 +130,16 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setMyWater(double value){
+    _user!.myWater = value;
+    notifyListeners();
+  }
+
+  setDailyWater(double value){
+    _user!.dailyWater = value;
+    notifyListeners();
+  }
+
   setWorkoutPlace(int place){
     _user!.workoutPlace = place;
     notifyListeners();

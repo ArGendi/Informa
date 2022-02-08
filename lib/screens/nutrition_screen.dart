@@ -7,6 +7,7 @@ import 'package:informa/screens/premium_screens/full_meals_screen.dart';
 import 'package:informa/screens/premium_screens/snacks_screen.dart';
 import 'package:informa/widgets/macro_banner.dart';
 import 'package:informa/widgets/main_meal_card.dart';
+import 'package:informa/widgets/water_info_banner.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -62,7 +63,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(borderRadius),
-                          border: Border.all(color: Colors.grey.shade300, width: 2)
+                          border: Border.all(color: Colors.grey.shade200, width: 2)
                       ),
                       child: Center(
                         child: Padding(
@@ -86,6 +87,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         text: 'الفطار',
                         mealNumber: 1,
                         description: 'أبدأ بوجبة فطار لذيذة وصحية',
+                        isDone: premiumNutritionProvider.breakfastDone != null?
+                            true : false,
                         onClick: (){
                           Navigator.push(
                             context,
@@ -103,6 +106,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         text: 'الغداء',
                         mealNumber: getLunchNumber(activeUser),
                         description: 'وجبة الغداء اكتر وجبة فيها بروتينات لعضلاتك',
+                        isDone: premiumNutritionProvider.lunchDone != null?
+                        true : false,
                         onClick: (){
                           Navigator.push(
                             context,
@@ -110,6 +115,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                               screenName: 'الغداء',
                               fullMeals: premiumNutritionProvider.lunch,
                               mealDone: premiumNutritionProvider.lunchDone,
+                              whichMeal: 2,
                             )),
                           );
                         },
@@ -122,6 +128,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             text: 'الغداء',
                             mealNumber: 3,
                             description: 'وجبة الغداء اكتر وجبة فيها بروتينات لعضلاتك',
+                            isDone: premiumNutritionProvider.lunch2Done != null?
+                            true : false,
                             onClick: (){
                               Navigator.push(
                                 context,
@@ -129,6 +137,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                   screenName: 'الغداء',
                                   fullMeals: premiumNutritionProvider.lunch2,
                                   mealDone: premiumNutritionProvider.lunch2Done,
+                                  whichMeal: 3,
                                 )),
                               );
                             },
@@ -142,6 +151,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         text: 'العشاء',
                         mealNumber: getDinnerNumber(activeUser),
                         description: 'حافظ علي ان وجبة العشاء قبل النوم عالأقل بنص ساعة',
+                        isDone: premiumNutritionProvider.dinnerDone != null?
+                        true : false,
                         onClick: (){
                           Navigator.push(
                             context,
@@ -149,6 +160,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                               screenName: 'العشاء',
                               fullMeals: premiumNutritionProvider.dinner,
                               mealDone: premiumNutritionProvider.dinnerDone,
+                              whichMeal: 4,
                             )),
                           );
                         },
@@ -160,6 +172,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                           MainMealCard(
                             text: 'وجبات خفيفة',
                             description: 'وجبات خفيفة لذيذة بين الوجبات الاساسية (في اي وقت متاح فاليوم)',
+                            isDone: premiumNutritionProvider.snackDone != null?
+                            true : false,
                             onClick: (){
                               Navigator.pushNamed(context, SnacksScreen.id);
                             },
@@ -185,6 +199,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                           ),
                         ],
                       ),
+                    SizedBox(height: 10,),
+                    WaterInfoBanner(),
                     SizedBox(height: 80,),
                   ],
                 ),

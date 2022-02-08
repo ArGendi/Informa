@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:informa/constants.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
+import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/services/firestore_service.dart';
@@ -47,7 +50,10 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
       int newProtein = activeUser.dailyProtein! - widget.meal.protein!.toInt();
       int newCarb = activeUser.dailyCarb! - widget.meal.carb!.toInt();
       int newFats = activeUser.dailyFats! - widget.meal.fats!.toInt();
-      if(newCalories < 20 && newCalories >= 0) newCalories = 0;
+      if(newCalories <= 17 && newCalories >= 0) newCalories = 0;
+      if(newProtein == 1) newProtein = 0;
+      if(newCarb == 1) newCarb = 0;
+      if(newFats == 1) newFats = 0;
       String id = FirebaseAuth.instance.currentUser!.uid;
       await _firestoreService.updateUserData(id, {
         'dailyCalories': newCalories,
@@ -64,11 +70,14 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
       Provider.of<ActiveUserProvider>(context, listen: false)
           .setDailyFats(newFats);
 
-      if(widget.otherId != null){
-        widget.onClick!();
-      }
+      if(widget.onClick != null) widget.onClick!();
 
       setState(() {_isDone = true;});
+      // if(widget.otherId != null){
+      //   Timer(Duration(milliseconds: 1000), (){
+      //     Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
+      //   });
+      // }
     }
   }
 
