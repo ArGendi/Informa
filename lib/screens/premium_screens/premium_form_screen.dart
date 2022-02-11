@@ -97,7 +97,9 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     await NotificationService.cancelNotification(10);
     DateTime now = DateTime.now();
     var after3days = DateTime(now.year, now.month, now.day, now.hour+72);
+    DateTime threeAmToday = DateTime(now.year, now.month, now.day, 3);
     activeUser.premiumStartDate = after3days;
+    activeUser.lastDataUpdatedDate = threeAmToday;
     FirestoreService firestoreService = new FirestoreService();
     mainMealFunction(activeUser);
 

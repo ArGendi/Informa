@@ -3,8 +3,11 @@ import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
+import 'package:informa/screens/premium_screens/add_external_meal_info_screen.dart';
 import 'package:informa/screens/premium_screens/full_meals_screen.dart';
 import 'package:informa/screens/premium_screens/snacks_screen.dart';
+import 'package:informa/screens/premium_screens/supplements_screen.dart';
+import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/macro_banner.dart';
 import 'package:informa/widgets/main_meal_card.dart';
 import 'package:informa/widgets/water_info_banner.dart';
@@ -30,6 +33,16 @@ class _NutritionScreenState extends State<NutritionScreen> {
     if(user.numberOfMeals == 3) return 3;
     else if(user.numberOfMeals == 4) return 4;
     else return 2;
+  }
+
+  bool getSupplementsDoneStatus(AppUser user, PremiumNutritionProvider nutritionProvider){
+    if(user.wheyProtein == 1 && user.myProtein! >= 250){
+      if(nutritionProvider.supplementsDone!.length == 2) return true;
+    }
+    else if(user.wheyProtein == 1 && user.myProtein! >= 200){
+      if(nutritionProvider.supplementsDone!.length == 1) return true;
+    }
+    return false;
   }
 
   @override
@@ -187,21 +200,23 @@ class _NutritionScreenState extends State<NutritionScreen> {
                           MainMealCard(
                             text: 'المكملات',
                             description: 'المكملات الجانبية بجانب الوجبات الاساسية',
+                            isDone: getSupplementsDoneStatus(activeUser, premiumNutritionProvider),
                             onClick: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => FullMealsScreen(
-                                  screenName: 'المكملات',
-                                  fullMeals: [],
-                                )),
-                              );
+                              Navigator.pushNamed(context, SupplementsScreen.id);
                             },
                           ),
                         ],
                       ),
                     SizedBox(height: 10,),
                     WaterInfoBanner(),
-                    SizedBox(height: 80,),
+                    SizedBox(height: 10,),
+                    CustomButton(
+                      text: 'أضف وجبة خارجية',
+                      onClick: (){
+                        Navigator.pushNamed(context, AddExternalMealInfoScreen.id);
+                      },
+                    ),
+                    SizedBox(height: 90,),
                   ],
                 ),
               ),

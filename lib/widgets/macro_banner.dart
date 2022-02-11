@@ -87,7 +87,7 @@ class _MacroBannerState extends State<MacroBanner> {
                       (activeUser.myCalories! - activeUser.dailyCalories!).toString(),
                       style: TextStyle(
                         fontSize: 14,
-                        color: primaryColor,
+                        color: activeUser.dailyCalories! >= 0 ? primaryColor : Colors.red,
                         fontFamily: boldFont,
                       ),
                     ),
@@ -132,7 +132,7 @@ class _MacroBannerState extends State<MacroBanner> {
                   (activeUser.myProtein! - activeUser.dailyProtein!).toString(),
                   style: TextStyle(
                     fontSize: 14,
-                    color: primaryColor,
+                    color: activeUser.dailyProtein! >= 0 ? primaryColor : Colors.red,
                     fontFamily: boldFont,
                   ),
                 ),
@@ -169,7 +169,7 @@ class _MacroBannerState extends State<MacroBanner> {
                   (activeUser.myCarb! - activeUser.dailyCarb!).toString(),
                   style: TextStyle(
                     fontSize: 14,
-                    color: primaryColor,
+                    color: activeUser.dailyCarb! >= 0 ? primaryColor : Colors.red,
                     fontFamily: boldFont,
                   ),
                 ),
@@ -206,7 +206,7 @@ class _MacroBannerState extends State<MacroBanner> {
                   (activeUser.myFats! - activeUser.dailyFats!).toString(),
                   style: TextStyle(
                     fontSize: 14,
-                    color: primaryColor,
+                    color: activeUser.dailyFats! >= 0 ? primaryColor : Colors.red,
                     fontFamily: boldFont,
                   ),
                 ),

@@ -10,7 +10,8 @@ class WideMealCard extends StatefulWidget {
   final Meal meal;
   final int? mealDoneNumber;
   final VoidCallback? onClick;
-  const WideMealCard({Key? key, required this.meal, this.onClick, this.mealDoneNumber}) : super(key: key);
+  final bool? isDone;
+  const WideMealCard({Key? key, required this.meal, this.onClick, this.mealDoneNumber, this.isDone}) : super(key: key);
 
   @override
   _WideMealCardState createState() => _WideMealCardState();
@@ -34,6 +35,7 @@ class _WideMealCardState extends State<WideMealCard> {
             otherId: int.parse(widget.meal.id!),
             mealDoneNumber: widget.mealDoneNumber,
             onClick: widget.onClick,
+            isDone: widget.isDone,
           )),
         );
       },
@@ -67,7 +69,9 @@ class _WideMealCardState extends State<WideMealCard> {
                       ),
                     ),
                   ),
-                  if((widget.mealDoneNumber != null) && widget.meal.id == widget.mealDoneNumber.toString())
+                  if((widget.mealDoneNumber != null)
+                      && widget.meal.id == widget.mealDoneNumber.toString()
+                      || (widget.isDone != null && widget.isDone!))
                   Opacity(
                     opacity: 0.7,
                     child: Container(

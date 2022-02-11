@@ -160,6 +160,8 @@ class FirestoreService{
     data['lunch2Done'] = lunch2Done;
     data['dinnerDone'] = dinnerDone;
     data['snacksDone'] = snacksDone;
+    data['mainSnacksDone'] = [];
+    data['supplementsDone'] = [];
 
     await FirebaseFirestore.instance.collection('nutrition')
         .doc(id)
@@ -214,7 +216,8 @@ class FirestoreService{
         }
       } else print('dinner = null !!!!!');
       return [breakfast, lunch, dinner, data['snacks'], data['breakfastDone'],
-        data['lunchDone'], data['lunch2Done'], data['dinnerDone'], data['snacksDone']];
+        data['lunchDone'], data['lunch2Done'], data['dinnerDone'], data['snacksDone'],
+        data['mainSnacksDone'], data['supplementsDone']];
     }
     else {
       print('Document does not exist on the database');
@@ -227,7 +230,10 @@ class FirestoreService{
     DateTime threeAmToday = DateTime(now.year, now.month, now.day, 3);
     if(user.lastDataUpdatedDate != null){
       int diff = (now.difference(user.lastDataUpdatedDate!).inHours / 24).round();
-      if((diff == 1 && now.hour >= 3) || diff > 1){
+      print('lastDataUpdatedDate: ' + user.lastDataUpdatedDate.toString());
+      print(now.difference(user.lastDataUpdatedDate!).inHours);
+      print('diff: ' + diff.toString());
+      if(diff >= 1){
         await FirebaseFirestore.instance.collection('users')
             .doc(id)
             .update({
@@ -245,6 +251,8 @@ class FirestoreService{
           'lunch2Done': null,
           'dinnerDone': null,
           'snacksDone': null,
+          'mainSnacksDone': [],
+          'supplementsDone': [],
         });
         print('New day data updated');
         return true;
@@ -268,8 +276,10 @@ class FirestoreService{
         'lunch2Done': null,
         'dinnerDone': null,
         'snacksDone': null,
+        'mainSnacksDone': [],
+        'supplementsDone': [],
       });
-      print('New day data updated');
+      print('New day data updated from null');
       return true;
     }
     return false;

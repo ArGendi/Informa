@@ -65,8 +65,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
               bool update = await _firestoreService.checkAndUpdateNewDayData(currentUser.uid, premiumUser);
               if(update) {
                 resetMacros(premiumUser);
-                Provider.of<PremiumNutritionProvider>(context, listen: false)
-                    .resetDoneMeals();
+                // Provider.of<PremiumNutritionProvider>(context, listen: false)
+                //     .resetDoneMeals();
               }
               List? nutrition = await _firestoreService.getNutritionMeals(currentUser.uid);
               if(nutrition != null){
@@ -91,6 +91,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     .setDinnerDone(nutrition[7]);
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setSnackDone(nutrition[8]);
+
+                List<int>? mainSnacksDone = nutrition[9].cast<int>();
+                List<int>? supplementsDone = nutrition[10].cast<int>();
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setMainSnacksDone(mainSnacksDone);
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setSupplementsDone(supplementsDone);
               }
             }
           }

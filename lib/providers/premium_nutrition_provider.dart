@@ -10,10 +10,12 @@ class PremiumNutritionProvider extends ChangeNotifier{
   List<FullMeal> _lunch2 = [];
   List<FullMeal> _dinner = [];
   int? _snackDone;
+  List<int>? _mainSnacksDone = [];
   int? _breakfastDone;
   int? _lunchDone;
   int? _lunch2Done;
   int? _dinnerDone;
+  List<int>? _supplementsDone = [];
 
   bool get snacks => _snacks;
   List<FullMeal> get breakfast => _breakfast;
@@ -25,6 +27,8 @@ class PremiumNutritionProvider extends ChangeNotifier{
   int? get lunchDone => _lunchDone;
   int? get lunch2Done => _lunch2Done;
   int? get dinnerDone => _dinnerDone;
+  List<int>? get mainSnacksDone => _mainSnacksDone;
+  List<int>? get supplementsDone => _supplementsDone;
 
   setSnack(bool value){
     _snacks = value;
@@ -90,6 +94,28 @@ class PremiumNutritionProvider extends ChangeNotifier{
 
   resetDoneMeals(){
     _breakfastDone = _lunchDone = _lunch2Done = _dinnerDone = _snackDone = null;
+    _mainSnacksDone = _supplementsDone = [];
     notifyListeners();
   }
+
+  setMainSnacksDone(List<int>? value){
+    _mainSnacksDone = value;
+    notifyListeners();
+  }
+
+  setSupplementsDone(List<int>? value){
+    _supplementsDone = value;
+    notifyListeners();
+  }
+
+  addToMainSnacksDone(int value){
+    _mainSnacksDone!.add(value);
+    notifyListeners();
+  }
+
+  addToSupplementsDone(int value){
+    _supplementsDone!.add(value);
+    notifyListeners();
+  }
+
 }

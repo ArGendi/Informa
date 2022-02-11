@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:provider/provider.dart';
 
 class WaterInfoBanner extends StatefulWidget {
@@ -11,6 +14,28 @@ class WaterInfoBanner extends StatefulWidget {
 }
 
 class _WaterInfoBannerState extends State<WaterInfoBanner> {
+  FirestoreService _firestoreService = new FirestoreService();
+
+  decreaseWater(BuildContext context, AppUser user){
+    double newValue = user.dailyWater! + 0.250;
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyWater(newValue);
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    _firestoreService.updateUserData(id, {
+      'dailyWater': newValue,
+    });
+  }
+
+  increaseWater(BuildContext context, AppUser user){
+    double newValue = user.dailyWater! - 0.250;
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyWater(newValue);
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    _firestoreService.updateUserData(id, {
+      'dailyWater': newValue,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -67,7 +92,7 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                     Column(
                       children: [
                         Text(
-                          activeUser!.myWater.toString(),
+                          activeUser!.myWater!.toStringAsFixed(1) + ' لتر',
                           style: TextStyle(
                             fontSize: 15,
                             color: primaryColor,
@@ -75,7 +100,7 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                           ),
                         ),
                         Text(
-                          (activeUser.myWater! - activeUser.dailyWater!).toString(),
+                          (activeUser.myWater! - activeUser.dailyWater!).toStringAsFixed(2) + ' لتر',
                           style: TextStyle(
                             fontSize: 15,
                             color: primaryColor,
@@ -83,7 +108,7 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                           ),
                         ),
                         Text(
-                          (activeUser.dailyWater!).toString(),
+                          (activeUser.dailyWater!).toStringAsFixed(1) + ' لتر',
                           style: TextStyle(
                             fontSize: 15,
                             color: activeUser.dailyWater! >= 0 ? primaryColor : Colors.red,
@@ -101,16 +126,14 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                       children: [
                         IconButton(
                           onPressed: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false)
-                                .setDailyWater(activeUser.dailyWater! - 0.250);
+                            decreaseWater(context, activeUser);
                           },
                           icon: Icon(Icons.remove),
                         ),
                         Icon(Icons.language),
                         IconButton(
                           onPressed: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false)
-                                .setDailyWater(activeUser.dailyWater! + 0.250);
+                            increaseWater(context, activeUser);
                           },
                           icon: Icon(Icons.add),
                         ),

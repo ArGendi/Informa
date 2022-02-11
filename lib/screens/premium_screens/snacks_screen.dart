@@ -27,14 +27,14 @@ class _SnacksScreenState extends State<SnacksScreen> {
     //FullMeal? snacks = Provider.of<PremiumNutritionProvider>(context ,listen: false).snacks;
     var activeUser = Provider.of<ActiveUserProvider>(context ,listen: false).user;
     if(activeUser!.wheyProtein == 1 && activeUser.myProtein! >= 250){
-      _mainList.add(SnacksList.snacks[0]);
-      _mainList.add(SnacksList.snacks[0]);
+      // _mainList.add(SnacksList.snacks[0]);
+      // _mainList.add(SnacksList.snacks[0]);
       _orList.add(SnacksList.snacks[1]);
       _orList.add(SnacksList.snacks[2]);
       _orList.add(SnacksList.snacks[3]);
     }
     else if(activeUser.wheyProtein == 1 && activeUser.myProtein! >= 200){
-      _mainList.add(SnacksList.snacks[0]);
+      // _mainList.add(SnacksList.snacks[0]);
       _orList.add(SnacksList.snacks[1]);
       _orList.add(SnacksList.snacks[2]);
       _orList.add(SnacksList.snacks[3]);
@@ -75,7 +75,8 @@ class _SnacksScreenState extends State<SnacksScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getSnacks();
+    if(mounted)
+      getSnacks();
   }
 
   @override
@@ -102,14 +103,39 @@ class _SnacksScreenState extends State<SnacksScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // SizedBox(height: 10,),
-                    // Text(
-                    //   'أختار وجبة واحدة فقط',
-                    //   style: TextStyle(
-                    //     fontFamily: boldFont,
-                    //   ),
-                    // ),
-                    // SizedBox(height: 10,),
+                    for(int i=0; i<_mainList.length; i++)
+                      Column(
+                        children: [
+                          WideMealCard(
+                            meal: _mainList[i],
+                            isDone: Provider.of<PremiumNutritionProvider>(context).mainSnacksDone!.contains(i),
+                            onClick: () async{
+                              String id = FirebaseAuth.instance.currentUser!.uid;
+                              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                                  .addToMainSnacksDone(i);
+                              await _firestoreService.updateDoneMeals(id, {
+                                'mainSnacksDone': Provider.of<PremiumNutritionProvider>(context, listen: false)
+                                    .mainSnacksDone,
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10,),
+                        ],
+                      ),
+                    if(_mainList.isNotEmpty)
+                    SizedBox(height: 10,),
+                    if(_orList.isNotEmpty)
+                    Column(
+                      children: [
+                        Text(
+                          'أختار وجبة واحدة فقط',
+                          style: TextStyle(
+                            fontFamily: boldFont,
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                      ],
+                    ),
                     for(var snack in _orList)
                       Column(
                         children: [

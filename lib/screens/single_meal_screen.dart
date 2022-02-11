@@ -22,23 +22,27 @@ class SingleMealScreen extends StatefulWidget {
   final int? otherId;
   final int? mealDoneNumber;
   final VoidCallback? onClick;
-  const SingleMealScreen({Key? key, required this.meal, this.otherId, this.mealDoneNumber, this.onClick}) : super(key: key);
+  final bool? isDone;
+  const SingleMealScreen({Key? key, required this.meal, this.otherId, this.mealDoneNumber, this.onClick, this.isDone}) : super(key: key);
 
   @override
-  _SingleMealScreenState createState() => _SingleMealScreenState(otherId, mealDoneNumber);
+  _SingleMealScreenState createState() => _SingleMealScreenState(otherId, mealDoneNumber, isDone);
 }
 
 class _SingleMealScreenState extends State<SingleMealScreen> {
   bool _isFavorite = false;
+  bool _isLoading = false;
   late bool _isDone;
   FirestoreService _firestoreService = new FirestoreService();
 
-  _SingleMealScreenState(int? id, int? mealDoneNumber){
+  _SingleMealScreenState(int? id, int? mealDoneNumber, bool? done){
+    _isDone = false;
     if(id != null && mealDoneNumber != null){
       if(id == mealDoneNumber) _isDone = true;
-      else _isDone = false;
     }
-    else _isDone = false;
+    if(done != null){
+      if(done) _isDone = true;
+    }
   }
 
   onDone(BuildContext context) async{
@@ -54,6 +58,9 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
       if(newProtein == 1) newProtein = 0;
       if(newCarb == 1) newCarb = 0;
       if(newFats == 1) newFats = 0;
+
+      setState(() {_isLoading = true;});
+
       String id = FirebaseAuth.instance.currentUser!.uid;
       await _firestoreService.updateUserData(id, {
         'dailyCalories': newCalories,
@@ -72,12 +79,8 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
 
       if(widget.onClick != null) widget.onClick!();
 
+      setState(() {_isLoading = false;});
       setState(() {_isDone = true;});
-      // if(widget.otherId != null){
-      //   Timer(Duration(milliseconds: 1000), (){
-      //     Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
-      //   });
-      // }
     }
   }
 
@@ -286,6 +289,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                       onDone(context);
                     },
                     iconExist: false,
+                    isLoading: _isLoading,
                   ),
                   if(_isDone)
                   Column(
