@@ -1,3 +1,5 @@
+import 'package:informa/models/meal_section.dart';
+
 class Meal {
   String? id;
   String? otherId;
@@ -14,11 +16,12 @@ class Meal {
   double? fats;
   bool isSelected;
   List<String>? components;
+  List<MealSection>? sections;
   double serving = 0;
   String? unit;
 
   Meal({this.id, this.name, this.category, this.image, this.description,
         this.fats, this.protein, this.calories, this.components, this.carb,
         this.video, this.isSelected = true, this.engName, this.serving = 0,
-        this.unit, this.otherId});
+        this.unit, this.otherId, this.sections});
 }

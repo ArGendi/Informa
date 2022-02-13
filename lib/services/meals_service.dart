@@ -202,9 +202,9 @@ class MealsService{
           result[mealCategory.extra!] = diff;
       }
     }
-    result.forEach((key, value) {
-      print(key.name! + ": " + value.toString());
-    });
+    // result.forEach((key, value) {
+    //   print(key.name! + ": " + value.toString());
+    // });
     if((myProtein < protein - 3) || (myCarb < carb - 3) || (myFats < fats - 3))
       return null;
     return result;

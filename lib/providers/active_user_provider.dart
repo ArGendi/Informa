@@ -115,6 +115,16 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  bool changeMealTime(DateTime oldDate, DateTime newDate){
+    int index = _user!.datesOfMeals.indexOf(oldDate);
+    if(index != -1){
+      _user!.datesOfMeals[index] = newDate;
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
   setDailyProtein(int value){
     _user!.dailyProtein = value;
     notifyListeners();

@@ -13,13 +13,30 @@ class MainMealCard extends StatefulWidget {
   final VoidCallback onClick;
   final int? mealNumber;
   final bool? isDone;
-  const MainMealCard({Key? key, required this.text, this.description, this.image, required this.onClick, this.mealNumber, this.isDone}) : super(key: key);
+  final DateTime? time;
+  const MainMealCard({Key? key, required this.text, this.description, this.image, required this.onClick, this.mealNumber, this.isDone, this.time}) : super(key: key);
 
   @override
   _MainMealCardState createState() => _MainMealCardState();
 }
 
 class _MainMealCardState extends State<MainMealCard> {
+  String convertDateTimeToString(DateTime date){
+    String time = '';
+    bool am = true;
+    if(date.hour > 12){
+      time += (date.hour - 12).toString() + ':';
+      am = false;
+    }
+    else time += date.hour.toString() + ':';
+    if(date.minute < 10)
+      time += '0' + date.minute.toString();
+    else time += date.minute.toString();
+    if(am) time += ' ص';
+    else time += ' م';
+    return time;
+  }
+
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -114,6 +131,24 @@ class _MainMealCardState extends State<MainMealCard> {
                           ),
                       ],
                     ),
+                    if(widget.time != null)
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.watch_later,
+                            color: Colors.grey,
+                            size: 15,
+                          ),
+                          SizedBox(width: 5,),
+                          Text(
+                            convertDateTimeToString(widget.time!),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),

@@ -15,6 +15,8 @@ import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/premium_screens/add_external_meal_info_screen.dart';
+import 'package:informa/screens/premium_screens/diet_requirements_screen.dart';
+import 'package:informa/screens/premium_screens/nutrition_concepts_screen.dart';
 import 'package:informa/screens/premium_screens/premium_form_screen.dart';
 import 'package:informa/screens/premium_screens/premium_packages_screen.dart';
 import 'package:informa/screens/premium_screens/premium_program_counter_screen.dart';
@@ -135,6 +137,8 @@ class MyApp extends StatelessWidget {
         SnacksScreen.id: (context) => SnacksScreen(),
         SupplementsScreen.id: (context) => SupplementsScreen(),
         AddExternalMealInfoScreen.id: (context) => AddExternalMealInfoScreen(),
+        DietRequirementsScreen.id: (context) => DietRequirementsScreen(),
+        NutritionConceptsScreen.id: (context) => NutritionConceptsScreen(),
         //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [

@@ -22,8 +22,9 @@ class SingleMealScreen extends StatefulWidget {
   final int? otherId;
   final int? mealDoneNumber;
   final VoidCallback? onClick;
+  final VoidCallback? onBack;
   final bool? isDone;
-  const SingleMealScreen({Key? key, required this.meal, this.otherId, this.mealDoneNumber, this.onClick, this.isDone}) : super(key: key);
+  const SingleMealScreen({Key? key, required this.meal, this.otherId, this.mealDoneNumber, this.onClick, this.isDone, this.onBack}) : super(key: key);
 
   @override
   _SingleMealScreenState createState() => _SingleMealScreenState(otherId, mealDoneNumber, isDone);
@@ -31,7 +32,8 @@ class SingleMealScreen extends StatefulWidget {
 
 class _SingleMealScreenState extends State<SingleMealScreen> {
   bool _isFavorite = false;
-  bool _isLoading = false;
+  bool _isDoneLoading = false;
+  bool _isBackLoading = false;
   late bool _isDone;
   FirestoreService _firestoreService = new FirestoreService();
 
@@ -59,7 +61,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
       if(newCarb == 1) newCarb = 0;
       if(newFats == 1) newFats = 0;
 
-      setState(() {_isLoading = true;});
+      setState(() {_isDoneLoading = true;});
 
       String id = FirebaseAuth.instance.currentUser!.uid;
       await _firestoreService.updateUserData(id, {
@@ -79,13 +81,112 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
 
       if(widget.onClick != null) widget.onClick!();
 
-      setState(() {_isLoading = false;});
+      setState(() {_isDoneLoading = false;});
       setState(() {_isDone = true;});
     }
   }
 
   onCancel(BuildContext context) async{
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    int newCalories = activeUser!.dailyCalories! + widget.meal.calories!.toInt();
+    int newProtein = activeUser.dailyProtein! + widget.meal.protein!.toInt();
+    int newCarb = activeUser.dailyCarb! + widget.meal.carb!.toInt();
+    int newFats = activeUser.dailyFats! + widget.meal.fats!.toInt();
 
+    setState(() {_isBackLoading = true;});
+
+    String id = FirebaseAuth.instance.currentUser!.uid;
+    await _firestoreService.updateUserData(id, {
+      'dailyCalories': newCalories,
+      'dailyProtein': newProtein,
+      'dailyCarb': newCarb,
+      'dailyFats': newFats,
+    });
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyCalories(newCalories);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyProtein(newProtein);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyCarb(newCarb);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyFats(newFats);
+
+    if(widget.onBack != null) widget.onBack!();
+
+    setState(() {_isBackLoading = false;});
+    setState(() {_isDone = false;});
+  }
+
+  Widget getMealSections(){
+    return Column(
+      children: [
+        for(int i=0; i<widget.meal.sections!.length; i++)
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.meal.sections![i].name!,
+                  style: TextStyle(
+                      fontSize: 20,
+                  ),
+                ),
+                InkWell(
+                  onTap: (){},
+                  child: Card(
+                    elevation: 0,
+                    color: primaryColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15,),
+            Text(
+              'المكونات',
+              style: TextStyle(
+                  fontSize: 16,
+                  color: primaryColor
+              ),
+            ),
+            // for(int j=0; i<widget.meal.sections![i].meals!.length; j++)
+            //   Text(
+            //     (j+1).toString() + '- ' + widget.meal.sections![i].components![j],
+            //   ),
+            Divider(height: 30,),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget getMealComponents(){
+    return Column(
+      children: [
+        Text(
+          'المكونات',
+          style: TextStyle(
+              fontSize: 20,
+              color: primaryColor
+          ),
+        ),
+        for(int i=0; i<widget.meal.components!.length; i++)
+          Text(
+            (i+1).toString() + '- ' + widget.meal.components![i],
+          ),
+      ],
+    );
   }
 
   @override
@@ -269,17 +370,9 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                         ],
                       ),
                       SizedBox(height: 20,),
-                      Text(
-                        'المكونات',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: primaryColor
-                        ),
-                      ),
-                      for(int i=0; i<widget.meal.components!.length; i++)
-                        Text(
-                          (i+1).toString() + '- ' + widget.meal.components![i],
-                        ),
+
+                      widget.meal.sections != null ?
+                        getMealSections() : getMealComponents(),
                     ],
                   ),
                   SizedBox(height: 20,),
@@ -289,7 +382,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                       onDone(context);
                     },
                     iconExist: false,
-                    isLoading: _isLoading,
+                    isLoading: _isDoneLoading,
                   ),
                   if(_isDone)
                   Column(
@@ -302,6 +395,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                         },
                         bgColor: Colors.grey.shade400,
                         iconExist: false,
+                        isLoading: _isBackLoading,
                       ),
                     ],
                   ),

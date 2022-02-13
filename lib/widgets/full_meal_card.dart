@@ -14,7 +14,8 @@ class FullMealCard extends StatefulWidget {
   final int? mealDoneNumber;
   final int? whichMeal;
   final VoidCallback? onClick;
-  const FullMealCard({Key? key, required this.fullMeal, this.mealDoneNumber, required this.id, this.whichMeal, this.onClick}) : super(key: key);
+  final VoidCallback? onBack;
+  const FullMealCard({Key? key, required this.fullMeal, this.mealDoneNumber, required this.id, this.whichMeal, this.onClick, this.onBack}) : super(key: key);
 
   @override
   _FullMealCardState createState() => _FullMealCardState();
@@ -79,6 +80,7 @@ class _FullMealCardState extends State<FullMealCard> {
             mealDoneNumber: widget.mealDoneNumber,
             otherId: widget.id,
             onClick: widget.onClick,
+            onBack: widget.onBack,
           )),
         );
       },

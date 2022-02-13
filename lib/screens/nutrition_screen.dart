@@ -4,7 +4,9 @@ import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/screens/premium_screens/add_external_meal_info_screen.dart';
+import 'package:informa/screens/premium_screens/diet_requirements_screen.dart';
 import 'package:informa/screens/premium_screens/full_meals_screen.dart';
+import 'package:informa/screens/premium_screens/nutrition_concepts_screen.dart';
 import 'package:informa/screens/premium_screens/snacks_screen.dart';
 import 'package:informa/screens/premium_screens/supplements_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
@@ -64,7 +66,67 @@ class _NutritionScreenState extends State<NutritionScreen> {
         ),
         child: Column(
           children: [
-
+            Container(
+              height: 60,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, NutritionConceptsScreen.id);
+                      },
+                      child: Row(
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'شرح مفاهيم',
+                            style: TextStyle(
+                              fontFamily: boldFont,
+                            ),
+                          ),
+                          SizedBox(width: 10,),
+                          Card(
+                            elevation: 0,
+                            color: primaryColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: Icon(
+                                Icons.play_arrow,
+                                color: Colors.white,
+                                //size: 25,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 1,
+                      height: double.maxFinite,
+                      color: Colors.grey[300],
+                    ),
+                    TextButton(
+                      onPressed: (){
+                        Navigator.pushNamed(context, DietRequirementsScreen.id);
+                      },
+                      child: Text(
+                        'متطلبات الدايت',
+                        style: TextStyle(
+                          fontFamily: boldFont,
+                          color: primaryColor,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -102,6 +164,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         description: 'أبدأ بوجبة فطار لذيذة وصحية',
                         isDone: premiumNutritionProvider.breakfastDone != null?
                             true : false,
+                        time: activeUser.datesOfMeals.length > 0 ?
+                        activeUser.datesOfMeals[0] : null,
                         onClick: (){
                           Navigator.push(
                             context,
@@ -110,6 +174,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                               fullMeals: premiumNutritionProvider.breakfast,
                               mealDone: premiumNutritionProvider.breakfastDone,
                               whichMeal: 1,
+                              time: activeUser.datesOfMeals.length > 0 ?
+                                activeUser.datesOfMeals[0] : null,
                             )),
                           );
                         },
@@ -121,6 +187,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         description: 'وجبة الغداء اكتر وجبة فيها بروتينات لعضلاتك',
                         isDone: premiumNutritionProvider.lunchDone != null?
                         true : false,
+                        time: activeUser.datesOfMeals.length > (getLunchNumber(activeUser) -1) ?
+                        activeUser.datesOfMeals[getLunchNumber(activeUser) -1] : null,
                         onClick: (){
                           Navigator.push(
                             context,
@@ -129,6 +197,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                               fullMeals: premiumNutritionProvider.lunch,
                               mealDone: premiumNutritionProvider.lunchDone,
                               whichMeal: 2,
+                              time: activeUser.datesOfMeals.length > (getLunchNumber(activeUser) -1) ?
+                                activeUser.datesOfMeals[getLunchNumber(activeUser) -1] : null,
                             )),
                           );
                         },
@@ -143,6 +213,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                             description: 'وجبة الغداء اكتر وجبة فيها بروتينات لعضلاتك',
                             isDone: premiumNutritionProvider.lunch2Done != null?
                             true : false,
+                            time: activeUser.datesOfMeals.length > 2 ?
+                            activeUser.datesOfMeals[2] : null,
                             onClick: (){
                               Navigator.push(
                                 context,
@@ -151,6 +223,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                   fullMeals: premiumNutritionProvider.lunch2,
                                   mealDone: premiumNutritionProvider.lunch2Done,
                                   whichMeal: 3,
+                                  time: activeUser.datesOfMeals.length > 2 ?
+                                    activeUser.datesOfMeals[2] : null,
                                 )),
                               );
                             },
@@ -166,6 +240,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                         description: 'حافظ علي ان وجبة العشاء قبل النوم عالأقل بنص ساعة',
                         isDone: premiumNutritionProvider.dinnerDone != null?
                         true : false,
+                        time: activeUser.datesOfMeals.length > (getDinnerNumber(activeUser) - 1) ?
+                        activeUser.datesOfMeals[getDinnerNumber(activeUser) - 1] : null,
                         onClick: (){
                           Navigator.push(
                             context,
@@ -174,6 +250,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
                               fullMeals: premiumNutritionProvider.dinner,
                               mealDone: premiumNutritionProvider.dinnerDone,
                               whichMeal: 4,
+                              time: activeUser.datesOfMeals.length > (getDinnerNumber(activeUser) - 1) ?
+                                activeUser.datesOfMeals[getDinnerNumber(activeUser) - 1] : null,
                             )),
                           );
                         },

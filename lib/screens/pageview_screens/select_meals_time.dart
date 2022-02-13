@@ -40,7 +40,7 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
         title: 'وجبة' + (i+1).toString() + ' 🍔',
         body: 'متبقي ساعة علي الوجبة قم بتحضرها الأن',
         payload: 'payload',
-        date: user.datesOfMeals[i].hour,
+        date: user.datesOfMeals[i].hour - 1,
       );
   }
 
