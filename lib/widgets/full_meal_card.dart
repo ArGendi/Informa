@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 
 class FullMealCard extends StatefulWidget {
-  final FullMeal fullMeal;
+  final Meal fullMeal;
   final int id;
   final int? mealDoneNumber;
   final int? whichMeal;
@@ -26,33 +26,33 @@ class _FullMealCardState extends State<FullMealCard> {
 
   List<int> calculateFullMealInfo(){
     double calories = 0, protein = 0, carb = 0, fats = 0;
-    widget.fullMeal.components!.forEach((key, value) {
-      if(key.serving != 1){
-        calories += key.calories! * (value / 100);
-        protein += key.protein! * (value / 100);
-        carb += key.carb! * (value / 100);
-        fats += key.fats! * (value / 100);
-      }
-      else{
-        calories += key.calories! * value;
-        protein += key.protein! * value;
-        carb += key.carb! * value;
-        fats += key.fats! * value;
-      }
-    });
+    // widget.fullMeal.components!.forEach((key, value) {
+    //   if(key.serving != 1){
+    //     calories += key.calories! * (value / 100);
+    //     protein += key.protein! * (value / 100);
+    //     carb += key.carb! * (value / 100);
+    //     fats += key.fats! * (value / 100);
+    //   }
+    //   else{
+    //     calories += key.calories! * value;
+    //     protein += key.protein! * value;
+    //     carb += key.carb! * value;
+    //     fats += key.fats! * value;
+    //   }
+    // });
     return [calories.toInt(), protein.toInt(), carb.toInt(), fats.toInt()];
   }
 
-  List<String> convertComponents(){
-    List<String> components = [];
-    widget.fullMeal.components!.forEach((key, value) {
-      String unit = '';
-      if(key.unit!.trim() == 'gm' || key.unit!.trim() == 'tsp') unit = 'جرام ';
-      String temp = value.toString() + ' ' + unit + key.name!;
-      components.add(temp);
-    });
-    return components;
-  }
+  // List<String> convertComponents(){
+  //   List<String> components = [];
+  //   widget.fullMeal.components!.forEach((key, value) {
+  //     String unit = '';
+  //     if(key.unit!.trim() == 'gm' || key.unit!.trim() == 'tsp') unit = 'جرام ';
+  //     String temp = value.toString() + ' ' + unit + key.name!;
+  //     components.add(temp);
+  //   });
+  //   return components;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,21 +62,21 @@ class _FullMealCardState extends State<FullMealCard> {
       onTap: (){
         if(widget.mealDoneNumber != null && widget.mealDoneNumber != widget.id) return;
         //List<int> info = calculateFullMealInfo();
-        Meal meal = new Meal(
-          id: widget.fullMeal.id,
-          name: widget.fullMeal.name,
-          engName: widget.fullMeal.engName,
-          image: widget.fullMeal.image,
-          calories: widget.fullMeal.calories!.toDouble(),
-          protein: widget.fullMeal.protein!.toDouble(),
-          carb: widget.fullMeal.carb!.toDouble(),
-          fats: widget.fullMeal.fats!.toDouble(),
-          components: convertComponents(),
-        );
+        // Meal meal = new Meal(
+        //   id: widget.fullMeal.id,
+        //   name: widget.fullMeal.name,
+        //   engName: widget.fullMeal.engName,
+        //   image: widget.fullMeal.image,
+        //   calories: widget.fullMeal.calories!.toDouble(),
+        //   protein: widget.fullMeal.protein!.toDouble(),
+        //   carb: widget.fullMeal.carb!.toDouble(),
+        //   fats: widget.fullMeal.fats!.toDouble(),
+        //   components: convertComponents(),
+        // );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SingleMealScreen(
-            meal: meal,
+            meal: widget.fullMeal,
             mealDoneNumber: widget.mealDoneNumber,
             otherId: widget.id,
             onClick: widget.onClick,

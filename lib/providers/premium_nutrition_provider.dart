@@ -5,10 +5,10 @@ import 'package:informa/models/meal_category.dart';
 
 class PremiumNutritionProvider extends ChangeNotifier{
   bool _snacks = false;
-  List<FullMeal> _breakfast = [];
-  List<FullMeal> _lunch = [];
-  List<FullMeal> _lunch2 = [];
-  List<FullMeal> _dinner = [];
+  List<Meal> _breakfast = [];
+  List<Meal> _lunch = [];
+  List<Meal> _lunch2 = [];
+  List<Meal> _dinner = [];
   int? _snackDone;
   List<int>? _mainSnacksDone = [];
   int? _breakfastDone;
@@ -18,10 +18,10 @@ class PremiumNutritionProvider extends ChangeNotifier{
   List<int>? _supplementsDone = [];
 
   bool get snacks => _snacks;
-  List<FullMeal> get breakfast => _breakfast;
-  List<FullMeal> get lunch => _lunch;
-  List<FullMeal> get lunch2 => _lunch2;
-  List<FullMeal> get dinner => _dinner;
+  List<Meal> get breakfast => _breakfast;
+  List<Meal> get lunch => _lunch;
+  List<Meal> get lunch2 => _lunch2;
+  List<Meal> get dinner => _dinner;
   int? get snackDone => _snackDone;
   int? get breakfastDone => _breakfastDone;
   int? get lunchDone => _lunchDone;
@@ -35,22 +35,22 @@ class PremiumNutritionProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  setBreakfast(List<FullMeal> value){
+  setBreakfast(List<Meal> value){
     _breakfast = value;
     notifyListeners();
   }
 
-  setLunch(List<FullMeal> value){
+  setLunch(List<Meal> value){
     _lunch = value;
     notifyListeners();
   }
 
-  setLunch2(List<FullMeal> value){
+  setLunch2(List<Meal> value){
     _lunch2 = value;
     notifyListeners();
   }
 
-  setDinner(List<FullMeal> value){
+  setDinner(List<Meal> value){
     _dinner = value;
     notifyListeners();
   }

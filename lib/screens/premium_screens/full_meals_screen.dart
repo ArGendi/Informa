@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/full_meal.dart';
+import 'package:informa/models/meal.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
@@ -17,7 +18,7 @@ import '../../constants.dart';
 class FullMealsScreen extends StatefulWidget {
   static String id = 'full meals screen';
   final String screenName;
-  final List<FullMeal> fullMeals;
+  final List<Meal> fullMeals;
   final int? mealDone;
   final int? whichMeal;
   final DateTime? time;
@@ -28,12 +29,12 @@ class FullMealsScreen extends StatefulWidget {
 }
 
 class _FullMealsScreenState extends State<FullMealsScreen> {
-  List<FullMeal> _fullMeals = [];
+  List<Meal> _fullMeals = [];
   FirestoreService _firestoreService = new FirestoreService();
   DateTime? _dateTime;
   bool _isLoading = false;
 
-  _FullMealsScreenState(List<FullMeal> fullMeals, DateTime? time){
+  _FullMealsScreenState(List<Meal> fullMeals, DateTime? time){
     _fullMeals = fullMeals;
     _dateTime = time;
   }
@@ -70,7 +71,7 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
     }
   }
 
-  onBack(BuildContext context, int index) async{
+  onBack(BuildContext context) async{
     String id = FirebaseAuth.instance.currentUser!.uid;
     if(widget.whichMeal == 1) {
       await _firestoreService.updateDoneMeals(id, {
@@ -241,6 +242,9 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
                     whichMeal: widget.whichMeal,
                     onClick: (){
                       onClick(context, index);
+                    },
+                    onBack: (){
+                      onBack(context);
                     },
                   ),
                   SizedBox(height: 10,),

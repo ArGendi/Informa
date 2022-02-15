@@ -159,22 +159,22 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     if(user.numberOfMeals == 2){
       if(user.whichTwoMeals == 1) {
         //breakfast
-        List<FullMeal> breakfast
-          = _mealsService.calculateBreakfast(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 35, user);
+        List<Meal> breakfast
+          = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 35, user, 1);
         Provider.of<PremiumNutritionProvider>(context, listen: false).setBreakfast(breakfast);
         //lunch
-        List<FullMeal> lunch
-          = _mealsService.calculateLunch(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 65, user);
+        List<Meal> lunch
+          = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 65, user, 2);
         Provider.of<PremiumNutritionProvider>(context, listen: false).setLunch(lunch);
       }
       else if(user.whichTwoMeals == 2){
         //lunch
-        List<FullMeal> lunch
-          = _mealsService.calculateLunch(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 65, user);
+        List<Meal> lunch
+          = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 65, user, 2);
         Provider.of<PremiumNutritionProvider>(context, listen: false).setLunch(lunch);
         //dinner
-        List<FullMeal> dinner
-          = _mealsService.calculateDinner(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 35, user);
+        List<Meal> dinner
+          = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 35, user, 3);
         Provider.of<PremiumNutritionProvider>(context, listen: false).setDinner(dinner);
       }
     }
@@ -183,32 +183,32 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
       print('Carb: ' + infoAfterSnacks[1].toString());
       print('Fat: ' + infoAfterSnacks[2].toString());
       //breakfast
-      List<FullMeal> breakfast
-      = _mealsService.calculateBreakfast(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user);
+      List<Meal> breakfast
+      = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 1);
       Provider.of<PremiumNutritionProvider>(context, listen: false).setBreakfast(breakfast);
       //lunch
-      List<FullMeal> lunch
-      = _mealsService.calculateLunch(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 55, user);
+      List<Meal> lunch
+      = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 55, user, 2);
       Provider.of<PremiumNutritionProvider>(context, listen: false).setLunch(lunch);
       //dinner
-      List<FullMeal> dinner
-      = _mealsService.calculateDinner(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 25, user);
+      List<Meal> dinner
+      = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 25, user, 3);
       Provider.of<PremiumNutritionProvider>(context, listen: false).setDinner(dinner);
     }
     else if(user.numberOfMeals == 4) {
       //breakfast
-      List<FullMeal> breakfast
-        = _mealsService.calculateBreakfast(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user);
+      List<Meal> breakfast
+        = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 1);
       Provider.of<PremiumNutritionProvider>(context, listen: false).setBreakfast(breakfast);
       //lunch 1
-      List<FullMeal> lunch
-        = _mealsService.calculateLunch(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 30, user);
+      List<Meal> lunch
+        = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 30, user, 2);
       Provider.of<PremiumNutritionProvider>(context, listen: false).setLunch(lunch);
       //lunch 2
       Provider.of<PremiumNutritionProvider>(context, listen: false).setLunch2(lunch);
       //dinner
-      List<FullMeal> dinner
-        = _mealsService.calculateDinner(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user);
+      List<Meal> dinner
+        = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 3);
       Provider.of<PremiumNutritionProvider>(context, listen: false).setDinner(dinner);
     }
   }

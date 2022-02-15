@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/meal_category_list.dart';
+import 'package:informa/models/meal_section.dart';
 import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/screens/auth_screens/main_register_screen.dart';
@@ -113,10 +114,10 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     mealCategory.extra = MealsList.breakfast[60];
     //mealCategory.meals!.add(MealsList.breakfast[21]);
     MealsService mealsService = new MealsService();
-    var map = mealsService.calculateFullMealNumbers(MealCategoryList.breakfast[0], 31, 33, 11);
-    map.forEach((key, value) {
-      print(key.name! + ": " + value.toString());
-    });
+    //var map = mealsService.calculateFullMealNumbers(MealCategoryList.breakfast[0], 31, 33, 11);
+    // map.forEach((key, value) {
+    //   print(key.name! + ": " + value.toString());
+    // });
   }
 
   // Future<String> _read() async {
@@ -210,14 +211,25 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
               onPressed: () async{
                 MealsService mealService = new MealsService();
                 await mealService.setAllMeals();
-                var map = mealService.otherCalculateFullMealNumbers(MealCategoryList.lunch[1], 91, 53, 27);
-                print(MealCategoryList.lunch[1].meals![1].fats);
+                var list = mealService.calculateMeal(165, 95, 45, 20, _user, 1);
+                //print(MealCategoryList.lunch[1].meals![1].fats);
                 print('--------------------');
-                if(map != null)
-                  map.forEach((key, value) {
-                    print(key.name! + ": " + value.toString());
-                  });
-                else print('Nothing');
+                for(var meal in list){
+                  print(meal.name!);
+                  print('Sections');
+                  for(var section in meal.sections!){
+                    print('name: ' + section.name!);
+                    for(var tempMeal in section.meals!){
+                      print('meal name: ' + tempMeal.name! + ', amount: ' + tempMeal.amount!.toString());
+                    }
+                  }
+                  print('--------------------');
+                }
+                // var list = mealService.otherCalculateFullMealNumbers2(MealCategoryList.breakfast[0], 33, 19, 9,);
+                // print('--------------------');
+                // for(var meal in list!){
+                //   print(meal.name! + ': ' + meal.amount!.toString());
+                // }
               },
               icon: Icon(Icons.add),
               color: Colors.red,

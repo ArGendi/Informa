@@ -1,4 +1,5 @@
 import 'package:informa/models/meal_category.dart';
+import 'package:informa/models/meal_section.dart';
 import 'package:informa/models/meals_list.dart';
 
 class MealCategoryList{
@@ -7,11 +8,24 @@ class MealCategoryList{
       id: '1',
       name: 'أوملت',
       engName: 'Omelette',
-      meals: [
-        MealsList.breakfast[0],
-        MealsList.breakfast[1],
-        MealsList.breakfast[52],
-        MealsList.breakfast[21],
+      meals: [],
+      sections: [
+        MealSection(
+          name: 'البروتين',
+          engName: 'Protein',
+          meals: [
+            MealsList.breakfast[0],
+            MealsList.breakfast[1],
+          ],
+        ),
+        MealSection(
+          name: 'نشويات',
+          engName: 'Rice',
+          meals: [
+            MealsList.breakfast[52],
+            MealsList.breakfast[21],
+          ],
+        ),
       ],
       extra: MealsList.breakfast[63],
     ),
@@ -19,10 +33,17 @@ class MealCategoryList{
       id: '2',
       name: 'جبنة و صدور مدخنة',
       engName: 'Cheese and chest BBQ',
-      meals: [
-        MealsList.breakfast[4],
-        MealsList.breakfast[7],
-        MealsList.breakfast[23],
+      meals: [],
+      sections: [
+        MealSection(
+          name: 'البروتين',
+          engName: 'Protein',
+          meals: [
+            MealsList.breakfast[4],
+            MealsList.breakfast[7],
+            MealsList.breakfast[23],
+          ],
+        ),
       ],
       extra: MealsList.breakfast[63],
     ),
@@ -30,11 +51,24 @@ class MealCategoryList{
       id: '3',
       name: 'بيض وزبادي',
       engName: 'Egg and yogurt',
-      meals: [
-        MealsList.breakfast[0],
-        MealsList.breakfast[1],
-        MealsList.breakfast[21],
-        MealsList.breakfast[17],
+      meals: [],
+      sections: [
+        MealSection(
+          name: 'البروتين',
+          engName: 'Protein',
+          meals: [
+            MealsList.breakfast[0],
+            MealsList.breakfast[1],
+            MealsList.breakfast[21],
+          ],
+        ),
+        MealSection(
+          name: 'نشويات',
+          engName: 'Rice',
+          meals: [
+            MealsList.breakfast[17],
+          ],
+        ),
       ],
       extra: MealsList.breakfast[63],
     ),
@@ -50,6 +84,17 @@ class MealCategoryList{
         MealsList.lunch[13],
         MealsList.lunch[34],
       ],
+      sections: [
+        MealSection(
+          name: 'البروتين',
+          engName: 'Protein',
+          meals: [
+            MealsList.lunch[1],
+            MealsList.lunch[13],
+            MealsList.lunch[34],
+          ],
+        ),
+      ],
       extra: MealsList.breakfast[63],
     ),
     MealCategory(
@@ -61,19 +106,30 @@ class MealCategoryList{
         //MealsList.lunch[10],
         MealsList.lunch[16],
       ],
-      extra: MealsList.breakfast[63],
-    ),
-    MealCategory(
-      id: '3',
-      name: 'فتة شاورما لحمة',
-      engName: 'CD beef',
-      meals: [
-        MealsList.lunch[0],
-        MealsList.lunch[13],
-        //MealsList.lunch[16],
+      sections: [
+        MealSection(
+          name: 'البروتين',
+          engName: 'Protein',
+          meals: [
+            MealsList.lunch[0],
+            //MealsList.lunch[10],
+            MealsList.lunch[16],
+          ],
+        ),
       ],
       extra: MealsList.breakfast[63],
     ),
+    // MealCategory(
+    //   id: '3',
+    //   name: 'فتة شاورما لحمة',
+    //   engName: 'CD beef',
+    //   meals: [
+    //     MealsList.lunch[0],
+    //     MealsList.lunch[13],
+    //     //MealsList.lunch[16],
+    //   ],
+    //   extra: MealsList.breakfast[63],
+    // ),
   ];
 
   static List<MealCategory> dinner = [
@@ -87,18 +143,36 @@ class MealCategoryList{
         MealsList.breakfast[52],
         MealsList.breakfast[21],
       ],
-      extra: MealsList.breakfast[63],
-    ),
-    MealCategory(
-      id: '2',
-      name: 'كاساديا فراخ',
-      engName: 'CD chicken',
-      meals: [
-        MealsList.dinner[11],
-        MealsList.lunch[10],
-        MealsList.lunch[16],
+      sections: [
+        MealSection(
+          name: 'البروتين',
+          engName: 'Protein',
+          meals: [
+            MealsList.breakfast[0],
+            MealsList.breakfast[1],
+          ],
+        ),
+        MealSection(
+          name: 'نشويات',
+          engName: 'Rice',
+          meals: [
+            MealsList.breakfast[52],
+            MealsList.breakfast[21],
+          ],
+        ),
       ],
       extra: MealsList.breakfast[63],
     ),
+    // MealCategory(
+    //   id: '2',
+    //   name: 'كاساديا فراخ',
+    //   engName: 'CD chicken',
+    //   meals: [
+    //     MealsList.dinner[11],
+    //     MealsList.lunch[10],
+    //     MealsList.lunch[16],
+    //   ],
+    //   extra: MealsList.breakfast[63],
+    // ),
   ];
 }

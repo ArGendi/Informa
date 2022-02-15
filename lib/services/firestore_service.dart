@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/models/challenge.dart';
 import 'package:informa/models/full_meal.dart';
+import 'package:informa/models/meal.dart';
 import 'package:informa/models/user.dart';
 
 class FirestoreService{
@@ -128,9 +129,9 @@ class FirestoreService{
 
   Future<bool> saveNutritionMeals(
       String id,
-      List<FullMeal> breakfast,
-      List<FullMeal> lunch,
-      List<FullMeal> dinner,
+      List<Meal> breakfast,
+      List<Meal> lunch,
+      List<Meal> dinner,
       bool snacks,
       int? breakfastDone,
       int? lunchDone,
@@ -143,8 +144,10 @@ class FirestoreService{
     List<Map> breakfastList = [];
     List<Map> lunchList = [];
     List<Map> dinnerList = [];
-    for(var fullMeal in breakfast)
+    for(var fullMeal in breakfast) {
       breakfastList.add(fullMeal.toJson());
+      print('Sections from save nutrition: ' + fullMeal.sections!.toString());
+    }
     for(var fullMeal in lunch)
       lunchList.add(fullMeal.toJson());
     for(var fullMeal in dinner)
@@ -185,34 +188,34 @@ class FirestoreService{
     if(documentSnapshot.exists){
       print('Document exist on the database');
       var data = documentSnapshot.data() as Map<String, dynamic>;
-      List<FullMeal> breakfast = [];
-      List<FullMeal> lunch = [];
-      List<FullMeal> dinner = [];
+      List<Meal> breakfast = [];
+      List<Meal> lunch = [];
+      List<Meal> dinner = [];
       var breakfastMap = data['breakfast'];
       var lunchMap = data['lunch'];
       var dinnerMap = data['dinner'];
       if(breakfastMap != null){
         for(int i=0; i<breakfastMap.length; i++){
-          FullMeal fullMeal = new FullMeal();
-          fullMeal.id = i.toString();
-          fullMeal.fromJson(breakfastMap[i]);
-          breakfast.add(fullMeal);
+          Meal meal = new Meal();
+          meal.id = i.toString();
+          meal.fromJson(breakfastMap[i]);
+          breakfast.add(meal);
         }
       } else print('breakfast = null !!!!!');
       if(lunchMap != null){
         for(int i=0; i<lunchMap.length; i++){
-          FullMeal fullMeal = new FullMeal();
-          fullMeal.id = i.toString();
-          fullMeal.fromJson(lunchMap[i]);
-          lunch.add(fullMeal);
+          Meal meal = new Meal();
+          meal.id = i.toString();
+          meal.fromJson(lunchMap[i]);
+          lunch.add(meal);
         }
       } else print('lunch = null !!!!!');
       if(dinnerMap != null){
         for(int i=0; i<dinnerMap.length; i++){
-          FullMeal fullMeal = new FullMeal();
-          fullMeal.id = i.toString();
-          fullMeal.fromJson(dinnerMap[i]);
-          dinner.add(fullMeal);
+          Meal meal = new Meal();
+          meal.id = i.toString();
+          meal.fromJson(dinnerMap[i]);
+          dinner.add(meal);
         }
       } else print('dinner = null !!!!!');
       return [breakfast, lunch, dinner, data['snacks'], data['breakfastDone'],

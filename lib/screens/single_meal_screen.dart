@@ -15,6 +15,7 @@ import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/meal_info_box.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class SingleMealScreen extends StatefulWidget {
   static String id = 'detailed meal';
@@ -35,7 +36,11 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
   bool _isDoneLoading = false;
   bool _isBackLoading = false;
   late bool _isDone;
+  bool _isVideoPlayed = false;
+  int c = 0;
   FirestoreService _firestoreService = new FirestoreService();
+  final ScrollController _controller = ScrollController();
+  YoutubePlayerController? _youtubeController;
 
   _SingleMealScreenState(int? id, int? mealDoneNumber, bool? done){
     _isDone = false;
@@ -45,6 +50,18 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
     if(done != null){
       if(done) _isDone = true;
     }
+  }
+
+  runYoutubePlayer(){
+    String videoUrl = c == 0 ?
+      'https://www.youtube.com/watch?v=-kC9ZRTR6D4' : 'https://www.youtube.com/watch?v=uNGmyQ8UbZ8';
+    _youtubeController = YoutubePlayerController(
+        initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
+        flags: YoutubePlayerFlags(
+          enableCaption: false,
+          autoPlay: true,
+        )
+    );
   }
 
   onDone(BuildContext context) async{
@@ -117,11 +134,46 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
     setState(() {_isDone = false;});
   }
 
+  String convertMealIntoString(Meal meal){
+    String r = '';
+    r += meal.amount!.toString() + ' ';
+    if(meal.unit!.trim() == 'gm' || meal.unit!.trim() == 'tsp') r += 'جرام ';
+    r += meal.name!;
+    return r;
+  }
+
+  Future scrollUp() async{
+    await _controller.animateTo(
+      _controller.position.minScrollExtent,
+      duration: Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  onPlayVideo() async{
+    if(_youtubeController != null){
+      _youtubeController!.reset();
+      setState(() {_isVideoPlayed = false; c++;});
+    }
+    await scrollUp();
+    setState(() {_isVideoPlayed = true;});
+    runYoutubePlayer();
+  }
+
   Widget getMealSections(){
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Text(
+          'المكونات',
+          style: TextStyle(
+            fontSize: 20,
+            //color: primaryColor,
+          ),
+        ),
         for(int i=0; i<widget.meal.sections!.length; i++)
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,11 +181,14 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                 Text(
                   widget.meal.sections![i].name!,
                   style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
+                    color: primaryColor,
                   ),
                 ),
                 InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    onPlayVideo();
+                  },
                   child: Card(
                     elevation: 0,
                     color: primaryColor,
@@ -152,19 +207,12 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                 ),
               ],
             ),
-            SizedBox(height: 15,),
-            Text(
-              'المكونات',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: primaryColor
+            //SizedBox(height: 15,),
+            for(int j=0; j<widget.meal.sections![i].meals!.length; j++)
+              Text(
+                (j+1).toString() + '- ' + convertMealIntoString(widget.meal.sections![i].meals![j]),
               ),
-            ),
-            // for(int j=0; i<widget.meal.sections![i].meals!.length; j++)
-            //   Text(
-            //     (j+1).toString() + '- ' + widget.meal.sections![i].components![j],
-            //   ),
-            Divider(height: 30,),
+            Divider(height: 20,),
           ],
         ),
       ],
@@ -189,6 +237,54 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
     );
   }
 
+  Widget containerImageVideo(){
+    if(!_isVideoPlayed){
+      if(widget.meal.image != null)
+        return Image.network(
+          widget.meal.image!,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: 300,
+        );
+      else return Container(
+        width: double.infinity,
+        height: 300,
+        color: Colors.grey[300],
+      );
+    }
+    else{
+      return YoutubePlayerBuilder(
+        player: YoutubePlayer(
+          progressColors: ProgressBarColors(
+              playedColor: primaryColor,
+              handleColor: Colors.white
+          ),
+          progressIndicatorColor: primaryColor,
+          controller: _youtubeController!,
+        ),
+        builder: (context , player) {
+          return player;
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    if(_youtubeController != null)
+      _youtubeController!.dispose();
+  }
+
+  @override
+  void deactivate() {
+    // TODO: implement deactivate
+    super.deactivate();
+    if(_youtubeController != null)
+      _youtubeController!.pause();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -202,15 +298,16 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
             )
         ),
         child: ListView(
+          controller: _controller,
           children: [
             Container(
               width: double.infinity,
               height: 300,
-              child: Stack(
+              child: !_isVideoPlayed ? Stack(
                 children: [
                   Hero(
                     tag: widget.meal.id!,
-                    child: widget.meal.image != null ? Image.asset(
+                    child: widget.meal.image != null ? Image.network(
                       widget.meal.image!,
                       fit: BoxFit.cover,
                       width: double.infinity,
@@ -237,36 +334,19 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                         )
                     ),
                   ),
-                  Positioned(
-                    bottom: 15,
-                    left: 15,
-                    child: InkWell(
-                      onTap: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => VideoPlayerScreen(
-                            url: widget.meal.video!,
-                          )),
-                        );
-                      },
-                      child: Card(
-                        elevation: 0,
-                        color: primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Icon(
-                            Icons.play_arrow,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
+              ) : YoutubePlayerBuilder(
+                player: YoutubePlayer(
+                  progressColors: ProgressBarColors(
+                      playedColor: primaryColor,
+                      handleColor: Colors.white
+                  ),
+                  progressIndicatorColor: primaryColor,
+                  controller: _youtubeController!,
+                ),
+                builder: (context , player) {
+                  return player;
+                },
               ),
             ),
             Padding(

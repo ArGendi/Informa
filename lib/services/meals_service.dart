@@ -6,6 +6,7 @@ import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/meal_category_list.dart';
+import 'package:informa/models/meal_section.dart';
 import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/snacks_list.dart';
 import 'package:informa/models/user.dart';
@@ -87,57 +88,6 @@ class MealsService{
     }
   }
 
-  Map<Meal, int> calculateFullMealNumbers(MealCategory mealCategory, int protein, int carb, int fats){
-    mealCategory.meals!.sort((a, b) => b.calories!.compareTo(a.calories!));
-    double myProtein = 0, myCarb = 0, myFats = 0;
-    Queue<Meal> queue = new Queue();
-    Map<Meal, int> result = Map();
-    for(var meal in mealCategory.meals!){
-      queue.add(meal);
-    }
-
-    while(queue.isNotEmpty){
-      if((myProtein - protein).abs() == 2 && (myCarb - carb).abs() == 2 &&
-          (myFats - fats).abs() == 2) break;
-      Meal meal = queue.removeFirst();
-      double p = 0, c = 0, f = 0;
-      if(meal.serving != 2){
-        p = meal.protein! * 0.05;
-        c = meal.carb! * 0.05;
-        f = meal.fats! * 0.05;
-      }
-      else{
-        p = meal.protein!;
-        c = meal.carb!;
-        f = meal.fats!;
-      }
-
-      if((myProtein + p < protein + 2) && (myCarb + c < carb + 2) && (myFats + f < fats + 2)){
-        myProtein += p;
-        myCarb += c;
-        myFats += f;
-        queue.add(meal);
-        if(result.containsKey(meal)){
-          int? value = result[meal];
-          if(meal.serving != 1) result[meal] = value! + 5;
-          else result[meal] = value! + 1;
-        }
-        else{
-          if(meal.serving != 1) result[meal] = 5;
-          else result[meal] = 1;
-        }
-      }
-    }
-    if(mealCategory.extra != null){
-      if(fats > myFats){
-        int diff = fats - myFats.round();
-        if(diff > 0)
-          result[mealCategory.extra!] = diff;
-      }
-    }
-    return result;
-  }
-
   Map<Meal, int>? otherCalculateFullMealNumbers(MealCategory mealCategory, int protein, int carb, int fats){
     int counter = 0, pointer = 0;
     double myProtein = 0, myCarb = 0, myFats = 0;
@@ -208,6 +158,90 @@ class MealsService{
     if((myProtein < protein - 3) || (myCarb < carb - 3) || (myFats < fats - 3))
       return null;
     return result;
+  }
+
+  List<Meal>? otherCalculateFullMealNumbers2(MealCategory mealCategory, int protein, int carb, int fats){
+    int counter = 0, pointer = 0;
+    double myProtein = 0, myCarb = 0, myFats = 0;
+    List<Meal> meals = [];
+    List<Meal> outMeals = [];
+
+    if(mealCategory.sections == null) return null;
+    for(int i= 0; i<mealCategory.sections!.length; i++){
+      for(var tempMeal in mealCategory.sections![i].meals!){
+        Meal newMeal = tempMeal.copyObject();
+        newMeal.amount = 0;
+        newMeal.sectionIndex = i;
+        meals.add(newMeal);
+      }
+    }
+    print('Starting the loop');
+    while(outMeals.length < meals.length){
+      if(counter > 400) break;
+      if((myProtein - protein).abs() < 1 && (myCarb - carb).abs() < 1 &&
+          (myFats - fats).abs() < 1) break;
+
+      double p = 0, c = 0, f = 0;
+      //Meal meal = meals[pointer];
+      print(meals[pointer].name);
+      bool isBalanced = isMealBalanced(meals[pointer], protein, carb, fats);
+      if(((!isBalanced || meals[pointer].serving == 1) && (counter%4 != 0)) || outMeals.contains(meals[pointer])){
+        print(meals[pointer].name! + ' not balanced');
+        if(pointer+1 >= meals.length) counter++;
+        pointer = (pointer+1) % meals.length;
+        continue;
+      }
+      if(meals[pointer].serving != 1){
+        print(meals[pointer].name! + ' take 5 gram');
+        p = meals[pointer].protein! * 0.05;
+        c = meals[pointer].carb! * 0.05;
+        f = meals[pointer].fats! * 0.05;
+      }
+      else{
+        p = meals[pointer].protein!;
+        c = meals[pointer].carb!;
+        f = meals[pointer].fats!;
+      }
+
+      if((myProtein + p < protein + 1) && (myCarb + c < carb + 1) && (myFats + f < fats + 1)){
+        print(meals[pointer].name! + ' confirmed');
+        myProtein += p;
+        myCarb += c;
+        myFats += f;
+        if(meals[pointer].amount != null){
+          if(meals[pointer].serving != 1) meals[pointer].amount = meals[pointer].amount! + 5;
+          else meals[pointer].amount = meals[pointer].amount! + 1;
+        }
+        else{
+          if(meals[pointer].serving != 1) meals[pointer].amount = 5;
+          else meals[pointer].amount = 1;
+        }
+      }
+      else {
+        print(meals[pointer].name! + ' go to out meal');
+        outMeals.add(meals[pointer]);
+      }
+      if(pointer+1 >= meals.length) counter++;
+      pointer = (pointer+1) % meals.length;
+    }
+    print('Out of calculation loop');
+    if(mealCategory.extra != null){
+      if(fats > myFats){
+        int diff = fats - myFats.round();
+        myFats += diff;
+        if(diff > 0) {
+          mealCategory.extra!.amount = diff;
+          mealCategory.extra!.sectionIndex = -1;
+          meals.add(mealCategory.extra!);
+        }
+      }
+    }
+    // result.forEach((key, value) {
+    //   print(key.name! + ": " + value.toString());
+    // });
+    if((myProtein < protein - 3) || (myCarb < carb - 3) || (myFats < fats - 3))
+      return null;
+    return meals;
   }
 
   bool isMealBalanced(Meal meal, int protein, int carb, int fats){
@@ -329,106 +363,74 @@ class MealsService{
     return snacksWithRest;
   }
 
-  List<FullMeal> calculateBreakfast(int protein, int carb, int fats, int percent, AppUser user){
-    List<FullMeal> allFullMeals = [];
+  List<Meal> calculateMeal(int protein, int carb, int fats, int percent, AppUser user, int whichMeal){
+    List<Meal> allMeals = [];
     double newProtein = protein * (percent / 100);
     double newCarb = carb * (percent / 100);
     double newFats = fats * (percent / 100);
 
-    for(var mealCategory in MealCategoryList.breakfast){
+    List<MealCategory> mealsCategory = [];
+    if(whichMeal == 1) mealsCategory = MealCategoryList.breakfast;
+    else if(whichMeal == 2) mealsCategory = MealCategoryList.lunch;
+    else if(whichMeal == 3) mealsCategory = MealCategoryList.dinner;
+
+    for(var mealCategory in mealsCategory){
       bool unWantedMealCategory = false;
-      for(var meal in mealCategory.meals!){
-        if(user.unWantedMeals.contains(meal.otherId)) {
-          unWantedMealCategory = true;
-          break;
+      for(var section in mealCategory.sections!){
+        for(var meal in section.meals!){
+          if(user.unWantedMeals.contains(meal.otherId)) {
+            unWantedMealCategory = true;
+            break;
+          }
         }
       }
       if(unWantedMealCategory) continue;
-      Map<Meal, int>? result = otherCalculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      print('Macro: ' + newProtein.toString() + ' ' + newCarb.toString() + ' ' + newFats.toString());
+      List<Meal>? result = otherCalculateFullMealNumbers2(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
       if(result != null){
-        FullMeal fullMeal = new FullMeal(
-          id: mealCategory.id,
-          name: mealCategory.name,
-          engName: mealCategory.engName,
-          components: result,
-          protein: newProtein.toInt(),
-          carb: newCarb.toInt(),
-          fats: newFats.toInt(),
-          calories: (newProtein.toInt() * 4 + newCarb.toInt() * 4 + newFats.toInt() * 9),
-        );
-        allFullMeals.add(fullMeal);
-      }
-    }
-
-    return allFullMeals;
-  }
-
-  List<FullMeal> calculateLunch(int protein, int carb, int fats, int percent, AppUser user){
-    List<FullMeal> allFullMeals = [];
-    double newProtein = protein * (percent / 100);
-    double newCarb = carb * (percent / 100);
-    double newFats = fats * (percent / 100);
-
-    for(var mealCategory in MealCategoryList.lunch){
-      bool unWantedMealCategory = false;
-      for(var meal in mealCategory.meals!){
-        if(user.unWantedMeals.contains(meal.otherId)) {
-          unWantedMealCategory = true;
-          break;
+        print('-------------- Result ----------------');
+        for(var meal in result){
+          print(meal.name! + ': ' + meal.amount!.toString());
         }
-      }
-      if(unWantedMealCategory) continue;
-      Map<Meal, int>? result = otherCalculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
-      if(result != null){
-        FullMeal fullMeal = new FullMeal(
+        print('-------------- End result ----------------');
+        Meal meal = new Meal(
           id: mealCategory.id,
           name: mealCategory.name,
           engName: mealCategory.engName,
-          components: result,
-          protein: newProtein.toInt(),
-          carb: newCarb.toInt(),
-          fats: newFats.toInt(),
+          protein: newProtein,
+          carb: newCarb,
+          fats: newFats,
           calories: (newProtein.toInt() * 4 + newCarb.toInt() * 4 + newFats.toInt() * 9),
         );
-        allFullMeals.add(fullMeal);
-      }
-    }
-
-    return allFullMeals;
-  }
-
-  List<FullMeal> calculateDinner(int protein, int carb, int fats, int percent, AppUser user){
-    List<FullMeal> allFullMeals = [];
-    double newProtein = protein * (percent / 100);
-    double newCarb = carb * (percent / 100);
-    double newFats = fats * (percent / 100);
-
-    for(var mealCategory in MealCategoryList.dinner){
-      bool unWantedMealCategory = false;
-      for(var meal in mealCategory.meals!){
-        if(user.unWantedMeals.contains(meal.otherId)) {
-          unWantedMealCategory = true;
-          break;
+        List<MealSection> sections = [];
+        for(var section in mealCategory.sections!){
+          sections.add(
+            new MealSection(
+              name: section.name,
+              engName: section.engName,
+              meals: [],
+            ),
+          );
         }
-      }
-      if(unWantedMealCategory) continue;
-      Map<Meal, int>? result = otherCalculateFullMealNumbers(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
-      if(result != null){
-        FullMeal fullMeal = new FullMeal(
-          id: mealCategory.id,
-          name: mealCategory.name,
-          engName: mealCategory.engName,
-          components: result,
-          protein: newProtein.toInt(),
-          carb: newCarb.toInt(),
-          fats: newFats.toInt(),
-          calories: (newProtein.toInt() * 4 + newCarb.toInt() * 4 + newFats.toInt() * 9),
-        );
-        allFullMeals.add(fullMeal);
+        for(var tempMeal in result){
+          if(tempMeal.sectionIndex != -1)
+            sections[tempMeal.sectionIndex!].meals!.add(tempMeal);
+          else {
+            sections.add(
+              MealSection(
+                name: 'اخر',
+                engName: 'other',
+                meals: [tempMeal],
+              ),
+            );
+          }
+        }
+        meal.sections = sections;
+        print('sections from calculate meal: ' + meal.sections.toString());
+        allMeals.add(meal);
       }
     }
-
-    return allFullMeals;
+    return allMeals;
   }
 
 }
