@@ -17,6 +17,7 @@ import 'package:informa/screens/pageview_screens/select_meals_per_day.dart';
 import 'package:informa/screens/pageview_screens/select_meals_time.dart';
 import 'package:informa/screens/pageview_screens/select_milk_products_problems.dart';
 import 'package:informa/screens/pageview_screens/select_supplements.dart';
+import 'package:informa/screens/pageview_screens/select_which_supplements.dart';
 import 'package:informa/screens/pageview_screens/select_which_two_meals.dart';
 import 'package:informa/screens/pageview_screens/upload_body_photos.dart';
 import 'package:informa/services/firestore_service.dart';
@@ -301,11 +302,16 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                 onBack: goBack,
                 onClick: goToNextPage,
               ),
+              if(activeUser!.haveSupplements == 1)
+                SelectWhichSupplements(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
               SelectMealsPerDay(
                 onBack: goBack,
                 onClick: goToNextPage,
               ),
-              if(activeUser!.numberOfMeals == 2)
+              if(activeUser.numberOfMeals == 2)
                 SelectWhichTwoMeals(
                   onBack: goBack,
                   onClick: goToNextPage,

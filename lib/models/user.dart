@@ -39,7 +39,7 @@ class AppUser {
   int wheyProtein;
   //0 = none, 1 = I have, 2 = don't have, 3 = don't have but ready to buy
   int haveSupplements;
-  String? supplements;
+  List supplements = [];
   int numberOfMeals;
   List datesOfMeals = [];
   List allMeals = List.from(MealsList.allMealsList);
@@ -106,7 +106,7 @@ class AppUser {
     trainingDays = json['trainingDays'];
     wheyProtein = json['wheyProtein'];
     haveSupplements = json['haveSupplements'];
-    supplements = json['supplements'];
+    supplements = json['supplements'] != null ? json['supplements'] : [];
     numberOfMeals = json['numberOfMeals'];
     datesOfMeals = [];
     for(var date in json['datesOfMeals']){

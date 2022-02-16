@@ -242,8 +242,10 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  setSupplements(String value){
-    _user!.supplements = value;
+  addOrRemoveSupplement(String value){
+    if(_user!.supplements.contains(value))
+      _user!.supplements.remove(value);
+    else _user!.supplements.add(value);
     notifyListeners();
   }
 

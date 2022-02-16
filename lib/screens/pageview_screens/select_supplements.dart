@@ -17,25 +17,6 @@ class SelectSupplements extends StatefulWidget {
 }
 
 class _SelectSupplementsState extends State<SelectSupplements> {
-  String _supplements = '';
-  var _formKey = GlobalKey<FormState>();
-
-  onNext(BuildContext context){
-    FocusScope.of(context).unfocus();
-    int haveSupplements = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.haveSupplements;
-    if(haveSupplements == 1){
-      bool valid = _formKey.currentState!.validate();
-      if(valid){
-        _formKey.currentState!.save();
-        Provider.of<ActiveUserProvider>(context, listen: false)
-            .setSupplements(_supplements);
-        widget.onClick();
-      }
-    }
-    else widget.onClick();
-  }
-
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -158,37 +139,6 @@ class _SelectSupplementsState extends State<SelectSupplements> {
                       ],
                     ),
                   ),
-                  if(activeUser.haveSupplements == 1 && activeUser.wheyProtein == 1)
-                  Column(
-                    children: [
-                      SizedBox(height: 20,),
-                      Text(
-                        'أكتب كل المكملات الي عندك',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: boldFont,
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      Form(
-                        key: _formKey,
-                        child: CustomTextField(
-                          text: 'المكملات',
-                          obscureText: false,
-                          textInputType: TextInputType.text,
-                          anotherFilledColor: true,
-                          setValue: (value){
-                            _supplements = value;
-                          },
-                          validation: (value){
-                            if(value.isEmpty) return 'أكتب المكملات';
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(height: 40,),
                 ],
               ),
@@ -197,7 +147,7 @@ class _SelectSupplementsState extends State<SelectSupplements> {
           CustomButton(
             text: 'التالي',
             onClick: activeUser.wheyProtein == 2 || (activeUser.wheyProtein == 1 && activeUser.haveSupplements != 0)? (){
-              onNext(context);
+              widget.onClick();
             } : (){},
             bgColor: activeUser.wheyProtein == 2 || (activeUser.wheyProtein == 1 && activeUser.haveSupplements != 0) ? primaryColor : Colors.grey.shade400,
           )
