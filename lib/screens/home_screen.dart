@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

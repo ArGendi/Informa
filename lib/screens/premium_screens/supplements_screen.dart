@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/snacks_list.dart';
+import 'package:informa/models/supplements_list.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/services/firestore_service.dart';
@@ -28,6 +29,10 @@ class _SupplementsScreenState extends State<SupplementsScreen> {
     }
     else if(activeUser.wheyProtein == 1 && activeUser.myProtein! >= 200){
       _supplements.add(SnacksList.snacks[0]);
+    }
+    for(var id in activeUser.supplements){
+      Meal supplement = SupplementsList.supplements[int.parse(id) - 1];
+      _supplements.add(supplement);
     }
     print(_supplements);
   }

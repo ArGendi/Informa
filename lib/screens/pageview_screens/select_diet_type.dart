@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:informa/models/supplements_list.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/program_select_card.dart';
@@ -7,16 +6,16 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 
-class SelectWhichSupplements extends StatefulWidget {
+class SelectDietType extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectWhichSupplements({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectDietType({Key? key, required this.onClick, required this.onBack}) : super(key: key);
 
   @override
-  _SelectWhichSupplementsState createState() => _SelectWhichSupplementsState();
+  _SelectDietTypeState createState() => _SelectDietTypeState();
 }
 
-class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
+class _SelectDietTypeState extends State<SelectDietType> {
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -55,7 +54,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    'محتاجين نعرف ايه المكملات الي عندك',
+                    'نظام الدايت',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -69,7 +68,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    'اختار المكملات الي عندك',
+                    'أختار نظام الدايت المفضل لك',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
@@ -77,21 +76,32 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  for(int i=0; i<SupplementsList.supplements.length; i++)
-                    if(!(activeUser!.supplements.contains('4') && (i+1 == 16 || i+1 == 17)))
-                      Column(
-                        children: [
-                          ProgramSelectCard(
-                            mainText: SupplementsList.supplements[i].name!,
-                            number: i+1,
-                            userChoice: activeUser.supplements.contains((i+1).toString()) ? i+1 : 0,
-                            onClick: (){
-                              Provider.of<ActiveUserProvider>(context, listen: false).addOrRemoveSupplement((i+1).toString());
-                            },
-                          ),
-                          SizedBox(height: 10,),
-                        ],
-                      ),
+                  ProgramSelectCard(
+                    mainText: 'دايت متوازن',
+                    number: 1,
+                    userChoice: activeUser!.dietType,
+                    onClick: (){
+                      Provider.of<ActiveUserProvider>(context, listen: false).setDietType(1);
+                    },
+                  ),
+                  SizedBox(height: 10,),
+                  ProgramSelectCard(
+                    mainText: 'كارب سايكل',
+                    number: 2,
+                    userChoice: activeUser.dietType,
+                    onClick: (){
+                      Provider.of<ActiveUserProvider>(context, listen: false).setDietType(2);
+                    },
+                  ),
+                  SizedBox(height: 10,),
+                  ProgramSelectCard(
+                    mainText: 'لا أعرف',
+                    number: 3,
+                    userChoice: activeUser.dietType,
+                    onClick: (){
+                      Provider.of<ActiveUserProvider>(context, listen: false).setDietType(3);
+                    },
+                  ),
                   SizedBox(height: 40,),
                 ],
               ),
@@ -99,8 +109,8 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser!.supplements.isNotEmpty? widget.onClick : (){},
-            bgColor: activeUser.supplements.isNotEmpty ? primaryColor : Colors.grey.shade400,
+            onClick: activeUser.dietType != 0? widget.onClick : (){},
+            bgColor: activeUser.dietType != 0? primaryColor : Colors.grey.shade400,
           )
         ],
       ),

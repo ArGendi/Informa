@@ -12,10 +12,10 @@ class Meal {
   String? category;
   String? description;
   //String? period;
-  double? carb;
-  double? calories;
-  double? protein;
-  double? fats;
+  double? carb = 0;
+  double? calories = 0;
+  double? protein = 0;
+  double? fats = 0;
   bool isSelected;
   List<String>? components;
   List<MealSection>? sections;

@@ -115,6 +115,21 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setDietType(int value){
+    _user!.dietType = value;
+    notifyListeners();
+  }
+
+  setLowAndHighCarb(List<int> value){
+    _user!.lowAndHighCarb = value;
+    notifyListeners();
+  }
+
+  setCarbCycleStartDate(DateTime value){
+    _user!.carbCycleStartDate = value;
+    notifyListeners();
+  }
+
   bool changeMealTime(DateTime oldDate, DateTime newDate){
     int index = _user!.datesOfMeals.indexOf(oldDate);
     if(index != -1){

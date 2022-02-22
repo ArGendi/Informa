@@ -221,6 +221,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
 
   Widget getMealComponents(){
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'المكونات',

@@ -38,12 +38,11 @@ class _NutritionScreenState extends State<NutritionScreen> {
   }
 
   bool getSupplementsDoneStatus(AppUser user, PremiumNutritionProvider nutritionProvider){
-    if(user.wheyProtein == 1 && user.myProtein! >= 250){
-      if(nutritionProvider.supplementsDone!.length == 2) return true;
-    }
-    else if(user.wheyProtein == 1 && user.myProtein! >= 200){
-      if(nutritionProvider.supplementsDone!.length == 1) return true;
-    }
+    int number = 0;
+    if(user.wheyProtein == 1 && user.myProtein! >= 250) number = 2;
+    else if(user.wheyProtein == 1 && user.myProtein! >= 200) number = 1;
+    number += user.supplements.length;
+    if(nutritionProvider.supplementsDone!.length == number) return true;
     return false;
   }
 

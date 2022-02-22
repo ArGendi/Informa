@@ -71,15 +71,19 @@ class AppUser {
   int? dailyFats;
   int? oldGoal;
   DateTime? lastDataUpdatedDate;
-  //------------
   double? myWater;
   double? dailyWater;
+  int dietType;
+  List? lowAndHighCarb;
+  //--------------------
+  DateTime? carbCycleStartDate;
+
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
       this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
       this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0, this.whichTwoMeals = 0,
-      this.oldGoal = 0});
+      this.oldGoal = 0, this.dietType = 0});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];
@@ -149,6 +153,14 @@ class AppUser {
     lastDataUpdatedDate = dtLastDataUpdatedDate;
     myWater = json['myWater'];
     dailyWater = json['dailyWater'];
+    dietType = json['dietType'] != null ? json['dietType'] : 0;
+    lowAndHighCarb = json['lowAndHighCarb'];
+    DateTime? dtCarbCycleDate;
+    if(json['carbCycleStartDate'] != null) {
+      var temp = json['carbCycleStartDate'] as Timestamp;
+      dtCarbCycleDate = temp.toDate();
+    }
+    carbCycleStartDate = dtCarbCycleDate;
   }
 
   Map<String, dynamic> toJson(){
@@ -204,6 +216,10 @@ class AppUser {
         null,
       'myWater': myWater,
       'dailyWater': dailyWater,
+      'dietType': dietType,
+      'lowAndHighCarb': lowAndHighCarb,
+      'carbCycleStartDate': carbCycleStartDate != null?
+          Timestamp.fromDate(carbCycleStartDate!): null,
     };
   }
 

@@ -131,10 +131,18 @@ class InformaService{
     return fatsNeeded.toInt();
   }
 
-  int calculateCarbNeeded(int caloriesNeeded, int protein, int fats){
+  int calculateBalancedCarbNeeded(int caloriesNeeded, int protein, int fats){
     double carbNeeded = (caloriesNeeded - ((protein * 4) + (fats * 9))) / 4;
     print('Carb needed: ' + carbNeeded.toString());
     return carbNeeded.toInt();
+  }
+
+  List<int> calculateCarbCycleNeeded(int caloriesNeeded, int protein, int fats){
+    double l = 0, h = 0;
+    int carb = calculateBalancedCarbNeeded(caloriesNeeded, protein, fats);
+    l = (7 * carb - 300) / 7;
+    h = l + 100;
+    return [l.toInt(), h.toInt()];
   }
 
   List<int> calculateEveryMealPercent(){

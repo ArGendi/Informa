@@ -9,6 +9,7 @@ import 'package:informa/models/meal_category_list.dart';
 import 'package:informa/models/meal_section.dart';
 import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/snacks_list.dart';
+import 'package:informa/models/supplements_list.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/services/informa_service.dart';
 
@@ -361,6 +362,17 @@ class MealsService{
     snacksWithRest.add(snacks);
     snacksWithRest.add([protein, carb, fats]);
     return snacksWithRest;
+  }
+
+  List<double> calculateSupplementsMacros(AppUser user){
+    double protein = 0, carb = 0, fats = 0;
+    for(var id in user.supplements){
+      Meal supplement = SupplementsList.supplements[int.parse(id) - 1];
+      protein += supplement.protein != null ? supplement.protein! : 0;
+      carb += supplement.carb != null ? supplement.carb! : 0;
+      fats += supplement.fats != null ? supplement.fats! : 0;
+    }
+    return [protein, carb, fats];
   }
 
   List<Meal> calculateMeal(int protein, int carb, int fats, int percent, AppUser user, int whichMeal){

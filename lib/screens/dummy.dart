@@ -209,22 +209,25 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
           children: [
             IconButton(
               onPressed: () async{
-                MealsService mealService = new MealsService();
-                await mealService.setAllMeals();
-                var list = mealService.calculateMeal(165, 95, 45, 20, _user, 1);
-                //print(MealCategoryList.lunch[1].meals![1].fats);
-                print('--------------------');
-                for(var meal in list){
-                  print(meal.name!);
-                  print('Sections');
-                  for(var section in meal.sections!){
-                    print('name: ' + section.name!);
-                    for(var tempMeal in section.meals!){
-                      print('meal name: ' + tempMeal.name! + ', amount: ' + tempMeal.amount!.toString());
-                    }
-                  }
-                  print('--------------------');
-                }
+                DateTime now = DateTime.now();
+                DateTime after = DateTime(now.year, now.month, now.day + 9);
+                print('Days: ' + ((after.difference(now).inHours/24).floor() % 7).toString());
+                // MealsService mealService = new MealsService();
+                // await mealService.setAllMeals();
+                // var list = mealService.calculateMeal(165, 95, 45, 20, _user, 1);
+                // //print(MealCategoryList.lunch[1].meals![1].fats);
+                // print('--------------------');
+                // for(var meal in list){
+                //   print(meal.name!);
+                //   print('Sections');
+                //   for(var section in meal.sections!){
+                //     print('name: ' + section.name!);
+                //     for(var tempMeal in section.meals!){
+                //       print('meal name: ' + tempMeal.name! + ', amount: ' + tempMeal.amount!.toString());
+                //     }
+                //   }
+                //   print('--------------------');
+                // }
                 // var list = mealService.otherCalculateFullMealNumbers2(MealCategoryList.breakfast[0], 33, 19, 9,);
                 // print('--------------------');
                 // for(var meal in list!){

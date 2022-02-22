@@ -132,6 +132,9 @@ class FirestoreService{
       List<Meal> breakfast,
       List<Meal> lunch,
       List<Meal> dinner,
+      List<Meal> otherBreakfast,
+      List<Meal> otherLunch,
+      List<Meal> otherDinner,
       bool snacks,
       int? breakfastDone,
       int? lunchDone,
@@ -144,18 +147,30 @@ class FirestoreService{
     List<Map> breakfastList = [];
     List<Map> lunchList = [];
     List<Map> dinnerList = [];
-    for(var fullMeal in breakfast) {
+    List<Map> otherBreakfastList = [];
+    List<Map> otherLunchList = [];
+    List<Map> otherDinnerList = [];
+
+    for(var fullMeal in breakfast)
       breakfastList.add(fullMeal.toJson());
-      print('Sections from save nutrition: ' + fullMeal.sections!.toString());
-    }
     for(var fullMeal in lunch)
       lunchList.add(fullMeal.toJson());
     for(var fullMeal in dinner)
       dinnerList.add(fullMeal.toJson());
 
+    for(var fullMeal in otherBreakfast)
+      otherBreakfastList.add(fullMeal.toJson());
+    for(var fullMeal in otherLunch)
+      otherLunchList.add(fullMeal.toJson());
+    for(var fullMeal in otherDinner)
+      otherDinnerList.add(fullMeal.toJson());
+
     data['breakfast'] = breakfastList;
     data['lunch'] = lunchList;
     data['dinner'] = dinnerList;
+    data['otherBreakfastList'] = otherBreakfastList;
+    data['otherLunchList'] = otherLunchList;
+    data['otherDinnerList'] = otherDinnerList;
     data['snacks'] = snacks;
 
     data['breakfastDone'] = breakfastDone;
@@ -180,20 +195,40 @@ class FirestoreService{
     return false;
   }
 
-  Future<List<dynamic>?> getNutritionMeals(String id) async{
+  Future<List<dynamic>?> getNutritionMeals(String id, AppUser user) async{
     var documentSnapshot = await FirebaseFirestore.instance
         .collection('nutrition')
         .doc(id)
         .get();
     if(documentSnapshot.exists){
-      print('Document exist on the database');
+      print('Getting nutrition');
       var data = documentSnapshot.data() as Map<String, dynamic>;
       List<Meal> breakfast = [];
       List<Meal> lunch = [];
       List<Meal> dinner = [];
-      var breakfastMap = data['breakfast'];
-      var lunchMap = data['lunch'];
-      var dinnerMap = data['dinner'];
+      var breakfastMap;
+      var lunchMap;
+      var dinnerMap;
+
+      if(user.dietType != 2){
+        breakfastMap = data['breakfast'];
+        lunchMap = data['lunch'];
+        dinnerMap = data['dinner'];
+      }
+      else{
+        DateTime now = DateTime.now();
+        if(((user.carbCycleStartDate!.difference(now).inHours/24).floor() % 7) < 4){
+          breakfastMap = data['breakfast'];
+          lunchMap = data['lunch'];
+          dinnerMap = data['dinner'];
+        }
+        else{
+          breakfastMap = data['otherBreakfast'];
+          lunchMap = data['otherLunch'];
+          dinnerMap = data['otherDinner'];
+        }
+      }
+
       if(breakfastMap != null){
         for(int i=0; i<breakfastMap.length; i++){
           Meal meal = new Meal();
@@ -232,7 +267,7 @@ class FirestoreService{
     DateTime now = DateTime.now();
     DateTime threeAmToday = DateTime(now.year, now.month, now.day, 3);
     if(user.lastDataUpdatedDate != null){
-      int diff = (now.difference(user.lastDataUpdatedDate!).inHours / 24).round();
+      int diff = (now.difference(user.lastDataUpdatedDate!).inHours / 24).floor();
       print('lastDataUpdatedDate: ' + user.lastDataUpdatedDate.toString());
       print(now.difference(user.lastDataUpdatedDate!).inHours);
       print('diff: ' + diff.toString());

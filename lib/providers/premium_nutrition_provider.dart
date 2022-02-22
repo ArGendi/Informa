@@ -9,6 +9,10 @@ class PremiumNutritionProvider extends ChangeNotifier{
   List<Meal> _lunch = [];
   List<Meal> _lunch2 = [];
   List<Meal> _dinner = [];
+  List<Meal> _otherBreakfast = [];
+  List<Meal> _otherLunch = [];
+  List<Meal> _otherLunch2 = [];
+  List<Meal> _otherDinner = [];
   int? _snackDone;
   List<int>? _mainSnacksDone = [];
   int? _breakfastDone;
@@ -22,6 +26,10 @@ class PremiumNutritionProvider extends ChangeNotifier{
   List<Meal> get lunch => _lunch;
   List<Meal> get lunch2 => _lunch2;
   List<Meal> get dinner => _dinner;
+  List<Meal> get otherBreakfast => _otherBreakfast;
+  List<Meal> get otherLunch => _otherLunch;
+  List<Meal> get otherLunch2 => _otherLunch2;
+  List<Meal> get otherDinner => _otherDinner;
   int? get snackDone => _snackDone;
   int? get breakfastDone => _breakfastDone;
   int? get lunchDone => _lunchDone;
@@ -52,6 +60,26 @@ class PremiumNutritionProvider extends ChangeNotifier{
 
   setDinner(List<Meal> value){
     _dinner = value;
+    notifyListeners();
+  }
+
+  setOtherBreakfast(List<Meal> value){
+    _otherBreakfast = value;
+    notifyListeners();
+  }
+
+  setOtherLunch(List<Meal> value){
+    _otherLunch = value;
+    notifyListeners();
+  }
+
+  setOtherLunch2(List<Meal> value){
+    _otherLunch2 = value;
+    notifyListeners();
+  }
+
+  setOtherDinner(List<Meal> value){
+    _otherDinner = value;
     notifyListeners();
   }
 
