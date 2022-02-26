@@ -32,7 +32,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   InformaService _informaService = new InformaService();
   MealsService _mealsService = new MealsService();
 
-  resetMacros(AppUser user){
+  resetMacros(AppUser user) async{
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyCalories(user.myCalories!);
     Provider.of<ActiveUserProvider>(context, listen: false)
@@ -41,9 +41,24 @@ class _LoadingScreenState extends State<LoadingScreen> {
         .setDailyCarb(user.myCarb!);
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyFats(user.myFats!);
+    if(user.dietType == 2){
+      DateTime now = DateTime.now();
+      if(((now.difference(user.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setDailyCarbCycle(user.lowAndHighCarb![0]);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setCarbCycleIndex(0);
+      }
+      else{
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setDailyCarbCycle(user.lowAndHighCarb![1]);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setCarbCycleIndex(1);
+      }
+    }
+    double? myWater = await HelpFunction.getMyWater();
+    if(myWater != null) HelpFunction.saveDailyWater(myWater);
   }
-
-
 
   getAppData() async{
     String? lang = await HelpFunction.getUserLanguage();
@@ -58,31 +73,48 @@ class _LoadingScreenState extends State<LoadingScreen> {
         await user.getFromSharedPreference();
         if(user.premium){
           AppUser? premiumUser = await _firestoreService.getUserById(currentUser.uid);
-          if(premiumUser != null) {
+          if(premiumUser != null){
             Provider.of<ActiveUserProvider>(context, listen: false)
                 .setUser(premiumUser);
+
+            double? myWater = await HelpFunction.getMyWater();
+            double? dailyWater = await HelpFunction.getDailyWater();
+
+            if(myWater != null && dailyWater != null) {
+              Provider.of<ActiveUserProvider>(context, listen: false)
+                  .setMyWater(myWater);
+              Provider.of<ActiveUserProvider>(context, listen: false)
+                  .setDailyWater(dailyWater);
+            }
+
             if(premiumUser.premium && premiumUser.fillPremiumForm){
               bool update = await _firestoreService.checkAndUpdateNewDayData(currentUser.uid, premiumUser);
-              if(update) {
-                resetMacros(premiumUser);
-                // Provider.of<PremiumNutritionProvider>(context, listen: false)
-                //     .resetDoneMeals();
+              if(update) resetMacros(premiumUser);
+              if(premiumUser.dietType == 2){
+                DateTime now = DateTime.now();
+                if(((now.difference(premiumUser.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+                  Provider.of<ActiveUserProvider>(context, listen: false)
+                      .setCarbCycleIndex(0);
+                  if(premiumUser.dailyCarbCycle == premiumUser.lowAndHighCarb![1]){
+                    await _firestoreService.updateUserData(currentUser.uid, {
+                      'dailyCarbCycle': premiumUser.lowAndHighCarb![0],
+                    });
+                    Provider.of<ActiveUserProvider>(context, listen: false)
+                        .setDailyCarbCycle(premiumUser.lowAndHighCarb![0]);
+                  }
+                }
+                else{
+                  Provider.of<ActiveUserProvider>(context, listen: false)
+                      .setCarbCycleIndex(1);
+                  if(premiumUser.dailyCarbCycle == premiumUser.lowAndHighCarb![0]){
+                    await _firestoreService.updateUserData(currentUser.uid, {
+                      'dailyCarbCycle': premiumUser.lowAndHighCarb![1],
+                    });
+                    Provider.of<ActiveUserProvider>(context, listen: false)
+                        .setDailyCarbCycle(premiumUser.lowAndHighCarb![1]);
+                  }
+                }
               }
-              // if(premiumUser.dietType == 2){
-              //   DateTime now = DateTime.now();
-              //   if(((premiumUser.carbCycleStartDate!.difference(now).inHours/24).floor() % 7) < 4){
-              //     Provider.of<ActiveUserProvider>(context, listen: false)
-              //         .setMyCarb(premiumUser.lowAndHighCarb![0]);
-              //     Provider.of<ActiveUserProvider>(context, listen: false)
-              //         .setDailyCarb(premiumUser.lowAndHighCarb![0]);
-              //   }
-              //   else{
-              //     Provider.of<ActiveUserProvider>(context, listen: false)
-              //         .setMyCarb(premiumUser.lowAndHighCarb![1]);
-              //     Provider.of<ActiveUserProvider>(context, listen: false)
-              //         .setDailyCarb(premiumUser.lowAndHighCarb![1]);
-              //   }
-              // }
               List? nutrition = await _firestoreService.getNutritionMeals(currentUser.uid, premiumUser);
               if(nutrition != null){
                 Provider.of<PremiumNutritionProvider>(context, listen: false)

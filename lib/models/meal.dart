@@ -19,6 +19,7 @@ class Meal {
   bool isSelected;
   List<String>? components;
   List<MealSection>? sections;
+  List<Meal>? salads;
   double serving = 0;
   String? unit;
   int? amount = 0;
@@ -27,7 +28,8 @@ class Meal {
   Meal({this.id, this.name, this.category, this.image, this.description,
         this.fats, this.protein, this.calories, this.components, this.carb,
         this.video, this.isSelected = true, this.engName, this.serving = 0,
-        this.unit, this.otherId, this.sections, this.amount, this.sectionIndex});
+        this.unit, this.otherId, this.sections, this.amount, this.sectionIndex,
+        this.salads});
 
   List<Map<String, dynamic>>? convertSectionsToMap(){
     if(sections == null) return null;
@@ -72,6 +74,26 @@ class Meal {
     return sections;
   }
 
+  List<String>? convertSaladsToListOfStrings(){
+    if(salads == null) return null;
+    List<String> ids = [];
+    for(var salad in salads!){
+      ids.add(salad.id!);
+    }
+    return ids;
+  }
+
+  convertListOfStringsToSalads(List? jsonSalads){
+    if(jsonSalads == null){
+      return null;
+    }
+    List<Meal> temp = [];
+    for(var id in jsonSalads){
+      temp.add(MealsList.salads[int.parse(id) - 1]);
+    }
+    return temp;
+  }
+
   Map<String, dynamic> toJson(){
     return {
       'name': name,
@@ -84,7 +106,7 @@ class Meal {
       'carb': carb,
       'fats': fats,
       'sections': convertSectionsToMap(),
-      //'isDone':
+      'salads': convertSaladsToListOfStrings(),
     };
   }
 
@@ -99,6 +121,7 @@ class Meal {
     carb = json['carb'];
     fats = json['fats'];
     sections = json['sections'] != null ? convertMapToSections(json['sections']) : null;
+    salads = convertListOfStringsToSalads(json['salads']);
   }
 
   Meal copyObject(){
@@ -122,6 +145,7 @@ class Meal {
       amount: amount,
       sectionIndex: sectionIndex,
       unit: unit,
+      salads: salads,
     );
   }
 

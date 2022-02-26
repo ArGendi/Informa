@@ -77,7 +77,8 @@ class AppUser {
   List? lowAndHighCarb;
   //--------------------
   DateTime? carbCycleStartDate;
-
+  int? dailyCarbCycle;
+  int? carbCycleIndex;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
@@ -161,6 +162,7 @@ class AppUser {
       dtCarbCycleDate = temp.toDate();
     }
     carbCycleStartDate = dtCarbCycleDate;
+    dailyCarbCycle = json['dailyCarbCycle'];
   }
 
   Map<String, dynamic> toJson(){
@@ -220,6 +222,7 @@ class AppUser {
       'lowAndHighCarb': lowAndHighCarb,
       'carbCycleStartDate': carbCycleStartDate != null?
           Timestamp.fromDate(carbCycleStartDate!): null,
+      'dailyCarbCycle': dailyCarbCycle,
     };
   }
 

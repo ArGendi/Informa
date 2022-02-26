@@ -195,6 +195,7 @@ class SnacksList{
       protein: 1,
       fats: 0,
       carb: 25,
+      calories: 104,
       serving: 1,
       category: 'وجبات خفيفة',
       components: [
@@ -208,6 +209,7 @@ class SnacksList{
       protein: 2,
       fats: 0,
       carb: 40,
+      calories: 168,
       serving: 1,
       category: 'وجبات خفيفة',
       components: [

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/services/firestore_service.dart';
@@ -17,23 +18,21 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
   FirestoreService _firestoreService = new FirestoreService();
 
   decreaseWater(BuildContext context, AppUser user){
+    if(user.dailyWater! >= user.myWater!) return;
     double newValue = user.dailyWater! + 0.250;
+    if(newValue > user.myWater!) newValue = user.myWater!;
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyWater(newValue);
-    String id = FirebaseAuth.instance.currentUser!.uid;
-    _firestoreService.updateUserData(id, {
-      'dailyWater': newValue,
-    });
+    HelpFunction.saveDailyWater(newValue);
   }
 
   increaseWater(BuildContext context, AppUser user){
+    if(user.dailyWater! < 0) return;
     double newValue = user.dailyWater! - 0.250;
+    if(newValue < 0.25) newValue = -0.25;
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyWater(newValue);
-    String id = FirebaseAuth.instance.currentUser!.uid;
-    _firestoreService.updateUserData(id, {
-      'dailyWater': newValue,
-    });
+    HelpFunction.saveDailyWater(newValue);
   }
 
   @override
@@ -130,7 +129,10 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                           },
                           icon: Icon(Icons.remove),
                         ),
-                        Icon(Icons.language),
+                        Image.asset(
+                          'assets/images/cup_of_water.png',
+                          width: 35,
+                        ),
                         IconButton(
                           onPressed: (){
                             increaseWater(context, activeUser);

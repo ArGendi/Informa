@@ -24,6 +24,8 @@ class HelpFunction {
   static String sharedPreferenceUserTrainingDays = "trainingDays";
   static String sharedPreferenceWaterIsActivated = "waterIsActivated";
   static String sharedPreferenceWaterNumberOfTimes = "waterNumberOfTimes";
+  static String sharedPreferenceMyWater = "myWater";
+  static String sharedPreferenceDailyWater = "DailyWater";
 
   static Future<bool> saveUserLanguage(String lang) async {
     SharedPreferences preference = await SharedPreferences.getInstance();
@@ -281,6 +283,26 @@ class HelpFunction {
   static Future<int?> getUserWaterNumberOfTimes() async {
     SharedPreferences preference = await SharedPreferences.getInstance();
     return preference.getInt(sharedPreferenceWaterNumberOfTimes);
+  }
+
+  static Future<bool> saveMyWater(double value) async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return await preference.setDouble(sharedPreferenceMyWater, value);
+  }
+
+  static Future<double?> getMyWater() async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return preference.getDouble(sharedPreferenceMyWater);
+  }
+
+  static Future<bool> saveDailyWater(double value) async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return await preference.setDouble(sharedPreferenceDailyWater, value);
+  }
+
+  static Future<double?> getDailyWater() async {
+    SharedPreferences preference = await SharedPreferences.getInstance();
+    return preference.getDouble(sharedPreferenceDailyWater);
   }
 
 }

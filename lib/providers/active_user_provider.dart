@@ -130,6 +130,16 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setDailyCarbCycle(int value){
+    _user!.dailyCarbCycle = value;
+    notifyListeners();
+  }
+
+  setCarbCycleIndex(int value){
+    _user!.carbCycleIndex = value;
+    notifyListeners();
+  }
+
   bool changeMealTime(DateTime oldDate, DateTime newDate){
     int index = _user!.datesOfMeals.indexOf(oldDate);
     if(index != -1){

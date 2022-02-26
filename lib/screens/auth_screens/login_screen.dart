@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/challenge.dart';
@@ -5,6 +6,7 @@ import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
+import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/screens/auth_screens/forget_password_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/firestore_service.dart';
@@ -31,6 +33,34 @@ class _LoginScreenState extends State<LoginScreen> {
   bool? _isLoading = false;
   FirestoreService _firestoreService = new FirestoreService();
 
+  resetMacros(AppUser user) async{
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyCalories(user.myCalories!);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyProtein(user.myProtein!);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyCarb(user.myCarb!);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyFats(user.myFats!);
+    if(user.dietType == 2){
+      DateTime now = DateTime.now();
+      if(((now.difference(user.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setDailyCarbCycle(user.lowAndHighCarb![0]);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setCarbCycleIndex(0);
+      }
+      else{
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setDailyCarbCycle(user.lowAndHighCarb![1]);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setCarbCycleIndex(1);
+      }
+    }
+    double? myWater = await HelpFunction.getMyWater();
+    if(myWater != null) HelpFunction.saveDailyWater(myWater);
+  }
+
   onSubmit(BuildContext context) async{
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
@@ -49,6 +79,77 @@ class _LoginScreenState extends State<LoginScreen> {
 
         List<Challenge> challenges = await _firestoreService.getAllChallenges();
         Provider.of<ChallengesProvider>(context, listen: false).setChallenges(challenges);
+
+        if(user.premium){
+          await HelpFunction.saveMyWater(user.weight * 0.045);
+          await HelpFunction.saveDailyWater(user.weight * 0.045);
+
+          Provider.of<ActiveUserProvider>(context, listen: false)
+              .setMyWater(user.weight * 0.045);
+          Provider.of<ActiveUserProvider>(context, listen: false)
+              .setDailyWater(user.weight * 0.045);
+
+          if(user.fillPremiumForm){
+            bool update = await _firestoreService.checkAndUpdateNewDayData(cred.user!.uid, user);
+            if(update) resetMacros(user);
+            if(user.dietType == 2){
+              DateTime now = DateTime.now();
+              if(((now.difference(user.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+                Provider.of<ActiveUserProvider>(context, listen: false)
+                    .setCarbCycleIndex(0);
+                if(user.dailyCarbCycle == user.lowAndHighCarb![1]){
+                  await _firestoreService.updateUserData(cred.user!.uid, {
+                    'dailyCarbCycle': user.lowAndHighCarb![0],
+                  });
+                  Provider.of<ActiveUserProvider>(context, listen: false)
+                      .setDailyCarbCycle(user.lowAndHighCarb![0]);
+                }
+              }
+              else{
+                Provider.of<ActiveUserProvider>(context, listen: false)
+                    .setCarbCycleIndex(1);
+                if(user.dailyCarbCycle == user.lowAndHighCarb![0]){
+                  await _firestoreService.updateUserData(cred.user!.uid, {
+                    'dailyCarbCycle': user.lowAndHighCarb![1],
+                  });
+                  Provider.of<ActiveUserProvider>(context, listen: false)
+                      .setDailyCarbCycle(user.lowAndHighCarb![1]);
+                }
+              }
+            }
+            List? nutrition = await _firestoreService.getNutritionMeals(cred.user!.uid, user);
+            if(nutrition != null){
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setBreakfast(nutrition[0]);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setLunch(nutrition[1]);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setLunch2(nutrition[1]);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setDinner(nutrition[2]);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setSnack(nutrition[3]);
+
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setBreakfastDone(nutrition[4]);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setLunchDone(nutrition[5]);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setLunch2Done(nutrition[6]);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setDinnerDone(nutrition[7]);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setSnackDone(nutrition[8]);
+
+              List<int>? mainSnacksDone = nutrition[9].cast<int>();
+              List<int>? supplementsDone = nutrition[10].cast<int>();
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setMainSnacksDone(mainSnacksDone);
+              Provider.of<PremiumNutritionProvider>(context, listen: false)
+                  .setSupplementsDone(supplementsDone);
+            }
+          }
+        }
 
         Navigator.pushNamedAndRemoveUntil(
             context, MainScreen.id, (route) => false);

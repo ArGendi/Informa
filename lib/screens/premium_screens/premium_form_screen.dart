@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
+import 'package:informa/models/meal_category_list.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
@@ -131,11 +133,15 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     activeUser.premiumStartDate = after3days;
     activeUser.lastDataUpdatedDate = threeAmToday;
     FirestoreService firestoreService = new FirestoreService();
+    await firestoreService.getMainMeals();
+    print('Dinner meals: ' + MealCategoryList.dinner.length.toString());
     mainMealFunction(context, activeUser);
 
     //Water calculation
     Provider.of<ActiveUserProvider>(context, listen: false).setMyWater(activeUser.weight * 0.045);
     Provider.of<ActiveUserProvider>(context, listen: false).setDailyWater(activeUser.weight * 0.045);
+    await HelpFunction.saveMyWater(activeUser.weight * 0.045);
+    await HelpFunction.saveDailyWater(activeUser.weight * 0.045);
 
     var activeUserAfterUpdate = Provider.of<ActiveUserProvider>(context, listen: false).user;
     var map = activeUserAfterUpdate!.toJson();
@@ -177,7 +183,11 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
       lowAndHighCarb = _informaService.calculateCarbCycleNeeded(calories, protein, fats);
       Provider.of<ActiveUserProvider>(context, listen: false)
           .setLowAndHighCarb(lowAndHighCarb);
-      print('Carb cycle(low, high): ' + lowAndHighCarb.toString());
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setDailyCarbCycle(lowAndHighCarb[0]);
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setCarbCycleIndex(0);
+      print('Carb cycle (low, high): ' + lowAndHighCarb.toString());
     }
 
     Provider.of<ActiveUserProvider>(context, listen: false).setMyCalories(calories);
@@ -367,10 +377,10 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                 onBack: goBack,
                 onClick: goToNextPage,
               ),
-              SelectTrainingDays(
-                onBack: goBack,
-                onClick: goToNextPage,
-              ),
+              // SelectTrainingDays(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
               SelectSupplements(
                 onBack: goBack,
                 onClick: goToNextPage,

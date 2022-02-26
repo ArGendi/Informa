@@ -180,7 +180,7 @@ class MealsService{
     while(outMeals.length < meals.length){
       if(counter > 400) break;
       if((myProtein - protein).abs() < 1 && (myCarb - carb).abs() < 1 &&
-          (myFats - fats).abs() < 1) break;
+          myFats  < fats) break;
 
       double p = 0, c = 0, f = 0;
       //Meal meal = meals[pointer];
@@ -380,6 +380,7 @@ class MealsService{
     double newProtein = protein * (percent / 100);
     double newCarb = carb * (percent / 100);
     double newFats = fats * (percent / 100);
+    double proteinAfterSalad = 0, carbAfterSalad = 0, fatsAfterSalad = 0;
 
     List<MealCategory> mealsCategory = [];
     if(whichMeal == 1) mealsCategory = MealCategoryList.breakfast;
@@ -397,8 +398,19 @@ class MealsService{
         }
       }
       if(unWantedMealCategory) continue;
+      if(whichMeal == 2){
+        proteinAfterSalad = newProtein - MealsList.salads[0].protein!;
+        carbAfterSalad = newCarb - MealsList.salads[0].carb!;
+        fatsAfterSalad = newFats - MealsList.salads[0].fats!;
+      }
       print('Macro: ' + newProtein.toString() + ' ' + newCarb.toString() + ' ' + newFats.toString());
-      List<Meal>? result = otherCalculateFullMealNumbers2(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+
+      List<Meal>? result;
+      if(whichMeal != 2)
+        result = otherCalculateFullMealNumbers2(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      else
+        result = otherCalculateFullMealNumbers2(mealCategory, proteinAfterSalad.toInt(), carbAfterSalad.toInt(), fatsAfterSalad.toInt());
+
       if(result != null){
         print('-------------- Result ----------------');
         for(var meal in result){
@@ -435,6 +447,12 @@ class MealsService{
                 meals: [tempMeal],
               ),
             );
+          }
+        }
+        if(whichMeal == 2){
+          if(meal.salads == null) meal.salads = [];
+          for(var salad in MealsList.salads){
+            meal.salads!.add(salad);
           }
         }
         meal.sections = sections;

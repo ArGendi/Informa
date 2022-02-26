@@ -1,9 +1,10 @@
 import 'package:informa/models/meal.dart';
 
 class MealSection{
+  String? id;
   String? name;
   String? engName;
   List<Meal>? meals;
 
-  MealSection({this.name, this.meals, this.engName});
+  MealSection({this.id, this.name, this.meals, this.engName});
 }

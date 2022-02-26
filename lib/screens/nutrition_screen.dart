@@ -128,7 +128,12 @@ class _NutritionScreenState extends State<NutritionScreen> {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding: const EdgeInsets.only(
+                  top: 5,
+                  left: 15,
+                  right: 15,
+                  bottom: 15,
+                ),
                 child: ListView(
                   shrinkWrap: true,
                   children: [

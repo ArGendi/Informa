@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/models/challenge.dart';
 import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
+import 'package:informa/models/meal_category.dart';
+import 'package:informa/models/meal_category_list.dart';
 import 'package:informa/models/user.dart';
 
 class FirestoreService{
@@ -168,9 +170,9 @@ class FirestoreService{
     data['breakfast'] = breakfastList;
     data['lunch'] = lunchList;
     data['dinner'] = dinnerList;
-    data['otherBreakfastList'] = otherBreakfastList;
-    data['otherLunchList'] = otherLunchList;
-    data['otherDinnerList'] = otherDinnerList;
+    data['otherBreakfast'] = otherBreakfastList;
+    data['otherLunch'] = otherLunchList;
+    data['otherDinner'] = otherDinnerList;
     data['snacks'] = snacks;
 
     data['breakfastDone'] = breakfastDone;
@@ -217,12 +219,17 @@ class FirestoreService{
       }
       else{
         DateTime now = DateTime.now();
-        if(((user.carbCycleStartDate!.difference(now).inHours/24).floor() % 7) < 4){
+        print('carbCycleStartDate: ' + user.carbCycleStartDate!.day.toString());
+        print('now: ' + now.day.toString());
+        print('Carb cycle time diff: ' +((now.difference(user.carbCycleStartDate!).inDays) % 7).toString() );
+        if(((now.difference(user.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+          print('getting low carb.......');
           breakfastMap = data['breakfast'];
           lunchMap = data['lunch'];
           dinnerMap = data['dinner'];
         }
         else{
+          print('getting high carb.......');
           breakfastMap = data['otherBreakfast'];
           lunchMap = data['otherLunch'];
           dinnerMap = data['otherDinner'];
@@ -266,6 +273,13 @@ class FirestoreService{
   Future<bool> checkAndUpdateNewDayData(String id, AppUser user) async{
     DateTime now = DateTime.now();
     DateTime threeAmToday = DateTime(now.year, now.month, now.day, 3);
+    int? carb;
+    if(user.dietType == 2){
+      DateTime now = DateTime.now();
+      if(((user.carbCycleStartDate!.difference(now).inHours/24).floor() % 7) < 4)
+        carb = user.lowAndHighCarb![0];
+      else carb = user.lowAndHighCarb![1];
+    }
     if(user.lastDataUpdatedDate != null){
       int diff = (now.difference(user.lastDataUpdatedDate!).inHours / 24).floor();
       print('lastDataUpdatedDate: ' + user.lastDataUpdatedDate.toString());
@@ -279,6 +293,7 @@ class FirestoreService{
           'dailyProtein': user.myProtein,
           'dailyCarb': user.myCarb,
           'dailyFats': user.myFats,
+          'dailyCarbCycle': carb,
           'lastDataUpdatedDate': Timestamp.fromDate(threeAmToday),
         }).catchError((e){
           print(e);
@@ -304,6 +319,7 @@ class FirestoreService{
         'dailyProtein': user.myProtein,
         'dailyCarb': user.myCarb,
         'dailyFats': user.myFats,
+        'dailyCarbCycle': carb,
         'lastDataUpdatedDate': Timestamp.fromDate(threeAmToday),
       }).catchError((e){
         print(e);
@@ -333,4 +349,17 @@ class FirestoreService{
     print('Nutrition data updated');
   }
 
+  Future getMainMeals() async{
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('mainMeals').get();
+    var docs = documentSnapshot.docs;
+    for(var doc in docs){
+      MealCategory mealCategory = new MealCategory(id: doc.id);
+      mealCategory.fromJson(doc.data());
+      int type = doc.data()['type'];
+      if(type == 1) MealCategoryList.breakfast.add(mealCategory);
+      else if(type == 2) MealCategoryList.lunch.add(mealCategory);
+      else if(type == 3) MealCategoryList.dinner.add(mealCategory);
+    }
+  }
 }

@@ -31,16 +31,18 @@ class SingleMealScreen extends StatefulWidget {
   _SingleMealScreenState createState() => _SingleMealScreenState(otherId, mealDoneNumber, isDone);
 }
 
-class _SingleMealScreenState extends State<SingleMealScreen> {
+class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerProviderStateMixin{
   bool _isFavorite = false;
-  bool _isDoneLoading = false;
-  bool _isBackLoading = false;
+  bool _isLoading = false;
   late bool _isDone;
   bool _isVideoPlayed = false;
   int c = 0;
   FirestoreService _firestoreService = new FirestoreService();
   final ScrollController _controller = ScrollController();
   YoutubePlayerController? _youtubeController;
+  List<String> _saladsIds = [];
+  late AnimationController _animationController;
+  late Animation<Offset> _offset;
 
   _SingleMealScreenState(int? id, int? mealDoneNumber, bool? done){
     _isDone = false;
@@ -52,15 +54,46 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
     }
   }
 
-  runYoutubePlayer(){
-    String videoUrl = c == 0 ?
-      'https://www.youtube.com/watch?v=-kC9ZRTR6D4' : 'https://www.youtube.com/watch?v=uNGmyQ8UbZ8';
-    _youtubeController = YoutubePlayerController(
-        initialVideoId: YoutubePlayer.convertUrlToId(videoUrl)!,
-        flags: YoutubePlayerFlags(
-          enableCaption: false,
-          autoPlay: true,
-        )
+  Future<void> _showDoneDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          //title: const Text('AlertDialog Title'),
+          content: SlideTransition(
+            position: _offset,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'بالهنا والشفة يا وحش',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                ),
+                Image.asset(
+                  'assets/images/informa_nutrition.png',
+                  width: 300,
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'اغلاق',
+                style: TextStyle(
+                  color: primaryColor,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -72,13 +105,15 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
       int newCalories = activeUser.dailyCalories! - widget.meal.calories!.toInt();
       int newProtein = activeUser.dailyProtein! - widget.meal.protein!.toInt();
       int newCarb = activeUser.dailyCarb! - widget.meal.carb!.toInt();
+      int newCarbCycle = activeUser.dailyCarbCycle! - widget.meal.carb!.toInt();
       int newFats = activeUser.dailyFats! - widget.meal.fats!.toInt();
       if(newCalories <= 17 && newCalories >= 0) newCalories = 0;
       if(newProtein == 1) newProtein = 0;
       if(newCarb == 1) newCarb = 0;
+      if(newCarbCycle == 1) newCarbCycle = 0;
       if(newFats == 1) newFats = 0;
 
-      setState(() {_isDoneLoading = true;});
+      setState(() {_isLoading = true;});
 
       String id = FirebaseAuth.instance.currentUser!.uid;
       await _firestoreService.updateUserData(id, {
@@ -86,6 +121,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
         'dailyProtein': newProtein,
         'dailyCarb': newCarb,
         'dailyFats': newFats,
+        'dailyCarbCycle': newCarbCycle,
       });
       Provider.of<ActiveUserProvider>(context, listen: false)
           .setDailyCalories(newCalories);
@@ -95,11 +131,16 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
           .setDailyCarb(newCarb);
       Provider.of<ActiveUserProvider>(context, listen: false)
           .setDailyFats(newFats);
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setDailyCarbCycle(newCarbCycle);
 
       if(widget.onClick != null) widget.onClick!();
 
-      setState(() {_isDoneLoading = false;});
+      setState(() {_isLoading = false;});
       setState(() {_isDone = true;});
+
+      _showDoneDialog();
+      _animationController.forward();
     }
   }
 
@@ -108,9 +149,10 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
     int newCalories = activeUser!.dailyCalories! + widget.meal.calories!.toInt();
     int newProtein = activeUser.dailyProtein! + widget.meal.protein!.toInt();
     int newCarb = activeUser.dailyCarb! + widget.meal.carb!.toInt();
+    int newCarbCycle = activeUser.dailyCarbCycle! + widget.meal.carb!.toInt();
     int newFats = activeUser.dailyFats! + widget.meal.fats!.toInt();
 
-    setState(() {_isBackLoading = true;});
+    setState(() {_isLoading = true;});
 
     String id = FirebaseAuth.instance.currentUser!.uid;
     await _firestoreService.updateUserData(id, {
@@ -118,6 +160,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
       'dailyProtein': newProtein,
       'dailyCarb': newCarb,
       'dailyFats': newFats,
+      'dailyCarbCycle': newCarbCycle,
     });
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyCalories(newCalories);
@@ -127,10 +170,12 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
         .setDailyCarb(newCarb);
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyFats(newFats);
+    Provider.of<ActiveUserProvider>(context, listen: false)
+        .setDailyCarbCycle(newCarbCycle);
 
     if(widget.onBack != null) widget.onBack!();
 
-    setState(() {_isBackLoading = false;});
+    setState(() {_isLoading = false;});
     setState(() {_isDone = false;});
   }
 
@@ -150,14 +195,38 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
     );
   }
 
-  onPlayVideo() async{
+  Future scrollDown() async{
+    await _controller.animateTo(
+      _controller.position.maxScrollExtent,
+      duration: Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
+
+  runYoutubePlayer(String video){
+    _youtubeController = YoutubePlayerController(
+        initialVideoId: YoutubePlayer.convertUrlToId(video)!,
+        flags: YoutubePlayerFlags(
+          enableCaption: false,
+          autoPlay: true,
+        )
+    );
+  }
+
+  onPlayVideo(String video) async{
     if(_youtubeController != null){
-      _youtubeController!.reset();
-      setState(() {_isVideoPlayed = false; c++;});
+      _youtubeController!.pause();
+      await scrollUp();
+      _youtubeController!.load(YoutubePlayer.convertUrlToId(video)!);
+      return;
     }
-    await scrollUp();
-    setState(() {_isVideoPlayed = true;});
-    runYoutubePlayer();
+    else{
+      await scrollUp();
+      setState(() {
+        runYoutubePlayer(video);
+        _isVideoPlayed = true;
+      });
+    }
   }
 
   Widget getMealSections(){
@@ -185,9 +254,10 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
                     color: primaryColor,
                   ),
                 ),
+                if(widget.meal.video != null)
                 InkWell(
                   onTap: (){
-                    onPlayVideo();
+                    onPlayVideo(widget.meal.video!);
                   },
                   child: Card(
                     elevation: 0,
@@ -238,36 +308,79 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
     );
   }
 
-  Widget containerImageVideo(){
-    if(!_isVideoPlayed){
-      if(widget.meal.image != null)
-        return Image.network(
-          widget.meal.image!,
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: 300,
-        );
-      else return Container(
-        width: double.infinity,
-        height: 300,
-        color: Colors.grey[300],
-      );
-    }
-    else{
-      return YoutubePlayerBuilder(
-        player: YoutubePlayer(
-          progressColors: ProgressBarColors(
-              playedColor: primaryColor,
-              handleColor: Colors.white
+  Widget getOptional(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'أختار نوع واحد من السلطة',
+          style: TextStyle(
+            fontSize: 16,
+            fontFamily: boldFont,
           ),
-          progressIndicatorColor: primaryColor,
-          controller: _youtubeController!,
         ),
-        builder: (context , player) {
-          return player;
-        },
-      );
-    }
+        for(var salad in widget.meal.salads!)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InkWell(
+                onTap: (){
+                  setState(() {
+                    if(_saladsIds.contains(salad.id!))
+                      _saladsIds.remove(salad.id!);
+                    else  _saladsIds.add(salad.id!);
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      salad.name!,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: primaryColor,
+                      ),
+                    ),
+                    Icon(
+                      _saladsIds.contains(salad.id!) ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                      color: Colors.black,
+                    ),
+                  ],
+                ),
+              ),
+              if(_saladsIds.contains(salad.id!))
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //SizedBox(height: 10,),
+                    for(int i=0; i<salad.components!.length; i++)
+                      Text(
+                        (i+1).toString() + '- ' + salad.components![i],
+                      ),
+                  ],
+               ),
+              SizedBox(height: 10,),
+            ],
+          ),
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _animationController = AnimationController(
+      duration: Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _offset = Tween<Offset>(
+      begin: Offset(0, -2),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.elasticOut,
+    ));
   }
 
   @override
@@ -285,6 +398,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
     if(_youtubeController != null)
       _youtubeController!.pause();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -454,32 +568,21 @@ class _SingleMealScreenState extends State<SingleMealScreen> {
 
                       widget.meal.sections != null ?
                         getMealSections() : getMealComponents(),
+
+                       if(widget.meal.salads != null) getOptional(),
                     ],
                   ),
                   SizedBox(height: 20,),
                   CustomButton(
-                    text: _isDone ? 'عاش' : 'أنتهيت من الوجبة',
+                    text: _isDone ? 'لم انتهي بعد' : 'تم',
                     onClick: (){
-                      onDone(context);
+                      if(!_isDone) onDone(context);
+                      else onCancel(context);
                     },
                     iconExist: false,
-                    isLoading: _isDoneLoading,
+                    isLoading: _isLoading,
                   ),
-                  if(_isDone)
-                  Column(
-                    children: [
-                      SizedBox(height: 10,),
-                      CustomButton(
-                        text: 'لم انتهي من الوجبة',
-                        onClick: (){
-                          onCancel(context);
-                        },
-                        bgColor: Colors.grey.shade400,
-                        iconExist: false,
-                        isLoading: _isBackLoading,
-                      ),
-                    ],
-                  ),
+                  SizedBox(height: 10,),
                 ],
               ),
             ),
