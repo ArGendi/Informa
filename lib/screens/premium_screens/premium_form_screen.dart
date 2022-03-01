@@ -215,40 +215,41 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
 
   setAllMeals(AppUser user, List<int> infoAfterSnacks, bool isCarbBalanced, int i){
     List<Meal>? breakfast, lunch, dinner;
+    bool includeSalad = (isCarbBalanced || (!isCarbBalanced && i == 1));
     if(user.numberOfMeals == 2){
       if(user.whichTwoMeals == 1) {
         //breakfast
-        breakfast = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 35, user, 1);
+        breakfast = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 35, user, 1, includeSalad);
         //lunch
-        lunch = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 65, user, 2);
+        lunch = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 65, user, 2, includeSalad);
       }
       else if(user.whichTwoMeals == 2){
         //lunch
-        lunch = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 65, user, 2);
+        lunch = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 65, user, 2, includeSalad);
         //dinner
-        dinner = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 35, user, 3);
+        dinner = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 35, user, 3, includeSalad);
       }
     }
     else if(user.numberOfMeals == 3) {
       //breakfast
-      breakfast = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 1);
+      breakfast = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 1, includeSalad);
       //lunch
-      lunch = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 55, user, 2);
+      lunch = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 55, user, 2, includeSalad);
       //dinner
-      dinner = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 25, user, 3);
+      dinner = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 25, user, 3, includeSalad);
     }
     else if(user.numberOfMeals == 4) {
       //breakfast
-      breakfast = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 1);
+      breakfast = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 1, includeSalad);
       //lunch 1
-      lunch = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 30, user, 2);
+      lunch = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 30, user, 2, includeSalad);
       //lunch 2
       if(isCarbBalanced || (!isCarbBalanced && i == 0))
         Provider.of<PremiumNutritionProvider>(context, listen: false).setLunch2(lunch);
       else Provider.of<PremiumNutritionProvider>(context, listen: false)
             .setOtherLunch2(lunch);
       //dinner
-      dinner = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 3);
+      dinner = _mealsService.calculateMeal(infoAfterSnacks[0], infoAfterSnacks[1], infoAfterSnacks[2], 20, user, 3, includeSalad);
     }
 
     if(breakfast != null){
@@ -411,10 +412,11 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                 onBack: goBack,
                 onClick: goToNextPage,
               ),
-              SelectDietType(
-                onBack: goBack,
-                onClick: goToNextPage,
-              ),
+              if(activeUser.goal != 4 && activeUser.goal != 5)
+                SelectDietType(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
               SelectDisease(
                 onBack: goBack,
                 onClick: (){

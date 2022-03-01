@@ -36,7 +36,6 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
   bool _isLoading = false;
   late bool _isDone;
   bool _isVideoPlayed = false;
-  int c = 0;
   FirestoreService _firestoreService = new FirestoreService();
   final ScrollController _controller = ScrollController();
   YoutubePlayerController? _youtubeController;

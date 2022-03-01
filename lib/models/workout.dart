@@ -1,31 +1,19 @@
+import 'package:informa/models/excercise.dart';
 import 'package:informa/models/muscle.dart';
+import 'package:informa/models/tool.dart';
 
 class Workout{
   String? id;
-  String? name;
-  String? description;
-  String? image;
-  String? video;
-  List<Muscle> mainTargetMuscles = [
-    Muscle(
-      name: 'عضلة 1',
-      image: 'assets/images/selected_body_chest.png',
-    ),
-    Muscle(
-      name: 'عضلة 2',
-      image: 'assets/images/selected_body_chest.png',
-    ),
-  ];
-  List<Muscle> otherTargetMuscles = [
-    Muscle(
-      name: 'عضلة 1',
-      image: 'assets/images/selected_body_chest.png',
-    ),
-    Muscle(
-      name: 'عضلة 2',
-      image: 'assets/images/selected_body_chest.png',
-    ),
-  ];
+  int? category;
+  Exercise? exercise;
+  Exercise? alternative;
+  //1= standard, 2= drop, 3= super
+  int? technique;
+  int? numberOfReps;
+  int? numberOfSets;
+  int? restTime; //in sec
+  Workout? otherWorkout;
 
-  Workout({this.name, this.id, this.description, this.image, this.video});
+  Workout({this.id, this.category, this.exercise, this.alternative, this.technique,
+      this.numberOfReps, this.numberOfSets, this.restTime});
 }

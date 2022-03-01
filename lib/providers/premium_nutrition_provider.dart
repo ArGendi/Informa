@@ -20,6 +20,7 @@ class PremiumNutritionProvider extends ChangeNotifier{
   int? _lunch2Done;
   int? _dinnerDone;
   List<int>? _supplementsDone = [];
+  List<String> _additionalMeals = [];
 
   bool get snacks => _snacks;
   List<Meal> get breakfast => _breakfast;
@@ -37,6 +38,7 @@ class PremiumNutritionProvider extends ChangeNotifier{
   int? get dinnerDone => _dinnerDone;
   List<int>? get mainSnacksDone => _mainSnacksDone;
   List<int>? get supplementsDone => _supplementsDone;
+  List<String> get additionalMeals => _additionalMeals;
 
   setSnack(bool value){
     _snacks = value;
@@ -143,6 +145,16 @@ class PremiumNutritionProvider extends ChangeNotifier{
 
   addToSupplementsDone(int value){
     _supplementsDone!.add(value);
+    notifyListeners();
+  }
+
+  addToAdditionalMeals(String value){
+    _additionalMeals.add(value);
+    notifyListeners();
+  }
+
+  setAdditionalMeals(List<String> value){
+    _additionalMeals = value;
     notifyListeners();
   }
 

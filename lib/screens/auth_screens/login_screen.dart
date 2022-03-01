@@ -143,10 +143,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
               List<int>? mainSnacksDone = nutrition[9].cast<int>();
               List<int>? supplementsDone = nutrition[10].cast<int>();
+              List<String>? additionalMeals = nutrition[11].cast<String>();
               Provider.of<PremiumNutritionProvider>(context, listen: false)
                   .setMainSnacksDone(mainSnacksDone);
               Provider.of<PremiumNutritionProvider>(context, listen: false)
                   .setSupplementsDone(supplementsDone);
+              if(additionalMeals != null)
+                Provider.of<PremiumNutritionProvider>(context, listen: false)
+                    .setAdditionalMeals(additionalMeals);
             }
           }
         }

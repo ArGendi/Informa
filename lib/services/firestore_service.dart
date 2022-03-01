@@ -182,6 +182,7 @@ class FirestoreService{
     data['snacksDone'] = snacksDone;
     data['mainSnacksDone'] = [];
     data['supplementsDone'] = [];
+    data['additionalMeals'] = [];
 
     await FirebaseFirestore.instance.collection('nutrition')
         .doc(id)
@@ -262,7 +263,7 @@ class FirestoreService{
       } else print('dinner = null !!!!!');
       return [breakfast, lunch, dinner, data['snacks'], data['breakfastDone'],
         data['lunchDone'], data['lunch2Done'], data['dinnerDone'], data['snacksDone'],
-        data['mainSnacksDone'], data['supplementsDone']];
+        data['mainSnacksDone'], data['supplementsDone'], data['additionalMeals']];
     }
     else {
       print('Document does not exist on the database');
@@ -298,7 +299,7 @@ class FirestoreService{
         }).catchError((e){
           print(e);
         });
-        await updateDoneMeals(id, {
+        await updateNutrition(id, {
           'breakfastDone': null,
           'lunchDone': null,
           'lunch2Done': null,
@@ -306,6 +307,7 @@ class FirestoreService{
           'snacksDone': null,
           'mainSnacksDone': [],
           'supplementsDone': [],
+          'additionalMeals': [],
         });
         print('New day data updated');
         return true;
@@ -324,7 +326,7 @@ class FirestoreService{
       }).catchError((e){
         print(e);
       });
-      await updateDoneMeals(id, {
+      await updateNutrition(id, {
         'breakfastDone': null,
         'lunchDone': null,
         'lunch2Done': null,
@@ -332,6 +334,7 @@ class FirestoreService{
         'snacksDone': null,
         'mainSnacksDone': [],
         'supplementsDone': [],
+        'additionalMeals': [],
       });
       print('New day data updated from null');
       return true;
@@ -339,7 +342,7 @@ class FirestoreService{
     return false;
   }
 
-  Future updateDoneMeals(String id, Map<String, dynamic> data) async{
+  Future updateNutrition(String id, Map<String, dynamic> data) async{
     await FirebaseFirestore.instance.collection('nutrition')
         .doc(id)
         .update(data)

@@ -74,7 +74,7 @@ class _SupplementsScreenState extends State<SupplementsScreen> {
                         String id = FirebaseAuth.instance.currentUser!.uid;
                         Provider.of<PremiumNutritionProvider>(context, listen: false)
                             .addToSupplementsDone(i);
-                        await _firestoreService.updateDoneMeals(id, {
+                        await _firestoreService.updateNutrition(id, {
                           'supplementsDone': Provider.of<PremiumNutritionProvider>(context, listen: false)
                               .supplementsDone,
                         });

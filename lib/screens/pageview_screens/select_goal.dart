@@ -31,7 +31,9 @@ class _SelectGoalState extends State<SelectGoal> {
     );
   }
 
-  onNext(AppUser user){
+  onNext(BuildContext context, AppUser user){
+    if(user.goal == 4 || user.goal == 5)
+      Provider.of<ActiveUserProvider>(context, listen: false).setDietType(1);
     if(user.goal == 6) widget.unknownGoal!(true);
     else widget.unknownGoal!(false);
     widget.onClick();
@@ -157,32 +159,6 @@ class _SelectGoalState extends State<SelectGoal> {
                       Provider.of<ActiveUserProvider>(context, listen: false).setGoal(6);
                     },
                   ),
-                  // SizedBox(height: 20,),
-                  // Text(
-                  //   'أشرح هدفك بالتفصيل',
-                  //   textAlign: TextAlign.center,
-                  //   style: TextStyle(
-                  //     fontSize: 16,
-                  //     fontFamily: boldFont,
-                  //   ),
-                  // ),
-                  // SizedBox(height: 10,),
-                  // Form(
-                  //   key: _formKey,
-                  //   child: CustomTextField(
-                  //     text: 'أشرح هدفك',
-                  //     obscureText: false,
-                  //     textInputType: TextInputType.text,
-                  //     anotherFilledColor: true,
-                  //     setValue: (value){
-                  //       _goalDescription = value;
-                  //     },
-                  //     validation: (value){
-                  //       if(value.isEmpty) return 'أكتب هدفك بالتفصيل';
-                  //       return null;
-                  //     },
-                  //   ),
-                  // ),
                   SizedBox(height: 40,),
                 ],
               ),
@@ -191,7 +167,7 @@ class _SelectGoalState extends State<SelectGoal> {
           CustomButton(
             text: 'التالي',
             onClick: activeUser.goal != 0 ? (){
-              onNext(activeUser);
+              onNext(context, activeUser);
             } : (){},
             bgColor: activeUser.goal != 0 ? primaryColor : Colors.grey.shade400,
           )

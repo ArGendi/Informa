@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
+import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
@@ -16,6 +17,7 @@ class AddExternalMealInfoScreen extends StatefulWidget {
 
 class _AddExternalMealInfoScreenState extends State<AddExternalMealInfoScreen> {
   var _formKey = GlobalKey<FormState>();
+  String _name = '';
   int _protein = 0;
   int _carb = 0;
   int _fats = 0;
@@ -43,6 +45,14 @@ class _AddExternalMealInfoScreenState extends State<AddExternalMealInfoScreen> {
         'dailyCarb': newCarb,
         'dailyFats': newFats,
       });
+      Provider.of<PremiumNutritionProvider>(context, listen: false)
+          .addToAdditionalMeals(_name);
+      var additionalMeals =
+          Provider.of<PremiumNutritionProvider>(context, listen: false).additionalMeals;
+      await _firestoreService.updateNutrition(id, {
+        'additionalMeals': additionalMeals,
+      });
+
       Provider.of<ActiveUserProvider>(context, listen: false)
           .setDailyCalories(newCalories);
       Provider.of<ActiveUserProvider>(context, listen: false)
@@ -84,6 +94,20 @@ class _AddExternalMealInfoScreenState extends State<AddExternalMealInfoScreen> {
                   style: TextStyle(),
                 ),
                 SizedBox(height: 20,),
+                CustomTextField(
+                  text: 'أسم الوجبة',
+                  obscureText: false,
+                  textInputType: TextInputType.text,
+                  setValue: (value){
+                    _name = value;
+                  },
+                  validation: (value){
+                    if(value.isEmpty) return 'أدخل أسم الوجبة';
+                    return null;
+                  },
+                  anotherFilledColor: true,
+                ),
+                SizedBox(height: 10,),
                 CustomTextField(
                   text: 'البروتين',
                   obscureText: false,

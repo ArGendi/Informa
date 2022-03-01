@@ -50,7 +50,7 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
             //SizedBox(height: 10,),
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: widget.muscle.workouts!.isNotEmpty ? Column(
+              child: widget.muscle.exercises!.isNotEmpty ? Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +63,7 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
                         ),
                       ),
                       Text(
-                        '(' + widget.muscle.workouts!.length.toString() + ')' + ' تمرين',
+                        '(' + widget.muscle.exercises!.length.toString() + ')' + ' تمرين',
                         style: TextStyle(
                           //fontSize: 16,
                           color: Colors.grey[600],
@@ -72,11 +72,11 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
                     ],
                   ),
                   SizedBox(height: 10,),
-                  for(var workout in widget.muscle.workouts!)
+                  for(var workout in widget.muscle.exercises!)
                     Column(
                       children: [
                         WorkoutBanner(
-                          workout: workout,
+                          exercise: workout,
                         ),
                         SizedBox(height: 10,),
                       ],

@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/models/excercise.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/target_muscle.dart';
 import 'package:informa/screens/video_player_screen.dart';
+import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
 class SingleWorkoutScreen extends StatefulWidget {
   static String id = 'single workout';
-  final Workout workout;
-  const SingleWorkoutScreen({Key? key, required this.workout}) : super(key: key);
+  final Exercise exercise;
+  const SingleWorkoutScreen({Key? key, required this.exercise}) : super(key: key);
 
   @override
   _SingleWorkoutScreenState createState() => _SingleWorkoutScreenState();
@@ -19,6 +21,33 @@ class SingleWorkoutScreen extends StatefulWidget {
 
 class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
   bool _isFavorite = false;
+
+  Future<void> _showDoneDialog(String image) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Image.asset(
+            image,
+            width: 300,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'اغلاق',
+                style: TextStyle(
+                  color: primaryColor,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +74,14 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                         child: Column(
                           children: [
                             Text(
-                              widget.workout.name!,
+                              widget.exercise.name!,
                               style: TextStyle(
                                 fontSize: 20,
                                 fontFamily: 'CairoBold',
                               ),
                             ),
                             Text(
-                              widget.workout.description!,
+                              widget.exercise.description!,
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey
@@ -93,7 +122,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                   ),
                   SizedBox(height: 10,),
                   Hero(
-                    tag: widget.workout.id!,
+                    tag: widget.exercise.id!,
                     child: Container(
                       width: screenSize.width,
                       height: 200,
@@ -102,7 +131,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                         borderRadius: BorderRadius.circular(borderRadius),
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AssetImage(widget.workout.image!)
+                          image: AssetImage(widget.exercise.image!)
                         )
                       ),
                       child: MaterialButton(
@@ -110,12 +139,13 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                           borderRadius: BorderRadius.circular(borderRadius),
                         ),
                         onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => VideoPlayerScreen(
-                              url: widget.workout.video!,
-                            )),
-                          );
+                          if(widget.exercise.video != null)
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => VideoPlayerScreen(
+                                url: widget.exercise.video!,
+                              )),
+                            );
                         },
                         child: Center(
                           child: Icon(
@@ -135,33 +165,32 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       fontFamily: 'CairoBold',
                     ),
                   ),
-                  SizedBox(height: 20,),
-
-                  // Main target muscles
-                  Column(
-                    children: [
-                      for(int i=0; i<widget.workout.mainTargetMuscles.length; i+=2)
-                        Column(
+                  //SizedBox(height: 10,),
+                  for(int i=0; i<widget.exercise.mainTargetMuscles.length; i++)
+                    InkWell(
+                      onTap: (){
+                        _showDoneDialog(widget.exercise.mainTargetMuscles[i].image);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TargetMuscle(muscle:widget.workout.mainTargetMuscles[i],),
-                                i+1 != widget.workout.mainTargetMuscles.length ?
-                                Row(
-                                  children: [
-                                    SizedBox(width: 40,),
-                                    TargetMuscle(muscle:widget.workout.mainTargetMuscles[i+1],),
-                                  ],
-                                ) : Container(),
-                              ],
+                            Text(
+                              (i+1).toString() + '- ' + widget.exercise.mainTargetMuscles[i].name,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(),
+                            ),
+                            Icon(
+                              Icons.image,
+                              color: primaryColor,
+                              size: 25,
                             ),
                           ],
                         ),
-                    ],
-                  ),
-
-                  SizedBox(height: 15,),
+                      ),
+                    ),
+                  SizedBox(height: 10,),
                   Text(
                     'العضلات المساعدة',
                     textAlign: TextAlign.start,
@@ -169,67 +198,66 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       fontFamily: 'CairoBold',
                     ),
                   ),
-                  SizedBox(height: 20,),
-                  // Other target muscles
-                  Column(
-                    children: [
-                      for(int i=0; i<widget.workout.otherTargetMuscles.length; i+=2)
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                TargetMuscle(muscle:widget.workout.otherTargetMuscles[i],),
-                                i+1 != widget.workout.otherTargetMuscles.length ?
-                                Row(
-                                  children: [
-                                    SizedBox(width: 40,),
-                                    TargetMuscle(muscle:widget.workout.otherTargetMuscles[i+1],),
-                                  ],
-                                ) : Container(),
-                              ],
-                            ),
-                            SizedBox(height: 20,),
-                          ],
-                        ),
-                    ],
-                  ),
-                  //Button
-                  InkWell(
-                    onTap: (){
-                      if(!activeUser!.premium){
-                        Navigator.pushNamed(context, PlansScreen.id);
-                      }
-                    },
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    child: Ink(
-                      width: screenSize.width,
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(borderRadius),
-                      ),
+                  for(int i=0; i<widget.exercise.helpersMuscles.length; i++)
+                    InkWell(
+                      onTap: (){},
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 7),
+                        padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                            SizedBox(width: 10,),
                             Text(
-                              'أضافة التمرين ضمن برنامجي التدريبي',
+                              (i+1).toString() + '- ' + widget.exercise.mainTargetMuscles[i].name,
                               textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'CairoBold',
-                              ),
+                              style: TextStyle(),
+                            ),
+                            Icon(
+                              Icons.image,
+                              color: primaryColor,
+                              size: 25,
                             ),
                           ],
                         ),
                       ),
                     ),
+                  SizedBox(height: 10,),
+                  Text(
+                    'العضلات المثبتة',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontFamily: 'CairoBold',
+                    ),
+                  ),
+                  for(int i=0; i<widget.exercise.settlersMuscles.length; i++)
+                    InkWell(
+                      onTap: (){},
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              (i+1).toString() + '- ' + widget.exercise.mainTargetMuscles[i].name,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(),
+                            ),
+                            Icon(
+                              Icons.image,
+                              color: primaryColor,
+                              size: 25,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  SizedBox(height: 20,),
+                  CustomButton(
+                    text: 'تم',
+                    onClick: (){
+                      if(!activeUser!.premium)
+                        Navigator.pushNamed(context, PlansScreen.id);
+                    },
+                    iconExist: false,
                   ),
                 ],
               ),

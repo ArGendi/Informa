@@ -1,3 +1,4 @@
+import 'package:informa/models/excercise.dart';
 import 'package:informa/models/workout.dart';
 
 class Muscle{
@@ -5,7 +6,7 @@ class Muscle{
   String name;
   String image;
   String? imageInFullBody;
-  List<Workout>? workouts;
+  List<Exercise>? exercises;
 
-  Muscle({this.id, required this.name, required this.image, this.workouts, this.imageInFullBody});
+  Muscle({this.id, required this.name, required this.image, this.exercises, this.imageInFullBody});
 }

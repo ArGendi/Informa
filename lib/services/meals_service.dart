@@ -375,7 +375,7 @@ class MealsService{
     return [protein, carb, fats];
   }
 
-  List<Meal> calculateMeal(int protein, int carb, int fats, int percent, AppUser user, int whichMeal){
+  List<Meal> calculateMeal(int protein, int carb, int fats, int percent, AppUser user, int whichMeal, bool includeSalad){
     List<Meal> allMeals = [];
     double newProtein = protein * (percent / 100);
     double newCarb = carb * (percent / 100);
@@ -398,7 +398,7 @@ class MealsService{
         }
       }
       if(unWantedMealCategory) continue;
-      if(whichMeal == 2){
+      if(whichMeal == 2 && includeSalad){
         proteinAfterSalad = newProtein - MealsList.salads[0].protein!;
         carbAfterSalad = newCarb - MealsList.salads[0].carb!;
         fatsAfterSalad = newFats - MealsList.salads[0].fats!;

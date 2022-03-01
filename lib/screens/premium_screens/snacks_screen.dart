@@ -113,7 +113,7 @@ class _SnacksScreenState extends State<SnacksScreen> {
                               String id = FirebaseAuth.instance.currentUser!.uid;
                               Provider.of<PremiumNutritionProvider>(context, listen: false)
                                   .addToMainSnacksDone(i);
-                              await _firestoreService.updateDoneMeals(id, {
+                              await _firestoreService.updateNutrition(id, {
                                 'mainSnacksDone': Provider.of<PremiumNutritionProvider>(context, listen: false)
                                     .mainSnacksDone,
                               });
@@ -144,7 +144,7 @@ class _SnacksScreenState extends State<SnacksScreen> {
                             mealDoneNumber: Provider.of<PremiumNutritionProvider>(context).snackDone,
                             onClick: () async{
                               String id = FirebaseAuth.instance.currentUser!.uid;
-                              await _firestoreService.updateDoneMeals(id, {
+                              await _firestoreService.updateNutrition(id, {
                                 'snacksDone': int.parse(snack.id!),
                               });
                               Provider.of<PremiumNutritionProvider>(context, listen: false)

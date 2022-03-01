@@ -42,28 +42,28 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
   onClick(BuildContext context, int index) async{
     String id = FirebaseAuth.instance.currentUser!.uid;
     if(widget.whichMeal == 1) {
-      await _firestoreService.updateDoneMeals(id, {
+      await _firestoreService.updateNutrition(id, {
         'breakfastDone': index,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setBreakfastDone(index);
     }
     else if(widget.whichMeal == 2) {
-      await _firestoreService.updateDoneMeals(id, {
+      await _firestoreService.updateNutrition(id, {
         'lunchDone': index,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setLunchDone(index);
     }
     else if(widget.whichMeal == 3) {
-      await _firestoreService.updateDoneMeals(id, {
+      await _firestoreService.updateNutrition(id, {
         'lunch2Done': index,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setLunch2Done(index);
     }
     else if(widget.whichMeal == 4) {
-      await _firestoreService.updateDoneMeals(id, {
+      await _firestoreService.updateNutrition(id, {
         'dinnerDone': index,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
@@ -74,28 +74,28 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
   onBack(BuildContext context) async{
     String id = FirebaseAuth.instance.currentUser!.uid;
     if(widget.whichMeal == 1) {
-      await _firestoreService.updateDoneMeals(id, {
+      await _firestoreService.updateNutrition(id, {
         'breakfastDone': null,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setBreakfastDone(null);
     }
     else if(widget.whichMeal == 2) {
-      await _firestoreService.updateDoneMeals(id, {
+      await _firestoreService.updateNutrition(id, {
         'lunchDone': null,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setLunchDone(null);
     }
     else if(widget.whichMeal == 3) {
-      await _firestoreService.updateDoneMeals(id, {
+      await _firestoreService.updateNutrition(id, {
         'lunch2Done': null,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setLunch2Done(null);
     }
     else if(widget.whichMeal == 4) {
-      await _firestoreService.updateDoneMeals(id, {
+      await _firestoreService.updateNutrition(id, {
         'dinnerDone': null,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)

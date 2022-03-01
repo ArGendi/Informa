@@ -289,6 +289,18 @@ class _NutritionScreenState extends State<NutritionScreen> {
                           ),
                         ],
                       ),
+                    for(var mealName in premiumNutritionProvider.additionalMeals)
+                      Column(
+                        children: [
+                          SizedBox(height: 10,),
+                          MainMealCard(
+                            text: mealName,
+                            description: 'وجبة مضافة عن طريقك',
+                            isDone: true,
+                            onClick: (){},
+                          ),
+                        ],
+                      ),
                     SizedBox(height: 10,),
                     WaterInfoBanner(),
                     SizedBox(height: 10,),

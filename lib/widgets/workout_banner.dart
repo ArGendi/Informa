@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
+import 'package:informa/models/excercise.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/screens/single_workout_screen.dart';
 
 class WorkoutBanner extends StatefulWidget {
-  final Workout workout;
+  final Exercise exercise;
 
-  const WorkoutBanner({Key? key, required this.workout}) : super(key: key);
+  const WorkoutBanner({Key? key, required this.exercise}) : super(key: key);
 
   @override
   _WorkoutBannerState createState() => _WorkoutBannerState();
@@ -21,7 +22,7 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => SingleWorkoutScreen(
-            workout: widget.workout,
+            exercise: widget.exercise,
           )),
         );
       },
@@ -44,13 +45,13 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.workout.name!,
+                    widget.exercise.name!,
                     style: TextStyle(
                       fontSize: 17,
                     ),
                   ),
                   Text(
-                    widget.workout.description!,
+                    widget.exercise.description!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -67,9 +68,9 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                 bottomLeft: Radius.circular(10),
               ),
               child: Hero(
-                tag: widget.workout.id!,
+                tag: widget.exercise.id!,
                 child: Image.asset(
-                  widget.workout.image!,
+                  widget.exercise.image!,
                   width: 130,
                   //height: 120,
                   fit: BoxFit.cover,
