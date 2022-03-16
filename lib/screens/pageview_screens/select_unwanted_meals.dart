@@ -125,12 +125,12 @@ class _SelectUnWantedMealsState extends State<SelectUnWantedMeals> {
                           children: [
                             RemovableCircleMeal(
                               id: i,
-                              text: activeUser!.allMeals[i].name,
+                              text:  MealsList.allMealsList[i].name!,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(
                               id: i+1,
-                              text: activeUser.allMeals[i+1].name,
+                              text: activeUser!.allMeals[i+1].name,
                             ),
                             SizedBox(width: 7,),
                             RemovableCircleMeal(

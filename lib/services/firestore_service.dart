@@ -359,10 +359,10 @@ class FirestoreService{
     for(var doc in docs){
       MealCategory mealCategory = new MealCategory(id: doc.id);
       mealCategory.fromJson(doc.data());
-      int type = doc.data()['type'];
-      if(type == 1) MealCategoryList.breakfast.add(mealCategory);
-      else if(type == 2) MealCategoryList.lunch.add(mealCategory);
-      else if(type == 3) MealCategoryList.dinner.add(mealCategory);
+      List<int> type = doc.data()['type'].cast<int>();
+      if(type.contains(1)) MealCategoryList.breakfast.add(mealCategory);
+      if(type.contains(2)) MealCategoryList.lunch.add(mealCategory);
+      if(type.contains(3)) MealCategoryList.dinner.add(mealCategory);
     }
   }
 }

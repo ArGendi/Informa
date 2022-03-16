@@ -69,11 +69,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if(initScreen != null) {
       var currentUser = FirebaseAuth.instance.currentUser;
       if(currentUser != null){
-        AppUser user = new AppUser();
-        await user.getFromSharedPreference();
-        if(user.premium){
-          AppUser? premiumUser = await _firestoreService.getUserById(currentUser.uid);
-          if(premiumUser != null){
+        // AppUser user = new AppUser();
+        // await user.getFromSharedPreference();
+        AppUser? user = await _firestoreService.getUserById(currentUser.uid);
+        if(user != null){
+          if(user.premium){
+            AppUser premiumUser = user;
             Provider.of<ActiveUserProvider>(context, listen: false)
                 .setUser(premiumUser);
 
@@ -88,7 +89,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
             }
 
             if(premiumUser.premium && premiumUser.fillPremiumForm){
-              bool update = await _firestoreService.checkAndUpdateNewDayData(currentUser.uid, premiumUser);
+              bool update = await _firestoreService
+                  .checkAndUpdateNewDayData(currentUser.uid, premiumUser);
               if(update) resetMacros(premiumUser);
               if(premiumUser.dietType == 2){
                 DateTime now = DateTime.now();
@@ -152,20 +154,25 @@ class _LoadingScreenState extends State<LoadingScreen> {
               }
             }
           }
-          else Navigator.pushReplacementNamed(context, RegisterScreens.id);
+          else {
+            AppUser nonPremiumUser = new AppUser();
+            await nonPremiumUser.getFromSharedPreference();
+            Provider.of<ActiveUserProvider>(context, listen: false)
+                .setUser(nonPremiumUser);
+          }
+          //get challenges
+          if(mounted) {
+            List<Challenge> challenges = await _firestoreService
+                .getAllChallenges();
+            Provider.of<ChallengesProvider>(context, listen: false)
+                .setChallenges(challenges);
+            //get water settings
+            Water water = new Water();
+            await water.getFromSharedPreference();
+            Provider.of<WaterProvider>(context, listen: false).setWater(water);
+          }
         }
-        else Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-        //get challenges
-        if(mounted) {
-          List<Challenge> challenges = await _firestoreService
-              .getAllChallenges();
-          Provider.of<ChallengesProvider>(context, listen: false)
-              .setChallenges(challenges);
-          //get water settings
-          Water water = new Water();
-          await water.getFromSharedPreference();
-          Provider.of<WaterProvider>(context, listen: false).setWater(water);
-        }
+        else Navigator.pushReplacementNamed(context, RegisterScreens.id);
       }
       if(initScreen == MainScreen.id && currentUser == null)
         Navigator.pushReplacementNamed(context, RegisterScreens.id);

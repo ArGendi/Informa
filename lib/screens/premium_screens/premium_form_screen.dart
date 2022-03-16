@@ -408,10 +408,10 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                 onBack: goBack,
                 onClick: goToNextPage,
               ),
-              SelectUnWantedMeals(
-                onBack: goBack,
-                onClick: goToNextPage,
-              ),
+              // SelectUnWantedMeals(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
               if(activeUser.goal != 4 && activeUser.goal != 5)
                 SelectDietType(
                   onBack: goBack,

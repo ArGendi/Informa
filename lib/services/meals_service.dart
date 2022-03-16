@@ -103,7 +103,7 @@ class MealsService{
       double p = 0, c = 0, f = 0;
       Meal meal = mealCategory.meals![pointer];
       print(meal.name);
-      bool isBalanced = isMealBalanced(meal, protein, carb, fats);
+      bool isBalanced = isMealBalanced(meal, protein, carb, fats, 1, 1, 1);
       if(((!isBalanced || meal.serving == 1) && (counter%4 != 0)) || outMeals.contains(meal)){
         print(meal.name! + ' not balanced');
         if(pointer+1 >= mealCategory.meals!.length) counter++;
@@ -166,6 +166,7 @@ class MealsService{
     double myProtein = 0, myCarb = 0, myFats = 0;
     List<Meal> meals = [];
     List<Meal> outMeals = [];
+    double calories = (protein * 4) + (carb * 4) + (fats * 9);
 
     if(mealCategory.sections == null) return null;
     for(int i= 0; i<mealCategory.sections!.length; i++){
@@ -173,9 +174,33 @@ class MealsService{
         Meal newMeal = tempMeal.copyObject();
         newMeal.amount = 0;
         newMeal.sectionIndex = i;
+        double mealCalories = (newMeal.protein! * 4) + (newMeal.carb! * 4) + (newMeal.fats! * 9);
+        if(mealCalories / calories < 0.4) newMeal.workEvery = 1;
+        else if(mealCalories / calories < 0.5) newMeal.workEvery = 2;
+        else if(mealCalories / calories < 0.8) newMeal.workEvery = 3;
+        else if(mealCalories / calories < 1) newMeal.workEvery = 4;
+        else newMeal.workEvery = 5;
         meals.add(newMeal);
       }
     }
+
+    for(var meal in meals){
+      print('----> ' + meal.name! + ': ' + meal.workEvery.toString());
+    }
+
+    List<double> minMacros = getMinMealMacros(meals, protein, carb, fats);
+    print('Minimum Macros: ' + minMacros.toString());
+
+    // double avgProtein = 0, avgCarb = 0, avgFats = 0;
+    // for(int i=0; i<meals.length; i++){
+    //   avgProtein += meals[i].protein! / protein;
+    //   avgCarb += meals[i].carb! / carb;
+    //   avgFats += meals[i].fats! / fats;
+    // }
+    // avgProtein = avgProtein / meals.length - 0.2;
+    // avgCarb = avgCarb / meals.length - 0.2;
+    // avgFats = avgFats / meals.length - 0.2;
+
     print('Starting the loop');
     while(outMeals.length < meals.length){
       if(counter > 400) break;
@@ -185,8 +210,13 @@ class MealsService{
       double p = 0, c = 0, f = 0;
       //Meal meal = meals[pointer];
       print(meals[pointer].name);
-      bool isBalanced = isMealBalanced(meals[pointer], protein, carb, fats);
-      if(((!isBalanced || meals[pointer].serving == 1) && (counter%4 != 0)) || outMeals.contains(meals[pointer])){
+      bool isBalanced = isMealBalanced(
+        meals[pointer], protein, carb, fats,
+          minMacros[0], minMacros[1], minMacros[2]
+      );
+      //bool isBalanced = isMealBalanced2(meals[pointer], protein, carb, fats);
+      if(((meals[pointer].serving == 1) && (counter%3 != 0))
+          || outMeals.contains(meals[pointer]) || (meals[pointer].workEvery > 1 && counter%meals[pointer].workEvery != 0)){
         print(meals[pointer].name! + ' not balanced');
         if(pointer+1 >= meals.length) counter++;
         pointer = (pointer+1) % meals.length;
@@ -240,16 +270,46 @@ class MealsService{
     // result.forEach((key, value) {
     //   print(key.name! + ": " + value.toString());
     // });
-    if((myProtein < protein - 3) || (myCarb < carb - 3) || (myFats < fats - 3))
-      return null;
+
+    // if((myProtein < protein - 3) || (myCarb < carb - 3) || (myFats < fats - 3))
+    //   return null;
     return meals;
   }
 
-  bool isMealBalanced(Meal meal, int protein, int carb, int fats){
-    if((meal.protein! / protein) > 1) return false;
-    else if((meal.carb! / carb) > 1) return false;
-    else if((meal.fats! / fats) > 1) return false;
+  bool isMealBalanced(
+      Meal meal, int protein, int carb, int fats,
+      double avgProtein, double avgCarb, double avgFats
+      ){
+    if((meal.protein! / protein) > avgProtein) return false;
+    else if((meal.carb! / carb) > avgCarb) return false;
+    else if((meal.fats! / fats) > avgFats) return false;
     return true;
+  }
+
+  bool isMealBalanced2(Meal meal, int protein, int carb, int fats){
+    double mealCalories = (meal.protein! * 4) + (meal.carb! * 4) + (meal.fats! * 9);
+    double calories = (protein * 4) + (carb * 4) + (fats * 9);
+    if((mealCalories / calories) > 0.8) return false;
+    return true;
+  }
+
+  List<double> getMinMealMacros(List<Meal> meals, int protein, int carb, int fats){
+    double p1 = 0, c1 = 0, f1 = 0;
+    double minP = 0, minC = 0, minF = 0;
+    minP = meals[0].protein! / protein;
+    minC = meals[0].carb! / carb;
+    minF = meals[0].fats! / fats;
+    for(int i=1; i<meals.length; i++){
+      p1 = meals[i].protein! / protein;
+      c1 = meals[i].carb! / carb;
+      f1 = meals[i].fats! / fats;
+      if((p1 + c1 + f1) < (minP + minC + minF)){
+        minP = p1;
+        minC = c1;
+        minF = f1;
+      }
+    }
+    return [minP, minC, minF];
   }
 
   List<dynamic> calculateSnacks(AppUser user, int proteinNeeded, int carbNeeded){

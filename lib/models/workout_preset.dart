@@ -11,7 +11,7 @@ class WorkoutPreset{
   List<int>? techniques;
   //1= gym, 2= home, 3= both
   int? place;
-  //0 = none, 1 = male, 2 = female
+  //0 = none, 1 = male, 2 = female, 3= both
   int? gender;
   int? specialCase;
   List<WorkoutDay>? program;

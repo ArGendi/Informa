@@ -73,7 +73,14 @@ class _LoginScreenState extends State<LoginScreen> {
           print('error getting data from fireStore');
           setState(() {_isLoading = false;});
         });
-        await user!.saveInSharedPreference();
+        if(user == null){
+          setState(() {_isLoading = false;});
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('حدث خطأ'))
+          );
+          return;
+        }
+        await user.saveInSharedPreference();
         await HelpFunction.saveInitScreen(MainScreen.id);
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
 

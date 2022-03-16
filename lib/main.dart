@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:informa/app_localization.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/models/excercise.dart';
 import 'package:informa/models/workout.dart';
+import 'package:informa/models/workout_day.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
@@ -23,6 +25,8 @@ import 'package:informa/screens/premium_screens/premium_program_counter_screen.d
 import 'package:informa/screens/premium_screens/ready_fill_premium_form_screen.dart';
 import 'package:informa/screens/premium_screens/snacks_screen.dart';
 import 'package:informa/screens/premium_screens/supplements_screen.dart';
+import 'package:informa/screens/premium_screens/workout_screens/main_workout_screen.dart';
+import 'package:informa/screens/premium_screens/workout_screens/workout_day_screen.dart';
 import 'package:informa/screens/sales_payment_screen.dart';
 import 'package:informa/screens/single_meal_screen.dart';
 import 'package:informa/screens/dummy.dart';
@@ -111,6 +115,24 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: initScreen == null ? WelcomeScreen() : SplashScreen(),
+      //WorkOutDayScreen(
+      //         day: 2,
+      //         week: 1,
+      //         workoutDay: WorkoutDay(
+      //           name: 'دفع مدافع',
+      //           warmUpSets: [
+      //             Workout(
+      //               exercise: Exercise(name: 'احماء 1'),
+      //             ),
+      //             Workout(
+      //               exercise: Exercise(name: 'احماء 2'),
+      //             ),
+      //             Workout(
+      //               exercise: Exercise(name: 'احماء 3'),
+      //             ),
+      //           ],
+      //         ),
+      //       ),//
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),

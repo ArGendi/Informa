@@ -42,6 +42,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
   List<String> _saladsIds = [];
   late AnimationController _animationController;
   late Animation<Offset> _offset;
+  double _protein = 0, _carb = 0, _fats = 0;
 
   _SingleMealScreenState(int? id, int? mealDoneNumber, bool? done){
     _isDone = false;
@@ -365,6 +366,26 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
     );
   }
 
+  calculateAccurateMarcos(){
+    //double p = 0, c = 0, f = 0;
+    if(widget.meal.sections != null){
+      for(var section in widget.meal.sections!){
+        for(var meal in section.meals!){
+          if(meal.serving == 1){
+            _protein += meal.protein! * meal.amount!;
+            _carb += meal.carb! * meal.amount!;
+            _fats += meal.fats! * meal.amount!;
+          }
+          else{
+            _protein += meal.protein! * (meal.amount! / 100);
+            _carb += meal.carb! * (meal.amount! / 100);
+            _fats += meal.fats! * (meal.amount! / 100);
+          }
+        }
+      }
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -380,6 +401,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
       parent: _animationController,
       curve: Curves.elasticOut,
     ));
+    calculateAccurateMarcos();
   }
 
   @override
@@ -563,6 +585,9 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
                           ),
                         ],
                       ),
+                      SizedBox(height: 20,),
+
+                      Text('p:' + _protein.toStringAsFixed(2) + ' - c:' + _carb.toStringAsFixed(2) + ' - f:' + _fats.toStringAsFixed(2)),
                       SizedBox(height: 20,),
 
                       widget.meal.sections != null ?

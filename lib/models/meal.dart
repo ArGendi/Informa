@@ -24,12 +24,13 @@ class Meal {
   String? unit;
   int? amount = 0;
   int? sectionIndex;
+  int workEvery = 0;
 
   Meal({this.id, this.name, this.category, this.image, this.description,
         this.fats, this.protein, this.calories, this.components, this.carb,
         this.video, this.isSelected = true, this.engName, this.serving = 0,
         this.unit, this.otherId, this.sections, this.amount, this.sectionIndex,
-        this.salads});
+        this.salads, this.workEvery = 0});
 
   List<Map<String, dynamic>>? convertSectionsToMap(){
     if(sections == null) return null;
