@@ -5,5 +5,4 @@ class Cardio extends Workout{
   int? technique;
   int? duration; //in minutes
   int? activeTime; //in sec
-
 }

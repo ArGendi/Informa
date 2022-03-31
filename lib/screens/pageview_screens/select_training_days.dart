@@ -273,60 +273,60 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
                     ],
                   ),
                   SizedBox(height: 25,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SelectDayCard(
-                        text: 'السبت',
-                        id: 1,
-                      ),
-                      SizedBox(width: 10,),
-                      SelectDayCard(
-                        text: 'الأحد',
-                        id: 2,
-                      ),
-                      SizedBox(width: 10,),
-                      SelectDayCard(
-                        text: 'الأثنين',
-                        id: 3,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SelectDayCard(
-                        text: 'الثلاثاء',
-                        id: 4,
-                      ),
-                      SizedBox(width: 10,),
-                      SelectDayCard(
-                        text: 'الأربع',
-                        id: 5,
-                      ),
-                      SizedBox(width: 10,),
-                      SelectDayCard(
-                        text: 'الخميس',
-                        id: 6,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  SelectDayCard(
-                    text: 'الجمعة',
-                    id: 7,
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     SelectDayCard(
+                  //       text: 'السبت',
+                  //       id: 1,
+                  //     ),
+                  //     SizedBox(width: 10,),
+                  //     SelectDayCard(
+                  //       text: 'الأحد',
+                  //       id: 2,
+                  //     ),
+                  //     SizedBox(width: 10,),
+                  //     SelectDayCard(
+                  //       text: 'الأثنين',
+                  //       id: 3,
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 10,),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     SelectDayCard(
+                  //       text: 'الثلاثاء',
+                  //       id: 4,
+                  //     ),
+                  //     SizedBox(width: 10,),
+                  //     SelectDayCard(
+                  //       text: 'الأربع',
+                  //       id: 5,
+                  //     ),
+                  //     SizedBox(width: 10,),
+                  //     SelectDayCard(
+                  //       text: 'الخميس',
+                  //       id: 6,
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 10,),
+                  // SelectDayCard(
+                  //   text: 'الجمعة',
+                  //   id: 7,
+                  // ),
                 ],
               ),
             ),
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.trainingDays.length == activeUser.iTrainingDays && activeUser.iTrainingDays != -1 ? (){
+            onClick: activeUser.iTrainingDays != -1 ? (){
               goNext(context, activeUser.iTrainingDays);
             } : (){},
-            bgColor: activeUser.trainingDays.length == activeUser.iTrainingDays && activeUser.iTrainingDays != -1? primaryColor : Colors.grey.shade400,
+            bgColor: activeUser.iTrainingDays != -1? primaryColor : Colors.grey.shade400,
           ),
         ],
       ),

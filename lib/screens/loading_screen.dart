@@ -73,10 +73,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
         // await user.getFromSharedPreference();
         AppUser? user = await _firestoreService.getUserById(currentUser.uid);
         if(user != null){
+          Provider.of<ActiveUserProvider>(context, listen: false)
+              .setUser(user);
           if(user.premium){
             AppUser premiumUser = user;
-            Provider.of<ActiveUserProvider>(context, listen: false)
-                .setUser(premiumUser);
 
             double? myWater = await HelpFunction.getMyWater();
             double? dailyWater = await HelpFunction.getDailyWater();
@@ -154,12 +154,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
               }
             }
           }
-          else {
-            AppUser nonPremiumUser = new AppUser();
-            await nonPremiumUser.getFromSharedPreference();
-            Provider.of<ActiveUserProvider>(context, listen: false)
-                .setUser(nonPremiumUser);
-          }
+          // else {
+          //   AppUser nonPremiumUser = new AppUser();
+          //   await nonPremiumUser.getFromSharedPreference();
+          //   Provider.of<ActiveUserProvider>(context, listen: false)
+          //       .setUser(nonPremiumUser);
+          // }
           //get challenges
           if(mounted) {
             List<Challenge> challenges = await _firestoreService

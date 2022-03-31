@@ -8,12 +8,61 @@ class Workout{
   Exercise? exercise;
   Exercise? alternative;
   //1= standard, 2= drop, 3= super
-  int? technique;
-  int? numberOfReps;
+  List<int>? techniques;
+  int? fromReps;
+  int? toReps;
   int? numberOfSets;
   int? restTime; //in sec
-  Workout? otherWorkout;
+  int setsDone;
+  Workout? superWorkout;
 
-  Workout({this.id, this.category, this.exercise, this.alternative, this.technique,
-      this.numberOfReps, this.numberOfSets, this.restTime});
+  Workout({this.id, this.category, this.exercise, this.alternative, this.techniques,
+    this.fromReps, this.toReps,this.numberOfSets, this.restTime, this.setsDone = 0,});
+
+  Map<String, dynamic> toJson(){
+    return {
+      'category': category,
+      'exercise': exercise?.id,
+      'alternative': alternative?.id,
+      'techniques': techniques,
+      'fromReps': fromReps,
+      'toReps': toReps,
+      'numberOfSets': numberOfSets,
+      'restTime': restTime,
+      'superWorkout': superWorkout != null ? {
+        'category': superWorkout?.category,
+        'exercise': superWorkout?.exercise?.id,
+        'alternative': superWorkout?.alternative?.id,
+        'techniques': superWorkout?.techniques,
+        'fromReps': superWorkout?.fromReps,
+        'toReps': superWorkout?.toReps,
+        'numberOfSets': superWorkout?.numberOfSets,
+        'restTime': superWorkout?.restTime,
+      } : null,
+    };
+  }
+
+  fromJson(Map<String, dynamic> json, List<Exercise> allExercises){
+    category = json['category'];
+    exercise = getExerciseById(allExercises, json['exercise']);
+    alternative = getExerciseById(allExercises, json['alternative']);
+    techniques = json['techniques'].cast<int>();
+    fromReps = json['fromReps'];
+    toReps = json['toReps'];
+    numberOfSets = json['numberOfSets'];
+    restTime = json['restTime'];
+    if(json['superWorkout'] != null){
+      Workout newWorkout = new Workout();
+      newWorkout.fromJson(json['superWorkout'], allExercises);
+      superWorkout = newWorkout;
+    }
+    else superWorkout = null;
+  }
+
+  Exercise? getExerciseById(List<Exercise> allExercises, String id){
+    for(var exercise in allExercises){
+      if(exercise.id == id) return exercise;
+    }
+    return null;
+  }
 }

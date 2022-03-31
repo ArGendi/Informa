@@ -21,7 +21,7 @@ class _PremiumProgramCounterScreenState extends State<PremiumProgramCounterScree
     // TODO: implement initState
     super.initState();
     DateTime now = DateTime.now();
-    _dateTime = DateTime(now.year, now.month, now.day, now.hour + 72);
+    _dateTime = DateTime(now.year, now.month, now.day, now.hour + 120);
   }
 
   @override
@@ -69,7 +69,7 @@ class _PremiumProgramCounterScreenState extends State<PremiumProgramCounterScree
                               endWidget: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 5),
                                 child: Text(
-                                  'أنتهى التحدي',
+                                  'تم أعداد البرنامج',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 12

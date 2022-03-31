@@ -338,4 +338,48 @@ class ActiveUserProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  setWorkoutGoal(int value){
+    _user!.workoutGoal = value;
+    notifyListeners();
+  }
+  setWorkoutGoalDescription(String? value){
+    _user!.workoutGoalDescription = value;
+    notifyListeners();
+  }
+
+  setTrainingLevel(int value){
+    _user!.trainingLevel = value;
+    notifyListeners();
+  }
+
+  setInjuryExist(int value){
+    _user!.injuryExist = value;
+    notifyListeners();
+  }
+
+  setInjuryType(int value){
+    _user!.injuryType = value;
+    notifyListeners();
+  }
+
+  addToWeakestMuscles(int value){
+    _user!.weakestMuscles.add(value);
+    notifyListeners();
+  }
+
+  removeFromWeakestMuscles(int value){
+    _user!.weakestMuscles.remove(value);
+    notifyListeners();
+  }
+
+  addToCardioTools(int value){
+    _user!.cardioTools.add(value);
+    notifyListeners();
+  }
+
+  removeFromCardioTools(int value){
+    _user!.cardioTools.remove(value);
+    notifyListeners();
+  }
+
 }

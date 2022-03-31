@@ -79,12 +79,22 @@ class AppUser {
   DateTime? carbCycleStartDate;
   int? dailyCarbCycle;
   int? carbCycleIndex;
+  bool adminConfirm;
+  //------------------------
+  int workoutGoal;
+  String? workoutGoalDescription;
+  int trainingLevel;
+  int injuryExist;
+  int injuryType;
+  List<int> weakestMuscles = [];
+  List<int> cardioTools = [];
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
       this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
       this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0, this.whichTwoMeals = 0,
-      this.oldGoal = 0, this.dietType = 0});
+      this.oldGoal = 0, this.dietType = 0, this.adminConfirm = false, this.workoutGoal = 0,
+      this.workoutGoalDescription, this.trainingLevel = 0, this.injuryExist = 0, this.injuryType = 0,});
 
   fromJson(Map<String, dynamic> json){
     email = json['email'];

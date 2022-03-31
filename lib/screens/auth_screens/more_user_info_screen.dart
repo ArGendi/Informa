@@ -13,7 +13,7 @@ import 'package:informa/screens/pageview_screens/register.dart';
 import 'package:informa/screens/pageview_screens/select_age_tall_weight.dart';
 import 'package:informa/screens/pageview_screens/select_fat_percent.dart';
 import 'package:informa/screens/pageview_screens/select_level.dart';
-import 'package:informa/widgets/select_tools.dart';
+import 'package:informa/screens/pageview_screens/select_tools.dart';
 import 'package:informa/screens/pageview_screens/select_training_days.dart';
 import 'package:informa/widgets/select_training_period.dart';
 import 'package:provider/provider.dart';

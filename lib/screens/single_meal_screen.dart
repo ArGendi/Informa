@@ -105,7 +105,9 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
       int newCalories = activeUser.dailyCalories! - widget.meal.calories!.toInt();
       int newProtein = activeUser.dailyProtein! - widget.meal.protein!.toInt();
       int newCarb = activeUser.dailyCarb! - widget.meal.carb!.toInt();
-      int newCarbCycle = activeUser.dailyCarbCycle! - widget.meal.carb!.toInt();
+      int newCarbCycle = 0;
+      if(activeUser.dailyCarbCycle != null)
+       newCarbCycle = activeUser.dailyCarbCycle! - widget.meal.carb!.toInt();
       int newFats = activeUser.dailyFats! - widget.meal.fats!.toInt();
       if(newCalories <= 17 && newCalories >= 0) newCalories = 0;
       if(newProtein == 1) newProtein = 0;

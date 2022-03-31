@@ -8,7 +8,10 @@ class SelectLevelCard extends StatefulWidget {
   final String text;
   final int level;
   final int id;
-  const SelectLevelCard({Key? key, required this.text, required this.level, required this.id}) : super(key: key);
+  final int selected;
+  final VoidCallback onClick;
+  final int maxLevel;
+  const SelectLevelCard({Key? key, required this.text, required this.level, required this.id, required this.selected, required this.onClick, this.maxLevel = 5}) : super(key: key);
 
   @override
   _SelectLevelCardState createState() => _SelectLevelCardState();
@@ -38,16 +41,14 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
   Widget build(BuildContext context) {
     var activeUserProvider = Provider.of<ActiveUserProvider>(context);
     return InkWell(
-      onTap: (){
-        Provider.of<ActiveUserProvider>(context, listen: false).setFitnessLevel(widget.id);
-      },
+      onTap: widget.onClick,
       borderRadius: BorderRadius.circular(borderRadius),
       child: AnimatedContainer(
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(borderRadius),
           border: Border.all(
-              color: activeUserProvider.user!.fitnessLevel == widget.id ? primaryColor : Colors.white,
+              color: widget.selected == widget.id ? primaryColor : Colors.white,
               width: 2
           ),
         ),

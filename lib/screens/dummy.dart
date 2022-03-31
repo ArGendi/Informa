@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:informa/models/excercise.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/meal_category_list.dart';
 import 'package:informa/models/meal_section.dart';
 import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/user.dart';
+import 'package:informa/models/workout.dart';
 import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/screens/auth_screens/register_screens.dart';
 import 'package:informa/screens/plans_screen.dart';
@@ -17,6 +19,7 @@ import 'package:informa/services/informa_service.dart';
 import 'package:informa/services/meals_service.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/services/web_services.dart';
+import 'package:informa/widgets/workout_card.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
@@ -203,41 +206,53 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () async{
-                DateTime now = DateTime.now();
-                DateTime after = DateTime(now.year, now.month, now.day + 9);
-                print('Days: ' + ((after.difference(now).inHours/24).floor() % 7).toString());
-                // MealsService mealService = new MealsService();
-                // await mealService.setAllMeals();
-                // var list = mealService.calculateMeal(165, 95, 45, 20, _user, 1);
-                // //print(MealCategoryList.lunch[1].meals![1].fats);
-                // print('--------------------');
-                // for(var meal in list){
-                //   print(meal.name!);
-                //   print('Sections');
-                //   for(var section in meal.sections!){
-                //     print('name: ' + section.name!);
-                //     for(var tempMeal in section.meals!){
-                //       print('meal name: ' + tempMeal.name! + ', amount: ' + tempMeal.amount!.toString());
-                //     }
-                //   }
-                //   print('--------------------');
-                // }
-                // var list = mealService.otherCalculateFullMealNumbers2(MealCategoryList.breakfast[0], 33, 19, 9,);
-                // print('--------------------');
-                // for(var meal in list!){
-                //   print(meal.name! + ': ' + meal.amount!.toString());
-                // }
-              },
-              icon: Icon(Icons.add),
-              color: Colors.red,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Center(
+            child: WorkoutCard(
+              workout: Workout(
+                exercise: Exercise(name: 'بنش بريش'),
+                numberOfSets: 3,
+                restTime: 20,
+              ),
             ),
-          ],
+            // child: Column(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     IconButton(
+            //       onPressed: () async{
+            //         DateTime now = DateTime.now();
+            //         DateTime after = DateTime(now.year, now.month, now.day + 9);
+            //         print('Days: ' + ((after.difference(now).inHours/24).floor() % 7).toString());
+            //         // MealsService mealService = new MealsService();
+            //         // await mealService.setAllMeals();
+            //         // var list = mealService.calculateMeal(165, 95, 45, 20, _user, 1);
+            //         // //print(MealCategoryList.lunch[1].meals![1].fats);
+            //         // print('--------------------');
+            //         // for(var meal in list){
+            //         //   print(meal.name!);
+            //         //   print('Sections');
+            //         //   for(var section in meal.sections!){
+            //         //     print('name: ' + section.name!);
+            //         //     for(var tempMeal in section.meals!){
+            //         //       print('meal name: ' + tempMeal.name! + ', amount: ' + tempMeal.amount!.toString());
+            //         //     }
+            //         //   }
+            //         //   print('--------------------');
+            //         // }
+            //         // var list = mealService.otherCalculateFullMealNumbers2(MealCategoryList.breakfast[0], 33, 19, 9,);
+            //         // print('--------------------');
+            //         // for(var meal in list!){
+            //         //   print(meal.name! + ': ' + meal.amount!.toString());
+            //         // }
+            //       },
+            //       icon: Icon(Icons.add),
+            //       color: Colors.red,
+            //     ),
+            //   ],
+            // ),
+          ),
         ),
       ),
     );

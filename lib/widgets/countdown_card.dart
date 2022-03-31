@@ -8,7 +8,10 @@ import '../app_localization.dart';
 class CountdownCard extends StatefulWidget {
   final DateTime deadline;
   final VoidCallback? onEnd;
-  const CountdownCard({Key? key, required this.deadline, this.onEnd}) : super(key: key);
+  final Color color;
+  final bool withoutText;
+  final String? endText;
+  const CountdownCard({Key? key, required this.deadline, this.onEnd, this.color = Colors.orange, this.withoutText = false, this.endText}) : super(key: key);
 
   @override
   _CountdownCardState createState() => _CountdownCardState();
@@ -20,12 +23,13 @@ class _CountdownCardState extends State<CountdownCard> {
     var localization = AppLocalization.of(context);
     return Card(
       elevation: 0,
-      color: Colors.orange,
+      color: widget.color,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: widget.withoutText ? 6: 0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if(!widget.withoutText)
             Text(
               localization!.translate('متبقي علي نهاية التحدي').toString(),
               style: TextStyle(
@@ -33,6 +37,7 @@ class _CountdownCardState extends State<CountdownCard> {
                 fontSize: 10,
               ),
             ),
+            if(!widget.withoutText)
             SizedBox(width: 5,),
             Directionality(
               textDirection: TextDirection.ltr,
@@ -40,12 +45,12 @@ class _CountdownCardState extends State<CountdownCard> {
                 endTime: widget.deadline.millisecondsSinceEpoch,
                 textStyle: TextStyle(
                     color: Colors.white,
-                    fontSize: 12
+                    fontSize: 12,
                 ),
                 endWidget: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: Text(
-                    'أنتهى التحدي',
+                    widget.endText == null? 'أنتهى التحدي' : widget.endText.toString(),
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 12

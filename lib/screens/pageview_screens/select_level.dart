@@ -81,6 +81,11 @@ class _SelectLevelState extends State<SelectLevel> {
                           text: 'حركة قليلة\n جدا جدا',
                           id: 1,
                           level: 1,
+                          selected: activeUser!.fitnessLevel,
+                          onClick: (){
+                            Provider.of<ActiveUserProvider>(context, listen: false)
+                                .setFitnessLevel(1);
+                          },
                         ),
                       ),
                       SizedBox(width: 10,),
@@ -89,6 +94,11 @@ class _SelectLevelState extends State<SelectLevel> {
                           text: 'حركة و نشاط\n خفبف نوعا ما',
                           id: 2,
                           level: 2,
+                          selected: activeUser.fitnessLevel,
+                          onClick: (){
+                            Provider.of<ActiveUserProvider>(context, listen: false)
+                                .setFitnessLevel(2);
+                          },
                         ),
                       ),
                     ],
@@ -101,6 +111,11 @@ class _SelectLevelState extends State<SelectLevel> {
                           text: 'نشاط\n متوسط',
                           id: 3,
                           level: 3,
+                          selected: activeUser.fitnessLevel,
+                          onClick: (){
+                            Provider.of<ActiveUserProvider>(context, listen: false)
+                                .setFitnessLevel(3);
+                          },
                         ),
                       ),
                       SizedBox(width: 10,),
@@ -109,6 +124,11 @@ class _SelectLevelState extends State<SelectLevel> {
                           text: 'حركة و نشاط\n فى اليوم كبير',
                           id: 4,
                           level: 4,
+                          selected: activeUser.fitnessLevel,
+                          onClick: (){
+                            Provider.of<ActiveUserProvider>(context, listen: false)
+                                .setFitnessLevel(4);
+                          },
                         ),
                       ),
                     ],
@@ -118,6 +138,11 @@ class _SelectLevelState extends State<SelectLevel> {
                     text: 'طول اليوم حركة و جهد\n و ومجهود كبير جدا',
                     id: 5,
                     level: 5,
+                    selected: activeUser.fitnessLevel,
+                    onClick: (){
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setFitnessLevel(5);
+                    },
                   ),
                 ],
               ),
@@ -125,7 +150,7 @@ class _SelectLevelState extends State<SelectLevel> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser!.fitnessLevel != 0 ? widget.onClick : (){},
+            onClick: activeUser.fitnessLevel != 0 ? widget.onClick : (){},
             bgColor: activeUser.fitnessLevel != 0 ? primaryColor : Colors.grey.shade400,
           )
         ],
