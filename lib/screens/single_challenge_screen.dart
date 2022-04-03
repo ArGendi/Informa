@@ -3,11 +3,13 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/countdown_card.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -25,6 +27,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
   FirestoreService _firestoreService = new FirestoreService();
   String _first = '';
   String _second = '';
+  String _video = '';
   String _btnText = 'أرسل';
   late Challenge _challenge;
   late AnimationController _controller;
@@ -37,19 +40,23 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
   onSubmit(BuildContext context) async{
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
     if(valid){
       _formKey.currentState!.save();
-      if(widget.challenge.status == 0){
+      if(widget.challenge.status == 0 || (widget.challenge.status == 2 &&
+          activeUser!.premium)){
         var id = FirebaseAuth.instance.currentUser!.uid;
         if(_challenge.submits == null){
           _challenge.submits = Map<String, dynamic>();
         }
         _challenge.submits![id] = {
-          if(widget.challenge.first != null)
+          if(widget.challenge.first != null || _first.isNotEmpty)
             widget.challenge.first: _first,
-          if(widget.challenge.second != null)
+          if(widget.challenge.second != null || _second.isNotEmpty)
             widget.challenge.second: _second,
+          'video': _video,
         };
+        print(_challenge.submits);
         await _firestoreService.submitChallenge(_challenge);
         setState(() {
           _btnText = 'تم';
@@ -206,6 +213,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
                           ),
                         SizedBox(height: 10,),
                         if(widget.challenge.second != null)
+                          if(widget.challenge.second!.isNotEmpty)
                           CustomTextField(
                             text: widget.challenge.second!,
                             obscureText: false,
@@ -218,6 +226,18 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
                               return null;
                             },
                           ),
+                        CustomTextField(
+                          text: 'رابط الفيديو الخاص بيك',
+                          obscureText: false,
+                          textInputType: TextInputType.text,
+                          setValue: (value){
+                            _video = value;
+                          },
+                          validation: (value){
+                            if (value.isEmpty) return 'أدخل رابط الفيديو';
+                            return null;
+                          },
+                        ),
                       ],
                     ),
                   ),

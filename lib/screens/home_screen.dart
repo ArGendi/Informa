@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            if(!activeUser.premium || activeUser.premiumStartDate == null)
+            if(!activeUser.premium)
               Container(
               width: double.infinity,
               height: 200,

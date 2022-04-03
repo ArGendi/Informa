@@ -34,4 +34,18 @@ class Challenge {
       return false;
     }
   }
+
+  Map<String, dynamic> toJson(){
+    return {
+      'name': name,
+      'description': description,
+      'image': image,
+      'video': video,
+      'status': status,
+      'submits': submits,
+      'first': first,
+      'second': second,
+      'deadline': Timestamp.fromDate(deadline!),
+    };
+  }
 }

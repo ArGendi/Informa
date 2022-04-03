@@ -87,9 +87,10 @@ class FirestoreService{
   }
 
   Future submitChallenge(Challenge challenge) async{
+    print(challenge.id);
     await FirebaseFirestore.instance.collection('challenges')
         .doc(challenge.id)
-        .update({'submits': challenge.submits})
+        .set(challenge.toJson())
         .catchError((e){
       print(e);
     });
