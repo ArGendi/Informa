@@ -7,7 +7,8 @@ class BodyModel extends StatefulWidget {
   final bool isFront;
   final VoidCallback? onChest;
   final VoidCallback? onAbs;
-  const BodyModel({Key? key, required this.image, required this.isFront, this.onChest, this.onAbs}) : super(key: key);
+  final VoidCallback? onShoulder;
+  const BodyModel({Key? key, required this.image, required this.isFront, this.onChest, this.onAbs, this.onShoulder}) : super(key: key);
 
   @override
   _BodyModelState createState() => _BodyModelState();
@@ -51,6 +52,30 @@ class _BodyModelState extends State<BodyModel> {
                 ),
               ),
             ),
+          Positioned(
+            top: 106,
+            right: 100,
+            child: InkWell(
+              onTap: widget.onShoulder,
+              child: Container(
+                width: 40,
+                height: 35,
+                //color: Colors.black,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 106,
+            left: 100,
+            child: InkWell(
+              onTap: widget.onShoulder,
+              child: Container(
+                width: 40,
+                height: 35,
+                //color: Colors.black,
+              ),
+            ),
+          ),
         ],
       ),
     );

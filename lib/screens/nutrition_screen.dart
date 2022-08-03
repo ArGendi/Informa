@@ -63,7 +63,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 image: AssetImage('assets/images/appBg.png')
             )
         ),
-        child: Column(
+        child: activeUser!.adminConfirm? Column(
           children: [
             Container(
               height: 60,
@@ -161,7 +161,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                     MacroBanner(),
                     SizedBox(height: 10,),
                     //if(premiumNutritionProvider.breakfast.isNotEmpty)
-                    if(!(activeUser!.numberOfMeals == 2 && activeUser.whichTwoMeals == 2))
+                    if(!(activeUser.numberOfMeals == 2 && activeUser.whichTwoMeals == 2))
                       MainMealCard(
                         text: 'الفطار',
                         mealNumber: 1,
@@ -316,6 +316,14 @@ class _NutritionScreenState extends State<NutritionScreen> {
               ),
             ),
           ],
+        ) : Center(
+          child: Text(
+            'في انتظار وجباتك 🍔🕐',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: boldFont,
+            ),
+          ),
         ),
       ),
     );

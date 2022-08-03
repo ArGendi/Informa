@@ -99,7 +99,7 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                       Row(
                         children: [
                           CircleAvatar(
-                            backgroundColor: Colors.grey,
+                            backgroundColor: Colors.grey[300],
                             radius: 7,
                           ),
                           SizedBox(width: 5,),
@@ -145,10 +145,10 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                     days: [
                       WorkoutDay(status: 1,),
                       WorkoutDay(status: 1,),
-                      WorkoutDay(status: 3,),
+                      WorkoutDay(status: 2,),
                       WorkoutDay(status: 1,),
-                      WorkoutDay(status: 3,),
-                      WorkoutDay(status: 3,),
+                      WorkoutDay(status: 2,),
+                      WorkoutDay(status: 2,),
                       WorkoutDay(status: 1,),
                     ],
                   ),
@@ -158,7 +158,7 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                     days: [
                       WorkoutDay(status: 1,),
                       WorkoutDay(status: 1,),
-                      WorkoutDay(status: 3,),
+                      WorkoutDay(status: 2,),
                       WorkoutDay(status: 1,),
                       WorkoutDay(status: 2,),
                       WorkoutDay(status: 2,),

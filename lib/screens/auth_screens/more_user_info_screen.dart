@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
@@ -87,7 +88,10 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
     bool done = true;
     var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
     setState(() { _isLoading = true; });
-    if(activeUser!.fromSocialMedia){
+    var usersLength = await FirebaseFirestore.instance
+        .collection('users').snapshots().length;
+    activeUser!.appId = 5000 + usersLength + 1;
+    if(activeUser.fromSocialMedia){
       await _firestoreService.saveNewAccountWithFullInfo(activeUser).catchError((e){
         setState(() { _isLoading = false; });
         done = false;

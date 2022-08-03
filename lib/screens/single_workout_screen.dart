@@ -166,10 +166,10 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                     ),
                   ),
                   //SizedBox(height: 10,),
-                  for(int i=0; i<widget.exercise.mainTargetMuscles.length; i++)
+                  for(int i=0; i<widget.exercise.targetMuscles!.length; i++)
                     InkWell(
                       onTap: (){
-                        _showDoneDialog(widget.exercise.mainTargetMuscles[i].image);
+                        _showDoneDialog(widget.exercise.targetMuscles![i].image);
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -177,7 +177,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (i+1).toString() + '- ' + widget.exercise.mainTargetMuscles[i].name,
+                              (i+1).toString() + '- ' + widget.exercise.targetMuscles![i].name,
                               textAlign: TextAlign.start,
                               style: TextStyle(),
                             ),
@@ -198,7 +198,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       fontFamily: 'CairoBold',
                     ),
                   ),
-                  for(int i=0; i<widget.exercise.helpersMuscles.length; i++)
+                  for(int i=0; i<widget.exercise.helpersMuscles!.length; i++)
                     InkWell(
                       onTap: (){},
                       child: Padding(
@@ -207,7 +207,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (i+1).toString() + '- ' + widget.exercise.mainTargetMuscles[i].name,
+                              (i+1).toString() + '- ' + widget.exercise.targetMuscles![i].name,
                               textAlign: TextAlign.start,
                               style: TextStyle(),
                             ),
@@ -228,7 +228,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       fontFamily: 'CairoBold',
                     ),
                   ),
-                  for(int i=0; i<widget.exercise.settlersMuscles.length; i++)
+                  for(int i=0; i<widget.exercise.settlersMuscles!.length; i++)
                     InkWell(
                       onTap: (){},
                       child: Padding(
@@ -237,7 +237,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (i+1).toString() + '- ' + widget.exercise.mainTargetMuscles[i].name,
+                              (i+1).toString() + '- ' + widget.exercise.targetMuscles![i].name,
                               textAlign: TextAlign.start,
                               style: TextStyle(),
                             ),

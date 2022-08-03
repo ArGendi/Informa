@@ -1,19 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:informa/models/user.dart';
+import 'package:informa/models/workout.dart';
+import 'package:informa/models/workout_preset.dart';
 import 'package:informa/services/firestore_service.dart';
 
 class ActiveUserProvider extends ChangeNotifier{
   AppUser? _user;
+  WorkoutPreset? _workoutPreset;
   FirestoreService _firestoreService = new FirestoreService();
 
   ActiveUserProvider(){
     _user = new AppUser();
+    _workoutPreset = new WorkoutPreset();
   }
 
   AppUser? get user => _user;
+  WorkoutPreset? get workoutPreset => _workoutPreset;
 
   setUser(AppUser user){
     _user = user;
+    notifyListeners();
+  }
+
+  setWorkoutPreset(WorkoutPreset workoutPreset){
+    _workoutPreset = workoutPreset;
     notifyListeners();
   }
 
@@ -52,6 +62,11 @@ class ActiveUserProvider extends ChangeNotifier{
 
   premiumFormFilled(){
     _user!.fillPremiumForm = true;
+    notifyListeners();
+  }
+
+  setAdminConfirm(bool value){
+    _user!.adminConfirm = value;
     notifyListeners();
   }
 

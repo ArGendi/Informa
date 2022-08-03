@@ -93,7 +93,7 @@ class _SelectToolsState extends State<SelectTools> {
                     userChoice: activeUser!.trainingTools.contains(1) ? 1 : 0,
                     //imagePath: 'assets/images/dumbbelle.png',
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.trainingTools.contains(2))
@@ -106,6 +106,7 @@ class _SelectToolsState extends State<SelectTools> {
                     userChoice: activeUser.trainingTools.contains(2) ? 2 : 0,
                     //imagePath: 'assets/images/bar1.png',
                   ),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.trainingTools.contains(3))
@@ -118,6 +119,7 @@ class _SelectToolsState extends State<SelectTools> {
                     userChoice: activeUser.trainingTools.contains(3) ? 3 : 0,
                     //imagePath: 'assets/images/bar1.png',
                   ),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.trainingTools.contains(4))
@@ -130,6 +132,7 @@ class _SelectToolsState extends State<SelectTools> {
                     userChoice: activeUser.trainingTools.contains(4) ? 4 : 0,
                     //imagePath: 'assets/images/bar1.png',
                   ),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.trainingTools.contains(5))
@@ -142,6 +145,7 @@ class _SelectToolsState extends State<SelectTools> {
                     userChoice: activeUser.trainingTools.contains(5) ? 5 : 0,
                     //imagePath: 'assets/images/bar1.png',
                   ),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.trainingTools.contains(6))
@@ -154,6 +158,7 @@ class _SelectToolsState extends State<SelectTools> {
                     userChoice: activeUser.trainingTools.contains(6) ? 6 : 0,
                     //imagePath: 'assets/images/bar1.png',
                   ),
+                  SizedBox(height: 20,),
                 ],
               ),
             ),

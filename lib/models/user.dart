@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meals_list.dart';
+import 'package:informa/models/workout_preset.dart';
 import 'package:informa/services/firestore_service.dart';
 
 class AppUser {
   String? id;
+  int appId = 5000;
   String? name;
   String? email;
   String? password;
@@ -88,6 +90,8 @@ class AppUser {
   int injuryType;
   List<int> weakestMuscles = [];
   List<int> cardioTools = [];
+  Map monthWorkoutStatus = {};
+  String? workoutPreset;
 
   AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
       this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
@@ -97,6 +101,7 @@ class AppUser {
       this.workoutGoalDescription, this.trainingLevel = 0, this.injuryExist = 0, this.injuryType = 0,});
 
   fromJson(Map<String, dynamic> json){
+    appId = json['appId'] != null? json['appId'] : 5000;
     email = json['email'];
     name = json['name'];
     phone = json['phone'];
@@ -173,10 +178,20 @@ class AppUser {
     }
     carbCycleStartDate = dtCarbCycleDate;
     dailyCarbCycle = json['dailyCarbCycle'];
+    workoutGoal = json['workoutGoal'] != null? json['workoutGoal'] : 0;
+    workoutGoalDescription = json['workoutGoalDescription'];
+    trainingLevel = json['trainingLevel'] != null? json['trainingLevel'] : 0;
+    injuryExist = json['injuryExist'] != null? json['injuryExist'] : 0;
+    injuryType = json['injuryType'] != null? json['injuryType'] : 0;
+    weakestMuscles = json['weakestMuscles'] !=null ? json['weakestMuscles'].cast<int>() : [];
+    cardioTools = json['cardioTools'] !=null ?json['cardioTools'].cast<int>() : [];
+    monthWorkoutStatus = json['monthWorkoutStatus'] != null ? json['monthWorkoutStatus'] : {};
+    workoutPreset = json['workoutPreset'];
   }
 
   Map<String, dynamic> toJson(){
     return {
+      'appId': appId,
       'email': email,
       'name': name,
       'phone': phone,
@@ -233,6 +248,15 @@ class AppUser {
       'carbCycleStartDate': carbCycleStartDate != null?
           Timestamp.fromDate(carbCycleStartDate!): null,
       'dailyCarbCycle': dailyCarbCycle,
+      'workoutGoal': workoutGoal,
+      'workoutGoalDescription': workoutGoalDescription,
+      'trainingLevel': trainingLevel,
+      'injuryExist': injuryExist,
+      'injuryType': injuryType,
+      'weakestMuscles': weakestMuscles,
+      'cardioTools': cardioTools,
+      'monthWorkoutStatus' : monthWorkoutStatus,
+      'workoutPreset': workoutPreset,
     };
   }
 

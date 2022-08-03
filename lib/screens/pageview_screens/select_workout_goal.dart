@@ -43,7 +43,9 @@ class _SelectWorkoutGoalState extends State<SelectWorkoutGoal> {
                   Row(
                     children: [
                       IconButton(
-                        onPressed: widget.onBack,
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
                         icon: Icon(
                           Icons.arrow_back,
                           color: primaryColor,

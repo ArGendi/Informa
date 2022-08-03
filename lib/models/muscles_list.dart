@@ -30,6 +30,24 @@ class MusclesList {
       image: 'assets/images/selected_body_chest.png',
       exercises: [],
     ),
+    Muscle(
+      id: '3',
+      name: 'كتف امامي',
+      image: 'assets/images/selected_body_chest.png',
+      exercises: [],
+    ),
+    Muscle(
+      id: '4',
+      name: 'كتف جانبي',
+      image: 'assets/images/selected_body_chest.png',
+      exercises: [],
+    ),
+    Muscle(
+      id: '5',
+      name: 'كتف خلفي',
+      image: 'assets/images/selected_body_chest.png',
+      exercises: [],
+    ),
   ];
 
 }

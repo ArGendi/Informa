@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/helpers/shared_preference.dart';
+import 'package:informa/models/cardio.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/models/excercise.dart';
 import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/models/water.dart';
+import 'package:informa/models/workout.dart';
+import 'package:informa/models/workout_preset.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
@@ -89,9 +93,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
             }
 
             if(premiumUser.premium && premiumUser.fillPremiumForm){
-              bool update = await _firestoreService
-                  .checkAndUpdateNewDayData(currentUser.uid, premiumUser);
-              if(update) resetMacros(premiumUser);
+              if(premiumUser.adminConfirm && (premiumUser.program == 2 || premiumUser.program == 3)){
+                bool update = await _firestoreService
+                    .checkAndUpdateNewDayData(currentUser.uid, premiumUser);
+                if(update) resetMacros(premiumUser);
+              }
               if(premiumUser.dietType == 2){
                 DateTime now = DateTime.now();
                 if(((now.difference(premiumUser.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
@@ -151,6 +157,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
                 if(additionalMeals != null)
                   Provider.of<PremiumNutritionProvider>(context, listen: false)
                       .setAdditionalMeals(additionalMeals);
+              }
+              if(premiumUser.workoutPreset != null){
+                List<Exercise> exercises = await _firestoreService.getExercises();
+                List<Workout> workouts = await _firestoreService.getWorkouts(exercises);
+                List<Cardio> cardio = await _firestoreService.getCardio(exercises);
+                WorkoutPreset? workoutPreset = await _firestoreService.getWorkoutPresetById(
+                  premiumUser.workoutPreset!,
+                  workouts,
+                  cardio
+                );
+                if(workoutPreset != null)
+                  Provider.of<ActiveUserProvider>(context, listen: false)
+                      .setWorkoutPreset(workoutPreset);
               }
             }
           }

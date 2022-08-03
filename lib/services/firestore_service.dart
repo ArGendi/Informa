@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:informa/models/cardio.dart';
 import 'package:informa/models/challenge.dart';
+import 'package:informa/models/excercise.dart';
 import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/meal_category_list.dart';
 import 'package:informa/models/user.dart';
+import 'package:informa/models/workout.dart';
+import 'package:informa/models/workout_preset.dart';
 
 class FirestoreService{
 
@@ -366,4 +370,66 @@ class FirestoreService{
       if(type.contains(3)) MealCategoryList.dinner.add(mealCategory);
     }
   }
+
+  Future<List<Exercise>> getExercises() async{
+    List<Exercise> exercises = [];
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('exercises').get();
+    for(var doc in documentSnapshot.docs){
+      var data = doc.data();
+      Exercise exercise = new Exercise();
+      exercise.id = doc.id;
+      exercise.fromJson(data);
+      exercises.add(exercise);
+    }
+    return exercises;
+  }
+
+  Future<List<Cardio>> getCardio(List<Exercise> allExercises) async{
+    List<Cardio> allCardio = [];
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('cardio').get();
+    for(var doc in documentSnapshot.docs){
+      var data = doc.data();
+      Cardio cardio = new Cardio();
+      cardio.id = doc.id;
+      cardio.fromJson(data, allExercises);
+      allCardio.add(cardio);
+    }
+    return allCardio;
+  }
+
+  Future<List<Workout>> getWorkouts(List<Exercise> allExercises) async{
+    List<Workout> workouts = [];
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('workouts').get();
+    for(var doc in documentSnapshot.docs){
+      var data = doc.data();
+      Workout workout = new Workout();
+      workout.id = doc.id;
+      workout.fromJson(data, allExercises);
+      workouts.add(workout);
+    }
+    return workouts;
+  }
+
+  Future<WorkoutPreset?> getWorkoutPresetById(String id, List<Workout> workouts, List<Cardio> cardio) async{
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('workoutPresets')
+        .doc(id)
+        .get();
+    if(documentSnapshot.exists){
+      print('Document exist on the database');
+      WorkoutPreset workoutPreset = new WorkoutPreset();
+      var data = documentSnapshot.data() as Map<String, dynamic>;
+      workoutPreset.fromJson(data, workouts, cardio);
+      return workoutPreset;
+    }
+    else {
+      print('Document does not exist on the database');
+      return null;
+    }
+  }
+
+
 }

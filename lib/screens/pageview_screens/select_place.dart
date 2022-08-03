@@ -40,21 +40,17 @@ class _SelectPlaceState extends State<SelectPlace> {
                     ],
                   ),
                   SizedBox(height: 20,),
-                  Image.asset(
-                    'assets/images/ahlan.png',
-                    width: 90,
-                  ),
-                  Text(
-                    'دعنا نتعرف عليك',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: primaryColor,
+                  Container(
+                    width: 85,
+                    height: 85,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(80),
+                        border: Border.all(color: primaryColor),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/images/coach_face.jpg'),
+                        )
                     ),
-                  ),
-                  Divider(
-                    color: primaryColor,
-                    indent: screenSize.width * .3,
-                    endIndent: screenSize.width * .3,
                   ),
                   SizedBox(height: 20,),
                   Text(

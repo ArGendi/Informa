@@ -29,6 +29,7 @@ import 'package:informa/screens/pageview_screens/select_which_supplements.dart';
 import 'package:informa/screens/pageview_screens/select_which_two_meals.dart';
 import 'package:informa/screens/pageview_screens/select_workout_goal.dart';
 import 'package:informa/screens/pageview_screens/upload_body_photos.dart';
+import 'package:informa/screens/premium_screens/premium_program_counter_screen.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/services/informa_service.dart';
 import 'package:informa/services/meals_service.dart';
@@ -140,6 +141,8 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     activeUser.lastDataUpdatedDate = threeAmToday;
     activeUser.adminConfirm = false;
     activeUser.fillPremiumForm = true;
+    Provider.of<ActiveUserProvider>(context, listen: false).setAdminConfirm(false);
+    Provider.of<ActiveUserProvider>(context, listen: false).premiumFormFilled();
 
     //Water calculation
     activeUser.myWater = activeUser.weight * 0.045;
@@ -152,6 +155,7 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
     await firestoreService.updateUserData(id, map);
     await createNotifications();
     setState(() {_isLoading = false;});
+    Navigator.pushNamed(context, PremiumProgramCounterScreen.id);
   }
 
   onDone(BuildContext context) async{
@@ -364,145 +368,308 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
             controller: _controller,
             children: [
               if(activeUser!.program == 2 || activeUser.program == 3)
-                Column(
-                children: [
-                  PremiumFatPercent(
-                    onBack: (){
-                      Navigator.pop(context);
-                    },
-                    goToFatsImages: (){
-                      setState(() {
-                        _showFatsImagesPage = true;
-                      });
-                      goToNextPage();
-                    },
-                    onNext: (){
+                PremiumFatPercent(
+                  onBack: (){
+                    Navigator.pop(context);
+                  },
+                  goToFatsImages: (){
+                    setState(() {
+                      _showFatsImagesPage = true;
+                    });
+                    goToNextPage();
+                  },
+                  onNext: (){
+                    setState(() {
+                      _showFatsImagesPage = false;
+                    });
+                    goToNextPage();
+                  },
+                  selectFromPhotos: _selectFromPhotos,
+                ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                if(_showFatsImagesPage)
+                  SelectFatPercent(
+                    onBack: goBack,
+                    onNext: () async{
+                      await goBack();
                       setState(() {
                         _showFatsImagesPage = false;
+                        _selectFromPhotos = true;
                       });
-                      goToNextPage();
-                    },
-                    selectFromPhotos: _selectFromPhotos,
-                  ),
-                  if(_showFatsImagesPage)
-                    SelectFatPercent(
-                      onBack: goBack,
-                      onNext: () async{
-                        await goBack();
-                        setState(() {
-                          _showFatsImagesPage = false;
-                          _selectFromPhotos = true;
-                        });
-                      },
-                    ),
-                  // if(activeUser!.gender == 1)
-                  //   UploadBodyPhotos(
-                  //     onBack: goBack,
-                  //     onClick: goToNextPage,
-                  //   ),
-                  SelectGoal(
-                    onBack: goBack,
-                    onClick: goToNextPage,
-                    unknownGoal: (value){
-                      _unknownGoal = value;
                     },
                   ),
-                  if(_unknownGoal)
-                    DoNotKnowGoal(
-                      onBack: goBack,
-                      onClick: goToNextPage,
-                    ),
-                  SelectLevel(
+              // if(activeUser!.gender == 1)
+              //   UploadBodyPhotos(
+              //     onBack: goBack,
+              //     onClick: goToNextPage,
+              //   ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                SelectGoal(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                  unknownGoal: (value){
+                    _unknownGoal = value;
+                  },
+                ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                if(_unknownGoal)
+                  DoNotKnowGoal(
                     onBack: goBack,
                     onClick: goToNextPage,
                   ),
-                  // SelectTrainingDays(
-                  //   onBack: goBack,
-                  //   onClick: goToNextPage,
-                  // ),
-                  SelectSupplements(
+              if(activeUser.program == 2 || activeUser.program == 3)
+                SelectLevel(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              // SelectTrainingDays(
+              //   onBack: goBack,
+              //   onClick: goToNextPage,
+              // ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                SelectSupplements(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                if(activeUser.haveSupplements == 1)
+                  SelectWhichSupplements(
                     onBack: goBack,
                     onClick: goToNextPage,
                   ),
-                  if(activeUser.haveSupplements == 1)
-                    SelectWhichSupplements(
-                      onBack: goBack,
-                      onClick: goToNextPage,
-                    ),
-                  SelectMealsPerDay(
+              if(activeUser.program == 2 || activeUser.program == 3)
+                SelectMealsPerDay(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                if(activeUser.numberOfMeals == 2)
+                  SelectWhichTwoMeals(
                     onBack: goBack,
                     onClick: goToNextPage,
                   ),
-                  if(activeUser.numberOfMeals == 2)
-                    SelectWhichTwoMeals(
-                      onBack: goBack,
-                      onClick: goToNextPage,
-                    ),
-                  SelectMealsTime(
-                    onBack: goBack,
-                    onClick: goToNextPage,
-                  ),
-                  SelectMilkProductsProblems(
-                    onBack: goBack,
-                    onClick: goToNextPage,
-                  ),
-                  // SelectUnWantedMeals(
-                  //   onBack: goBack,
-                  //   onClick: goToNextPage,
-                  // ),
-                  if(activeUser.goal != 4 && activeUser.goal != 5)
-                    SelectDietType(
-                      onBack: goBack,
-                      onClick: goToNextPage,
-                    ),
-                  SelectDisease(
-                    onBack: goBack,
-                    onClick: activeUser.program == 3 ? (){
-                      onFinish(context);
-                    } : goToNextPage,
-                    isLoading: _isLoading,
-                  ),
-                ],
+              if(activeUser.program == 2 || activeUser.program == 3)
+                SelectMealsTime(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                SelectMilkProductsProblems(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+              SelectUnWantedMeals(
+                onBack: goBack,
+                onClick: goToNextPage,
               ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                if(activeUser.goal != 4 && activeUser.goal != 5)
+                  SelectDietType(
+                    onBack: goBack,
+                    onClick: goToNextPage,
+                  ),
+              if(activeUser.program == 2 || activeUser.program == 3)
+                SelectDisease(
+                  onBack: goBack,
+                  onClick: activeUser.program == 3 ? (){
+                    onFinish(context);
+                  } : goToNextPage,
+                  isLoading: _isLoading,
+                ),
+              //   Column(
+              //   children: [
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     PremiumFatPercent(
+              //       onBack: (){
+              //         Navigator.pop(context);
+              //       },
+              //       goToFatsImages: (){
+              //         setState(() {
+              //           _showFatsImagesPage = true;
+              //         });
+              //         goToNextPage();
+              //       },
+              //       onNext: (){
+              //         setState(() {
+              //           _showFatsImagesPage = false;
+              //         });
+              //         goToNextPage();
+              //       },
+              //       selectFromPhotos: _selectFromPhotos,
+              //     ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     if(_showFatsImagesPage)
+              //       SelectFatPercent(
+              //         onBack: goBack,
+              //         onNext: () async{
+              //           await goBack();
+              //           setState(() {
+              //             _showFatsImagesPage = false;
+              //             _selectFromPhotos = true;
+              //           });
+              //         },
+              //       ),
+              //     // if(activeUser!.gender == 1)
+              //     //   UploadBodyPhotos(
+              //     //     onBack: goBack,
+              //     //     onClick: goToNextPage,
+              //     //   ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     SelectGoal(
+              //       onBack: goBack,
+              //       onClick: goToNextPage,
+              //       unknownGoal: (value){
+              //         _unknownGoal = value;
+              //       },
+              //     ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     if(_unknownGoal)
+              //       DoNotKnowGoal(
+              //         onBack: goBack,
+              //         onClick: goToNextPage,
+              //       ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     SelectLevel(
+              //       onBack: goBack,
+              //       onClick: goToNextPage,
+              //     ),
+              //     // SelectTrainingDays(
+              //     //   onBack: goBack,
+              //     //   onClick: goToNextPage,
+              //     // ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     SelectSupplements(
+              //       onBack: goBack,
+              //       onClick: goToNextPage,
+              //     ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     if(activeUser.haveSupplements == 1)
+              //       SelectWhichSupplements(
+              //         onBack: goBack,
+              //         onClick: goToNextPage,
+              //       ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     SelectMealsPerDay(
+              //       onBack: goBack,
+              //       onClick: goToNextPage,
+              //     ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     if(activeUser.numberOfMeals == 2)
+              //       SelectWhichTwoMeals(
+              //         onBack: goBack,
+              //         onClick: goToNextPage,
+              //       ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     SelectMealsTime(
+              //       onBack: goBack,
+              //       onClick: goToNextPage,
+              //     ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     SelectMilkProductsProblems(
+              //       onBack: goBack,
+              //       onClick: goToNextPage,
+              //     ),
+              //     // SelectUnWantedMeals(
+              //     //   onBack: goBack,
+              //     //   onClick: goToNextPage,
+              //     // ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     if(activeUser.goal != 4 && activeUser.goal != 5)
+              //       SelectDietType(
+              //         onBack: goBack,
+              //         onClick: goToNextPage,
+              //       ),
+              //     if(activeUser!.program == 2 || activeUser.program == 3)
+              //     SelectDisease(
+              //       onBack: goBack,
+              //       onClick: activeUser.program == 3 ? (){
+              //         onFinish(context);
+              //       } : goToNextPage,
+              //       isLoading: _isLoading,
+              //     ),
+              //   ],
+              // ),
              if(activeUser.program == 1 || activeUser.program == 2)
-               Column(
-                 children: [
-                   SelectWorkoutGoal(
-                     onBack: goBack,
-                     onClick: goToNextPage,
-                   ),
-                   SelectTrainingLevel(
-                     onBack: goBack,
-                     onClick: goToNextPage,
-                   ),
-                   SelectPlace(
-                     onBack: goBack,
-                     onClick: goToNextPage,
-                   ),
-                   SelectTools(
-                     onBack: goBack,
-                     onClick: goToNextPage,
-                   ),
-                   SelectTrainingDays(
-                     onBack: goBack,
-                     onClick: goToNextPage,
-                   ),
-                   SelectInjury(
-                     onBack: goBack,
-                     onClick: goToNextPage,
-                   ),
-                   SelectWeakestMuscles(
-                     onBack: goBack,
-                     onClick: goToNextPage,
-                   ),
-                   SelectCardioTools(
-                     onBack: goBack,
-                     onClick: (){
-                       onFinish(context);
-                     },
-                   ),
-                 ],
+               SelectWorkoutGoal(
+                 onBack: goBack,
+                 onClick: goToNextPage,
                ),
+              if(activeUser.program == 1 || activeUser.program == 2)
+                SelectTrainingLevel(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 1 || activeUser.program == 2)
+                SelectPlace(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 1 || activeUser.program == 2)
+                SelectTools(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 1 || activeUser.program == 2)
+                SelectTrainingDays(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 1 || activeUser.program == 2)
+                SelectInjury(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 1 || activeUser.program == 2)
+                SelectWeakestMuscles(
+                  onBack: goBack,
+                  onClick: goToNextPage,
+                ),
+              if(activeUser.program == 1 || activeUser.program == 2)
+                SelectCardioTools(
+                  onBack: goBack,
+                  onClick: (){
+                    onFinish(context);
+                  },
+                ),
+               // Column(
+               //   children: [
+               //     SelectWorkoutGoal(
+               //       onBack: goBack,
+               //       onClick: goToNextPage,
+               //     ),
+               //     SelectTrainingLevel(
+               //       onBack: goBack,
+               //       onClick: goToNextPage,
+               //     ),
+               //     SelectPlace(
+               //       onBack: goBack,
+               //       onClick: goToNextPage,
+               //     ),
+               //     SelectTools(
+               //       onBack: goBack,
+               //       onClick: goToNextPage,
+               //     ),
+               //     SelectTrainingDays(
+               //       onBack: goBack,
+               //       onClick: goToNextPage,
+               //     ),
+               //     SelectInjury(
+               //       onBack: goBack,
+               //       onClick: goToNextPage,
+               //     ),
+               //     SelectWeakestMuscles(
+               //       onBack: goBack,
+               //       onClick: goToNextPage,
+               //     ),
+               //     SelectCardioTools(
+               //       onBack: goBack,
+               //       onClick: (){
+               //         onFinish(context);
+               //       },
+               //     ),
+               //   ],
+               // ),
             ],
           ),
         ),

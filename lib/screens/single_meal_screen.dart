@@ -410,6 +410,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _animationController.dispose();
     if(_youtubeController != null)
       _youtubeController!.dispose();
   }

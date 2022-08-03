@@ -7,6 +7,7 @@ import 'package:informa/models/challenge.dart';
 import 'package:informa/models/excercise.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/models/workout_day.dart';
+import 'package:informa/models/workout_set.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
@@ -15,6 +16,7 @@ import 'package:informa/providers/kitchen_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
 import 'package:informa/providers/water_provider.dart';
+import 'package:informa/providers/workout_days_provider.dart';
 import 'package:informa/screens/challenges_screen.dart';
 import 'package:informa/screens/premium_screens/add_external_meal_info_screen.dart';
 import 'package:informa/screens/premium_screens/diet_requirements_screen.dart';
@@ -87,6 +89,9 @@ void main() async{
         ),
         ChangeNotifierProvider<PremiumNutritionProvider>(
           create: (context) => PremiumNutritionProvider(),
+        ),
+        ChangeNotifierProvider<WorkoutDaysProvider>(
+          create: (context) => WorkoutDaysProvider(),
         ),
       ],
       child: MyApp(

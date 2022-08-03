@@ -94,7 +94,7 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     userChoice: activeUser!.cardioTools.contains(1) ? 1 : 0,
                     imagePath: 'assets/images/treadmill.png',
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.cardioTools.contains(2))
@@ -109,6 +109,7 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     userChoice: activeUser.cardioTools.contains(2) ? 2 : 0,
                     imagePath: 'assets/images/elliptical.png',
                   ),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.cardioTools.contains(3))
@@ -123,6 +124,7 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     userChoice: activeUser.cardioTools.contains(3) ? 3 : 0,
                     imagePath: 'assets/images/stair_master.png',
                   ),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.cardioTools.contains(4))
@@ -137,6 +139,7 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     userChoice: activeUser.cardioTools.contains(4) ? 4 : 0,
                     imagePath: 'assets/images/rowing_machine.png',
                   ),
+                  SizedBox(height: 5,),
                   ProgramSelectCard(
                     onClick: (){
                       if(!activeUser.cardioTools.contains(5))
@@ -151,12 +154,13 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     userChoice: activeUser.cardioTools.contains(5) ? 5 : 0,
                     //imagePath: 'assets/images/bar1.png',
                   ),
+                  SizedBox(height: 20,),
                 ],
               ),
             ),
           ),
           CustomButton(
-            text: 'التالي',
+            text: 'تم',
             onClick: activeUser.trainingTools.isNotEmpty ? widget.onClick : (){},
             bgColor: activeUser.trainingTools.isNotEmpty ? primaryColor : Colors.grey.shade400,
           )

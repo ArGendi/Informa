@@ -4,15 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/workout.dart';
+import 'package:informa/models/workout_set.dart';
 import 'package:informa/widgets/countdown_card.dart';
 import 'package:informa/widgets/custom_textfield.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class WorkoutCard extends StatefulWidget {
   final Workout workout;
   const WorkoutCard({Key? key, required this.workout}) : super(key: key);
 
   @override
-  _WorkoutCardState createState() => _WorkoutCardState();
+  _WorkoutCardState createState() => _WorkoutCardState(workout);
 }
 
 class _WorkoutCardState extends State<WorkoutCard> {
@@ -21,6 +23,35 @@ class _WorkoutCardState extends State<WorkoutCard> {
   var _formKey = GlobalKey<FormState>();
   int? _numberOfRepsDone;
   int? _weightDone;
+  late Workout _workout;
+  Timer? _timer;
+  double _percent = 1.0;
+  String _text = '0';
+  bool _restDone = false;
+  late int _counter ;
+
+  void startTimer() {
+    print('counter: ' + _counter.toString());
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_counter == 0) {
+          setState(() {
+            timer.cancel();
+            _restDone = true;
+          });
+        }
+        _counter -= 1;
+        print('counter: ' + _counter.toString());
+        setState(() {
+          _percent = (_counter * 100) / _workout.restTime!;
+          _text = _counter.toString();
+          print('text: ' + _text);
+        });
+      },
+    );
+  }
 
   DateTime getTimeAfter30Sec(){
     DateTime now = DateTime.now();
@@ -34,12 +65,95 @@ class _WorkoutCardState extends State<WorkoutCard> {
         now.second + widget.workout.restTime!);
   }
 
-  onSetDone(BuildContext context){
+  onSetDone(BuildContext context, int groupNumber){
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
     if(valid){
-
+      _formKey.currentState!.save();
+      setState(() {
+        if(groupNumber > _workout.setsDone){
+          _workout.setsDone += 1;
+          _workout.sets.add(
+              WorkoutSet(
+                number: _numberOfRepsDone,
+                weight: _weightDone,
+              )
+          );
+        }
+        else{
+          _workout.sets[groupNumber-1].weight = _weightDone;
+          _workout.sets[groupNumber-1].number = _numberOfRepsDone;
+        }
+      });
+      Navigator.pop(context);
     }
+  }
+
+  showRestBottomSheet(){
+    FocusScope.of(context).unfocus();
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      builder: (BuildContext context) {
+        const oneSec = const Duration(seconds: 1);
+        _timer = new Timer.periodic(
+          oneSec,
+              (Timer timer) {
+            if (_counter == 0) {
+              setState(() {
+                timer.cancel();
+                _restDone = true;
+              });
+            }
+            _counter -= 1;
+            print('counter: ' + _counter.toString());
+            setState(() {
+              _percent = (_counter) / _workout.restTime!;
+              _text = _counter.toString();
+              print('text: ' + _text);
+            });
+          },
+        );
+        return StatefulBuilder(builder: (context, setState){
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'وقت الراحة',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: boldFont,
+                  ),
+                ),
+                SizedBox(height: 10,),
+                CircularPercentIndicator(
+                  radius: 140.0,
+                  lineWidth: 7.0,
+                  percent: _percent,
+                  animation: true,
+                  animateFromLastPercent: true,
+                  center: Text(
+                    _text,
+                    style: TextStyle(
+                      fontSize: 25,
+                    ),
+                  ),
+                  progressColor: Colors.green,
+                  backgroundColor: Colors.grey.shade300,
+                ),
+              ],
+            ),
+          );
+        });
+      },
+    );
+
   }
 
   _showGroupDialog(BuildContext context, int groupNumber) async {
@@ -122,7 +236,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
           actions: <Widget>[
             TextButton(
               onPressed: (){
-                onSetDone(context);
+                onSetDone(context, groupNumber);
               },
               child: const Text(
                 'تم',
@@ -146,6 +260,12 @@ class _WorkoutCardState extends State<WorkoutCard> {
         );
       },
     );
+  }
+
+  _WorkoutCardState(Workout workout){
+    _workout = workout;
+    _counter = workout.restTime!;
+    _text = workout.restTime.toString();
   }
 
   @override
@@ -187,19 +307,21 @@ class _WorkoutCardState extends State<WorkoutCard> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 5,),
+                    SizedBox(width: 8,),
                     InkWell(
                       onTap: (){
-                        _restSeconds = widget.workout.restTime!;
-                        Timer.periodic(Duration(seconds: 1), (Timer t) => setState((){
-                          _restSeconds = widget.workout.restTime! - t.tick;
-                          if(_restSeconds == 0){
-                            t.cancel();
-                          }
-                        }));
-                        setState(() {
-                          _playRest = true;
-                        });
+                        showRestBottomSheet();
+                        // setState(() {
+                        //   _playRest = true;
+                        // });
+                        // _restSeconds = widget.workout.restTime!;
+                        // Timer.periodic(Duration(seconds: 1), (Timer t) => setState((){
+                        //   _restSeconds = widget.workout.restTime! - t.tick;
+                        //   if(_restSeconds == 0){
+                        //     t.cancel();
+                        //   }
+                        // }));
+
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -233,12 +355,12 @@ class _WorkoutCardState extends State<WorkoutCard> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 5,),
+                    SizedBox(width: 2,),
                     InkWell(
                       onTap: (){
                         _restSeconds = 30;
                         Timer.periodic(Duration(seconds: 1), (Timer t) => setState((){
-                          _restSeconds = 30 - t.tick;
+                          _restSeconds = 31 - t.tick;
                           if(_restSeconds == 0){
                             t.cancel();
                           }
@@ -266,55 +388,52 @@ class _WorkoutCardState extends State<WorkoutCard> {
             Row(
               children: [
                 for(int i=0; i<widget.workout.numberOfSets!; i++)
-                Row(
-                  children: [
-                    Container(
-                      width: 28,
-                      height: 1,
-                      color: Colors.grey[200],
-                    ),
-                    Icon(
-                      Icons.check_circle,
-                      color: widget.workout.setsDone >= i+1 ? Colors.green : Colors.grey[400],
-                      size: 20,
-                    ),
-                    Container(
-                      width: 28,
-                      height: 1,
-                      color: Colors.grey[200],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(height: 10,),
-            Row(
-              children: [
-                for(int i=0; i<widget.workout.numberOfSets!; i++)
                   Row(
                     children: [
                       InkWell(
                         onTap: (){
-                          if(i <= widget.workout.setsDone)
-                            _showGroupDialog(context, i+1);
+                          if(i <= _workout.setsDone) {
+                            setState(() {
+                              _playRest = false;
+                            });
+                            _showGroupDialog(context, i + 1);
+                          }
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: primaryColor,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'مجموعة \n' + '(' +(i+1).toString() + ")",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                height: 1.7,
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              color: _workout.setsDone >= i+1 ? Colors.green : Colors.grey[300],
+                              size: 20,
+                            ),
+                            SizedBox(height: 5,),
+                            Container(
+                              width: 75,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: i < _workout.setsDone? Colors.green : primaryColor,
+                                ),
+                                color: i < _workout.setsDone? Colors.grey[50] : primaryColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Text(
+                                    i < _workout.setsDone? '(${_workout.sets[i].weight}) \nx\n (${_workout.sets[i].number})' :
+                                    'مجموعة \n' + '(' +(i+1).toString() + ")",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: i < _workout.setsDone? Colors.black : Colors.white,
+                                      fontSize: 14,
+                                      height: i < _workout.setsDone? 1 : 1.7,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                       SizedBox(width: 5,),

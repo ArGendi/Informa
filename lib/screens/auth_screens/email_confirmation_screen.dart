@@ -3,7 +3,7 @@ import 'package:informa/constants.dart';
 import 'package:informa/screens/auth_screens/reset_password_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
-import 'package:pinput/pin_put/pin_put.dart';
+
 
 class EmailConfirmationScreen extends StatefulWidget {
   static String id = 'email confirmation';
@@ -70,34 +70,34 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
                         ),
                       ),
                       SizedBox(height: 30,),
-                      Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: PinPut(
-                          autofocus: true,
-                          fieldsCount: 5,
-                          eachFieldHeight: 55,
-                          eachFieldWidth: 55,
-                          textStyle: TextStyle(
-                            fontSize: 18,
-                          ),
-                          controller: _controller,
-                          submittedFieldDecoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          selectedFieldDecoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                            color: primaryColor.withOpacity(0.06),
-                          ),
-                          followingFieldDecoration: BoxDecoration(
-                            border: Border.all(color: _codeStatusColor),
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                      // Directionality(
+                      //   textDirection: TextDirection.ltr,
+                      //   child: PinPut(
+                      //     autofocus: true,
+                      //     fieldsCount: 5,
+                      //     eachFieldHeight: 55,
+                      //     eachFieldWidth: 55,
+                      //     textStyle: TextStyle(
+                      //       fontSize: 18,
+                      //     ),
+                      //     controller: _controller,
+                      //     submittedFieldDecoration: BoxDecoration(
+                      //       border: Border.all(),
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       color: Colors.white,
+                      //     ),
+                      //     selectedFieldDecoration: BoxDecoration(
+                      //       border: Border.all(),
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       color: primaryColor.withOpacity(0.06),
+                      //     ),
+                      //     followingFieldDecoration: BoxDecoration(
+                      //       border: Border.all(color: _codeStatusColor),
+                      //       borderRadius: BorderRadius.circular(10),
+                      //       color: Colors.white,
+                      //     ),
+                      //   ),
+                      // ),
                       SizedBox(height: 30,),
                       CustomButton(
                         text: 'تأكيد البريد الألكتروني',

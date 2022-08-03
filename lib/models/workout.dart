@@ -1,6 +1,7 @@
 import 'package:informa/models/excercise.dart';
 import 'package:informa/models/muscle.dart';
 import 'package:informa/models/tool.dart';
+import 'package:informa/models/workout_set.dart';
 
 class Workout{
   String? id;
@@ -14,6 +15,7 @@ class Workout{
   int? numberOfSets;
   int? restTime; //in sec
   int setsDone;
+  List<WorkoutSet> sets = [];
   Workout? superWorkout;
 
   Workout({this.id, this.category, this.exercise, this.alternative, this.techniques,

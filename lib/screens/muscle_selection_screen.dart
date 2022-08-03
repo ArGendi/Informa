@@ -22,6 +22,174 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
   bool _isFront = true;
   String _image = 'assets/images/unselected_body.png';
   Muscle? _muscle;
+  int _shoulderMuscle = 0;
+
+  _showShouldersDialog() async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, void Function(void Function()) setState) {
+            return AlertDialog(
+              title: const Text('أختر عضلة الكتف'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    InkWell(
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      onTap: (){
+                        setState(() {
+                          _shoulderMuscle = 1;
+                          _muscle = MusclesList.allMuscles[2];
+                        });
+                        print(_shoulderMuscle);
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          border: Border.all(
+                            color: _shoulderMuscle == 1 ? primaryColor : Colors.grey.shade300,
+                            width: 2,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'كتف امامي',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              CircleAvatar(
+                                backgroundColor: Colors.grey[300],
+                                radius: 10,
+                                child: _shoulderMuscle == 1 ? CircleAvatar(
+                                  backgroundColor: primaryColor,
+                                  radius: 5,
+                                ) : Container(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5,),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      onTap: (){
+                        setState(() {
+                          _shoulderMuscle = 2;
+                          _muscle = MusclesList.allMuscles[3];
+                        });
+                        print(_shoulderMuscle);
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          border: Border.all(
+                            color: _shoulderMuscle == 2 ? primaryColor : Colors.grey.shade300,
+                            width: 2,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'كتف جانبي',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              CircleAvatar(
+                                backgroundColor: Colors.grey[300],
+                                radius: 10,
+                                child: _shoulderMuscle == 2 ? CircleAvatar(
+                                  backgroundColor: primaryColor,
+                                  radius: 5,
+                                ) : Container(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 5,),
+                    InkWell(
+                      borderRadius: BorderRadius.circular(borderRadius),
+                      onTap: (){
+                        setState(() {
+                          _shoulderMuscle = 3;
+                          _muscle = MusclesList.allMuscles[4];
+                        });
+                        print(_shoulderMuscle);
+                      },
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          border: Border.all(
+                            color: _shoulderMuscle == 3 ? primaryColor : Colors.grey.shade300,
+                            width: 2,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'كتف خلفي',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              CircleAvatar(
+                                backgroundColor: Colors.grey[300],
+                                radius: 10,
+                                child: _shoulderMuscle == 3 ? CircleAvatar(
+                                  backgroundColor: primaryColor,
+                                  radius: 5,
+                                ) : Container(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text(
+                    'تم',
+                    style: TextStyle(
+                      color: primaryColor,
+                    ),
+                  ),
+                  onPressed: () {
+                    print('Muscle:' + _shoulderMuscle.toString());
+                    print('Muscle:' + _muscle!.name.toString());
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+    setState(() {
+      _muscle = _muscle;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,66 +328,24 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                       _muscle = MusclesList.allMuscles[1];
                     });
                   },
+                  onShoulder: (){
+                    print('Shoulder');
+                    _showShouldersDialog();
+                    // setState(() {
+                    //   _image = 'assets/images/selected_body_abs.png';
+                    //   _muscle = MusclesList.allMuscles[1];
+                    // });
+                  },
                 ),
-                // Container(
-                //   width: 400,
-                //   height: 500,
-                //   child: Stack(
-                //     children: [
-                //       Image.asset(
-                //         _image,
-                //         width: 400,
-                //       ),
-                //       if(_isFront)
-                //         Positioned(
-                //           top: 115,
-                //           right: 140,
-                //           child: InkWell(
-                //             onTap: (){
-                //               print('Chest');
-                //               setState(() {
-                //                 _image = 'assets/images/selected_body_chest.png';
-                //                 _muscle = MusclesList.allMuscles[0];
-                //               });
-                //             },
-                //             child: Container(
-                //               width: 70,
-                //               height: 38,
-                //               //color: Colors.black,
-                //             ),
-                //           ),
-                //         ),
-                //       if(_isFront)
-                //         Positioned(
-                //           top: 160,
-                //           right: 150,
-                //           child: InkWell(
-                //             onTap: (){
-                //               print('Abs');
-                //               setState(() {
-                //                 _image = 'assets/images/selected_body_abs.png';
-                //                 _muscle = MusclesList.allMuscles[1];
-                //               });
-                //             },
-                //             child: Container(
-                //               width: 50,
-                //               height: 75,
-                //               //color: Colors.red,
-                //             ),
-                //           ),
-                //         ),
-                //     ],
+                // Text(
+                //   _muscle != null ? 'العضلة المستهدفة هي ' + _muscle!.name : 'لا يوجد عضلة مستهدفة',
+                //   style: TextStyle(
+                //     fontFamily: 'CairoBold',
                 //   ),
                 // ),
-                Text(
-                  _muscle != null ? 'العضلة المستهدفة هي ' + _muscle!.name : 'لا يوجد عضلة مستهدفة',
-                  style: TextStyle(
-                    fontFamily: 'CairoBold',
-                  ),
-                ),
-                SizedBox(height: 10,),
+                // SizedBox(height: 10,),
                 CustomButton(
-                  text: 'تصفح التمارين',
+                  text: _muscle == null ? 'أختار عضلة' : _muscle!.name,
                   bgColor: _muscle != null ? primaryColor : Colors.grey.shade400,
                   onClick: (){
                     if(_muscle != null)

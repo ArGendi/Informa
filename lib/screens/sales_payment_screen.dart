@@ -27,9 +27,10 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
   FirestoreService _firestoreService = new FirestoreService();
   bool _isLoading = false;
 
-  onShare(){
-    String id = FirebaseAuth.instance.currentUser!.uid;
-    Share.share(id);
+  onShare(BuildContext context){
+    //String id = FirebaseAuth.instance.currentUser!.uid;
+    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    Share.share(activeUser!.appId.toString());
   }
 
   onActivate(BuildContext context) async{
@@ -137,7 +138,9 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                     SizedBox(height: 5,),
                     InkWell(
                       borderRadius: BorderRadius.circular(borderRadius),
-                      onTap: onShare,
+                      onTap: (){
+                        onShare(context);
+                      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,

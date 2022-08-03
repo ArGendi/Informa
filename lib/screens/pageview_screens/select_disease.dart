@@ -39,7 +39,7 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setDiseaseDescription(_diseaseWithDesc);
         widget.onClick();
-        await _controller.forward();
+        //await _controller.forward();
         Navigator.pushNamed(context, PremiumProgramCounterScreen.id);
       }
     }
@@ -66,7 +66,7 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _controller.dispose();
+    //_controller.dispose();
   }
 
   @override
