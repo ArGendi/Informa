@@ -54,6 +54,7 @@ class AppUser {
   int disease;
   String? diseaseDescription;
   DateTime? premiumStartDate;
+  DateTime? premiumEndDate;
   MealsList _mealsList = new MealsList();
   int package;
   int plan;
@@ -92,6 +93,7 @@ class AppUser {
 
   AppUser({
     this.id,
+    this.premiumEndDate,
     this.name,
     this.email,
     this.token,
@@ -127,6 +129,7 @@ class AppUser {
 
   fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    premiumEndDate = json['premiumEndDate'];
     appId = json['appId'] != null ? json['appId'] : 5000;
     email = json['email'];
     name = json['name'];
@@ -226,6 +229,7 @@ class AppUser {
       'appId': appId,
       'email': email,
       'name': name,
+      'premiumEndDate': premiumEndDate,
       'phone': phone,
       'fromSocialMedia': fromSocialMedia,
       'premium': premium,

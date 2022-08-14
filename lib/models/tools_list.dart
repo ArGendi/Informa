@@ -1,8 +1,6 @@
-
-
 import 'package:informa/models/tool.dart';
 
-class ToolsList{
+class ToolsList {
   static List<Tool> allTools = [
     Tool(
       id: 1,
@@ -36,7 +34,7 @@ class ToolsList{
     ),
     Tool(
       id: 7,
-      name: 'stairmaster',
+      name: 'stairmachine',
       image: 'assets/images/kettlebell.png',
     ),
     Tool(

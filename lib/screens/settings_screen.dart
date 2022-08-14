@@ -68,6 +68,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
     var activeUser =
         Provider.of<ActiveUserProvider>(context, listen: false).user;
     if (!activeUser!.premium) Navigator.pushNamed(context, PlansScreen.id);
+    // if (activeUser.premium) {
+    //   // show bottom dialog that contains the end date of subscription and the type of the subscription
+    //   showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: Text(
+    //           'subscription_end_date',
+    //           style: TextStyle(
+    //             fontSize: 14,
+    //             fontWeight: FontWeight.bold,
+    //           ),
+    //         ),
+    //         content: Text(
+    //           'subscription_end_date_content',
+    //           style: TextStyle(
+    //             fontSize: 14,
+    //           ),
+    //         ),
+    //         actions: <Widget>[
+    //           FlatButton(
+    //             child: Text(
+    //               'ok',
+    //               style: TextStyle(
+    //                 fontSize: 14,
+    //               ),
+    //             ),
+    //             onPressed: () {
+    //               Navigator.of(context).pop();
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
   }
 
   @override
