@@ -38,11 +38,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   bool _isEmailChanged = false;
   bool _isPasswordChanged = false;
 
-  onSaveChanges(BuildContext context){
+  onSaveChanges(BuildContext context) {
     FocusScope.of(context).unfocus();
     bool personalValid = _personalInfoKey.currentState!.validate();
     bool accountValid = _accountInfoKey.currentState!.validate();
-    if(personalValid && accountValid){
+    if (personalValid && accountValid) {
       _personalInfoKey.currentState!.save();
       _accountInfoKey.currentState!.save();
       print("--> " + _name);
@@ -57,84 +57,100 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  Future checkChangesAndUpdateInFirebase(BuildContext context) async{
+  Future checkChangesAndUpdateInFirebase(BuildContext context) async {
     Map<String, dynamic> map = new Map();
-    String? name = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.name;
+    String? name =
+        Provider.of<ActiveUserProvider>(context, listen: false).user!.name;
     String? age = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.age.toString();
+        .user!
+        .age
+        .toString();
     String? tall = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.tall.toString();
+        .user!
+        .tall
+        .toString();
     String? weight = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.weight.toString();
-    String? fatsPercent = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.fatsPercent.toString();
-    int? gender = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.gender;
-    String? email = Provider.of<ActiveUserProvider>(context, listen: false)
-        .user!.email;
+        .user!
+        .weight
+        .toString();
+    String? fatsPercent =
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .user!
+            .fatsPercent
+            .toString();
+    int? gender =
+        Provider.of<ActiveUserProvider>(context, listen: false).user!.gender;
+    String? email =
+        Provider.of<ActiveUserProvider>(context, listen: false).user!.email;
 
-    int iGender = _gender == 'ذكر'? 1 : 2;
+    int iGender = _gender == 'ذكر' ? 1 : 2;
 
-    if(name != _name.trim()){
+    if (name != _name.trim()) {
       map['name'] = _name;
       Provider.of<ActiveUserProvider>(context, listen: false).setName(_name);
       HelpFunction.saveUserName(_name);
       _isChangeHappen = true;
     }
-    if(age != _age.trim()){
+    if (age != _age.trim()) {
       print('age: ' + _age.trim());
       map['age'] = int.parse(_age.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false).setAge(int.parse(_age.trim()));
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setAge(int.parse(_age.trim()));
       HelpFunction.saveUserAge(int.parse(_age.trim()));
       _isChangeHappen = true;
     }
-    if(tall != _tall.trim()){
+    if (tall != _tall.trim()) {
       map['tall'] = int.parse(_tall.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false).setTall(int.parse(_tall.trim()));
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setTall(int.parse(_tall.trim()));
       HelpFunction.saveUserTall(int.parse(_tall.trim()));
       _isChangeHappen = true;
     }
-    if(weight != _weight.trim()){
+    if (weight != _weight.trim()) {
       map['weight'] = int.parse(_weight.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false).setWeight(int.parse(_weight.trim()));
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setWeight(int.parse(_weight.trim()));
       HelpFunction.saveUserWeight(int.parse(_weight.trim()));
       _isChangeHappen = true;
     }
-    if(fatsPercent != _fatsPercent.trim()){
+    if (fatsPercent != _fatsPercent.trim()) {
       map['fatsPercent'] = int.parse(_fatsPercent.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false).setFatPercent(int.parse(_fatsPercent.trim()));
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setFatPercent(int.parse(_fatsPercent.trim()));
       HelpFunction.saveUserFatsPercent(int.parse(_fatsPercent.trim()));
       _isChangeHappen = true;
     }
-    if(gender != iGender){
+    if (gender != iGender) {
       map['gender'] = iGender;
-      Provider.of<ActiveUserProvider>(context, listen: false).setGender(iGender);
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setGender(iGender);
       HelpFunction.saveUserGender(iGender);
       _isChangeHappen = true;
     }
-    if(email != _email.trim()){
+    if (email != _email.trim()) {
       map['email'] = _email.trim();
-      Provider.of<ActiveUserProvider>(context, listen: false).setEmail(_email.trim());
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setEmail(_email.trim());
       HelpFunction.saveUserEmail(_email.trim());
       await FirebaseAuth.instance.currentUser!.updateEmail(_email.trim());
       _isChangeHappen = true;
     }
-    if(_password.isNotEmpty){
+    if (_password.isNotEmpty) {
       await FirebaseAuth.instance.currentUser!.updatePassword(_password);
     }
-    if(_isChangeHappen){
+    if (_isChangeHappen) {
       var id = FirebaseAuth.instance.currentUser!.uid;
-      await FirebaseFirestore.instance.collection('users')
+      await FirebaseFirestore.instance
+          .collection('users')
           .doc(id)
           .update(map)
-          .catchError((e){
+          .catchError((e) {
         print(e);
       });
     }
   }
 
-  showConfirmationAlertDialog(BuildContext context) async{
+  showConfirmationAlertDialog(BuildContext context) async {
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -144,21 +160,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             onPressed: () => Navigator.pop(context),
             child: const Text(
               'ألغاء',
-              style: TextStyle(
-                color: Colors.red
-              ),
+              style: TextStyle(color: Colors.red),
             ),
           ),
           TextButton(
-            onPressed: () async{
+            onPressed: () async {
               await checkChangesAndUpdateInFirebase(context);
               Navigator.pop(context);
             },
             child: const Text(
               'تأكيد',
-              style: TextStyle(
-                  color: Colors.black
-              ),
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ],
@@ -170,18 +182,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(this.mounted){
-      int gender = Provider.of<ActiveUserProvider>(context, listen: false)
-          .user!.gender;
-      if(gender == 2) _gender = 'أنثى';
-      else _gender = 'ذكر';
+    if (this.mounted) {
+      int gender =
+          Provider.of<ActiveUserProvider>(context, listen: false).user!.gender;
+      if (gender == 2)
+        _gender = 'أنثى';
+      else
+        _gender = 'ذكر';
     }
   }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    var activeUserProvider = Provider.of<ActiveUserProvider>(context, listen: false);
+    var activeUserProvider =
+        Provider.of<ActiveUserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -192,9 +207,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: ListView(
@@ -205,7 +218,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   fontFamily: 'CairoBold',
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                 width: screenSize.width,
                 decoration: BoxDecoration(
@@ -220,82 +235,97 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                         CustomTextField(
                           text: 'الأسم',
                           obscureText: false,
                           textInputType: TextInputType.text,
-                          setValue: (value){
+                          setValue: (value) {
                             _name = value;
                           },
-                          validation: (value){
-                            if(value.isEmpty) return 'ادخل اسمك';
+                          validation: (value) {
+                            if (value.isEmpty) return 'ادخل اسمك';
                             return null;
                           },
                           anotherFilledColor: true,
                           initialValue: activeUserProvider.user!.name,
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         CustomTextField(
                           text: 'العمر',
                           obscureText: false,
                           textInputType: TextInputType.number,
-                          setValue: (value){
+                          setValue: (value) {
                             _age = value;
                           },
-                          validation: (value){
-                            if(value.isEmpty) return 'ادخل عمرك';
+                          validation: (value) {
+                            if (value.isEmpty) return 'ادخل عمرك';
                             return null;
                           },
                           anotherFilledColor: true,
                           initialValue: activeUserProvider.user!.age.toString(),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         CustomTextField(
                           text: 'الطول',
                           obscureText: false,
                           textInputType: TextInputType.number,
-                          setValue: (value){
+                          setValue: (value) {
                             _tall = value;
                           },
-                          validation: (value){
-                            if(value.isEmpty) return 'ادخل طولك';
+                          validation: (value) {
+                            if (value.isEmpty) return 'ادخل طولك';
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUserProvider.user!.tall.toString(),
+                          initialValue:
+                              activeUserProvider.user!.tall.toString(),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         CustomTextField(
                           text: 'الوزن',
                           obscureText: false,
                           textInputType: TextInputType.number,
-                          setValue: (value){
+                          setValue: (value) {
                             _weight = value;
                           },
-                          validation: (value){
-                            if(value.isEmpty) return 'ادخل وزنك';
+                          validation: (value) {
+                            if (value.isEmpty) return 'ادخل وزنك';
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUserProvider.user!.weight.toString(),
+                          initialValue:
+                              activeUserProvider.user!.weight.toString(),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         CustomTextField(
                           text: 'نسبة الدهون',
                           obscureText: false,
                           textInputType: TextInputType.number,
-                          setValue: (value){
+                          setValue: (value) {
                             _fatsPercent = value;
                           },
-                          validation: (value){
-                            if(value.isEmpty) return 'ادخل نسبة الدهون';
+                          validation: (value) {
+                            if (value.isEmpty) return 'ادخل نسبة الدهون';
                             return null;
                           },
                           anotherFilledColor: true,
-                          initialValue: activeUserProvider.user!.fatsPercent.toString(),
+                          initialValue:
+                              activeUserProvider.user!.fatsPercent.toString(),
                         ),
-                        SizedBox(height: 15,),
+                        SizedBox(
+                          height: 15,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(borderRadius),
@@ -311,17 +341,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               value: _gender,
                               elevation: 10,
                               style: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.black
-                              ),
+                                  fontSize: 17, color: Colors.black),
                               underline: Container(),
                               onChanged: (String? newValue) {
                                 setState(() {
                                   _gender = newValue!;
                                 });
                               },
-                              items: <String>['ذكر', 'أنثى']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>[
+                                'ذكر',
+                                'أنثى'
+                              ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -330,20 +360,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Text(
                 'بيانات الحساب',
                 style: TextStyle(
                   fontFamily: 'CairoBold',
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                 width: screenSize.width,
                 decoration: BoxDecoration(
@@ -358,16 +394,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                         CustomTextField(
                           text: 'البريد الألكتروني',
                           obscureText: false,
                           textInputType: TextInputType.emailAddress,
-                          setValue: (value){
+                          setValue: (value) {
                             _email = value;
                           },
-                          validation: (value){
-                            if(value.isEmpty) return 'ادخل البريد الألكتروني';
+                          validation: (value) {
+                            if (value.isEmpty) return 'ادخل البريد الألكتروني';
                             if (!value.contains('@') || !value.contains('.'))
                               return 'بريد الكتروني خاطىء';
                             return null;
@@ -375,31 +413,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           anotherFilledColor: true,
                           initialValue: activeUserProvider.user!.email,
                         ),
-                        SizedBox(height: 15,),
-                        if(!activeUserProvider.user!.fromSocialMedia)
+                        SizedBox(
+                          height: 15,
+                        ),
+                        if (!activeUserProvider.user!.fromSocialMedia)
                           CustomTextField(
                             text: 'تغيير كلمة السر',
                             obscureText: true,
                             textInputType: TextInputType.text,
-                            setValue: (value){
+                            setValue: (value) {
                               _password = value;
                             },
-                            validation: (value){
-                              if(value.isNotEmpty && value.length < 6) return 'كلمة سر ضعيفة';
+                            validation: (value) {
+                              if (value.isNotEmpty && value.length < 6)
+                                return 'كلمة سر ضعيفة';
                               return null;
                             },
                             anotherFilledColor: true,
                           ),
-                        SizedBox(height: 5,),
+                        SizedBox(
+                          height: 5,
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               CustomButton(
                 text: 'حفظ الأعدادات',
-                onClick: (){
+                onClick: () {
                   onSaveChanges(context);
                 },
               )
