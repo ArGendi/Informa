@@ -72,6 +72,7 @@ class _SelectPlaceState extends State<SelectPlace> {
                     number: 1,
                     userChoice: activeUser!.workoutPlace,
                     onClick: () {
+                      // in home => user.workoutPlace = 1
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setWorkoutPlace(1);
                     },
@@ -85,6 +86,7 @@ class _SelectPlaceState extends State<SelectPlace> {
                     number: 2,
                     userChoice: activeUser.workoutPlace,
                     onClick: () {
+                      // in gym => user.workoutPlace = 2
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setWorkoutPlace(2);
                     },

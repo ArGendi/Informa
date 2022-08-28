@@ -19,7 +19,7 @@ class SelectTrainingDays extends StatefulWidget {
 
 class _SelectTrainingDaysState extends State<SelectTrainingDays> {
   late DateTime _dateTime;
-
+  bool? isSpecificTimeToTrain = false;
   showPickTimeSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -31,31 +31,66 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              color: Colors.white,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    'اختار وقت التمرين',
-                    style: TextStyle(
-                      fontFamily: boldFont,
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      Container(
+                        color: Colors.white,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'اختار وقت التمرين',
+                              style: TextStyle(
+                                fontFamily: boldFont,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 180,
+                        child: CupertinoDatePicker(
+                          initialDateTime: _dateTime,
+                          onDateTimeChanged: (datetime) {
+                            setState(() {
+                              _dateTime = datetime;
+                            });
+                          },
+                          mode: CupertinoDatePickerMode.time,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ),
-            Container(
-              height: 180,
-              child: CupertinoDatePicker(
-                initialDateTime: _dateTime,
-                onDateTimeChanged: (datetime) {
-                  setState(() {
-                    _dateTime = datetime;
-                  });
-                },
-                mode: CupertinoDatePickerMode.time,
-              ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        'لا يوجد وقت محدد للتمرين لا اريد ارسال اشعارت اللتذكير',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          widget.onClick();
+                        },
+                        icon: Icon(
+                          Icons.arrow_forward,
+                          color: Colors.amber,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),

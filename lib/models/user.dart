@@ -5,6 +5,7 @@ import 'package:informa/models/meals_list.dart';
 class AppUser {
   String? id;
   int appId = 5000;
+  String? injuryDetails;
   String? name;
   String? email;
   String? password;
@@ -96,6 +97,7 @@ class AppUser {
     this.premiumEndDate,
     this.name,
     this.email,
+    this.injuryDetails,
     this.token,
     this.premium = false,
     this.gender = 0,
@@ -129,6 +131,7 @@ class AppUser {
 
   fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    injuryDetails = json['injuryDetails'];
     premiumEndDate = json['premiumEndDate'];
     appId = json['appId'] != null ? json['appId'] : 5000;
     email = json['email'];
@@ -228,6 +231,7 @@ class AppUser {
       'id': id,
       'appId': appId,
       'email': email,
+      'injuryDetails': injuryDetails,
       'name': name,
       'premiumEndDate': premiumEndDate,
       'phone': phone,
