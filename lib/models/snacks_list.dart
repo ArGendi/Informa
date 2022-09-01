@@ -1,6 +1,6 @@
 import 'package:informa/models/meal.dart';
 
-class SnacksList{
+class SnacksList {
   static List<Meal> snacks = [
     Meal(
       id: '1000',
@@ -13,9 +13,7 @@ class SnacksList{
       serving: 1,
       unit: 'scoop',
       category: 'وجبات خفيفة',
-      components: [
-        '1 أسكوب واي بروتين'
-      ],
+      components: ['1 أسكوب واي بروتين'],
     ),
     //Molten cakes
     Meal(
@@ -164,7 +162,7 @@ class SnacksList{
         '120 جرام موز',
         'معلقتين كبار عسل',
         '100 جرام زبادي كامل الدسم',
-        '150 جرام لبن كامل الدسم',
+        '150 جرام حليب كامل الدسم',
         '50 جرام زبدة فول سوداني',
         'معلقة صغيرة كاكاو',
       ],
@@ -184,7 +182,7 @@ class SnacksList{
         '45 جرام شوفان',
         '100 جرام موز',
         'معلقة كبيرة عسل',
-        '150 جرام لبن خالي الدسم',
+        '150 جرام حليب خالي الدسم',
       ],
     ),
     //Fruits

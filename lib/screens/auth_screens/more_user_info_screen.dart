@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
@@ -74,10 +75,11 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
     setState(() {
       _isLoading = true;
     });
-    // var usersLength =
-    //     await FirebaseFirestore.instance.collection('users').snapshots().length;
-    // activeUser!.appId = 5000 + usersLength + 1;
-    if (activeUser!.fromSocialMedia) {
+    var documentSnapshot =
+        await FirebaseFirestore.instance.collection('users').get();
+    print(5000 + documentSnapshot.size + 1);
+    activeUser!.appId = 5000 + documentSnapshot.size + 1;
+    if (activeUser.fromSocialMedia) {
       await _firestoreService
           .saveNewAccountWithFullInfo(activeUser)
           .catchError((e) {

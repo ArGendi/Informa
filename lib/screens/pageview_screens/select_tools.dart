@@ -9,7 +9,8 @@ import '../../widgets/custom_button.dart';
 class SelectTools extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectTools({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectTools({Key? key, required this.onClick, required this.onBack})
+      : super(key: key);
 
   @override
   _SelectToolsState createState() => _SelectToolsState();
@@ -20,6 +21,10 @@ class _SelectToolsState extends State<SelectTools> {
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     var screenSize = MediaQuery.of(context).size;
+    activeUser!.workoutPlace == 1
+        ? Provider.of<ActiveUserProvider>(context, listen: false)
+            .addTrainingTool(1)
+        : null;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -39,7 +44,9 @@ class _SelectToolsState extends State<SelectTools> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     width: 85,
                     height: 85,
@@ -49,10 +56,11 @@ class _SelectToolsState extends State<SelectTools> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/images/coach_face.jpg'),
-                        )
-                    ),
+                        )),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'دلوقتي محتاج اعرف الأدوات المتاحة',
                     style: TextStyle(
@@ -64,112 +72,172 @@ class _SelectToolsState extends State<SelectTools> {
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
-                    'اختار الأدوات المتاحة عندك تتمرن بيها',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'CairoBold'
-                    ),
+                    'اختار الأدوات المتاحة عندك تتمرن بها',
+                    style: TextStyle(fontSize: 16, fontFamily: 'CairoBold'),
                   ),
                   Text(
                     '(يمكنك أختيار اكثر من اداة)',
                     style: TextStyle(
                         //fontSize: 16,
-                        fontFamily: 'CairoBold'
-                    ),
+                        fontFamily: 'CairoBold'),
                   ),
-                  SizedBox(height: 25,),
-                  ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser!.trainingTools.contains(1))
-                        Provider.of<ActiveUserProvider>(context, listen: false).addTrainingTool(1);
-                      else
-                        Provider.of<ActiveUserProvider>(context, listen: false).removeTrainingTool(1);
-                    },
-                    mainText: 'دامبل',
-                    subText: 'علي الأقل 2 دامبل',
-                    number: 1,
-                    userChoice: activeUser!.trainingTools.contains(1) ? 1 : 0,
-                    //imagePath: 'assets/images/dumbbelle.png',
+                  SizedBox(
+                    height: 25,
                   ),
-                  SizedBox(height: 5,),
+                  activeUser.workoutPlace == 1
+                      ? ProgramSelectCard(
+                          onClick: () {},
+                          mainText: 'دنبل',
+                          subText: 'علي الأقل 2 دنبل',
+                          number: 1,
+                          userChoice: 1,
+                          imagePath: 'assets/images/dumbbelle.png',
+                        )
+                      : ProgramSelectCard(
+                          onClick: () {
+                            if (!activeUser.trainingTools.contains(1))
+                              Provider.of<ActiveUserProvider>(context,
+                                      listen: false)
+                                  .addTrainingTool(1);
+                            else
+                              Provider.of<ActiveUserProvider>(context,
+                                      listen: false)
+                                  .removeTrainingTool(1);
+                          },
+                          mainText: 'دنبل',
+                          subText: 'علي الأقل 2 دنبل',
+                          number: 1,
+                          userChoice:
+                              activeUser.trainingTools.contains(1) ? 1 : 0,
+                          imagePath: 'assets/images/dumbbelle.png',
+                        ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.trainingTools.contains(2))
-                        Provider.of<ActiveUserProvider>(context, listen: false).addTrainingTool(2);
+                    onClick: () {
+                      if (!activeUser.trainingTools.contains(2))
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .addTrainingTool(2);
                       else
-                        Provider.of<ActiveUserProvider>(context, listen: false).removeTrainingTool(2);
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .removeTrainingTool(2);
                     },
                     mainText: 'بار',
                     number: 2,
                     userChoice: activeUser.trainingTools.contains(2) ? 2 : 0,
-                    //imagePath: 'assets/images/bar1.png',
+                    imagePath: 'assets/images/bar1.png',
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.trainingTools.contains(3))
-                        Provider.of<ActiveUserProvider>(context, listen: false).addTrainingTool(3);
+                    onClick: () {
+                      if (!activeUser.trainingTools.contains(3))
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .addTrainingTool(3);
                       else
-                        Provider.of<ActiveUserProvider>(context, listen: false).removeTrainingTool(3);
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .removeTrainingTool(3);
                     },
-                    mainText: 'بنش',
+                    mainText: 'دكة بضهر متحرك',
                     number: 3,
                     userChoice: activeUser.trainingTools.contains(3) ? 3 : 0,
-                    //imagePath: 'assets/images/bar1.png',
+                    imagePath: 'assets/images/movable_deck.png',
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.trainingTools.contains(4))
-                        Provider.of<ActiveUserProvider>(context, listen: false).addTrainingTool(4);
+                    onClick: () {
+                      if (!activeUser.trainingTools.contains(4))
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .addTrainingTool(4);
                       else
-                        Provider.of<ActiveUserProvider>(context, listen: false).removeTrainingTool(4);
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .removeTrainingTool(4);
                     },
-                    mainText: 'حبال مقاومة',
+                    mainText: 'دكة بضهر ثابت',
                     number: 4,
                     userChoice: activeUser.trainingTools.contains(4) ? 4 : 0,
-                    //imagePath: 'assets/images/bar1.png',
+                    imagePath: 'assets/images/bar1.png',
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.trainingTools.contains(5))
-                        Provider.of<ActiveUserProvider>(context, listen: false).addTrainingTool(5);
+                    onClick: () {
+                      if (!activeUser.trainingTools.contains(5))
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .addTrainingTool(5);
                       else
-                        Provider.of<ActiveUserProvider>(context, listen: false).removeTrainingTool(5);
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .removeTrainingTool(5);
                     },
-                    mainText: 'شنطة ظهر',
+                    mainText: 'حبال مقاومة',
                     number: 5,
                     userChoice: activeUser.trainingTools.contains(5) ? 5 : 0,
-                    //imagePath: 'assets/images/bar1.png',
+                    imagePath: 'assets/images/gym_robe.png',
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.trainingTools.contains(6))
-                        Provider.of<ActiveUserProvider>(context, listen: false).addTrainingTool(6);
+                    onClick: () {
+                      if (!activeUser.trainingTools.contains(6))
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .addTrainingTool(6);
                       else
-                        Provider.of<ActiveUserProvider>(context, listen: false).removeTrainingTool(6);
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .removeTrainingTool(6);
                     },
-                    mainText: 'عقلة',
+                    mainText: 'شنطة ظهر',
                     number: 6,
                     userChoice: activeUser.trainingTools.contains(6) ? 6 : 0,
-                    //imagePath: 'assets/images/bar1.png',
+                    imagePath: 'assets/images/bag.png',
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ProgramSelectCard(
+                    onClick: () {
+                      if (!activeUser.trainingTools.contains(7))
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .addTrainingTool(7);
+                      else
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .removeTrainingTool(7);
+                    },
+                    mainText: 'عقلة',
+                    number: 7,
+                    userChoice: activeUser.trainingTools.contains(7) ? 7 : 0,
+                    imagePath:
+                        'assets/images/pull_bar.png', // assets\images\pull_bar.png
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.trainingTools.isNotEmpty ? widget.onClick : (){},
-            bgColor: activeUser.trainingTools.isNotEmpty ? primaryColor : Colors.grey.shade400,
+            onClick:
+                activeUser.trainingTools.isNotEmpty ? widget.onClick : () {},
+            bgColor: activeUser.trainingTools.isNotEmpty
+                ? primaryColor
+                : Colors.grey.shade400,
           )
         ],
       ),
     );
   }
 }
+
+
+// dumbbel => 1 , bar => 2, dekka with movable back => 3, dekka with fixed back => 4, resistance band => 5, back pack => 6, 3o2la => 7

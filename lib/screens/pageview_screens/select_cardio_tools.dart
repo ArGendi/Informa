@@ -9,7 +9,9 @@ import '../../constants.dart';
 class SelectCardioTools extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectCardioTools({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectCardioTools(
+      {Key? key, required this.onClick, required this.onBack})
+      : super(key: key);
 
   @override
   _SelectCardioToolsState createState() => _SelectCardioToolsState();
@@ -39,7 +41,9 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     width: 85,
                     height: 85,
@@ -49,10 +53,11 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/images/coach_face.jpg'),
-                        )
-                    ),
+                        )),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'أدوات الكارديو',
                     style: TextStyle(
@@ -64,25 +69,25 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     'أختار الادوات المتوفرة عندك للكارديو',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'CairoBold'
-                    ),
+                    style: TextStyle(fontSize: 16, fontFamily: 'CairoBold'),
                   ),
                   Text(
                     '(يمكنك أختيار اكثر من اداة)',
                     style: TextStyle(
-                      //fontSize: 16,
-                        fontFamily: 'CairoBold'
-                    ),
+                        //fontSize: 16,
+                        fontFamily: 'CairoBold'),
                   ),
-                  SizedBox(height: 25,),
+                  SizedBox(
+                    height: 25,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser!.cardioTools.contains(1))
+                    onClick: () {
+                      if (!activeUser!.cardioTools.contains(1))
                         Provider.of<ActiveUserProvider>(context, listen: false)
                             .addToCardioTools(1);
                       else
@@ -94,10 +99,12 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     userChoice: activeUser!.cardioTools.contains(1) ? 1 : 0,
                     imagePath: 'assets/images/treadmill.png',
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.cardioTools.contains(2))
+                    onClick: () {
+                      if (!activeUser.cardioTools.contains(2))
                         Provider.of<ActiveUserProvider>(context, listen: false)
                             .addToCardioTools(2);
                       else
@@ -109,25 +116,29 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     userChoice: activeUser.cardioTools.contains(2) ? 2 : 0,
                     imagePath: 'assets/images/elliptical.png',
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.cardioTools.contains(3))
+                    onClick: () {
+                      if (!activeUser.cardioTools.contains(3))
                         Provider.of<ActiveUserProvider>(context, listen: false)
                             .addToCardioTools(3);
                       else
                         Provider.of<ActiveUserProvider>(context, listen: false)
                             .removeFromCardioTools(3);
                     },
-                    mainText: 'Stair Master',
+                    mainText: 'Stair Machine',
                     number: 3,
                     userChoice: activeUser.cardioTools.contains(3) ? 3 : 0,
                     imagePath: 'assets/images/stair_master.png',
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.cardioTools.contains(4))
+                    onClick: () {
+                      if (!activeUser.cardioTools.contains(4))
                         Provider.of<ActiveUserProvider>(context, listen: false)
                             .addToCardioTools(4);
                       else
@@ -139,30 +150,54 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                     userChoice: activeUser.cardioTools.contains(4) ? 4 : 0,
                     imagePath: 'assets/images/rowing_machine.png',
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   ProgramSelectCard(
-                    onClick: (){
-                      if(!activeUser.cardioTools.contains(5))
+                    onClick: () {
+                      if (!activeUser.cardioTools.contains(5))
                         Provider.of<ActiveUserProvider>(context, listen: false)
                             .addToCardioTools(5);
                       else
                         Provider.of<ActiveUserProvider>(context, listen: false)
                             .removeFromCardioTools(5);
                     },
-                    mainText: 'لا يوجد',
+                    mainText: 'Bicycle machine',
                     number: 5,
                     userChoice: activeUser.cardioTools.contains(5) ? 5 : 0,
+                    imagePath: 'assets/images/bicycle.jpg',
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ProgramSelectCard(
+                    onClick: () {
+                      if (!activeUser.cardioTools.contains(6))
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .addToCardioTools(6);
+                      else
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .removeFromCardioTools(6);
+                    },
+                    mainText: 'لا يوجد',
+                    number: 6,
+                    userChoice: activeUser.cardioTools.contains(6) ? 6 : 0,
                     //imagePath: 'assets/images/bar1.png',
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),
           ),
           CustomButton(
             text: 'تم',
-            onClick: activeUser.trainingTools.isNotEmpty ? widget.onClick : (){},
-            bgColor: activeUser.trainingTools.isNotEmpty ? primaryColor : Colors.grey.shade400,
+            onClick:
+                activeUser.trainingTools.isNotEmpty ? widget.onClick : () {},
+            bgColor: activeUser.trainingTools.isNotEmpty
+                ? primaryColor
+                : Colors.grey.shade400,
           )
         ],
       ),

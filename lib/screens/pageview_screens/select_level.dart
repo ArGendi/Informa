@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
@@ -10,7 +9,8 @@ import '../../widgets/custom_button.dart';
 class SelectLevel extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectLevel({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectLevel({Key? key, required this.onClick, required this.onBack})
+      : super(key: key);
 
   @override
   _SelectLevelState createState() => _SelectLevelState();
@@ -40,7 +40,9 @@ class _SelectLevelState extends State<SelectLevel> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     width: 85,
                     height: 85,
@@ -50,10 +52,11 @@ class _SelectLevelState extends State<SelectLevel> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/images/coach_face.jpg'),
-                        )
-                    ),
+                        )),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'جميل دلوقتي محتاجين نعرف مستواك',
                     style: TextStyle(
@@ -65,15 +68,16 @@ class _SelectLevelState extends State<SelectLevel> {
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 10,),
-                  Text(
-                    'اختار مستواك نشاطك',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'CairoBold'
-                    ),
+                  SizedBox(
+                    height: 10,
                   ),
-                  SizedBox(height: 25,),
+                  Text(
+                    'اختار مستوى نشاطك',
+                    style: TextStyle(fontSize: 16, fontFamily: 'CairoBold'),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -82,28 +86,34 @@ class _SelectLevelState extends State<SelectLevel> {
                           id: 1,
                           level: 1,
                           selected: activeUser!.fitnessLevel,
-                          onClick: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false)
+                          onClick: () {
+                            Provider.of<ActiveUserProvider>(context,
+                                    listen: false)
                                 .setFitnessLevel(1);
                           },
                         ),
                       ),
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Expanded(
                         child: SelectLevelCard(
-                          text: 'حركة و نشاط\n خفبف نوعا ما',
+                          text: 'حركة و نشاط\n خفيف نوعا ما',
                           id: 2,
                           level: 2,
                           selected: activeUser.fitnessLevel,
-                          onClick: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false)
+                          onClick: () {
+                            Provider.of<ActiveUserProvider>(context,
+                                    listen: false)
                                 .setFitnessLevel(2);
                           },
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -112,34 +122,40 @@ class _SelectLevelState extends State<SelectLevel> {
                           id: 3,
                           level: 3,
                           selected: activeUser.fitnessLevel,
-                          onClick: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false)
+                          onClick: () {
+                            Provider.of<ActiveUserProvider>(context,
+                                    listen: false)
                                 .setFitnessLevel(3);
                           },
                         ),
                       ),
-                      SizedBox(width: 10,),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Expanded(
                         child: SelectLevelCard(
-                          text: 'حركة و نشاط\n فى اليوم كبير',
+                          text: 'حركة و نشاط\n كبير فى اليوم',
                           id: 4,
                           level: 4,
                           selected: activeUser.fitnessLevel,
-                          onClick: (){
-                            Provider.of<ActiveUserProvider>(context, listen: false)
+                          onClick: () {
+                            Provider.of<ActiveUserProvider>(context,
+                                    listen: false)
                                 .setFitnessLevel(4);
                           },
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   SelectLevelCard(
-                    text: 'طول اليوم حركة و جهد\n و ومجهود كبير جدا',
+                    text: 'طول اليوم حركة و مجهود\n كبير جدا',
                     id: 5,
                     level: 5,
                     selected: activeUser.fitnessLevel,
-                    onClick: (){
+                    onClick: () {
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setFitnessLevel(5);
                     },
@@ -150,8 +166,10 @@ class _SelectLevelState extends State<SelectLevel> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.fitnessLevel != 0 ? widget.onClick : (){},
-            bgColor: activeUser.fitnessLevel != 0 ? primaryColor : Colors.grey.shade400,
+            onClick: activeUser.fitnessLevel != 0 ? widget.onClick : () {},
+            bgColor: activeUser.fitnessLevel != 0
+                ? primaryColor
+                : Colors.grey.shade400,
           )
         ],
       ),

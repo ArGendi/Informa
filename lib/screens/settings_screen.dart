@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:informa/app_localization.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/helpers/shared_preference.dart';
-import 'package:informa/models/user.dart';
 import 'package:informa/models/water.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/providers/app_language_provider.dart';
@@ -16,8 +15,6 @@ import 'package:informa/widgets/setting_card.dart';
 import 'package:informa/widgets/water_settings_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
-import 'auth_screens/main_register_screen.dart';
-
 class SettingsScreen extends StatefulWidget {
   static String id = 'settings';
   const SettingsScreen({Key? key}) : super(key: key);
@@ -27,7 +24,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  showLanguageBottomSheet(String lang){
+  showLanguageBottomSheet(String lang) {
     showModalBottomSheet(
       context: context,
       backgroundColor: bgColor,
@@ -42,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  showWaterSettingsBottomSheet(Water water){
+  showWaterSettingsBottomSheet(Water water) {
     showModalBottomSheet(
       context: context,
       backgroundColor: bgColor,
@@ -57,20 +54,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  logout(BuildContext context) async{
+  logout(BuildContext context) async {
     print(FirebaseAuth.instance.currentUser!.email);
     await HelpFunction.saveInitScreen(RegisterScreens.id);
     FirebaseAuth.instance.signOut();
     Provider.of<ActiveUserProvider>(context, listen: false).initializeUser();
     Provider.of<AppLanguageProvider>(context, listen: false).initializeLang();
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(RegisterScreens.id, (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        RegisterScreens.id, (Route<dynamic> route) => false);
   }
 
-  subscriptionPlan(BuildContext context){
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-    if(!activeUser!.premium)
-      Navigator.pushNamed(context, PlansScreen.id);
+  subscriptionPlan(BuildContext context) {
+    var activeUser =
+        Provider.of<ActiveUserProvider>(context, listen: false).user;
+    if (!activeUser!.premium) Navigator.pushNamed(context, PlansScreen.id);
+    // if (activeUser.premium) {
+    //   // show bottom dialog that contains the end date of subscription and the type of the subscription
+    //   showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: Text(
+    //           'subscription_end_date',
+    //           style: TextStyle(
+    //             fontSize: 14,
+    //             fontWeight: FontWeight.bold,
+    //           ),
+    //         ),
+    //         content: Text(
+    //           'subscription_end_date_content',
+    //           style: TextStyle(
+    //             fontSize: 14,
+    //           ),
+    //         ),
+    //         actions: <Widget>[
+    //           FlatButton(
+    //             child: Text(
+    //               'ok',
+    //               style: TextStyle(
+    //                 fontSize: 14,
+    //               ),
+    //             ),
+    //             onPressed: () {
+    //               Navigator.of(context).pop();
+    //             },
+    //           ),
+    //         ],
+    //       );
+    //     },
+    //   );
+    // }
   }
 
   @override
@@ -90,9 +123,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: ListView(
@@ -103,7 +134,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   fontFamily: 'CairoBold',
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                 width: screenSize.width,
                 decoration: BoxDecoration(
@@ -117,8 +150,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       SettingCard(
                         icon: Icons.person,
-                        text: localization.translate('البيانات الشخصية').toString(),
-                        onClick: (){
+                        text: localization
+                            .translate('البيانات الشخصية')
+                            .toString(),
+                        onClick: () {
                           Navigator.pushNamed(context, EditProfileScreen.id);
                         },
                       ),
@@ -126,24 +161,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         height: 20,
                       ),
                       SettingCard(
-                        icon: Icons.water,
-                        text: localization.translate('أعدادات الماء').toString(),
-                        onClick: (){
-                          showWaterSettingsBottomSheet(water);
-                        }
-                      ),
+                          icon: Icons.water,
+                          text: localization
+                              .translate('أعدادات الماء')
+                              .toString(),
+                          onClick: () {
+                            showWaterSettingsBottomSheet(water);
+                          }),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Text(
                 localization.translate('الأشتراكات').toString(),
                 style: TextStyle(
                   fontFamily: 'CairoBold',
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                 width: screenSize.width,
                 decoration: BoxDecoration(
@@ -159,7 +199,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         icon: Icons.payment,
                         iconColor: primaryColor,
                         text: localization.translate('خطة الاشتراك').toString(),
-                        onClick: (){
+                        onClick: () {
                           subscriptionPlan(context);
                         },
                       ),
@@ -167,14 +207,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Text(
                 localization.translate('الأعدادات العامة').toString(),
                 style: TextStyle(
                   fontFamily: 'CairoBold',
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Container(
                 width: screenSize.width,
                 decoration: BoxDecoration(
@@ -189,23 +233,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       SettingCard(
                         icon: Icons.language,
                         text: localization.translate('لغة التطبيق').toString(),
-                        onClick: (){
+                        onClick: () {
                           showLanguageBottomSheet(lang);
                         },
                       ),
                       Divider(
                         height: 20,
                       ),
+                      activeUser!.package == 2 && activeUser.premium ||
+                              activeUser.package == 3 && activeUser.premium
+                          ? SettingCard(
+                              icon: Icons.whatsapp,
+                              text: localization
+                                  .translate('تواصل مع  كابتن المتابعة ')
+                                  .toString(),
+                              onClick: () {},
+                            )
+                          : Container(),
                       SettingCard(
-                        icon: Icons.call,
-                        text: localization.translate(activeUser!.premium ? 'تواصل مع خدمة العملاء' : 'تواصل مع فريق المبيعات').toString(),
-                        onClick: (){},
+                        icon: Icons.whatsapp,
+                        text: localization
+                            .translate(activeUser.premium
+                                ? 'تواصل مع خدمة العملاء'
+                                : 'تواصل مع فريق المبيعات')
+                            .toString(),
+                        onClick: () {},
                       ),
+                      activeUser.package == 3 && activeUser.premium
+                          ? SettingCard(
+                              icon: Icons.whatsapp,
+                              text: localization
+                                  .translate('تواصل مع كابتن حسين ')
+                                  .toString(),
+                              onClick: () {},
+                            )
+                          : Container(),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               Container(
                 width: screenSize.width,
                 decoration: BoxDecoration(
@@ -221,7 +290,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         icon: Icons.exit_to_app,
                         iconColor: Colors.red,
                         text: localization.translate('تسجيل الخروج').toString(),
-                        onClick: (){
+                        onClick: () {
                           logout(context);
                         },
                       ),

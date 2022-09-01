@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/helpers/shared_preference.dart';
-import 'package:informa/models/meal.dart';
 import 'package:informa/models/meals_list.dart';
-import 'package:informa/models/workout_preset.dart';
-import 'package:informa/services/firestore_service.dart';
+import 'package:informa/models/supplement.dart';
 
 class AppUser {
   String? id;
   int appId = 5000;
+  String? injuryDetails;
   String? name;
   String? email;
   String? password;
@@ -36,6 +35,7 @@ class AppUser {
   int iTrainingDays = -1;
   DateTime? trainingTime;
   List trainingDays = [];
+  List<Supplement?>? addedSupplementsByUser = [];
   //---------------------------
   //0 = none, 1 = ok, 2 = no
   int wheyProtein;
@@ -57,6 +57,7 @@ class AppUser {
   int disease;
   String? diseaseDescription;
   DateTime? premiumStartDate;
+  DateTime? premiumEndDate;
   MealsList _mealsList = new MealsList();
   int package;
   int plan;
@@ -93,15 +94,48 @@ class AppUser {
   Map monthWorkoutStatus = {};
   String? workoutPreset;
 
-  AppUser({this.id, this.name, this.email, this.token, this.premium = false, this.gender = 0, this.program = 0,
-      this.goal = 0, this.weight = 80, this.age = 30, this.fatsPercent = 0, this.tall = 170, this.workoutPlace = 0,
-      this.fitnessLevel = 0, this.trainingPeriodLevel = 0, this.fillPremiumForm=false ,this.wheyProtein = 0, this.haveSupplements = 0,
-      this.numberOfMeals = 0, this.milkProblem = 0 ,this.disease = 0, this.package = 0, this.plan = 0, this.whichTwoMeals = 0,
-      this.oldGoal = 0, this.dietType = 0, this.adminConfirm = false, this.workoutGoal = 0,
-      this.workoutGoalDescription, this.trainingLevel = 0, this.injuryExist = 0, this.injuryType = 0,});
+  AppUser({
+    this.id,
+    this.premiumEndDate,
+    this.name,
+    this.email,
+    this.injuryDetails,
+    this.token,
+    this.premium = false,
+    this.gender = 0,
+    this.program = 0,
+    this.goal = 0,
+    this.weight = 80,
+    this.age = 30,
+    this.fatsPercent = 0,
+    this.tall = 170,
+    this.workoutPlace = 0,
+    this.fitnessLevel = 0,
+    this.trainingPeriodLevel = 0,
+    this.fillPremiumForm = false,
+    this.wheyProtein = 0,
+    this.haveSupplements = 0,
+    this.numberOfMeals = 0,
+    this.milkProblem = 0,
+    this.disease = 0,
+    this.package = 0,
+    this.plan = 0,
+    this.whichTwoMeals = 0,
+    this.oldGoal = 0,
+    this.dietType = 0,
+    this.adminConfirm = false,
+    this.workoutGoal = 0,
+    this.workoutGoalDescription,
+    this.trainingLevel = 0,
+    this.injuryExist = 0,
+    this.injuryType = 0,
+  });
 
-  fromJson(Map<String, dynamic> json){
-    appId = json['appId'] != null? json['appId'] : 5000;
+  fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    injuryDetails = json['injuryDetails'];
+    premiumEndDate = json['premiumEndDate'];
+    appId = json['appId'] != null ? json['appId'] : 5000;
     email = json['email'];
     name = json['name'];
     phone = json['phone'];
@@ -119,34 +153,36 @@ class AppUser {
     age = json['age'];
     fitnessLevel = json['fitnessLevel'];
     trainingPeriodLevel = json['trainingPeriodLevel'];
-    trainingTools = json['trainingTools'] ;
+    trainingTools = json['trainingTools'];
     iTrainingDays = json['iTrainingDays'];
-    var tsTrainingTime = json['trainingTime'] != null? json['trainingTime'] as Timestamp : null;
-    trainingTime = tsTrainingTime != null? tsTrainingTime.toDate() : null;
+    var tsTrainingTime =
+        json['trainingTime'] != null ? json['trainingTime'] as Timestamp : null;
+    trainingTime = tsTrainingTime != null ? tsTrainingTime.toDate() : null;
     trainingDays = json['trainingDays'];
     wheyProtein = json['wheyProtein'];
     haveSupplements = json['haveSupplements'];
     supplements = json['supplements'] != null ? json['supplements'] : [];
     numberOfMeals = json['numberOfMeals'];
     datesOfMeals = [];
-    for(var date in json['datesOfMeals']){
+    for (var date in json['datesOfMeals']) {
       var temp = date as Timestamp;
       datesOfMeals.add(temp.toDate());
     }
     // allMeals = premium && fillPremiumForm?
     //     _mealsList.getMealsByIds(json['wantedMeals']) : List.from(MealsList.allMeals);
-    unWantedMeals = json['unWantedMeals'] != null? json['unWantedMeals'] : [];
+    unWantedMeals = json['unWantedMeals'] != null ? json['unWantedMeals'] : [];
     milkProblem = json['milkProblem'];
     disease = json['disease'];
     diseaseDescription = json['diseaseDescription'];
     DateTime? dateTime;
-    if(json['premiumStartDate'] != null) {
+    if (json['premiumStartDate'] != null) {
       DateTime now = DateTime.now();
       var temp = json['premiumStartDate'] as Timestamp;
       dateTime = temp.toDate();
       bool before = dateTime.isBefore(now);
-      if(before) dateTime = null;
+      if (before) dateTime = null;
     }
+    // addedSupplementsByUser = json['addedSupplementsByUser'];
     premiumStartDate = dateTime;
     package = json['package'];
     plan = json['plan'];
@@ -162,7 +198,7 @@ class AppUser {
     dailyFats = json['dailyFats'];
     oldGoal = json['oldGoal'];
     DateTime? dtLastDataUpdatedDate;
-    if(json['lastDataUpdatedDate'] != null) {
+    if (json['lastDataUpdatedDate'] != null) {
       var temp = json['lastDataUpdatedDate'] as Timestamp;
       dtLastDataUpdatedDate = temp.toDate();
     }
@@ -172,28 +208,36 @@ class AppUser {
     dietType = json['dietType'] != null ? json['dietType'] : 0;
     lowAndHighCarb = json['lowAndHighCarb'];
     DateTime? dtCarbCycleDate;
-    if(json['carbCycleStartDate'] != null) {
+    if (json['carbCycleStartDate'] != null) {
       var temp = json['carbCycleStartDate'] as Timestamp;
       dtCarbCycleDate = temp.toDate();
     }
     carbCycleStartDate = dtCarbCycleDate;
     dailyCarbCycle = json['dailyCarbCycle'];
-    workoutGoal = json['workoutGoal'] != null? json['workoutGoal'] : 0;
+    workoutGoal = json['workoutGoal'] != null ? json['workoutGoal'] : 0;
     workoutGoalDescription = json['workoutGoalDescription'];
-    trainingLevel = json['trainingLevel'] != null? json['trainingLevel'] : 0;
-    injuryExist = json['injuryExist'] != null? json['injuryExist'] : 0;
-    injuryType = json['injuryType'] != null? json['injuryType'] : 0;
-    weakestMuscles = json['weakestMuscles'] !=null ? json['weakestMuscles'].cast<int>() : [];
-    cardioTools = json['cardioTools'] !=null ?json['cardioTools'].cast<int>() : [];
-    monthWorkoutStatus = json['monthWorkoutStatus'] != null ? json['monthWorkoutStatus'] : {};
+    trainingLevel = json['trainingLevel'] != null ? json['trainingLevel'] : 0;
+    injuryExist = json['injuryExist'] != null ? json['injuryExist'] : 0;
+    injuryType = json['injuryType'] != null ? json['injuryType'] : 0;
+    weakestMuscles = json['weakestMuscles'] != null
+        ? json['weakestMuscles'].cast<int>()
+        : [];
+    cardioTools =
+        json['cardioTools'] != null ? json['cardioTools'].cast<int>() : [];
+    monthWorkoutStatus =
+        json['monthWorkoutStatus'] != null ? json['monthWorkoutStatus'] : {};
     workoutPreset = json['workoutPreset'];
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'appId': appId,
+      'addedSupplementsByUser': addedSupplementsByUser,
       'email': email,
+      'injuryDetails': injuryDetails,
       'name': name,
+      'premiumEndDate': premiumEndDate,
       'phone': phone,
       'fromSocialMedia': fromSocialMedia,
       'premium': premium,
@@ -211,7 +255,8 @@ class AppUser {
       'trainingPeriodLevel': trainingPeriodLevel,
       'trainingTools': trainingTools,
       'iTrainingDays': iTrainingDays,
-      'trainingTime': trainingTime != null? Timestamp.fromDate(trainingTime!) : null,
+      'trainingTime':
+          trainingTime != null ? Timestamp.fromDate(trainingTime!) : null,
       'trainingDays': trainingDays,
       'wheyProtein': wheyProtein,
       'haveSupplements': haveSupplements,
@@ -224,8 +269,9 @@ class AppUser {
       'milkProblem': milkProblem,
       'disease': disease,
       'diseaseDescription': diseaseDescription,
-      'premiumStartDate': premiumStartDate != null? Timestamp.fromDate(premiumStartDate!):
-        null,
+      'premiumStartDate': premiumStartDate != null
+          ? Timestamp.fromDate(premiumStartDate!)
+          : null,
       'package': package,
       'plan': plan,
       'inBody': inBody,
@@ -239,14 +285,16 @@ class AppUser {
       'dailyCarb': dailyCarb,
       'dailyFats': dailyFats,
       'oldGoal': oldGoal,
-      'lastDataUpdatedDate': lastDataUpdatedDate != null? Timestamp.fromDate(lastDataUpdatedDate!):
-        null,
+      'lastDataUpdatedDate': lastDataUpdatedDate != null
+          ? Timestamp.fromDate(lastDataUpdatedDate!)
+          : null,
       'myWater': myWater,
       'dailyWater': dailyWater,
       'dietType': dietType,
       'lowAndHighCarb': lowAndHighCarb,
-      'carbCycleStartDate': carbCycleStartDate != null?
-          Timestamp.fromDate(carbCycleStartDate!): null,
+      'carbCycleStartDate': carbCycleStartDate != null
+          ? Timestamp.fromDate(carbCycleStartDate!)
+          : null,
       'dailyCarbCycle': dailyCarbCycle,
       'workoutGoal': workoutGoal,
       'workoutGoalDescription': workoutGoalDescription,
@@ -255,12 +303,12 @@ class AppUser {
       'injuryType': injuryType,
       'weakestMuscles': weakestMuscles,
       'cardioTools': cardioTools,
-      'monthWorkoutStatus' : monthWorkoutStatus,
+      'monthWorkoutStatus': monthWorkoutStatus,
       'workoutPreset': workoutPreset,
     };
   }
 
-  Future saveInSharedPreference() async{
+  Future saveInSharedPreference() async {
     await HelpFunction.saveUserName(name!);
     await HelpFunction.saveUserEmail(email!);
     await HelpFunction.saveUserPhone(phone!);
@@ -280,7 +328,7 @@ class AppUser {
     await HelpFunction.saveUserTrainingDays(trainingDays);
   }
 
-  Future getFromSharedPreference() async{
+  Future getFromSharedPreference() async {
     name = await HelpFunction.getUserName();
     email = await HelpFunction.getUserEmail();
     phone = await HelpFunction.getUserPhone();
@@ -299,5 +347,4 @@ class AppUser {
     trainingTools = (await HelpFunction.getUserTrainingTools())!;
     trainingDays = (await HelpFunction.getUserTrainingDays())!;
   }
-
 }

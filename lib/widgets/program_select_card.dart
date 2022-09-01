@@ -12,7 +12,16 @@ class ProgramSelectCard extends StatefulWidget {
   final String? imagePath;
   final Color? borderColor;
 
-  const ProgramSelectCard({Key? key, required this.onClick, required this.mainText, this.subText, required this.number, required this.userChoice, this.imagePath, this.borderColor}) : super(key: key);
+  const ProgramSelectCard(
+      {Key? key,
+      required this.onClick,
+      required this.mainText,
+      this.subText,
+      required this.number,
+      required this.userChoice,
+      this.imagePath,
+      this.borderColor})
+      : super(key: key);
 
   @override
   _ProgramSelectCardState createState() => _ProgramSelectCardState();
@@ -31,11 +40,13 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
             color: Colors.white,
             borderRadius: BorderRadius.circular(7),
             border: Border.all(
-                color: widget.userChoice == widget.number? primaryColor :
-                  widget.borderColor != null ? widget.borderColor! : Colors.grey.shade300,
-                width: widget.userChoice == widget.number? 2 : 1,
-            )
-        ),
+              color: widget.userChoice == widget.number
+                  ? primaryColor
+                  : widget.borderColor != null
+                      ? widget.borderColor!
+                      : Colors.grey.shade300,
+              width: widget.userChoice == widget.number ? 2 : 1,
+            )),
         duration: Duration(milliseconds: 400),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
@@ -47,24 +58,21 @@ class _ProgramSelectCardState extends State<ProgramSelectCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                     widget.mainText,
+                      widget.mainText,
                       style: TextStyle(
-                          fontSize: widget.subText != null ? 16 : null,
-                          fontFamily: widget.subText != null ? boldFont : null,
+                        fontSize: widget.subText != null ? 16 : null,
+                        fontFamily: widget.subText != null ? boldFont : null,
                       ),
                     ),
-                    if(widget.subText != null)
+                    if (widget.subText != null)
                       Text(
                         widget.subText!,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 13
-                        ),
+                        style: TextStyle(color: Colors.grey, fontSize: 13),
                       ),
                   ],
                 ),
               ),
-              if(widget.imagePath != null)
+              if (widget.imagePath != null)
                 Image.asset(
                   widget.imagePath!,
                   width: 60,
