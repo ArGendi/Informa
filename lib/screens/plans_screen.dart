@@ -8,7 +8,6 @@ import 'package:informa/widgets/program_card.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
-import '../providers/plans_provider.dart';
 
 class PlansScreen extends StatefulWidget {
   static String id = 'plans';
@@ -325,27 +324,44 @@ class _PlansScreenState extends State<PlansScreen> {
           ),
           //  var index = userBoard.indexOf(element);
           CarouselSlider(
-              items: Provider.of<PlansProvider>(context, listen: false)
-                  .plans
-                  .asMap()
-                  .map((i, e) {
-                    return MapEntry(
-                      i,
-                      ProgramCard(
-                        id: i,
-                        mainText: e.name,
-                        description: e.description,
-                        onClick: () {
-                          setState(() {
-                            _selected = i;
-                          });
-                        },
-                        selected: _selected,
-                      ),
-                    );
-                  })
-                  .values
-                  .toList(),
+              items: [
+                ProgramCard(
+                  id: 1,
+                  selected: _selected,
+                  onClick: () {
+                    setState(() {
+                      _selected = 1;
+                    });
+                  },
+                  mainText: 'تمارين',
+                  description:
+                      'يهمني اخد برنامج نمارين مفصل علي روتيني واحتياجاتي',
+                ),
+                ProgramCard(
+                  id: 2,
+                  selected: _selected,
+                  onClick: () {
+                    setState(() {
+                      _selected = 2;
+                    });
+                  },
+                  mainText: 'تمارين + تغذية',
+                  description:
+                      'مستعد التزم ببرنامج تمارين وتغذية مناسبين لهدفي',
+                ),
+                ProgramCard(
+                  id: 3,
+                  selected: _selected,
+                  onClick: () {
+                    setState(() {
+                      _selected = 3;
+                    });
+                  },
+                  mainText: 'نظام غذائي',
+                  description:
+                      'معنديش وقت كتير للتمرين ومحتاج نظام غذائي مناسب',
+                ),
+              ],
               options: CarouselOptions(
                   //height: 200,
                   aspectRatio: 16 / 9,
@@ -368,41 +384,3 @@ class _PlansScreenState extends State<PlansScreen> {
     );
   }
 }
-      // [
-      //           ProgramCard(
-      //             id: 1,
-      //             selected: _selected,
-      //             onClick: () {
-      //               setState(() {
-      //                 _selected = 1;
-      //               });
-      //             },
-      //             mainText: 'تمارين',
-      //             description:
-      //                 'يهمني اخد برنامج نمارين مفصل علي روتيني واحتياجاتي',
-      //           ),
-      //           ProgramCard(
-      //             id: 2,
-      //             selected: _selected,
-      //             onClick: () {
-      //               setState(() {
-      //                 _selected = 2;
-      //               });
-      //             },
-      //             mainText: 'تمارين + تغذية',
-      //             description:
-      //                 'مستعد التزم ببرنامج تمارين وتغذية مناسبين لهدفي',
-      //           ),
-      //           ProgramCard(
-      //             id: 3,
-      //             selected: _selected,
-      //             onClick: () {
-      //               setState(() {
-      //                 _selected = 3;
-      //               });
-      //             },
-      //             mainText: 'نظام غذائي',
-      //             description:
-      //                 'معنديش وقت كتير للتمرين ومحتاج نظام غذائي مناسب',
-      //           ),
-      //         ]
