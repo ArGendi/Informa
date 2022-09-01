@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/meals_list.dart';
+import 'package:informa/models/supplement.dart';
 
 class AppUser {
   String? id;
@@ -34,6 +35,7 @@ class AppUser {
   int iTrainingDays = -1;
   DateTime? trainingTime;
   List trainingDays = [];
+  List<Supplement?>? addedSupplementsByUser = [];
   //---------------------------
   //0 = none, 1 = ok, 2 = no
   int wheyProtein;
@@ -180,6 +182,7 @@ class AppUser {
       bool before = dateTime.isBefore(now);
       if (before) dateTime = null;
     }
+    // addedSupplementsByUser = json['addedSupplementsByUser'];
     premiumStartDate = dateTime;
     package = json['package'];
     plan = json['plan'];
@@ -230,6 +233,7 @@ class AppUser {
     return {
       'id': id,
       'appId': appId,
+      'addedSupplementsByUser': addedSupplementsByUser,
       'email': email,
       'injuryDetails': injuryDetails,
       'name': name,

@@ -8,6 +8,7 @@ import 'package:informa/widgets/program_card.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
+import '../providers/plans_provider.dart';
 
 class PlansScreen extends StatefulWidget {
   static String id = 'plans';
@@ -19,7 +20,7 @@ class PlansScreen extends StatefulWidget {
 
 class _PlansScreenState extends State<PlansScreen> {
   int _selected = 2;
-
+  int count = 0;
   onSubscribe(BuildContext context) {
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setProgram(_selected);
@@ -32,46 +33,6 @@ class _PlansScreenState extends State<PlansScreen> {
     return Scaffold(
       body: ListView(
         children: [
-          // Container(
-          //   color: Colors.white,
-          //   child: Padding(
-          //     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //       children: [
-          //         Text(
-          //           'شاهد مميزات البريميم',
-          //           style: TextStyle(),
-          //         ),
-          //         InkWell(
-          //           onTap: (){
-          //             Navigator.push(
-          //               context,
-          //               MaterialPageRoute(builder: (context) => VideoPlayerScreen(
-          //                 url: 'https://www.youtube.com/watch?v=sLgz57tguKo',
-          //               )),
-          //             );
-          //           },
-          //           child: Card(
-          //             elevation: 0,
-          //             color: primaryColor,
-          //             shape: RoundedRectangleBorder(
-          //                 borderRadius: BorderRadius.circular(10)
-          //             ),
-          //             child: Padding(
-          //               padding: const EdgeInsets.all(5.0),
-          //               child: Icon(
-          //                 Icons.play_arrow,
-          //                 color: Colors.white,
-          //                 size: 25,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -362,45 +323,29 @@ class _PlansScreenState extends State<PlansScreen> {
           SizedBox(
             height: 10,
           ),
+          //  var index = userBoard.indexOf(element);
           CarouselSlider(
-              items: [
-                ProgramCard(
-                  id: 1,
-                  selected: _selected,
-                  onClick: () {
-                    setState(() {
-                      _selected = 1;
-                    });
-                  },
-                  mainText: 'تمارين',
-                  description:
-                      'يهمني اخد برنامج نمارين مفصل علي روتيني واحتياجاتي',
-                ),
-                ProgramCard(
-                  id: 2,
-                  selected: _selected,
-                  onClick: () {
-                    setState(() {
-                      _selected = 2;
-                    });
-                  },
-                  mainText: 'تمارين + تغذية',
-                  description:
-                      'مستعد التزم ببرنامج تمارين وتغذية مناسبين لهدفي',
-                ),
-                ProgramCard(
-                  id: 3,
-                  selected: _selected,
-                  onClick: () {
-                    setState(() {
-                      _selected = 3;
-                    });
-                  },
-                  mainText: 'نظام غذائي',
-                  description:
-                      'معنديش وقت كتير للتمرين ومحتاج نظام غذائي مناسب',
-                ),
-              ],
+              items: Provider.of<PlansProvider>(context, listen: false)
+                  .plans
+                  .asMap()
+                  .map((i, e) {
+                    return MapEntry(
+                      i,
+                      ProgramCard(
+                        id: i,
+                        mainText: e.name,
+                        description: e.description,
+                        onClick: () {
+                          setState(() {
+                            _selected = i;
+                          });
+                        },
+                        selected: _selected,
+                      ),
+                    );
+                  })
+                  .values
+                  .toList(),
               options: CarouselOptions(
                   //height: 200,
                   aspectRatio: 16 / 9,
@@ -423,3 +368,41 @@ class _PlansScreenState extends State<PlansScreen> {
     );
   }
 }
+      // [
+      //           ProgramCard(
+      //             id: 1,
+      //             selected: _selected,
+      //             onClick: () {
+      //               setState(() {
+      //                 _selected = 1;
+      //               });
+      //             },
+      //             mainText: 'تمارين',
+      //             description:
+      //                 'يهمني اخد برنامج نمارين مفصل علي روتيني واحتياجاتي',
+      //           ),
+      //           ProgramCard(
+      //             id: 2,
+      //             selected: _selected,
+      //             onClick: () {
+      //               setState(() {
+      //                 _selected = 2;
+      //               });
+      //             },
+      //             mainText: 'تمارين + تغذية',
+      //             description:
+      //                 'مستعد التزم ببرنامج تمارين وتغذية مناسبين لهدفي',
+      //           ),
+      //           ProgramCard(
+      //             id: 3,
+      //             selected: _selected,
+      //             onClick: () {
+      //               setState(() {
+      //                 _selected = 3;
+      //               });
+      //             },
+      //             mainText: 'نظام غذائي',
+      //             description:
+      //                 'معنديش وقت كتير للتمرين ومحتاج نظام غذائي مناسب',
+      //           ),
+      //         ]

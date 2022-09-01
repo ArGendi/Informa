@@ -187,6 +187,8 @@ class _SelectInjuryState extends State<SelectInjury> {
                       onChanged: (value) {
                         _injuryDetails = value;
                       },
+                      maxLines: 6,
+                      minLines: 4,
                       decoration: InputDecoration(
                         labelText: 'ممكن تشرحلنا اكتر عن الاصابة',
                         labelStyle: TextStyle(

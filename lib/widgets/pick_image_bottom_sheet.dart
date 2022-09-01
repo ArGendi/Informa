@@ -5,7 +5,13 @@ import '../constants.dart';
 class PickImageBottomSheet extends StatefulWidget {
   final VoidCallback onCamera;
   final VoidCallback onPhotos;
-  const PickImageBottomSheet({Key? key, required this.onCamera, required this.onPhotos}) : super(key: key);
+  final bool? isSupplement;
+  const PickImageBottomSheet(
+      {Key? key,
+      required this.onCamera,
+      required this.onPhotos,
+      this.isSupplement})
+      : super(key: key);
 
   @override
   _PickImageBottomSheetState createState() => _PickImageBottomSheetState();
@@ -29,17 +35,21 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
           ),
           child: Center(
             child: Text(
-              'ورينا صورة الأختبار',
+              widget.isSupplement == true
+                  ? 'اضف صورة المكمل الغذائي'
+                  : 'ورينا صورة الأختبار',
               style: TextStyle(
                 fontFamily: 'CairoBold',
               ),
             ),
           ),
         ),
-        SizedBox(height: 15,),
+        SizedBox(
+          height: 15,
+        ),
         InkWell(
           borderRadius: BorderRadius.circular(borderRadius),
-          onTap: (){
+          onTap: () {
             widget.onCamera();
             Navigator.pop(context);
           },
@@ -49,7 +59,9 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(color: Colors.grey.shade300,),
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -59,7 +71,9 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
                       Icons.camera_alt,
                       color: primaryColor,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       'أفتح الكاميرا',
                       style: TextStyle(),
@@ -70,10 +84,12 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
             ),
           ),
         ),
-        SizedBox(height: 5,),
+        SizedBox(
+          height: 5,
+        ),
         InkWell(
           borderRadius: BorderRadius.circular(borderRadius),
-          onTap: (){
+          onTap: () {
             widget.onPhotos();
             Navigator.pop(context);
           },
@@ -83,7 +99,9 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(color: Colors.grey.shade300,),
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -93,7 +111,9 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
                       Icons.photo,
                       color: primaryColor,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       'أفتح الصور',
                       style: TextStyle(),
@@ -104,7 +124,9 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
             ),
           ),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
       ],
     );
   }

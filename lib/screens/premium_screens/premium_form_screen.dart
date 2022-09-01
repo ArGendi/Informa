@@ -380,7 +380,7 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller = PageController(initialPage: 1);
+    _controller = PageController(initialPage: 0);
   }
 
   @override
@@ -394,7 +394,7 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     print(
-        '-------------------------inside  the premium form screee 0     ${activeUser!.program}--------------------------------');
+        '-------------------------inside  the premium form screee 1     ${activeUser!.program}--------------------------------');
     return SafeArea(
       child: Scaffold(
         body: Container(
