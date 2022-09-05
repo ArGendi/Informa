@@ -131,14 +131,47 @@ class FirestoreService {
     }
   }
 
-  Future<String?> getPlans(BuildContext ctx) async {
+  Future<String?> getDietPlans(BuildContext ctx) async {
     List<Plans> premiumPlans = [];
     var collectionSnapshot =
-        await FirebaseFirestore.instance.collection('plans').get();
+        await FirebaseFirestore.instance.collection('diet plans').get();
     for (var doc in collectionSnapshot.docs) {
       Map<String, dynamic> data = doc.data();
       Provider.of<PlansProvider>(ctx, listen: false)
-          .plans
+          .dietPlans
+          .add(Plans.fromMap(data));
+      // PlansProvider().plans.add(Plans.fromMap(data));
+      premiumPlans.add(Plans.fromMap(data));
+      print(premiumPlans[0].description);
+    }
+    return null;
+  }
+
+  Future<String?> getTrainingPlans(BuildContext ctx) async {
+    List<Plans> premiumPlans = [];
+    var collectionSnapshot =
+        await FirebaseFirestore.instance.collection('training plans').get();
+    for (var doc in collectionSnapshot.docs) {
+      Map<String, dynamic> data = doc.data();
+      Provider.of<PlansProvider>(ctx, listen: false)
+          .trainingPlans
+          .add(Plans.fromMap(data));
+      // PlansProvider().plans.add(Plans.fromMap(data));
+      premiumPlans.add(Plans.fromMap(data));
+      print(premiumPlans[0].description);
+    }
+    return null;
+  }
+
+  Future<String?> getDietAndTrainingPlans(BuildContext ctx) async {
+    List<Plans> premiumPlans = [];
+    var collectionSnapshot = await FirebaseFirestore.instance
+        .collection('training and diet plans')
+        .get();
+    for (var doc in collectionSnapshot.docs) {
+      Map<String, dynamic> data = doc.data();
+      Provider.of<PlansProvider>(ctx, listen: false)
+          .dietAndTrainingPlans
           .add(Plans.fromMap(data));
       // PlansProvider().plans.add(Plans.fromMap(data));
       premiumPlans.add(Plans.fromMap(data));

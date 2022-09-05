@@ -159,3 +159,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// put id in duration
+// copy all duration for each program
+

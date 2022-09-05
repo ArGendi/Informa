@@ -21,12 +21,13 @@ class PremiumPackagesScreen extends StatefulWidget {
   @override
   _PremiumPackagesScreenState createState() => _PremiumPackagesScreenState();
 }
-//TODO: there is a wired action I think it will happen when the user select a duration for its plan , that we identify each duration by its days, so I think if the user choose a
-//TODO: duration maybe a conflict will happen if the user choosed a duration that in other package have the same days
+// TODO: there is a wired action I think it will happen when the user select a duration for its plan , that we identify each duration by its days, so I think if the user choose a
+// TODO: duration maybe a conflict will happen if the user choosed a duration that in other package have the same days
 // TODO: so I think to solve it we must identify each duartion with a specific id that is uniqe from each duartion in each "tarekka motab3a"
 
 class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
-  int _selectedPackage = 1;
+  int _selectedPackage = 0;
+  String uISelected = '';
   int _selectedPlan = 0;
   double _opacity = 1;
   bool _isLoading = false;
@@ -43,35 +44,6 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
       });
     });
   }
-
-  // String getPrice(int period) {
-  //   if (_selectedPackage == 1) {
-  //     if (period == 1)
-  //       return '200';
-  //     else if (period == 3)
-  //       return '500';
-  //     else if (period == 6)
-  //       return '800';
-  //     else if (period == 12) return '1500';
-  //   } else if (_selectedPackage == 2) {
-  //     if (period == 1)
-  //       return '300';
-  //     else if (period == 3)
-  //       return '800';
-  //     else if (period == 6)
-  //       return '1500';
-  //     else if (period == 12) return '2000';
-  //   } else if (_selectedPackage == 3) {
-  //     if (period == 1)
-  //       return '500';
-  //     else if (period == 3)
-  //       return '1000';
-  //     else if (period == 6)
-  //       return '1800';
-  //     else if (period == 12) return '3000';
-  //   }
-  //   return null.toString();
-  // }
 
   showPaymentBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -111,9 +83,14 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
   @override
   Widget build(BuildContext context) {
     List<Plans> plans =
-        Provider.of<PlansProvider>(context, listen: false).plans;
-
+        Provider.of<ActiveUserProvider>(context).user!.program == 1
+            ? Provider.of<PlansProvider>(context, listen: false).trainingPlans
+            : Provider.of<ActiveUserProvider>(context).user!.program == 2
+                ? Provider.of<PlansProvider>(context, listen: false)
+                    .dietAndTrainingPlans
+                : Provider.of<PlansProvider>(context, listen: false).dietPlans;
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
+    print(activeUser!.id);
     return Scaffold(
       appBar: AppBar(
         title: Text('خطط الأشتراك'),
@@ -193,21 +170,25 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
                   duration: Duration(milliseconds: 200),
                   child: Container(
                     child: GridView.count(
-                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      // shrinkWrap: true,
                       crossAxisCount: 2,
-                      childAspectRatio: 3 / 1.5,
+                      childAspectRatio: 3 / 2,
                       mainAxisSpacing: 20,
                       crossAxisSpacing: 10,
                       children: plans[_selectedPackage].planDuration.map(
                         (e) {
                           return PeriodPriceCard(
-                            id: e.daysNumber,
-                            selected: _selectedPlan,
+                            id: e.id,
+                            selected: uISelected,
                             period: e.name,
                             price: e.price.toString(),
                             onClick: () {
                               setState(() {
-                                _selectedPlan = e.daysNumber;
+                                uISelected = e.id;
+                                //TODO figure out how to select a plan from the list and add it to firestore with its unique ID and then use it to get the plan details in either in admin or here in the app
+
+                                // _selectedPlan = e.daysNumber;
                               });
                             },
                           );

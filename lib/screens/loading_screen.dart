@@ -64,7 +64,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   getAppData() async {
-    await FirestoreService().getPlans(context);
+    await FirestoreService().getDietPlans(context);
+    await FirestoreService().getTrainingPlans(context);
+    await FirestoreService().getDietAndTrainingPlans(context);
+
     await FirestoreService().getSupplements(context);
     String? lang = await HelpFunction.getUserLanguage();
     String? initScreen = await HelpFunction.getInitScreen();

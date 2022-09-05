@@ -2,34 +2,69 @@ import 'package:flutter/cupertino.dart';
 import 'package:informa/models/plans.dart';
 
 class PlansProvider extends ChangeNotifier {
-  List<Plans> _plans = [
-    // Challenge(
-    //   name: 'تحدي شيست بريس',
-    //   description: 'تحدي الشيست بريس هو عبارة عن تحدي تقوم بيه بعمل 100 ضغط',
-    //   deadline: DateTime(
-    //     DateTime.now().year,
-    //     DateTime.now().month,
-    //     DateTime.now().day + 1,
-    //   ),
-    // ),
-  ];
-  bool _isDataLoaded = false;
-
-  List<Plans> get plans => _plans;
   bool get isDataLoaded => _isDataLoaded;
 
-  setSupplements(List<Plans> supplement) {
-    _plans = [...supplement];
+  // diet plans
+  List<Plans> _dietPlans = [];
+
+  bool _isDataLoaded = false;
+
+  List<Plans> get dietPlans => _dietPlans;
+
+  setDietSupplements(List<Plans> supplement) {
+    _dietPlans = [...supplement];
     notifyListeners();
   }
 
-  addSupplement(Plans supplement) {
-    _plans.add(supplement);
+  addDietSupplement(Plans supplement) {
+    _dietPlans.add(supplement);
     notifyListeners();
   }
 
-  removeSupplement(Plans supplement) {
-    _plans.remove(supplement);
+  removeDietSupplement(Plans supplement) {
+    _dietPlans.remove(supplement);
+    notifyListeners();
+  }
+
+// training plans
+
+  List<Plans> _trainingPlans = [];
+
+  List<Plans> get trainingPlans => _trainingPlans;
+
+  setTrainingSupplements(List<Plans> supplement) {
+    _trainingPlans = [...supplement];
+    notifyListeners();
+  }
+
+  addTrainingSupplement(Plans supplement) {
+    _trainingPlans.add(supplement);
+    notifyListeners();
+  }
+
+  removeTrainingSupplement(Plans supplement) {
+    _trainingPlans.remove(supplement);
+    notifyListeners();
+  }
+
+// diet and training plans
+
+  List<Plans> _dietAndTrainingPlans = [];
+
+  List<Plans> get dietAndTrainingPlans => _dietAndTrainingPlans;
+
+  setDietAndTrainingSupplements(List<Plans> supplement) {
+    _dietAndTrainingPlans = [...supplement];
+    notifyListeners();
+  }
+
+  addDietAndTrainingSupplement(Plans supplement) {
+    _dietAndTrainingPlans.add(supplement);
+    notifyListeners();
+  }
+
+  removeDietAndTrainingSupplement(Plans supplement) {
+    _dietAndTrainingPlans.remove(supplement);
     notifyListeners();
   }
 

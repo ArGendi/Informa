@@ -8,6 +8,7 @@ import 'package:informa/widgets/program_card.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
+import '../providers/plans_provider.dart';
 
 class PlansScreen extends StatefulWidget {
   static String id = 'plans';
@@ -20,7 +21,7 @@ class PlansScreen extends StatefulWidget {
 class _PlansScreenState extends State<PlansScreen> {
   int _selected = 2;
   int count = 0;
-  onSubscribe(BuildContext context) {
+  onSubscribe(BuildContext context, int selected) {
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setProgram(_selected);
     Navigator.pushNamed(context, PremiumPackagesScreen.id);
@@ -29,6 +30,12 @@ class _PlansScreenState extends State<PlansScreen> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    print(
+        'plans dddddd    dddddddddd   dddddddddd    dddddddddd    dddddddddd');
+    print(Provider.of<PlansProvider>(context, listen: false)
+        .trainingPlans[0]
+        .planDuration[0]
+        .daysNumber);
     return Scaffold(
       body: ListView(
         children: [
@@ -375,7 +382,7 @@ class _PlansScreenState extends State<PlansScreen> {
             child: CustomButton(
               text: 'أشترك الأن',
               onClick: () {
-                onSubscribe(context);
+                onSubscribe(context, _selected);
               },
             ),
           )

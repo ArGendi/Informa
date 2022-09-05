@@ -560,7 +560,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                                     protienController.clear();
                                     caloriesController.clear();
                                   },
-                                  child: Text('add +'),
+                                  child: Text('اضف مكمل غذائي اخر +'),
                                 ),
                                 TextButton(
                                   onPressed: () async {
@@ -574,7 +574,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                                     protienController.clear();
                                   },
                                   child: Text(
-                                    'delete +',
+                                    'الغاء -',
                                     style: TextStyle(color: Colors.red),
                                   ),
                                   style: TextButton.styleFrom(

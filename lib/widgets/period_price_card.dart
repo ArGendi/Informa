@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class PeriodPriceCard extends StatefulWidget {
-  final int id;
-  final int selected;
+  final String id;
+  final String selected;
   final String period;
   final String price;
   final VoidCallback onClick;
