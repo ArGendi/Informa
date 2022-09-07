@@ -28,7 +28,7 @@ class PremiumPackagesScreen extends StatefulWidget {
 class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
   int _selectedPackage = 0;
   String uISelected = '';
-  int _selectedPlan = 0;
+  String _selectedPlan = '';
   double _opacity = 1;
   bool _isLoading = false;
   FirestoreService _firestoreService = new FirestoreService();
@@ -89,8 +89,6 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
                 ? Provider.of<PlansProvider>(context, listen: false)
                     .dietAndTrainingPlans
                 : Provider.of<PlansProvider>(context, listen: false).dietPlans;
-    var activeUser = Provider.of<ActiveUserProvider>(context).user;
-    print(activeUser!.id);
     return Scaffold(
       appBar: AppBar(
         title: Text('خطط الأشتراك'),
@@ -136,8 +134,10 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
                             mainText: e.name,
                             subText: e.description,
                             onClick: () {
+                              print(i);
                               setState(() {
                                 changePackage(i);
+                                _selectedPlan = '';
                               });
                             },
                             userChoice: _selectedPackage,
@@ -180,12 +180,13 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
                         (e) {
                           return PeriodPriceCard(
                             id: e.id,
-                            selected: uISelected,
+                            selected: _selectedPlan,
                             period: e.name,
                             price: e.price.toString(),
                             onClick: () {
                               setState(() {
-                                uISelected = e.id;
+                                _selectedPlan = e.id;
+                                print(_selectedPlan);
                                 //TODO figure out how to select a plan from the list and add it to firestore with its unique ID and then use it to get the plan details in either in admin or here in the app
 
                                 // _selectedPlan = e.daysNumber;
@@ -207,7 +208,7 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
               CustomButton(
                 text: 'المتابعة',
                 bgColor:
-                    _selectedPlan != 0 ? primaryColor : Colors.grey.shade400,
+                    _selectedPlan != '' ? primaryColor : Colors.grey.shade400,
                 isLoading: _isLoading,
                 onClick: () {
                   onNext(context);
@@ -220,6 +221,9 @@ class _PremiumPackagesScreenState extends State<PremiumPackagesScreen> {
     );
   }
 }
+
+
+
 // ProgramSelectCard(
 //   mainText: 'سيلفر',
 //   subText: 'متابعة عبر التطبيق فقط',

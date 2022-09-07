@@ -274,7 +274,7 @@ class ActiveUserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setPlan(int value) {
+  setPlan(String value) {
     _user!.plan = value;
     notifyListeners();
   }

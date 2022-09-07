@@ -60,7 +60,7 @@ class AppUser {
   DateTime? premiumEndDate;
   MealsList _mealsList = new MealsList();
   int package;
-  int plan;
+  String plan;
   bool? inBody;
   //0 = none, 1 = breakfast & lunch, 2 = lunch & dinner
   int? whichTwoMeals;
@@ -119,7 +119,7 @@ class AppUser {
     this.milkProblem = 0,
     this.disease = 0,
     this.package = 0,
-    this.plan = 0,
+    this.plan = '',
     this.whichTwoMeals = 0,
     this.oldGoal = 0,
     this.dietType = 0,
@@ -185,7 +185,7 @@ class AppUser {
     // addedSupplementsByUser = json['addedSupplementsByUser'];
     premiumStartDate = dateTime;
     package = json['package'];
-    plan = json['plan'];
+    plan = json['plan'].toString();
     inBody = json['inBody'];
     whichTwoMeals = json['whichTwoMeals'];
     myProtein = json['myProtein'];
