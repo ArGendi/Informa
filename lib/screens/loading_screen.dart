@@ -18,7 +18,6 @@ import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/auth_screens/register_screens.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/services/firestore_service.dart';
-import 'package:informa/services/informa_service.dart';
 import 'package:informa/services/meals_service.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +30,6 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   FirestoreService _firestoreService = new FirestoreService();
-  InformaService _informaService = new InformaService();
   MealsService _mealsService = new MealsService();
 
   resetMacros(AppUser user) async {

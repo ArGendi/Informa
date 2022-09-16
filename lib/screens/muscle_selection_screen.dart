@@ -29,7 +29,8 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
       context: context,
       builder: (BuildContext context) {
         return StatefulBuilder(
-          builder: (BuildContext context, void Function(void Function()) setState) {
+          builder:
+              (BuildContext context, void Function(void Function()) setState) {
             return AlertDialog(
               title: const Text('أختر عضلة الكتف'),
               content: SingleChildScrollView(
@@ -37,7 +38,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                   children: <Widget>[
                     InkWell(
                       borderRadius: BorderRadius.circular(borderRadius),
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           _shoulderMuscle = 1;
                           _muscle = MusclesList.allMuscles[2];
@@ -49,12 +50,15 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                           color: Colors.grey.shade50,
                           borderRadius: BorderRadius.circular(borderRadius),
                           border: Border.all(
-                            color: _shoulderMuscle == 1 ? primaryColor : Colors.grey.shade300,
+                            color: _shoulderMuscle == 1
+                                ? primaryColor
+                                : Colors.grey.shade300,
                             width: 2,
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -67,20 +71,24 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                               CircleAvatar(
                                 backgroundColor: Colors.grey[300],
                                 radius: 10,
-                                child: _shoulderMuscle == 1 ? CircleAvatar(
-                                  backgroundColor: primaryColor,
-                                  radius: 5,
-                                ) : Container(),
+                                child: _shoulderMuscle == 1
+                                    ? CircleAvatar(
+                                        backgroundColor: primaryColor,
+                                        radius: 5,
+                                      )
+                                    : Container(),
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     InkWell(
                       borderRadius: BorderRadius.circular(borderRadius),
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           _shoulderMuscle = 2;
                           _muscle = MusclesList.allMuscles[3];
@@ -92,12 +100,15 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                           color: Colors.grey.shade50,
                           borderRadius: BorderRadius.circular(borderRadius),
                           border: Border.all(
-                            color: _shoulderMuscle == 2 ? primaryColor : Colors.grey.shade300,
+                            color: _shoulderMuscle == 2
+                                ? primaryColor
+                                : Colors.grey.shade300,
                             width: 2,
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -110,20 +121,24 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                               CircleAvatar(
                                 backgroundColor: Colors.grey[300],
                                 radius: 10,
-                                child: _shoulderMuscle == 2 ? CircleAvatar(
-                                  backgroundColor: primaryColor,
-                                  radius: 5,
-                                ) : Container(),
+                                child: _shoulderMuscle == 2
+                                    ? CircleAvatar(
+                                        backgroundColor: primaryColor,
+                                        radius: 5,
+                                      )
+                                    : Container(),
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     InkWell(
                       borderRadius: BorderRadius.circular(borderRadius),
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           _shoulderMuscle = 3;
                           _muscle = MusclesList.allMuscles[4];
@@ -135,12 +150,15 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                           color: Colors.grey.shade50,
                           borderRadius: BorderRadius.circular(borderRadius),
                           border: Border.all(
-                            color: _shoulderMuscle == 3 ? primaryColor : Colors.grey.shade300,
+                            color: _shoulderMuscle == 3
+                                ? primaryColor
+                                : Colors.grey.shade300,
                             width: 2,
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -153,10 +171,12 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                               CircleAvatar(
                                 backgroundColor: Colors.grey[300],
                                 radius: 10,
-                                child: _shoulderMuscle == 3 ? CircleAvatar(
-                                  backgroundColor: primaryColor,
-                                  radius: 5,
-                                ) : Container(),
+                                child: _shoulderMuscle == 3
+                                    ? CircleAvatar(
+                                        backgroundColor: primaryColor,
+                                        radius: 5,
+                                      )
+                                    : Container(),
                               ),
                             ],
                           ),
@@ -193,7 +213,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
+    // var screenSize = MediaQuery.of(context).size;
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       appBar: AppBar(
@@ -202,7 +222,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
         centerTitle: true,
         leading: IconButton(
           splashRadius: splashRadius,
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: Icon(
@@ -212,8 +232,8 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
         actions: [
           IconButton(
             splashRadius: splashRadius,
-            onPressed: (){
-              if(!activeUser!.premium){
+            onPressed: () {
+              if (!activeUser!.premium) {
                 Navigator.pushNamed(context, PlansScreen.id);
               }
             },
@@ -227,9 +247,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SingleChildScrollView(
@@ -242,12 +260,14 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                     fontFamily: 'CairoBold',
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           _isFront = true;
                           _image = 'assets/images/unselected_body.png';
@@ -263,7 +283,8 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
                           child: Column(
                             children: [
                               Text(
@@ -277,9 +298,11 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 20,),
+                    SizedBox(
+                      width: 20,
+                    ),
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         setState(() {
                           _isFront = false;
                           _image = 'assets/images/unselected_body_back.png';
@@ -295,7 +318,8 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
                           child: Column(
                             children: [
                               Text(
@@ -314,21 +338,21 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                 BodyModel(
                   image: _image,
                   isFront: _isFront,
-                  onChest: (){
+                  onChest: () {
                     print('Chest');
                     setState(() {
                       _image = 'assets/images/selected_body_chest.png';
                       _muscle = MusclesList.allMuscles[0];
                     });
                   },
-                  onAbs: (){
+                  onAbs: () {
                     print('Abs');
                     setState(() {
                       _image = 'assets/images/selected_body_abs.png';
                       _muscle = MusclesList.allMuscles[1];
                     });
                   },
-                  onShoulder: (){
+                  onShoulder: () {
                     print('Shoulder');
                     _showShouldersDialog();
                     // setState(() {
@@ -346,14 +370,16 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                 // SizedBox(height: 10,),
                 CustomButton(
                   text: _muscle == null ? 'أختار عضلة' : _muscle!.name,
-                  bgColor: _muscle != null ? primaryColor : Colors.grey.shade400,
-                  onClick: (){
-                    if(_muscle != null)
+                  bgColor:
+                      _muscle != null ? primaryColor : Colors.grey.shade400,
+                  onClick: () {
+                    if (_muscle != null)
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FreeWorkoutScreen(
-                          muscle: _muscle!,
-                        )),
+                        MaterialPageRoute(
+                            builder: (context) => FreeWorkoutScreen(
+                                  muscle: _muscle!,
+                                )),
                       );
                   },
                 )

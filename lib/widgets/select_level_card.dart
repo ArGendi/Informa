@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:informa/providers/active_user_provider.dart';
-import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -49,7 +47,7 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
 
   @override
   Widget build(BuildContext context) {
-    var activeUserProvider = Provider.of<ActiveUserProvider>(context);
+    // var activeUserProvider = Provider.of<ActiveUserProvider>(context);
     return InkWell(
       onTap: widget.onClick,
       borderRadius: BorderRadius.circular(borderRadius),

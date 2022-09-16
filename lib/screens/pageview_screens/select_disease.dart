@@ -51,7 +51,6 @@ class _SelectDiseaseState extends State<SelectDisease>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       vsync: this,
@@ -68,7 +67,6 @@ class _SelectDiseaseState extends State<SelectDisease>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     //_controller.dispose();
   }

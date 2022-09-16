@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class MealInfoBox extends StatefulWidget {
   final String text;
   final int value;
   final double percent;
-  const MealInfoBox({Key? key, required this.text, required this.value, required this.percent}) : super(key: key);
+  const MealInfoBox(
+      {Key? key,
+      required this.text,
+      required this.value,
+      required this.percent})
+      : super(key: key);
 
   @override
   _MealInfoBoxState createState() => _MealInfoBoxState();
@@ -30,19 +34,18 @@ class _MealInfoBoxState extends State<MealInfoBox> {
               topLeft: Radius.circular(5),
             ),
           ),
-          child: activeUser!.premium ? Center(
-            child: Text(
-              widget.value.toString(),
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey[600]
-              ),
-            ),
-          ) : Icon(
-            Icons.lock,
-            color: Colors.grey[600],
-            size: 15,
-          ),
+          child: activeUser!.premium
+              ? Center(
+                  child: Text(
+                    widget.value.toString(),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  ),
+                )
+              : Icon(
+                  Icons.lock,
+                  color: Colors.grey[600],
+                  size: 15,
+                ),
         ),
         // LinearPercentIndicator(
         //   width: screenSize.width * .2,

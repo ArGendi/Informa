@@ -1,15 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/screens/auth_screens/email_confirmation_msg_screen.dart';
 import 'package:informa/services/auth_service.dart';
-import 'package:informa/services/email_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
-import 'package:provider/provider.dart';
-
-import 'email_confirmation_screen.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   static String id = 'forget password';
@@ -25,35 +20,36 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   AuthServices _authServices = new AuthServices();
   bool _isLoading = false;
 
-  onSubmit() async{
+  onSubmit() async {
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
-    if(valid) {
+    if (valid) {
       _formKey.currentState!.save();
       String code = '';
       var rng = new Random();
-      for (var i = 0; i < 5; i++)
-        code += rng.nextInt(10).toString();
+      for (var i = 0; i < 5; i++) code += rng.nextInt(10).toString();
       print("Pin code: " + code);
-      setState(() { _isLoading = true; });
+      setState(() {
+        _isLoading = true;
+      });
       bool valid = await _authServices.resetPassword(_email!.trim());
-      if(valid) {
+      if (valid) {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => EmailConfirmationMsgScreen(email: _email!.trim(),)),
+              builder: (context) => EmailConfirmationMsgScreen(
+                    email: _email!.trim(),
+                  )),
         );
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('حدث خطأ, أعد المحاولة')));
       }
-      else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('حدث خطأ, أعد المحاولة'))
-        );
-      }
-      setState(() { _isLoading = false; });
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +58,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -78,12 +72,14 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         'assets/images/lock.png',
                         width: 140,
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Text(
                         'نسيت كلمة المرور',
                         style: TextStyle(
-                            fontSize: 24,
-                            //height: 0.3
+                          fontSize: 24,
+                          //height: 0.3
                         ),
                       ),
                       Text(
@@ -94,26 +90,30 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           fontSize: 13,
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       CustomTextField(
                         text: 'البريد الألكتروني',
                         obscureText: false,
                         textInputType: TextInputType.emailAddress,
-                        setValue: (String value){
+                        setValue: (String value) {
                           _email = value;
                         },
-                        validation: (value){
+                        validation: (value) {
                           if (value.isEmpty) return 'أدخل البريد الألكتروني';
                           if (!value.contains('@') || !value.contains('.'))
                             return 'بريد الكتروني خاطىء';
                           return null;
                         },
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       CustomButton(
                         text: 'أرسل رمز التأكيد',
                         isLoading: _isLoading,
-                        onClick: (){
+                        onClick: () {
                           onSubmit();
                         },
                       ),

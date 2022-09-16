@@ -58,7 +58,7 @@ class AppUser {
   String? diseaseDescription;
   DateTime? premiumStartDate;
   DateTime? premiumEndDate;
-  MealsList _mealsList = new MealsList();
+  // MealsList _mealsList = new MealsList();
   int package;
   String plan;
   bool? inBody;

@@ -378,14 +378,12 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = PageController(initialPage: 0);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }

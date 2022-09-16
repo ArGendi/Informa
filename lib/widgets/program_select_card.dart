@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
-import 'package:informa/providers/active_user_provider.dart';
-import 'package:provider/provider.dart';
 
 class ProgramSelectCard extends StatefulWidget {
   final VoidCallback onClick;
@@ -30,7 +28,7 @@ class ProgramSelectCard extends StatefulWidget {
 class _ProgramSelectCardState extends State<ProgramSelectCard> {
   @override
   Widget build(BuildContext context) {
-    var activeUser = Provider.of<ActiveUserProvider>(context).user;
+    // var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return InkWell(
       borderRadius: BorderRadius.circular(7),
       onTap: widget.onClick,

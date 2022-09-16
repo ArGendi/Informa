@@ -21,16 +21,16 @@ class _SupplementsScreenState extends State<SupplementsScreen> {
   List<Meal> _supplements = [];
   FirestoreService _firestoreService = new FirestoreService();
 
-  getSupplements(){
-    var activeUser = Provider.of<ActiveUserProvider>(context ,listen: false).user;
-    if(activeUser!.wheyProtein == 1 && activeUser.myProtein! >= 250){
+  getSupplements() {
+    var activeUser =
+        Provider.of<ActiveUserProvider>(context, listen: false).user;
+    if (activeUser!.wheyProtein == 1 && activeUser.myProtein! >= 250) {
       _supplements.add(SnacksList.snacks[0]);
+      _supplements.add(SnacksList.snacks[0]);
+    } else if (activeUser.wheyProtein == 1 && activeUser.myProtein! >= 200) {
       _supplements.add(SnacksList.snacks[0]);
     }
-    else if(activeUser.wheyProtein == 1 && activeUser.myProtein! >= 200){
-      _supplements.add(SnacksList.snacks[0]);
-    }
-    for(var id in activeUser.supplements){
+    for (var id in activeUser.supplements) {
       Meal supplement = SupplementsList.supplements[int.parse(id) - 1];
       _supplements.add(supplement);
     }
@@ -39,10 +39,8 @@ class _SupplementsScreenState extends State<SupplementsScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    if(mounted)
-      getSupplements();
+    if (mounted) getSupplements();
   }
 
   @override
@@ -57,30 +55,35 @@ class _SupplementsScreenState extends State<SupplementsScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: ListView(
             children: [
-              for(int i=0; i<_supplements.length; i++)
+              for (int i = 0; i < _supplements.length; i++)
                 Column(
                   children: [
                     WideMealCard(
                       meal: _supplements[i],
-                      isDone: Provider.of<PremiumNutritionProvider>(context).supplementsDone!.contains(i),
-                      onClick: () async{
+                      isDone: Provider.of<PremiumNutritionProvider>(context)
+                          .supplementsDone!
+                          .contains(i),
+                      onClick: () async {
                         String id = FirebaseAuth.instance.currentUser!.uid;
-                        Provider.of<PremiumNutritionProvider>(context, listen: false)
+                        Provider.of<PremiumNutritionProvider>(context,
+                                listen: false)
                             .addToSupplementsDone(i);
                         await _firestoreService.updateNutrition(id, {
-                          'supplementsDone': Provider.of<PremiumNutritionProvider>(context, listen: false)
-                              .supplementsDone,
+                          'supplementsDone':
+                              Provider.of<PremiumNutritionProvider>(context,
+                                      listen: false)
+                                  .supplementsDone,
                         });
                       },
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                   ],
                 ),
             ],

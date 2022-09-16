@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/prepare_program_screen.dart';
@@ -22,20 +21,28 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
   bool _isLoading = false;
   FirestoreService _firestoreService = new FirestoreService();
 
-  onConfirm(BuildContext context) async{
+  onConfirm(BuildContext context) async {
     bool done = true;
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-    setState(() { _isLoading = true; });
-    await _firestoreService.saveNewAccountWithFullInfo(activeUser!).catchError((e){
-      setState(() { _isLoading = false; });
-      done = false;
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ'))
-      );
+    var activeUser =
+        Provider.of<ActiveUserProvider>(context, listen: false).user;
+    setState(() {
+      _isLoading = true;
     });
-    if(done) {
+    await _firestoreService
+        .saveNewAccountWithFullInfo(activeUser!)
+        .catchError((e) {
+      setState(() {
+        _isLoading = false;
+      });
+      done = false;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('حدث خطأ')));
+    });
+    if (done) {
       await activeUser.saveInSharedPreference();
-      setState(() { _isLoading = false; });
+      setState(() {
+        _isLoading = false;
+      });
       Navigator.pushNamed(context, PrepareProgramScreen.id);
     }
   }
@@ -58,12 +65,16 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
               )
             ],
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           CircleAvatar(
             backgroundColor: Colors.grey[300],
             radius: 40,
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Text(
             'ملخص معلوماتك',
             style: TextStyle(
@@ -73,11 +84,11 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
           ),
           Text(
             'تأكد من صحة معلوماتك قبل الأستمرار',
-            style: TextStyle(
-              color: Colors.grey[600]
-            ),
+            style: TextStyle(color: Colors.grey[600]),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(
             child: ListView(
               shrinkWrap: true,
@@ -192,7 +203,8 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
                       style: TextStyle(),
                     ),
                     Text(
-                      _dictionary.convertTrainingPeriodToString(activeUser.trainingPeriodLevel),
+                      _dictionary.convertTrainingPeriodToString(
+                          activeUser.trainingPeriodLevel),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(
@@ -201,7 +213,7 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
                     ),
                   ],
                 ),
-                if(activeUser.workoutPlace == 1)
+                if (activeUser.workoutPlace == 1)
                   Column(
                     children: [
                       Divider(
@@ -217,7 +229,8 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
                             style: TextStyle(),
                           ),
                           Text(
-                            _dictionary.convertTrainingToolsToString(activeUser.trainingTools),
+                            _dictionary.convertTrainingToolsToString(
+                                activeUser.trainingTools),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: TextStyle(
@@ -251,10 +264,12 @@ class _ConfirmUserInfoState extends State<ConfirmUserInfo> {
               ],
             ),
           ),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           CustomButton(
             text: 'تأكيد',
-            onClick: (){
+            onClick: () {
               onConfirm(context);
             },
             isLoading: _isLoading,

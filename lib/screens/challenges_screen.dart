@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
-import 'package:informa/models/challenge.dart';
 import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/widgets/challenge_card.dart';
-import 'package:informa/widgets/countdown_card.dart';
-import 'package:informa/widgets/custom_button.dart';
-import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -19,7 +14,6 @@ class ChallengesScreen extends StatefulWidget {
 }
 
 class _ChallengesScreenState extends State<ChallengesScreen> {
-
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -31,7 +25,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
         centerTitle: true,
         leading: IconButton(
           splashRadius: splashRadius,
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: Icon(
@@ -45,42 +39,41 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: challenges.isNotEmpty ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: challenges.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: [
-                  ChallengeCard(challenge: challenges[index]),
-                  SizedBox(height: 15,),
-                ],
-              );
-            },
-          ) : Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'لا يوجد تحديات الأن',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'CairoBold'
+          child: challenges.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: challenges.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        ChallengeCard(challenge: challenges[index]),
+                        SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    );
+                  },
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'لا يوجد تحديات الأن',
+                        style: TextStyle(fontSize: 20, fontFamily: 'CairoBold'),
+                      ),
+                      Text(
+                        'انتظر تحديات أنفورما للفوز بالهدايا 🎁',
+                        style: TextStyle(
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Text(
-                  'انتظر تحديات أنفورما للفوز بالهدايا 🎁',
-                  style: TextStyle(
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/services/firestore_service.dart';
 import 'package:provider/provider.dart';
 
 class WaterInfoBanner extends StatefulWidget {
@@ -15,21 +13,21 @@ class WaterInfoBanner extends StatefulWidget {
 }
 
 class _WaterInfoBannerState extends State<WaterInfoBanner> {
-  FirestoreService _firestoreService = new FirestoreService();
+  // FirestoreService _firestoreService = new FirestoreService();
 
-  decreaseWater(BuildContext context, AppUser user){
-    if(user.dailyWater! >= user.myWater!) return;
+  decreaseWater(BuildContext context, AppUser user) {
+    if (user.dailyWater! >= user.myWater!) return;
     double newValue = user.dailyWater! + 0.250;
-    if(newValue > user.myWater!) newValue = user.myWater!;
+    if (newValue > user.myWater!) newValue = user.myWater!;
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyWater(newValue);
     HelpFunction.saveDailyWater(newValue);
   }
 
-  increaseWater(BuildContext context, AppUser user){
-    if(user.dailyWater! < 0) return;
+  increaseWater(BuildContext context, AppUser user) {
+    if (user.dailyWater! < 0) return;
     double newValue = user.dailyWater! - 0.250;
-    if(newValue < 0.25) newValue = -0.25;
+    if (newValue < 0.25) newValue = -0.25;
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyWater(newValue);
     HelpFunction.saveDailyWater(newValue);
@@ -42,10 +40,9 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
     return Container(
       width: screenSize.width,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(borderRadius),
-        border: Border.all(color: Colors.grey.shade200, width: 2)
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(color: Colors.grey.shade200, width: 2)),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
@@ -56,7 +53,9 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                 fontFamily: boldFont,
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -87,7 +86,9 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                         ),
                       ],
                     ),
-                    SizedBox(width: 20,),
+                    SizedBox(
+                      width: 20,
+                    ),
                     Column(
                       children: [
                         Text(
@@ -99,7 +100,9 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                           ),
                         ),
                         Text(
-                          (activeUser.myWater! - activeUser.dailyWater!).toStringAsFixed(2) + ' لتر',
+                          (activeUser.myWater! - activeUser.dailyWater!)
+                                  .toStringAsFixed(2) +
+                              ' لتر',
                           style: TextStyle(
                             fontSize: 15,
                             color: primaryColor,
@@ -110,7 +113,9 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                           (activeUser.dailyWater!).toStringAsFixed(1) + ' لتر',
                           style: TextStyle(
                             fontSize: 15,
-                            color: activeUser.dailyWater! >= 0 ? primaryColor : Colors.red,
+                            color: activeUser.dailyWater! >= 0
+                                ? primaryColor
+                                : Colors.red,
                             fontFamily: boldFont,
                           ),
                         ),
@@ -124,7 +129,7 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: (){
+                          onPressed: () {
                             decreaseWater(context, activeUser);
                           },
                           icon: Icon(Icons.remove),
@@ -134,7 +139,7 @@ class _WaterInfoBannerState extends State<WaterInfoBanner> {
                           width: 35,
                         ),
                         IconButton(
-                          onPressed: (){
+                          onPressed: () {
                             increaseWater(context, activeUser);
                           },
                           icon: Icon(Icons.add),

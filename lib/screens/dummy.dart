@@ -1,47 +1,40 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
+
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:informa/models/excercise.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
-import 'package:informa/models/meal_category_list.dart';
-import 'package:informa/models/meal_section.dart';
 import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/screens/auth_screens/register_screens.dart';
 import 'package:informa/screens/plans_screen.dart';
-import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/informa_service.dart';
-import 'package:informa/services/meals_service.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/services/web_services.dart';
 import 'package:informa/widgets/workout_card.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:csv/csv.dart';
-
-import '../constants.dart';
 
 class Dummy extends StatefulWidget {
-
-  const Dummy({Key? key,}) : super(key: key);
+  const Dummy({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _DummyState createState() => _DummyState();
 }
 
-class _DummyState extends State<Dummy> with TickerProviderStateMixin{
-  List list = [1,2,3];
+class _DummyState extends State<Dummy> with TickerProviderStateMixin {
+  List list = [1, 2, 3];
   late InformaService _informaService;
   late AppUser _user;
 
-  sendEmail() async{
+  sendEmail() async {
     WebServices webServices = new WebServices();
-    var response = await webServices.postWithOrigin('https://api.emailjs.com/api/v1.0/email/send', {
+    var response = await webServices
+        .postWithOrigin('https://api.emailjs.com/api/v1.0/email/send', {
       "user_id": "user_sL5eCDqsL5h8Jaoq71PH0",
       "service_id": "service_emgj8vt",
       "template_id": "template_9oefxlr",
@@ -58,11 +51,12 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     return CsvToListConverter().convert(data);
   }
 
-  Future setAllMeals() async{
-    List<List<dynamic>> breakfast = await loadAsset('assets/files/breakfast.csv');
+  Future setAllMeals() async {
+    List<List<dynamic>> breakfast =
+        await loadAsset('assets/files/breakfast.csv');
     List<List<dynamic>> lunch = await loadAsset('assets/files/lunch.csv');
     List<List<dynamic>> dinner = await loadAsset('assets/files/dinner.csv');
-    for(int i=1; i<breakfast.length; i++){
+    for (int i = 1; i < breakfast.length; i++) {
       MealsList.breakfast.add(
         Meal(
           id: i.toString(),
@@ -76,10 +70,10 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
         ),
       );
     }
-    for(int i=1; i<lunch.length; i++){
+    for (int i = 1; i < lunch.length; i++) {
       MealsList.lunch.add(
         Meal(
-          id: (i+breakfast.length).toString(),
+          id: (i + breakfast.length).toString(),
           name: lunch[i][1].toString().trim(),
           engName: lunch[i][1].toString().trim(),
           serving: lunch[i][2].toDouble(),
@@ -90,10 +84,10 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
         ),
       );
     }
-    for(int i=1; i<dinner.length; i++){
+    for (int i = 1; i < dinner.length; i++) {
       MealsList.dinner.add(
         Meal(
-          id: (i+breakfast.length+dinner.length).toString(),
+          id: (i + breakfast.length + dinner.length).toString(),
           name: dinner[i][1].toString().trim(),
           engName: dinner[i][1].toString().trim(),
           serving: dinner[i][2],
@@ -106,7 +100,7 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     }
   }
 
-  fullMeal(){
+  fullMeal() {
     MealCategory mealCategory = new MealCategory();
     mealCategory.meals = [];
     mealCategory.meals!.add(MealsList.breakfast[0]);
@@ -116,7 +110,7 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     mealCategory.meals!.add(MealsList.breakfast[13]);
     mealCategory.extra = MealsList.breakfast[60];
     //mealCategory.meals!.add(MealsList.breakfast[21]);
-    MealsService mealsService = new MealsService();
+    // MealsService mealsService = new MealsService();
     //var map = mealsService.calculateFullMealNumbers(MealCategoryList.breakfast[0], 31, 33, 11);
     // map.forEach((key, value) {
     //   print(key.name! + ": " + value.toString());
@@ -135,7 +129,7 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   //   return text;
   // }
 
-  makeNotification() async{
+  makeNotification() async {
     await NotificationService.init(initScheduled: true);
     listenNotification1();
     NotificationService.showRepeatScheduledNotification(
@@ -151,7 +145,7 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     ));
   }
 
-  makeNotification2() async{
+  makeNotification2() async {
     await NotificationService.init(initScheduled: true);
     listenNotification2();
     NotificationService.showRepeatScheduledNotification(
@@ -167,7 +161,7 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     ));
   }
 
-  makeNotification3() async{
+  makeNotification3() async {
     await NotificationService.init(initScheduled: true);
     listenNotification3();
     NotificationService.showRepeatScheduledNotification(
@@ -185,17 +179,15 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _user = AppUser(
-      gender: 1,
-      weight: 86,
-      fatsPercent: 20,
-      age: 40,
-      tall: 178,
-      fitnessLevel: 2,
-      goal: 3
-    );
+        gender: 1,
+        weight: 86,
+        fatsPercent: 20,
+        age: 40,
+        tall: 178,
+        fitnessLevel: 2,
+        goal: 3);
     _user.iTrainingDays = 4;
     _user.inBody = true;
     _informaService = InformaService();
@@ -258,8 +250,6 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
     );
   }
 
-
-
   void listenNotification1() {
     NotificationService.onNotifications.stream.listen((payload) {
       Navigator.pushNamed(context, MainRegisterScreen.id);
@@ -279,10 +269,12 @@ class _DummyState extends State<Dummy> with TickerProviderStateMixin{
   }
 }
 
-class BNBCustomPainter extends CustomPainter{
+class BNBCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color =  Colors.white..style = PaintingStyle.fill;
+    Paint paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
     Path path = Path()..moveTo(0, 0);
     path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
     path.quadraticBezierTo(size.width * 0.40, 0, size.width * 0.40, 10);
@@ -303,7 +295,6 @@ class BNBCustomPainter extends CustomPainter{
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
-    throw UnimplementedError();
+    // throw UnimplementedError();
   }
-
 }

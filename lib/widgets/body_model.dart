@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:informa/models/muscle.dart';
-import 'package:informa/models/muscles_list.dart';
 
 class BodyModel extends StatefulWidget {
   final String image;
@@ -8,7 +6,14 @@ class BodyModel extends StatefulWidget {
   final VoidCallback? onChest;
   final VoidCallback? onAbs;
   final VoidCallback? onShoulder;
-  const BodyModel({Key? key, required this.image, required this.isFront, this.onChest, this.onAbs, this.onShoulder}) : super(key: key);
+  const BodyModel(
+      {Key? key,
+      required this.image,
+      required this.isFront,
+      this.onChest,
+      this.onAbs,
+      this.onShoulder})
+      : super(key: key);
 
   @override
   _BodyModelState createState() => _BodyModelState();
@@ -26,7 +31,7 @@ class _BodyModelState extends State<BodyModel> {
             widget.image,
             width: 400,
           ),
-          if(widget.isFront)
+          if (widget.isFront)
             Positioned(
               top: 115,
               right: 140,
@@ -39,7 +44,7 @@ class _BodyModelState extends State<BodyModel> {
                 ),
               ),
             ),
-          if(widget.isFront)
+          if (widget.isFront)
             Positioned(
               top: 160,
               right: 150,

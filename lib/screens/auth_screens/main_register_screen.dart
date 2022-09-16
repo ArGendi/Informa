@@ -166,7 +166,6 @@ class _MainRegisterScreenState extends State<MainRegisterScreen>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       duration: Duration(milliseconds: 1500),
@@ -245,32 +244,32 @@ class _MainRegisterScreenState extends State<MainRegisterScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        InkWell(
-                          borderRadius: BorderRadius.circular(300),
-                          onTap: () {
-                            facebookLogin(context);
-                          },
-                          child: CircleAvatar(
-                            radius: 23,
-                            backgroundColor: Colors.blue,
-                            child: !isFacebookLoading
-                                ? FaIcon(
-                                    FontAwesomeIcons.facebookF,
-                                    color: Colors.white,
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 3,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.white),
-                                    ),
-                                  ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
+                        // InkWell(
+                        //   borderRadius: BorderRadius.circular(300),
+                        //   onTap: () {
+                        //     facebookLogin(context);
+                        //   },
+                        //   child: CircleAvatar(
+                        //     radius: 23,
+                        //     backgroundColor: Colors.blue,
+                        //     child: !isFacebookLoading
+                        //         ? FaIcon(
+                        //             FontAwesomeIcons.facebookF,
+                        //             color: Colors.white,
+                        //           )
+                        //         : Padding(
+                        //             padding: const EdgeInsets.all(12.0),
+                        //             child: CircularProgressIndicator(
+                        //               strokeWidth: 3,
+                        //               valueColor: AlwaysStoppedAnimation<Color>(
+                        //                   Colors.white),
+                        //             ),
+                        //           ),
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   width: 15,
+                        // ),
                         InkWell(
                           borderRadius: BorderRadius.circular(300),
                           onTap: () {

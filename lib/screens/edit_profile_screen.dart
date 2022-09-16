@@ -7,6 +7,7 @@ import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
+import '../app_localization.dart';
 import '../constants.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -29,14 +30,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _email = '';
   String _password = '';
   bool _isChangeHappen = false;
-  bool _isNameChanged = false;
-  bool _isAgeChanged = false;
-  bool _isTallChanged = false;
-  bool _isWeightChanged = false;
-  bool _isFatsPercentChanged = false;
-  bool _isGenderChanged = false;
-  bool _isEmailChanged = false;
-  bool _isPasswordChanged = false;
+  // bool _isNameChanged = false;
+  // bool _isAgeChanged = false;
+  // bool _isTallChanged = false;
+  // bool _isWeightChanged = false;
+  // bool _isFatsPercentChanged = false;
+  // bool _isGenderChanged = false;
+  // bool _isEmailChanged = false;
+  // bool _isPasswordChanged = false;
 
   onSaveChanges(BuildContext context) {
     FocusScope.of(context).unfocus();
@@ -151,15 +152,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   showConfirmationAlertDialog(BuildContext context) async {
+    var localization = AppLocalization.of(context);
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('متأكد من تغيير بيناتك ؟'),
+        title: Text(
+          localization!.translate('متأكد من تغيير بيناتك ؟').toString(),
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'ألغاء',
+            child: Text(
+              localization.translate('ألغاء').toString(),
               style: TextStyle(color: Colors.red),
             ),
           ),
@@ -168,8 +172,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               await checkChangesAndUpdateInFirebase(context);
               Navigator.pop(context);
             },
-            child: const Text(
-              'تأكيد',
+            child: Text(
+              localization.translate('تأكيد').toString(),
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -194,13 +198,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var localization = AppLocalization.of(context);
     var screenSize = MediaQuery.of(context).size;
     var activeUserProvider =
         Provider.of<ActiveUserProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('البيانات الشخصية'),
+        title: Text(localization!.translate('البيانات الشخصية').toString()),
         centerTitle: true,
       ),
       body: Container(
@@ -213,7 +218,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: ListView(
             children: [
               Text(
-                'المعلومات الشخصية',
+                localization.translate('المعلومات الشخصية').toString(),
                 style: TextStyle(
                   fontFamily: 'CairoBold',
                 ),
@@ -246,7 +251,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             _name = value;
                           },
                           validation: (value) {
-                            if (value.isEmpty) return 'ادخل اسمك';
+                            if (value.isEmpty)
+                              return localization
+                                  .translate('ادخل اسمك')
+                                  .toString();
                             return null;
                           },
                           anotherFilledColor: true,
@@ -256,14 +264,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           height: 15,
                         ),
                         CustomTextField(
-                          text: 'العمر',
+                          text: localization.translate('العمر').toString(),
                           obscureText: false,
                           textInputType: TextInputType.number,
                           setValue: (value) {
                             _age = value;
                           },
                           validation: (value) {
-                            if (value.isEmpty) return 'ادخل عمرك';
+                            if (value.isEmpty)
+                              return localization
+                                  .translate('ادخل عمرك')
+                                  .toString();
                             return null;
                           },
                           anotherFilledColor: true,
@@ -273,14 +284,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           height: 15,
                         ),
                         CustomTextField(
-                          text: 'الطول',
+                          text: localization.translate('الطول').toString(),
                           obscureText: false,
                           textInputType: TextInputType.number,
                           setValue: (value) {
                             _tall = value;
                           },
                           validation: (value) {
-                            if (value.isEmpty) return 'ادخل طولك';
+                            if (value.isEmpty)
+                              return localization
+                                  .translate('ادخل طولك')
+                                  .toString();
                             return null;
                           },
                           anotherFilledColor: true,
@@ -291,14 +305,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           height: 15,
                         ),
                         CustomTextField(
-                          text: 'الوزن',
+                          text: localization.translate('الوزن').toString(),
                           obscureText: false,
                           textInputType: TextInputType.number,
                           setValue: (value) {
                             _weight = value;
                           },
                           validation: (value) {
-                            if (value.isEmpty) return 'ادخل وزنك';
+                            if (value.isEmpty)
+                              return localization
+                                  .translate('ادخل وزنك')
+                                  .toString();
                             return null;
                           },
                           anotherFilledColor: true,
@@ -309,14 +326,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           height: 15,
                         ),
                         CustomTextField(
-                          text: 'نسبة الدهون',
+                          text:
+                              localization.translate('نسبة الدهون').toString(),
                           obscureText: false,
                           textInputType: TextInputType.number,
                           setValue: (value) {
                             _fatsPercent = value;
                           },
                           validation: (value) {
-                            if (value.isEmpty) return 'ادخل نسبة الدهون';
+                            if (value.isEmpty)
+                              return localization
+                                  .translate('ادخل نسبة الدهون')
+                                  .toString();
                             return null;
                           },
                           anotherFilledColor: true,
@@ -349,8 +370,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 });
                               },
                               items: <String>[
-                                'ذكر',
-                                'أنثى'
+                                localization.translate('ذكر').toString(),
+                                localization.translate('أنثى').toString(),
                               ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
@@ -372,7 +393,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 height: 20,
               ),
               Text(
-                'بيانات الحساب',
+                localization.translate('بيانات الحساب').toString(),
                 style: TextStyle(
                   fontFamily: 'CairoBold',
                 ),
@@ -398,16 +419,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           height: 5,
                         ),
                         CustomTextField(
-                          text: 'البريد الألكتروني',
+                          text: localization
+                              .translate('البريد الألكتروني')
+                              .toString(),
                           obscureText: false,
                           textInputType: TextInputType.emailAddress,
                           setValue: (value) {
                             _email = value;
                           },
                           validation: (value) {
-                            if (value.isEmpty) return 'ادخل البريد الألكتروني';
+                            if (value.isEmpty)
+                              return localization
+                                  .translate('ادخل البريد الألكتروني')
+                                  .toString();
                             if (!value.contains('@') || !value.contains('.'))
-                              return 'بريد الكتروني خاطىء';
+                              return localization
+                                  .translate('بريد الكتروني خاطىء')
+                                  .toString();
                             return null;
                           },
                           anotherFilledColor: true,
@@ -418,7 +446,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         if (!activeUserProvider.user!.fromSocialMedia)
                           CustomTextField(
-                            text: 'تغيير كلمة السر',
+                            text: localization
+                                .translate('تغيير كلمة السر')
+                                .toString(),
                             obscureText: true,
                             textInputType: TextInputType.text,
                             setValue: (value) {
@@ -426,7 +456,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             },
                             validation: (value) {
                               if (value.isNotEmpty && value.length < 6)
-                                return 'كلمة سر ضعيفة';
+                                return localization
+                                    .translate('كلمة سر ضعيفة')
+                                    .toString();
                               return null;
                             },
                             anotherFilledColor: true,
@@ -443,7 +475,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 height: 20,
               ),
               CustomButton(
-                text: 'حفظ الأعدادات',
+                text: localization.translate('حفظ الأعدادات').toString(),
                 onClick: () {
                   onSaveChanges(context);
                 },

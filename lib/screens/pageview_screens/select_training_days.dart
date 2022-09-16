@@ -119,7 +119,6 @@ class _SelectTrainingDaysState extends State<SelectTrainingDays> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _dateTime = DateTime.now();
   }

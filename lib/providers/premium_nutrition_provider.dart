@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
-import 'package:informa/models/meal_category.dart';
 
-class PremiumNutritionProvider extends ChangeNotifier{
+class PremiumNutritionProvider extends ChangeNotifier {
   bool _snacks = false;
   List<Meal> _breakfast = [];
   List<Meal> _lunch = [];
@@ -40,122 +38,125 @@ class PremiumNutritionProvider extends ChangeNotifier{
   List<int>? get supplementsDone => _supplementsDone;
   List<String> get additionalMeals => _additionalMeals;
 
-  setSnack(bool value){
+  setSnack(bool value) {
     _snacks = value;
     notifyListeners();
   }
 
-  setBreakfast(List<Meal> value){
+  setBreakfast(List<Meal> value) {
     _breakfast = value;
     notifyListeners();
   }
 
-  setLunch(List<Meal> value){
+  setLunch(List<Meal> value) {
     _lunch = value;
     notifyListeners();
   }
 
-  setLunch2(List<Meal> value){
+  setLunch2(List<Meal> value) {
     _lunch2 = value;
     notifyListeners();
   }
 
-  setDinner(List<Meal> value){
+  setDinner(List<Meal> value) {
     _dinner = value;
     notifyListeners();
   }
 
-  setOtherBreakfast(List<Meal> value){
+  setOtherBreakfast(List<Meal> value) {
     _otherBreakfast = value;
     notifyListeners();
   }
 
-  setOtherLunch(List<Meal> value){
+  setOtherLunch(List<Meal> value) {
     _otherLunch = value;
     notifyListeners();
   }
 
-  setOtherLunch2(List<Meal> value){
+  setOtherLunch2(List<Meal> value) {
     _otherLunch2 = value;
     notifyListeners();
   }
 
-  setOtherDinner(List<Meal> value){
+  setOtherDinner(List<Meal> value) {
     _otherDinner = value;
     notifyListeners();
   }
 
-  setSnackDone(int? value){
+  setSnackDone(int? value) {
     _snackDone = value;
     notifyListeners();
   }
 
-  setBreakfastDone(int? value){
+  setBreakfastDone(int? value) {
     _breakfastDone = value;
     //_breakfast[value!].isDone = true;
     notifyListeners();
   }
 
-  setLunchDone(int? value){
+  setLunchDone(int? value) {
     _lunchDone = value;
     //_lunch[value!].isDone = true;
     notifyListeners();
   }
 
-  setLunch2Done(int? value){
+  setLunch2Done(int? value) {
     _lunch2Done = value;
     //_lunch2[value].isDone = true;
     notifyListeners();
   }
 
-  setDinnerDone(int? value){
+  setDinnerDone(int? value) {
     _dinnerDone = value;
     //_dinner[value].isDone = true;
     notifyListeners();
   }
 
-  int? getDoneNumberByMeal(int? mealNumber){
-    if(mealNumber == null) return null;
-    if(mealNumber == 1) return _breakfastDone;
-    else if(mealNumber == 2) return _lunchDone;
-    else if(mealNumber == 3) return _lunch2Done;
-    else if(mealNumber == 4) return _dinnerDone;
+  int? getDoneNumberByMeal(int? mealNumber) {
+    if (mealNumber == null) return null;
+    if (mealNumber == 1)
+      return _breakfastDone;
+    else if (mealNumber == 2)
+      return _lunchDone;
+    else if (mealNumber == 3)
+      return _lunch2Done;
+    else if (mealNumber == 4) return _dinnerDone;
+    return null;
   }
 
-  resetDoneMeals(){
+  resetDoneMeals() {
     _breakfastDone = _lunchDone = _lunch2Done = _dinnerDone = _snackDone = null;
     _mainSnacksDone = _supplementsDone = [];
     notifyListeners();
   }
 
-  setMainSnacksDone(List<int>? value){
+  setMainSnacksDone(List<int>? value) {
     _mainSnacksDone = value;
     notifyListeners();
   }
 
-  setSupplementsDone(List<int>? value){
+  setSupplementsDone(List<int>? value) {
     _supplementsDone = value;
     notifyListeners();
   }
 
-  addToMainSnacksDone(int value){
+  addToMainSnacksDone(int value) {
     _mainSnacksDone!.add(value);
     notifyListeners();
   }
 
-  addToSupplementsDone(int value){
+  addToSupplementsDone(int value) {
     _supplementsDone!.add(value);
     notifyListeners();
   }
 
-  addToAdditionalMeals(String value){
+  addToAdditionalMeals(String value) {
     _additionalMeals.add(value);
     notifyListeners();
   }
 
-  setAdditionalMeals(List<String> value){
+  setAdditionalMeals(List<String> value) {
     _additionalMeals = value;
     notifyListeners();
   }
-
 }

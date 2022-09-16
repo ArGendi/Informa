@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/screens/main_screen.dart';
-import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +11,13 @@ class FatsPercent extends StatefulWidget {
   final VoidCallback onGetImages;
   final VoidCallback onNext;
   final bool? isLoading;
-  const FatsPercent({Key? key, required this.onBack, required this.onGetImages, required this.onNext, this.isLoading = false,}) : super(key: key);
+  const FatsPercent({
+    Key? key,
+    required this.onBack,
+    required this.onGetImages,
+    required this.onNext,
+    this.isLoading = false,
+  }) : super(key: key);
 
   @override
   _FatsPercentState createState() => _FatsPercentState();
@@ -23,14 +26,15 @@ class FatsPercent extends StatefulWidget {
 class _FatsPercentState extends State<FatsPercent> {
   String _fatPercent = '';
   var _formKey = GlobalKey<FormState>();
-  FirestoreService _firestoreService = new FirestoreService();
+  // FirestoreService _firestoreService = new FirestoreService();
 
-  onSubmit(BuildContext context){
+  onSubmit(BuildContext context) {
     FocusScope.of(context).unfocus();
     var valid = _formKey.currentState!.validate();
-    if(valid){
+    if (valid) {
       _formKey.currentState!.save();
-      Provider.of<ActiveUserProvider>(context, listen: false).setFatPercent(int.parse(_fatPercent.trim()));
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setFatPercent(int.parse(_fatPercent.trim()));
       widget.onNext();
     }
   }
@@ -57,7 +61,7 @@ class _FatsPercentState extends State<FatsPercent> {
 
   @override
   Widget build(BuildContext context) {
-    var activeUserProvider = Provider.of<ActiveUserProvider>(context);
+    // var activeUserProvider = Provider.of<ActiveUserProvider>(context);
     var screenSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -80,7 +84,9 @@ class _FatsPercentState extends State<FatsPercent> {
                         )
                       ],
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     Container(
                       width: 85,
                       height: 85,
@@ -90,10 +96,11 @@ class _FatsPercentState extends State<FatsPercent> {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage('assets/images/coach_face.jpg'),
-                          )
-                      ),
+                          )),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(
                       'محتاجين نعرف عنك معلومات أكتر',
                       style: TextStyle(
@@ -105,29 +112,32 @@ class _FatsPercentState extends State<FatsPercent> {
                       indent: screenSize.width * .3,
                       endIndent: screenSize.width * .3,
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       'قولنا نسبة دهونك',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'CairoBold'
-                      ),
+                      style: TextStyle(fontSize: 16, fontFamily: 'CairoBold'),
                     ),
-                    SizedBox(height: 25,),
+                    SizedBox(
+                      height: 25,
+                    ),
                     CustomTextField(
                       text: 'نسبة الدهون',
                       obscureText: false,
                       textInputType: TextInputType.number,
                       anotherFilledColor: true,
-                      setValue: (value){
+                      setValue: (value) {
                         _fatPercent = value;
                       },
-                      validation: (value){
+                      validation: (value) {
                         if (value.isEmpty) return 'أدخل نسبة الدهون';
                         return null;
                       },
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     InkWell(
                       borderRadius: BorderRadius.circular(borderRadius),
                       onTap: widget.onGetImages,
@@ -142,10 +152,8 @@ class _FatsPercentState extends State<FatsPercent> {
                             padding: const EdgeInsets.symmetric(vertical: 5.0),
                             child: Text(
                               'لا أعرف نسبة الدهون',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                color: Colors.white
-                              ),
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ),
@@ -158,7 +166,7 @@ class _FatsPercentState extends State<FatsPercent> {
           ),
           CustomButton(
             text: 'التالي',
-            onClick: (){
+            onClick: () {
               onSubmit(context);
             },
             isLoading: widget.isLoading!,

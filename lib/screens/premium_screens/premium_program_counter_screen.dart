@@ -10,15 +10,16 @@ class PremiumProgramCounterScreen extends StatefulWidget {
   const PremiumProgramCounterScreen({Key? key}) : super(key: key);
 
   @override
-  _PremiumProgramCounterScreenState createState() => _PremiumProgramCounterScreenState();
+  _PremiumProgramCounterScreenState createState() =>
+      _PremiumProgramCounterScreenState();
 }
 
-class _PremiumProgramCounterScreenState extends State<PremiumProgramCounterScreen> {
+class _PremiumProgramCounterScreenState
+    extends State<PremiumProgramCounterScreen> {
   late DateTime _dateTime;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     DateTime now = DateTime.now();
     _dateTime = DateTime(now.year, now.month, now.day, now.hour + 120);
@@ -31,9 +32,7 @@ class _PremiumProgramCounterScreenState extends State<PremiumProgramCounterScree
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Center(
@@ -50,33 +49,35 @@ class _PremiumProgramCounterScreenState extends State<PremiumProgramCounterScree
                           fontFamily: boldFont,
                         ),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Container(
                         decoration: BoxDecoration(
                           color: primaryColor,
                           borderRadius: BorderRadius.circular(borderRadius),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 20),
                           child: Directionality(
                             textDirection: TextDirection.ltr,
                             child: CountdownTimer(
                               endTime: _dateTime.millisecondsSinceEpoch,
                               textStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
+                                color: Colors.white,
+                                fontSize: 18,
                               ),
                               endWidget: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
                                 child: Text(
                                   'تم أعداد البرنامج',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12
-                                  ),
+                                      color: Colors.white, fontSize: 12),
                                 ),
                               ),
-                              onEnd: (){},
+                              onEnd: () {},
                             ),
                           ),
                         ),
@@ -86,8 +87,9 @@ class _PremiumProgramCounterScreenState extends State<PremiumProgramCounterScree
                 ),
                 CustomButton(
                   text: 'الذهاب للصفحة الرئيسية',
-                  onClick: (){
-                    Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
+                  onClick: () {
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(MainScreen.id));
                   },
                 )
               ],

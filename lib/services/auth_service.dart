@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -13,21 +12,21 @@ class AuthServices {
   FacebookLogin get fb => _fb;
   GoogleSignIn get googleSignIn => _googleSignIn;
 
-  Future<UserCredential?> loginWithFacebook() async{
+  Future<UserCredential?> loginWithFacebook() async {
     final res = await _fb.logIn(
       permissions: [
         FacebookPermission.publicProfile,
         FacebookPermission.email,
       ],
     );
-    switch(res.status){
+    switch (res.status) {
       case FacebookLoginStatus.success:
         print('It worked');
         final FacebookAccessToken? fbToken = res.accessToken;
         final AuthCredential facebookCredential =
-          FacebookAuthProvider.credential(fbToken!.token);
+            FacebookAuthProvider.credential(fbToken!.token);
         final userCredential =
-          await _auth.signInWithCredential(facebookCredential);
+            await _auth.signInWithCredential(facebookCredential);
         final profile = await _fb.getUserProfile();
         print('Profile: ' + profile!.firstName.toString());
         final email = await _fb.getUserEmail();
@@ -45,9 +44,9 @@ class AuthServices {
     }
   }
 
-  Future<UserCredential?> loginWithGoogle() async{
+  Future<UserCredential?> loginWithGoogle() async {
     final googleUser = await _googleSignIn.signIn();
-    if(googleUser == null) return null;
+    if (googleUser == null) return null;
     _user = googleUser;
     final googleAuth = await googleUser.authentication;
     final credential = GoogleAuthProvider.credential(
@@ -62,8 +61,7 @@ class AuthServices {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'account-exists-with-different-credential') {
         // handle the error here
-      }
-      else if (e.code == 'invalid-credential') {
+      } else if (e.code == 'invalid-credential') {
         // handle the error here
       }
       return null;
@@ -73,39 +71,45 @@ class AuthServices {
     }
   }
 
-  Future<UserCredential?> signInWithEmailAndPassword(String email, String password) async {
+  Future<UserCredential?> signInWithEmailAndPassword(
+      String email, String password) async {
     try {
-      var cred = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      var cred = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       return cred;
-    } on FirebaseAuthException catch(e) {
+    } on FirebaseAuthException {
       return null;
     }
   }
 
-  Future<String?> createUserWithEmailAndPassword(String email, String password) async {
+  Future<String?> createUserWithEmailAndPassword(
+      String email, String password) async {
     try {
-      var userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      var userCredential = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       return userCredential.user!.uid;
-    } on FirebaseAuthException catch(e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return '#' + 'رقم المرور ضعيف';
       } else if (e.code == 'email-already-in-use') {
         return '#' + 'الحساب موجود بالفعل';
       }
     }
+    return null;
   }
 
   Future<String?> signOut() async {
     try {
       await _auth.signOut();
       return "Signed out";
-    } on FirebaseAuthException catch(e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
       }
     }
+    return null;
   }
 
   User? getUser() {
@@ -116,15 +120,13 @@ class AuthServices {
     }
   }
 
-  Future<bool> resetPassword(String email) async{
+  Future<bool> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
       return true;
-    }
-    catch(e){
+    } catch (e) {
       print(e);
       return false;
     }
   }
-
 }

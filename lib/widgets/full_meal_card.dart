@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
-import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/screens/single_meal_screen.dart';
-import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -15,7 +11,15 @@ class FullMealCard extends StatefulWidget {
   final int? whichMeal;
   final VoidCallback? onClick;
   final VoidCallback? onBack;
-  const FullMealCard({Key? key, required this.fullMeal, this.mealDoneNumber, required this.id, this.whichMeal, this.onClick, this.onBack}) : super(key: key);
+  const FullMealCard(
+      {Key? key,
+      required this.fullMeal,
+      this.mealDoneNumber,
+      required this.id,
+      this.whichMeal,
+      this.onClick,
+      this.onBack})
+      : super(key: key);
 
   @override
   _FullMealCardState createState() => _FullMealCardState();
@@ -24,7 +28,7 @@ class FullMealCard extends StatefulWidget {
 class _FullMealCardState extends State<FullMealCard> {
   bool _isFavorite = false;
 
-  List<int> calculateFullMealInfo(){
+  List<int> calculateFullMealInfo() {
     double calories = 0, protein = 0, carb = 0, fats = 0;
     // widget.fullMeal.components!.forEach((key, value) {
     //   if(key.serving != 1){
@@ -59,8 +63,9 @@ class _FullMealCardState extends State<FullMealCard> {
     //var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return InkWell(
       borderRadius: BorderRadius.circular(borderRadius),
-      onTap: (){
-        if(widget.mealDoneNumber != null && widget.mealDoneNumber != widget.id) return;
+      onTap: () {
+        if (widget.mealDoneNumber != null && widget.mealDoneNumber != widget.id)
+          return;
         //List<int> info = calculateFullMealInfo();
         // Meal meal = new Meal(
         //   id: widget.fullMeal.id,
@@ -75,18 +80,21 @@ class _FullMealCardState extends State<FullMealCard> {
         // );
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SingleMealScreen(
-            meal: widget.fullMeal,
-            mealDoneNumber: widget.mealDoneNumber,
-            otherId: widget.id,
-            onClick: widget.onClick,
-            onBack: widget.onBack,
-          )),
+          MaterialPageRoute(
+              builder: (context) => SingleMealScreen(
+                    meal: widget.fullMeal,
+                    mealDoneNumber: widget.mealDoneNumber,
+                    otherId: widget.id,
+                    onClick: widget.onClick,
+                    onBack: widget.onBack,
+                  )),
         );
       },
       child: Opacity(
-        opacity: widget.mealDoneNumber != null && widget.mealDoneNumber != widget.id?
-            0.4 : 1,
+        opacity:
+            widget.mealDoneNumber != null && widget.mealDoneNumber != widget.id
+                ? 0.4
+                : 1,
         child: Container(
           height: 130,
           decoration: BoxDecoration(
@@ -102,19 +110,21 @@ class _FullMealCardState extends State<FullMealCard> {
                   children: [
                     Hero(
                       tag: widget.fullMeal.id!,
-                      child: widget.fullMeal.image != null ?
-                      Image.network(
-                        widget.fullMeal.image!,
-                        width: 130,
-                        height: 130,
-                        fit: BoxFit.cover,
-                      ) : Container(
-                        width: 130,
-                        height: 130,
-                        color: Colors.grey[300],
-                      ),
+                      child: widget.fullMeal.image != null
+                          ? Image.network(
+                              widget.fullMeal.image!,
+                              width: 130,
+                              height: 130,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              width: 130,
+                              height: 130,
+                              color: Colors.grey[300],
+                            ),
                     ),
-                    if(widget.mealDoneNumber != null && widget.mealDoneNumber == widget.id)
+                    if (widget.mealDoneNumber != null &&
+                        widget.mealDoneNumber == widget.id)
                       Opacity(
                         opacity: 0.7,
                         child: Container(
@@ -145,20 +155,15 @@ class _FullMealCardState extends State<FullMealCard> {
                         children: [
                           Text(
                             widget.fullMeal.name!,
-                            style: TextStyle(
-                                fontSize: 16,
-                                height: 1
-                            ),
+                            style: TextStyle(fontSize: 16, height: 1),
                           ),
-                          if(widget.fullMeal.description != null)
+                          if (widget.fullMeal.description != null)
                             Text(
                               widget.fullMeal.description!,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600]
-                              ),
+                                  fontSize: 12, color: Colors.grey[600]),
                             ),
                         ],
                       ),
@@ -167,14 +172,16 @@ class _FullMealCardState extends State<FullMealCard> {
                 ),
               ),
               IconButton(
-                onPressed: (){
+                onPressed: () {
                   setState(() {
                     _isFavorite = !_isFavorite;
                   });
                 },
                 splashRadius: 5,
                 icon: Icon(
-                  _isFavorite ? Icons.bookmark_outlined : Icons.bookmark_outline,
+                  _isFavorite
+                      ? Icons.bookmark_outlined
+                      : Icons.bookmark_outline,
                   size: 30,
                 ),
               ),

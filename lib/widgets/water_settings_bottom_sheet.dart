@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/water.dart';
 import 'package:informa/providers/water_provider.dart';
-import 'package:informa/screens/auth_screens/main_register_screen.dart';
 import 'package:informa/services/notification_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
@@ -13,46 +12,49 @@ import '../constants.dart';
 
 class WaterSettingsBottomSheet extends StatefulWidget {
   final Water water;
-  const WaterSettingsBottomSheet({Key? key, required this.water}) : super(key: key);
+  const WaterSettingsBottomSheet({Key? key, required this.water})
+      : super(key: key);
 
   @override
-  _WaterSettingsBottomSheetState createState() => _WaterSettingsBottomSheetState(water);
+  _WaterSettingsBottomSheetState createState() =>
+      _WaterSettingsBottomSheetState(water);
 }
 
 class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
   late bool _isActivated;
   late int _numberOfRemind;
 
-  _WaterSettingsBottomSheetState(Water water){
+  _WaterSettingsBottomSheetState(Water water) {
     _isActivated = water.isActivated;
     _numberOfRemind = water.numberOfTimes;
   }
 
-  onSubmit(BuildContext context) async{
+  onSubmit(BuildContext context) async {
     Provider.of<WaterProvider>(context, listen: false).setStatus(_isActivated);
-    Provider.of<WaterProvider>(context, listen: false).setNumberOfTimes(_numberOfRemind);
+    Provider.of<WaterProvider>(context, listen: false)
+        .setNumberOfTimes(_numberOfRemind);
     await NotificationService.init(initScheduled: true);
     listenNotification();
 
     int? prev = await HelpFunction.getUserWaterNumberOfTimes();
     //close all notifications
-    if(!_isActivated && prev != null){
-      for(int i=prev-1; i>=0; i--){
+    if (!_isActivated && prev != null) {
+      for (int i = prev - 1; i >= 0; i--) {
         await NotificationService.cancelNotification(i);
       }
     }
 
     //deleting un-needed notifications if exist
-    if(_isActivated && prev != null && prev > _numberOfRemind){
-      for(int i=prev-1; i>=_numberOfRemind; i--){
+    if (_isActivated && prev != null && prev > _numberOfRemind) {
+      for (int i = prev - 1; i >= _numberOfRemind; i--) {
         await NotificationService.cancelNotification(i);
       }
     }
 
     //create notifications
-    if(_isActivated)
-      for(int i=0; i<_numberOfRemind; i++){
-        if(i == 0)
+    if (_isActivated)
+      for (int i = 0; i < _numberOfRemind; i++) {
+        if (i == 0)
           NotificationService.showRepeatScheduledNotification(
             id: i,
             title: 'أشرب الماء 🥤',
@@ -60,7 +62,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
             payload: 'payload',
             date: 10 + (i * 4),
           );
-        else if(i == 1)
+        else if (i == 1)
           NotificationService.showRepeatScheduledNotification(
             id: i,
             title: 'أشرب الماء 🥤',
@@ -68,7 +70,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
             payload: 'payload',
             date: 10 + (i * 4),
           );
-        else if(i == 2)
+        else if (i == 2)
           NotificationService.showRepeatScheduledNotification(
             id: i,
             title: 'أشرب الماء 🥤',
@@ -76,7 +78,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
             payload: 'payload',
             date: 10 + (i * 4),
           );
-        else if(i == 3)
+        else if (i == 3)
           NotificationService.showRepeatScheduledNotification(
             id: i,
             title: 'أشرب الماء 🥤',
@@ -90,7 +92,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
     Navigator.pop(context);
   }
 
-  void listenNotification() async{
+  void listenNotification() async {
     var initScreen = await HelpFunction.getInitScreen();
     NotificationService.onNotifications.stream.listen((payload) {
       Navigator.pushNamed(context, initScreen!);
@@ -122,7 +124,9 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
             ),
           ),
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Container(
@@ -142,7 +146,11 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                   CupertinoSwitch(
                     activeColor: primaryColor,
                     value: _isActivated,
-                    onChanged: (bool value) { setState(() { _isActivated = value; }); },
+                    onChanged: (bool value) {
+                      setState(() {
+                        _isActivated = value;
+                      });
+                    },
                   )
                 ],
               ),
@@ -162,35 +170,43 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    localization.translate('عدد مرات التذكير بالماء').toString(),
+                    localization
+                        .translate('عدد مرات التذكير بالماء')
+                        .toString(),
                     style: TextStyle(),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap:(){
-                            if(_isActivated)
+                          onTap: () {
+                            if (_isActivated)
                               setState(() {
                                 _numberOfRemind = 1;
                               });
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: _isActivated && _numberOfRemind == 1 ?
-                                        primaryColor : Colors.grey[200],
+                              color: _isActivated && _numberOfRemind == 1
+                                  ? primaryColor
+                                  : Colors.grey[200],
                               borderRadius: BorderRadius.circular(borderRadius),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Center(
                                 child: Text(
-                                  localization.translate('مرة واحدة').toString(),
+                                  localization
+                                      .translate('مرة واحدة')
+                                      .toString(),
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: _isActivated && _numberOfRemind == 1 ?
-                                              Colors.white : Colors.black,
+                                    color: _isActivated && _numberOfRemind == 1
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                 ),
                               ),
@@ -198,19 +214,22 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Expanded(
                         child: InkWell(
-                          onTap:(){
-                            if(_isActivated)
+                          onTap: () {
+                            if (_isActivated)
                               setState(() {
                                 _numberOfRemind = 2;
                               });
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: _isActivated && _numberOfRemind == 2 ?
-                              primaryColor : Colors.grey[200],
+                              color: _isActivated && _numberOfRemind == 2
+                                  ? primaryColor
+                                  : Colors.grey[200],
                               borderRadius: BorderRadius.circular(borderRadius),
                             ),
                             child: Padding(
@@ -219,9 +238,10 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                                 child: Text(
                                   localization.translate('مرتين').toString(),
                                   style: TextStyle(
-                                      fontSize: 14,
-                                    color: _isActivated && _numberOfRemind == 2 ?
-                                          Colors.white : Colors.black,
+                                    fontSize: 14,
+                                    color: _isActivated && _numberOfRemind == 2
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                 ),
                               ),
@@ -231,32 +251,38 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap:(){
-                            if(_isActivated)
+                          onTap: () {
+                            if (_isActivated)
                               setState(() {
                                 _numberOfRemind = 3;
                               });
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: _isActivated && _numberOfRemind == 3 ?
-                              primaryColor : Colors.grey[200],
+                              color: _isActivated && _numberOfRemind == 3
+                                  ? primaryColor
+                                  : Colors.grey[200],
                               borderRadius: BorderRadius.circular(borderRadius),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Center(
                                 child: Text(
-                                  localization.translate('ثلاث مرات').toString(),
+                                  localization
+                                      .translate('ثلاث مرات')
+                                      .toString(),
                                   style: TextStyle(
-                                      fontSize: 14,
-                                    color: _isActivated && _numberOfRemind == 3 ?
-                                        Colors.white : Colors.black,
+                                    fontSize: 14,
+                                    color: _isActivated && _numberOfRemind == 3
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                 ),
                               ),
@@ -264,30 +290,36 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Expanded(
                         child: InkWell(
-                          onTap:(){
-                            if(_isActivated)
+                          onTap: () {
+                            if (_isActivated)
                               setState(() {
                                 _numberOfRemind = 4;
                               });
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: _isActivated && _numberOfRemind == 4 ?
-                              primaryColor : Colors.grey[200],
+                              color: _isActivated && _numberOfRemind == 4
+                                  ? primaryColor
+                                  : Colors.grey[200],
                               borderRadius: BorderRadius.circular(borderRadius),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 5),
                               child: Center(
                                 child: Text(
-                                  localization.translate('أربع مرات').toString(),
+                                  localization
+                                      .translate('أربع مرات')
+                                      .toString(),
                                   style: TextStyle(
-                                      fontSize: 14,
-                                    color: _isActivated && _numberOfRemind == 4 ?
-                                    Colors.white : Colors.black,
+                                    fontSize: 14,
+                                    color: _isActivated && _numberOfRemind == 4
+                                        ? Colors.white
+                                        : Colors.black,
                                   ),
                                 ),
                               ),
@@ -306,7 +338,7 @@ class _WaterSettingsBottomSheetState extends State<WaterSettingsBottomSheet> {
           padding: const EdgeInsets.all(10.0),
           child: CustomButton(
             text: localization.translate('حفظ الأعدادات').toString(),
-            onClick: () async{
+            onClick: () async {
               onSubmit(context);
             },
           ),

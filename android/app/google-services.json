@@ -200,6 +200,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153538573350:android:2dfc357ff70a6b91d722e7",
+        "android_client_info": {
+          "package_name": "com.gym.informaaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhCdrSGCQc1DFCbaDpU23h1FIAdEDQZxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153538573350-c03461bi4e4kl7qfdfp1la1dg9sbrsna.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.informaAdmin"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -12,21 +12,21 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateMixin{
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late AnimationController _btnController;
   late Animation<Offset> _textOffset;
   late Animation<Offset> _imageOffset;
   late Animation<Offset> _btnOffset;
 
-  startAnimation() async{
+  startAnimation() async {
     await _controller.forward();
     await _btnController.forward();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       duration: Duration(milliseconds: 2500),
@@ -57,7 +57,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
       parent: _controller,
       curve: Curves.easeInOutQuart,
     ));
-    Timer(Duration(milliseconds: 200), (){
+    Timer(Duration(milliseconds: 200), () {
       startAnimation();
     });
   }
@@ -67,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
     _controller.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,9 +75,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
@@ -92,10 +90,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                       children: [
                         Text(
                           'مرحباً بك في انفورما',
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontFamily: boldFont
-                          ),
+                          style: TextStyle(fontSize: 22, fontFamily: boldFont),
                         ),
                         Text(
                           'أبدأ معانا وأعرف تمارين مخصصة ليك ونضام غذائي بأكلات لذيذة ومفيدة',
@@ -117,12 +112,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                         'assets/images/coach_body.png',
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     SlideTransition(
                       position: _btnOffset,
                       child: CustomButton(
                         text: 'أبدأ الأن',
-                        onClick: (){
+                        onClick: () {
                           Navigator.pushNamed(context, RegisterScreens.id);
                         },
                       ),
