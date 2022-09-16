@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/challenge.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/screens/auth_screens/forget_password_screen.dart';
@@ -33,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool? _isLoading = false;
   FirestoreService _firestoreService = new FirestoreService();
 
-  resetMacros(AppUser user) async{
+  resetMacros(AppUser user) async {
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyCalories(user.myCalories!);
     Provider.of<ActiveUserProvider>(context, listen: false)
@@ -42,15 +40,16 @@ class _LoginScreenState extends State<LoginScreen> {
         .setDailyCarb(user.myCarb!);
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyFats(user.myFats!);
-    if(user.dietType == 2){
+    if (user.dietType == 2) {
       DateTime now = DateTime.now();
-      if(((now.difference(user.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+      if (((now.difference(user.carbCycleStartDate!).inHours / 24).floor() %
+              7) <
+          4) {
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setDailyCarbCycle(user.lowAndHighCarb![0]);
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setCarbCycleIndex(0);
-      }
-      else{
+      } else {
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setDailyCarbCycle(user.lowAndHighCarb![1]);
         Provider.of<ActiveUserProvider>(context, listen: false)
@@ -58,26 +57,33 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
     double? myWater = await HelpFunction.getMyWater();
-    if(myWater != null) HelpFunction.saveDailyWater(myWater);
+    if (myWater != null) HelpFunction.saveDailyWater(myWater);
   }
 
-  onSubmit(BuildContext context) async{
+  onSubmit(BuildContext context) async {
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
-    if(valid) {
+    if (valid) {
       _formKey.currentState!.save();
-      setState(() { _isLoading = true; });
-      var cred = await _authServices.signInWithEmailAndPassword(_email!.trim(), _password!);
-      if(cred != null) {
-        AppUser? user = await _firestoreService.getUserById(cred.user!.uid).catchError((e){
+      setState(() {
+        _isLoading = true;
+      });
+      var cred = await _authServices.signInWithEmailAndPassword(
+          _email!.trim(), _password!);
+      if (cred != null) {
+        AppUser? user =
+            await _firestoreService.getUserById(cred.user!.uid).catchError((e) {
           print('error getting data from fireStore');
-          setState(() {_isLoading = false;});
+          setState(() {
+            _isLoading = false;
+          });
         });
-        if(user == null){
-          setState(() {_isLoading = false;});
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('حدث خطأ'))
-          );
+        if (user == null) {
+          setState(() {
+            _isLoading = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('حدث خطأ')));
           return;
         }
         await user.saveInSharedPreference();
@@ -85,9 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
 
         List<Challenge> challenges = await _firestoreService.getAllChallenges();
-        Provider.of<ChallengesProvider>(context, listen: false).setChallenges(challenges);
+        Provider.of<ChallengesProvider>(context, listen: false)
+            .setChallenges(challenges);
 
-        if(user.premium){
+        if (user.premium) {
           await HelpFunction.saveMyWater(user.weight * 0.045);
           await HelpFunction.saveDailyWater(user.weight * 0.045);
 
@@ -96,26 +103,29 @@ class _LoginScreenState extends State<LoginScreen> {
           Provider.of<ActiveUserProvider>(context, listen: false)
               .setDailyWater(user.weight * 0.045);
 
-          if(user.fillPremiumForm){
-            bool update = await _firestoreService.checkAndUpdateNewDayData(cred.user!.uid, user);
-            if(update) resetMacros(user);
-            if(user.dietType == 2){
+          if (user.fillPremiumForm) {
+            bool update = await _firestoreService.checkAndUpdateNewDayData(
+                cred.user!.uid, user);
+            if (update) resetMacros(user);
+            if (user.dietType == 2) {
               DateTime now = DateTime.now();
-              if(((now.difference(user.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+              if (((now.difference(user.carbCycleStartDate!).inHours / 24)
+                          .floor() %
+                      7) <
+                  4) {
                 Provider.of<ActiveUserProvider>(context, listen: false)
                     .setCarbCycleIndex(0);
-                if(user.dailyCarbCycle == user.lowAndHighCarb![1]){
+                if (user.dailyCarbCycle == user.lowAndHighCarb![1]) {
                   await _firestoreService.updateUserData(cred.user!.uid, {
                     'dailyCarbCycle': user.lowAndHighCarb![0],
                   });
                   Provider.of<ActiveUserProvider>(context, listen: false)
                       .setDailyCarbCycle(user.lowAndHighCarb![0]);
                 }
-              }
-              else{
+              } else {
                 Provider.of<ActiveUserProvider>(context, listen: false)
                     .setCarbCycleIndex(1);
-                if(user.dailyCarbCycle == user.lowAndHighCarb![0]){
+                if (user.dailyCarbCycle == user.lowAndHighCarb![0]) {
                   await _firestoreService.updateUserData(cred.user!.uid, {
                     'dailyCarbCycle': user.lowAndHighCarb![1],
                   });
@@ -124,8 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
               }
             }
-            List? nutrition = await _firestoreService.getNutritionMeals(cred.user!.uid, user);
-            if(nutrition != null){
+            List? nutrition =
+                await _firestoreService.getNutritionMeals(cred.user!.uid, user);
+            if (nutrition != null) {
               Provider.of<PremiumNutritionProvider>(context, listen: false)
                   .setBreakfast(nutrition[0]);
               Provider.of<PremiumNutritionProvider>(context, listen: false)
@@ -155,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   .setMainSnacksDone(mainSnacksDone);
               Provider.of<PremiumNutritionProvider>(context, listen: false)
                   .setSupplementsDone(supplementsDone);
-              if(additionalMeals != null)
+              if (additionalMeals != null)
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setAdditionalMeals(additionalMeals);
             }
@@ -164,11 +175,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
         Navigator.pushNamedAndRemoveUntil(
             context, MainScreen.id, (route) => false);
-      }
-      else ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('غير صحيح'))
-      );
-      setState(() { _isLoading = false; });
+      } else
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('غير صحيح')));
+      setState(() {
+        _isLoading = false;
+      });
     }
     print("email: " + _email.toString());
     print("password: " + _password.toString());
@@ -181,9 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -199,35 +209,36 @@ class _LoginScreenState extends State<LoginScreen> {
                       Text(
                         'تسجيل الدخول',
                         style: TextStyle(
-                            fontSize: 22,
-                            height: 0.3,
-                          fontFamily: 'CairoBold'
-                        ),
+                            fontSize: 22, height: 0.3, fontFamily: 'CairoBold'),
                       ),
-                      SizedBox(height: 40,),
+                      SizedBox(
+                        height: 40,
+                      ),
                       CustomTextField(
                         text: 'البريد الألكتروني',
                         obscureText: false,
                         textInputType: TextInputType.emailAddress,
-                        setValue: (String value){
+                        setValue: (String value) {
                           _email = value;
                         },
-                        validation: (value){
+                        validation: (value) {
                           if (value.isEmpty) return 'أدخل البريد الألكتروني';
                           if (!value.contains('@') || !value.contains('.'))
                             return 'بريد الكتروني خاطىء';
                           return null;
                         },
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       CustomTextField(
                         text: 'كلمة المرور',
                         obscureText: true,
                         textInputType: TextInputType.text,
-                        setValue: (String value){
+                        setValue: (String value) {
                           _password = value;
                         },
-                        validation: (value){
+                        validation: (value) {
                           if (value.isEmpty) return 'أدخل كلمة المرور';
                           if (value.length < 6) return 'كلمة المرور قصيرة';
                           return null;
@@ -237,8 +248,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           TextButton(
-                            onPressed: (){
-                              Navigator.pushNamed(context, ForgetPasswordScreen.id);
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, ForgetPasswordScreen.id);
                             },
                             child: Text(
                               'نسيت كلمة المرور؟',
@@ -250,15 +262,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       CustomButton(
                         text: 'تسجيل الدخول',
-                        onClick: (){
+                        onClick: () {
                           onSubmit(context);
                         },
                         isLoading: _isLoading!,
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -268,15 +284,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontSize: 16,
                             ),
                           ),
-                          TextButton(
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'أنشاء حساب الأن',
-                              style: TextStyle(
-                                  //fontSize: 16,
-                                  color: primaryColor
+                          Semantics(
+                            button: true,
+                            label: 'أنشاء حساب الأن',
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                'أنشاء حساب الأن',
+                                style: TextStyle(
+                                    //fontSize: 16,
+                                    color: primaryColor),
                               ),
                             ),
                           ),

@@ -37,6 +37,165 @@
             {
               "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "153538573350-c03461bi4e4kl7qfdfp1la1dg9sbrsna.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.informaAdmin"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153538573350:android:97a177e68d875c69d722e7",
+        "android_client_info": {
+          "package_name": "com.example.informa_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153538573350-hr8ph92da7jg14f5vut01v3lmfu75d7p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.informa_admin",
+            "certificate_hash": "15028a01bdbd34304b9b82d0420c058a389d475d"
+          }
+        },
+        {
+          "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhCdrSGCQc1DFCbaDpU23h1FIAdEDQZxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153538573350-c03461bi4e4kl7qfdfp1la1dg9sbrsna.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.informaAdmin"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153538573350:android:e563428bce1bae8ad722e7",
+        "android_client_info": {
+          "package_name": "com.example.infroma_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhCdrSGCQc1DFCbaDpU23h1FIAdEDQZxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153538573350-c03461bi4e4kl7qfdfp1la1dg9sbrsna.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.informaAdmin"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153538573350:android:94e8d4df150e9383d722e7",
+        "android_client_info": {
+          "package_name": "com.gym.informa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhCdrSGCQc1DFCbaDpU23h1FIAdEDQZxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153538573350-c03461bi4e4kl7qfdfp1la1dg9sbrsna.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.informaAdmin"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153538573350:android:54156ea8652a01a6d722e7",
+        "android_client_info": {
+          "package_name": "com.gym.informaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhCdrSGCQc1DFCbaDpU23h1FIAdEDQZxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153538573350-d4ksbamtmdi5aumvcbn01cp8fv266k85.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "153538573350-c03461bi4e4kl7qfdfp1la1dg9sbrsna.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.informaAdmin"
+              }
             }
           ]
         }

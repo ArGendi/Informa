@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/constants.dart';
@@ -8,13 +7,11 @@ import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/challenge.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
-import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/auth_screens/login_screen.dart';
+import 'package:informa/screens/main_screen.dart';
 import 'package:informa/services/auth_service.dart';
 import 'package:informa/services/firestore_service.dart';
-import 'package:informa/services/web_services.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +25,8 @@ class MainRegisterScreen extends StatefulWidget {
   _MainRegisterScreenState createState() => _MainRegisterScreenState();
 }
 
-class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTickerProviderStateMixin{
+class _MainRegisterScreenState extends State<MainRegisterScreen>
+    with SingleTickerProviderStateMixin {
   bool isGoogleLoading = false;
   bool isFacebookLoading = false;
   AuthServices? _authServices = new AuthServices();
@@ -37,104 +35,132 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
   late Animation<Offset> _logoOffset;
   late Animation<Offset> _btnOffset;
 
-  facebookLogin(BuildContext context) async{
-    setState(() {isFacebookLoading = true;});
-    var credential = await _authServices!.loginWithFacebook().catchError((e){
-      setState(() {isFacebookLoading = false;});
+  facebookLogin(BuildContext context) async {
+    setState(() {
+      isFacebookLoading = true;
     });
-    if(credential == null){
-      setState(() {isFacebookLoading = false;});
+    var credential = await _authServices!.loginWithFacebook().catchError((e) {
+      setState(() {
+        isFacebookLoading = false;
+      });
+    });
+    if (credential == null) {
+      setState(() {
+        isFacebookLoading = false;
+      });
       return;
     }
     var fbUser = credential.user;
-    if(fbUser != null){
-      if(!credential.additionalUserInfo!.isNewUser){
+    if (fbUser != null) {
+      if (!credential.additionalUserInfo!.isNewUser) {
         print('Not a new user');
-        AppUser? user = await _firestoreService.getUserById(fbUser.uid).catchError((e){
+        AppUser? user =
+            await _firestoreService.getUserById(fbUser.uid).catchError((e) {
           print('error getting data from fireStore');
-          setState(() {isFacebookLoading = false;});
+          setState(() {
+            isFacebookLoading = false;
+          });
         });
         await user!.saveInSharedPreference();
         await HelpFunction.saveInitScreen(MainScreen.id);
-        setState(() {isFacebookLoading = false;});
+        setState(() {
+          isFacebookLoading = false;
+        });
         print(user);
         Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
 
         List<Challenge> challenges = await _firestoreService.getAllChallenges();
-        Provider.of<ChallengesProvider>(context, listen: false).setChallenges(challenges);
+        Provider.of<ChallengesProvider>(context, listen: false)
+            .setChallenges(challenges);
 
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
-      }
-      else {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            MainScreen.id, (Route<dynamic> route) => false);
+      } else {
         var profile = await _authServices!.fb.getUserProfile();
         var email = await _authServices!.fb.getUserEmail();
-        Provider.of<ActiveUserProvider>(context, listen: false).setId(fbUser.uid);
-        Provider.of<ActiveUserProvider>(context, listen: false).setName(profile!.name!);
-        Provider.of<ActiveUserProvider>(context, listen: false).setEmail(email!);
-        Provider.of<ActiveUserProvider>(context, listen: false).setFromSocialMedia(true);
-        //AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-        //await _firestoreService.saveNewAccount(activeUser!);
-        setState(() {isFacebookLoading = false;});
-        Navigator.pushNamed(context, MoreUserInfoScreen.id);
-      }
-    }
-    else {
-      setState(() {isFacebookLoading = false;});
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ فالتسجيل'))
-      );
-    }
-  }
-
-  googleLogin(BuildContext context) async{
-    setState(() {isGoogleLoading = true;});
-    var credential = await _authServices!.loginWithGoogle().catchError((e){
-      setState(() {isGoogleLoading = false;});
-    });
-    if(credential == null){
-      setState(() {isGoogleLoading = false;});
-      return;
-    }
-    var googleUser = credential.user;
-    if(googleUser != null){
-      if(!credential.additionalUserInfo!.isNewUser) {
-        print('Not a new user');
-        AppUser? user = await _firestoreService.getUserById(googleUser.uid).catchError((e){
-          print('error getting data from fireStore');
-        });
-        print(user);
-        await user!.saveInSharedPreference();
-        await HelpFunction.saveInitScreen(MainScreen.id);
-        setState(() {isGoogleLoading = false;});
-        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
-
-        List<Challenge> challenges = await _firestoreService.getAllChallenges();
-        Provider.of<ChallengesProvider>(context, listen: false).setChallenges(challenges);
-
-        Navigator.of(context)
-            .pushNamedAndRemoveUntil(MainScreen.id, (Route<dynamic> route) => false);
-      }
-      else {
-        Provider.of<ActiveUserProvider>(context, listen: false).setId(
-            googleUser.uid);
-        Provider.of<ActiveUserProvider>(context, listen: false).setName(
-            _authServices!.user.displayName!);
-        Provider.of<ActiveUserProvider>(context, listen: false).setEmail(
-            _authServices!.user.email);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setId(fbUser.uid);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setName(profile!.name!);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setEmail(email!);
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setFromSocialMedia(true);
         //AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
         //await _firestoreService.saveNewAccount(activeUser!);
-        setState(() {isGoogleLoading = false;});
+        setState(() {
+          isFacebookLoading = false;
+        });
         Navigator.pushNamed(context, MoreUserInfoScreen.id);
       }
+    } else {
+      setState(() {
+        isFacebookLoading = false;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('حدث خطأ فالتسجيل')));
     }
-    else {
-      setState(() {isGoogleLoading = false;});
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('حدث خطأ فالتسجيل'))
-      );
+  }
+
+  googleLogin(BuildContext context) async {
+    setState(() {
+      isGoogleLoading = true;
+    });
+    var credential = await _authServices!.loginWithGoogle().catchError((e) {
+      setState(() {
+        isGoogleLoading = false;
+      });
+    });
+    if (credential == null) {
+      setState(() {
+        isGoogleLoading = false;
+      });
+      return;
+    }
+    var googleUser = credential.user;
+    if (googleUser != null) {
+      if (!credential.additionalUserInfo!.isNewUser) {
+        print('Not a new user');
+        AppUser? user =
+            await _firestoreService.getUserById(googleUser.uid).catchError((e) {
+          print('error getting data from fireStore');
+        });
+        print(user);
+        await user!.saveInSharedPreference();
+        await HelpFunction.saveInitScreen(MainScreen.id);
+        setState(() {
+          isGoogleLoading = false;
+        });
+        Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+
+        List<Challenge> challenges = await _firestoreService.getAllChallenges();
+        Provider.of<ChallengesProvider>(context, listen: false)
+            .setChallenges(challenges);
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            MainScreen.id, (Route<dynamic> route) => false);
+      } else {
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setId(googleUser.uid);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setName(_authServices!.user.displayName!);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setEmail(_authServices!.user.email);
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setFromSocialMedia(true);
+        //AppUser? activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+        //await _firestoreService.saveNewAccount(activeUser!);
+        setState(() {
+          isGoogleLoading = false;
+        });
+        Navigator.pushNamed(context, MoreUserInfoScreen.id);
+      }
+    } else {
+      setState(() {
+        isGoogleLoading = false;
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('حدث خطأ فالتسجيل')));
     }
   }
 
@@ -160,7 +186,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
       parent: _controller,
       curve: Curves.easeOutBack,
     ));
-    Timer(Duration(milliseconds: 300), (){
+    Timer(Duration(milliseconds: 300), () {
       _controller.forward();
     });
   }
@@ -178,9 +204,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -197,10 +221,7 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
                     //SizedBox(height: 20,),
                     Text(
                       'أبدأ التغيير',
-                      style: TextStyle(
-                        fontSize: 30,
-                        height: 0.5
-                      ),
+                      style: TextStyle(fontSize: 30, height: 0.5),
                     ),
                     Text(
                       'خطوة بخطوة',
@@ -208,16 +229,17 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
                         fontSize: 30,
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(
                       'يجب عليك انشاء حساب او تسجيل الدخول للحصول علي برامج التغذية والتمارين',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[600]
-                      ),
+                      style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
 
                     //Social media login buttons
                     Row(
@@ -225,55 +247,65 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
                       children: [
                         InkWell(
                           borderRadius: BorderRadius.circular(300),
-                          onTap: (){
+                          onTap: () {
                             facebookLogin(context);
                           },
                           child: CircleAvatar(
                             radius: 23,
                             backgroundColor: Colors.blue,
-                            child: !isFacebookLoading ? FaIcon(
-                              FontAwesomeIcons.facebookF,
-                              color: Colors.white,
-                            ) : Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: CircularProgressIndicator(
-                                strokeWidth: 3,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white),
-                              ),
-                            ),
+                            child: !isFacebookLoading
+                                ? FaIcon(
+                                    FontAwesomeIcons.facebookF,
+                                    color: Colors.white,
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ),
+                                  ),
                           ),
                         ),
-                        SizedBox(width: 15,),
+                        SizedBox(
+                          width: 15,
+                        ),
                         InkWell(
                           borderRadius: BorderRadius.circular(300),
-                          onTap: (){
+                          onTap: () {
                             googleLogin(context);
                           },
                           child: Ink(
                             child: CircleAvatar(
                               radius: 23,
                               backgroundColor: Colors.white,
-                              child: !isGoogleLoading ? FaIcon(
-                                FontAwesomeIcons.google,
-                                color: Colors.red,
-                              ) : Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 3,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.red),
-                                ),
-                              ),
+                              child: !isGoogleLoading
+                                  ? FaIcon(
+                                      FontAwesomeIcons.google,
+                                      color: Colors.red,
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 3,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.red),
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Row(
                       children: [
-                        Expanded(child: Divider(
+                        Expanded(
+                            child: Divider(
                           endIndent: 10,
                           color: Colors.grey[600],
                         )),
@@ -285,28 +317,38 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
                             fontSize: 13,
                           ),
                         ),
-                        Expanded(child: Divider(
+                        Expanded(
+                            child: Divider(
                           indent: 10,
                           color: Colors.grey[600],
                         )),
                       ],
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
 
                     //Login button
-                    SlideTransition(
-                      position: _btnOffset,
-                      child: CustomButton(
-                        text: 'أنشاء حساب',
-                        onClick: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MoreUserInfoScreen()),
-                          );
-                        },
+                    Semantics(
+                      label: 'أنشاء حساب',
+                      button: true,
+                      child: SlideTransition(
+                        position: _btnOffset,
+                        child: CustomButton(
+                          text: 'أنشاء حساب',
+                          onClick: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MoreUserInfoScreen()),
+                            );
+                          },
+                        ),
                       ),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -317,31 +359,29 @@ class _MainRegisterScreenState extends State<MainRegisterScreen> with SingleTick
                           ),
                         ),
                         TextButton(
-                          onPressed: (){
+                          onPressed: () {
                             Navigator.pushNamed(context, LoginScreen.id);
                           },
                           child: Text(
                             'سجل الدخول',
                             style: TextStyle(
                                 //fontSize: 16,
-                                color: primaryColor
-                            ),
+                                color: primaryColor),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 25,),
+                    SizedBox(
+                      height: 25,
+                    ),
                     Text(
                       'بالتسجيل في تطبيق أنفورما فأنت توافق علي',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 8,
-                        color: Colors.grey[600],
-                        height: 1
-                      ),
+                          fontSize: 8, color: Colors.grey[600], height: 1),
                     ),
                     TextButton(
-                      onPressed: (){},
+                      onPressed: () {},
                       child: Text(
                         'شروط الأستخدام وقوانين الخصوصية',
                         textAlign: TextAlign.center,
