@@ -17,6 +17,7 @@ class WeekRow extends StatefulWidget {
 
 class _WeekRowState extends State<WeekRow> {
   Color getColor(WorkoutDay workoutDay){
+    print('from week row widget: ' + workoutDay.toString());
     if(workoutDay.status == 1) return Colors.grey.shade300;
     else if(workoutDay.status == 2) return primaryColor;
     else return Colors.green;
@@ -47,6 +48,7 @@ class _WeekRowState extends State<WeekRow> {
                     MaterialPageRoute(builder: (context) => WorkOutDayScreen(
                       week: widget.week,
                       day: i+1,
+                      // workoutDay: widget.days[i],
                       workoutDay: widget.days[i],
                       // workoutDay: WorkoutDay(
                       //   name: 'يوم جامد',

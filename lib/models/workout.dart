@@ -44,7 +44,7 @@ class Workout{
     };
   }
 
-  fromJson(Map<String, dynamic> json, List<Exercise> allExercises){
+  fromJson(Map<String, dynamic> json, List<Exercise> allExercises, {bool isCardio = false}){
     category = json['category'];
     exercise = getExerciseById(allExercises, json['exercise']);
     alternative = getExerciseById(allExercises, json['alternative']);
@@ -61,7 +61,8 @@ class Workout{
     else superWorkout = null;
   }
 
-  Exercise? getExerciseById(List<Exercise> allExercises, String id){
+  Exercise? getExerciseById(List<Exercise> allExercises, String? id){
+    if(id == null) return null;
     for(var exercise in allExercises){
       if(exercise.id == id) return exercise;
     }

@@ -221,6 +221,7 @@ class AppUser {
     monthWorkoutStatus =
         json['monthWorkoutStatus'] != null ? json['monthWorkoutStatus'] : {};
     workoutPreset = json['workoutPreset'];
+    adminConfirm = json['adminConfirm'];
   }
 
   Map<String, dynamic> toJson() {
@@ -297,6 +298,7 @@ class AppUser {
       'cardioTools': cardioTools,
       'monthWorkoutStatus': monthWorkoutStatus,
       'workoutPreset': workoutPreset,
+      'adminConfirm': adminConfirm,
     };
   }
 

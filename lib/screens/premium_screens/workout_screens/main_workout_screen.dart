@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:informa/models/workout_day.dart';
+import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/week_row.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
@@ -14,6 +16,8 @@ class MainWorkoutScreen extends StatefulWidget {
 class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
   @override
   Widget build(BuildContext context) {
+    var myWorkoutPreset = Provider.of<ActiveUserProvider>(context).workoutPreset;
+    print('Workout preset name: ' + myWorkoutPreset!.name.toString());
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -116,54 +120,22 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                   SizedBox(height: 10,),
                   WeekRow(
                     week: 1,
-                    days: [
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 3,),
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 1,),
-                    ],
+                    days: myWorkoutPreset.weeksDays![0]!,
                   ),
                   SizedBox(height: 15,),
                   WeekRow(
                     week: 2,
-                    days: [
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 1,),
-                    ],
+                    days: myWorkoutPreset.weeksDays![1]!,
                   ),
                   SizedBox(height: 15,),
                   WeekRow(
                     week: 3,
-                    days: [
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 1,),
-                    ],
+                    days: myWorkoutPreset.weeksDays![2]!,
                   ),
                   SizedBox(height: 15,),
                   WeekRow(
                     week: 4,
-                    days: [
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 1,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 2,),
-                      WorkoutDay(status: 1,),
-                    ],
+                    days: myWorkoutPreset.weeksDays![3]!,
                   ),
                 ],
               ),
