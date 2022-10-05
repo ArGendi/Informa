@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:informa/screens/loading_screen.dart';
-import 'package:informa/screens/auth_screens/register_screens.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -11,13 +10,14 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
+class _SplashScreenState extends State<SplashScreen>
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late AnimationController _controller2;
   late final Animation<Offset> _offsetAnimation;
   late final Animation<double> _animation;
 
-  startAnimation() async{
+  startAnimation() async {
     await _controller.forward();
     await _controller2.forward();
     Navigator.pushReplacement(
@@ -28,10 +28,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       ),
     );
   }
-  
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       duration: Duration(milliseconds: 2000),
@@ -43,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     );
     _offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: Offset(0,-3),
+      end: Offset(0, -3),
     ).animate(CurvedAnimation(
       parent: _controller2,
       curve: Curves.easeInQuint,
@@ -52,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       parent: _controller,
       curve: Curves.easeOutCubic,
     );
-    Timer(Duration(milliseconds: 800), (){
+    Timer(Duration(milliseconds: 800), () {
       startAnimation();
     });
   }
@@ -63,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _controller2.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,9 +70,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Center(
           child: SlideTransition(
             position: _offsetAnimation,

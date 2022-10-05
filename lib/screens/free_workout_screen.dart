@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:informa/models/muscle.dart';
-import 'package:informa/models/workout.dart';
 import 'package:informa/widgets/workout_banner.dart';
 
 import '../constants.dart';
@@ -24,7 +23,7 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
         centerTitle: true,
         leading: IconButton(
           splashRadius: splashRadius,
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: Icon(
@@ -36,9 +35,7 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: ListView(
           children: [
             Image.asset(
@@ -50,46 +47,53 @@ class _FreeWorkoutScreenState extends State<FreeWorkoutScreen> {
             //SizedBox(height: 10,),
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: widget.muscle.exercises!.isNotEmpty ? Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'التمارين',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'CairoBold'
-                        ),
-                      ),
-                      Text(
-                        '(' + widget.muscle.exercises!.length.toString() + ')' + ' تمرين',
-                        style: TextStyle(
-                          //fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  for(var workout in widget.muscle.exercises!)
-                    Column(
+              child: widget.muscle.exercises!.isNotEmpty
+                  ? Column(
                       children: [
-                        WorkoutBanner(
-                          exercise: workout,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'التمارين',
+                              style: TextStyle(
+                                  fontSize: 16, fontFamily: 'CairoBold'),
+                            ),
+                            Text(
+                              '(' +
+                                  widget.muscle.exercises!.length.toString() +
+                                  ')' +
+                                  ' تمرين',
+                              style: TextStyle(
+                                //fontSize: 16,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        for (var workout in widget.muscle.exercises!)
+                          Column(
+                            children: [
+                              WorkoutBanner(
+                                exercise: workout,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
                       ],
+                    )
+                  : Center(
+                      child: Text(
+                        'لا يوجد تمارين الأن',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
-                ],
-              ) : Center(
-                child: Text(
-                  'لا يوجد تمارين الأن',
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
             ),
           ],
         ),

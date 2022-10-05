@@ -12,13 +12,19 @@ class WorkOutDayScreen extends StatefulWidget {
   final int day;
   final int week;
   final WorkoutDay workoutDay;
-  const WorkOutDayScreen({Key? key, required this.day, required this.week, required this.workoutDay}) : super(key: key);
+  const WorkOutDayScreen(
+      {Key? key,
+      required this.day,
+      required this.week,
+      required this.workoutDay})
+      : super(key: key);
 
   @override
   _WorkOutDayScreenState createState() => _WorkOutDayScreenState();
 }
 
-class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerProviderStateMixin{
+class _WorkOutDayScreenState extends State<WorkOutDayScreen>
+    with SingleTickerProviderStateMixin {
   late ConfettiController _confettiController;
   bool _dayDone = false;
   late AnimationController _animationController;
@@ -68,16 +74,22 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
     );
   }
 
+
   onDone(BuildContext context) async{
+
     String errorMsg = '';
-    for(int i=0; i<widget.workoutDay.warmUpSets!.length; i++){
-      print('warmUpSets done: ' + widget.workoutDay.warmUpSets![i].setsDone.toString());
-      print('warmUpSets numberOfSets: ' + widget.workoutDay.warmUpSets![i].numberOfSets.toString());
-      if(widget.workoutDay.warmUpSets![i].setsDone < widget.workoutDay.warmUpSets![i].numberOfSets!)
+    for (int i = 0; i < widget.workoutDay.warmUpSets!.length; i++) {
+      print('warmUpSets done: ' +
+          widget.workoutDay.warmUpSets![i].setsDone.toString());
+      print('warmUpSets numberOfSets: ' +
+          widget.workoutDay.warmUpSets![i].numberOfSets.toString());
+      if (widget.workoutDay.warmUpSets![i].setsDone <
+          widget.workoutDay.warmUpSets![i].numberOfSets!)
         errorMsg = 'لم تنتهي من المجموعات';
     }
-    for(int i=0; i<widget.workoutDay.exercises!.length; i++){
-      if(widget.workoutDay.exercises![i].setsDone < widget.workoutDay.exercises![i].numberOfSets!)
+    for (int i = 0; i < widget.workoutDay.exercises!.length; i++) {
+      if (widget.workoutDay.exercises![i].setsDone <
+          widget.workoutDay.exercises![i].numberOfSets!)
         errorMsg = 'لم تنتهي من المجموعات';
     }
     if(errorMsg.isEmpty){
@@ -110,7 +122,6 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _dayDone = widget.workoutDay.isDone != null? widget.workoutDay.isDone! : false;
     _confettiController = ConfettiController(duration: Duration(seconds: 2));
@@ -129,7 +140,6 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _animationController.dispose();
   }
@@ -138,7 +148,10 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('يوم ' + widget.day.toString() + ', اسبوع ' + widget.week.toString()),
+        title: Text('يوم ' +
+            widget.day.toString() +
+            ', اسبوع ' +
+            widget.week.toString()),
         centerTitle: true,
         elevation: 0,
       ),
@@ -146,9 +159,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: ListView(
@@ -173,6 +184,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
                         fontFamily: boldFont,
                       ),
                     ),
+
                     SizedBox(width: 10,),
                     Card(
                       elevation: 0,
@@ -276,6 +288,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
                     ),
                   ],
                 ),
+
               ),
               SizedBox(height: 20,),
               CustomButton(

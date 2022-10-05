@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:provider/provider.dart';
@@ -22,8 +21,7 @@ class _MacroBannerState extends State<MacroBanner> {
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(color: Colors.grey.shade200, width: 2)
-      ),
+          border: Border.all(color: Colors.grey.shade200, width: 2)),
       child: Padding(
         padding: const EdgeInsets.all(15),
         child: Row(
@@ -70,15 +68,17 @@ class _MacroBannerState extends State<MacroBanner> {
                   children: [
                     Text(
                       'سعراتك الحرارية',
-                      style: TextStyle(
-                        fontFamily: boldFont,
-                        fontSize: 14
-                      ),
+                      style: TextStyle(fontFamily: boldFont, fontSize: 14),
                     ),
                     Text(
-                      activeUser!.dietType != 2?
-                      activeUser.myCalories.toString() :
-                      (activeUser.myProtein! * 4 + activeUser.myFats! * 9 + activeUser.lowAndHighCarb![activeUser.carbCycleIndex!] * 4).toString(),
+                      activeUser!.dietType != 2
+                          ? activeUser.myCalories.toString()
+                          : (activeUser.myProtein! * 4 +
+                                  activeUser.myFats! * 9 +
+                                  activeUser.lowAndHighCarb![
+                                          activeUser.carbCycleIndex!] *
+                                      4)
+                              .toString(),
                       style: TextStyle(
                         fontSize: 14,
                         color: primaryColor,
@@ -86,7 +86,8 @@ class _MacroBannerState extends State<MacroBanner> {
                       ),
                     ),
                     Text(
-                      (activeUser.myCalories! - activeUser.dailyCalories!).toString(),
+                      (activeUser.myCalories! - activeUser.dailyCalories!)
+                          .toString(),
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.red,
@@ -94,9 +95,12 @@ class _MacroBannerState extends State<MacroBanner> {
                       ),
                     ),
                     Text(
-                      activeUser.dietType != 2?
-                      (activeUser.dailyCalories!).toString():
-                      (activeUser.dailyProtein! * 4 + activeUser.dailyFats! * 9 + activeUser.dailyCarbCycle! * 4).toString(),
+                      activeUser.dietType != 2
+                          ? (activeUser.dailyCalories!).toString()
+                          : (activeUser.dailyProtein! * 4 +
+                                  activeUser.dailyFats! * 9 +
+                                  activeUser.dailyCarbCycle! * 4)
+                              .toString(),
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.green,
@@ -119,10 +123,7 @@ class _MacroBannerState extends State<MacroBanner> {
               children: [
                 Text(
                   'البروتين',
-                  style: TextStyle(
-                      fontFamily: boldFont,
-                      fontSize: 14
-                  ),
+                  style: TextStyle(fontFamily: boldFont, fontSize: 14),
                 ),
                 Text(
                   activeUser.myProtein.toString(),
@@ -157,14 +158,13 @@ class _MacroBannerState extends State<MacroBanner> {
               children: [
                 Text(
                   'الكارب',
-                  style: TextStyle(
-                      fontFamily: boldFont,
-                      fontSize: 14
-                  ),
+                  style: TextStyle(fontFamily: boldFont, fontSize: 14),
                 ),
                 Text(
-                  activeUser.dietType != 2 ? activeUser.myCarb.toString() :
-                    activeUser.lowAndHighCarb![activeUser.carbCycleIndex!].toString(),
+                  activeUser.dietType != 2
+                      ? activeUser.myCarb.toString()
+                      : activeUser.lowAndHighCarb![activeUser.carbCycleIndex!]
+                          .toString(),
                   style: TextStyle(
                     fontSize: 14,
                     color: primaryColor,
@@ -172,9 +172,12 @@ class _MacroBannerState extends State<MacroBanner> {
                   ),
                 ),
                 Text(
-                  activeUser.dietType != 2 ?
-                  (activeUser.myCarb! - activeUser.dailyCarb!).toString() :
-                  (activeUser.lowAndHighCarb![activeUser.carbCycleIndex!] - activeUser.dailyCarbCycle).toString(),
+                  activeUser.dietType != 2
+                      ? (activeUser.myCarb! - activeUser.dailyCarb!).toString()
+                      : (activeUser
+                                  .lowAndHighCarb![activeUser.carbCycleIndex!] -
+                              activeUser.dailyCarbCycle)
+                          .toString(),
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.red,
@@ -182,8 +185,9 @@ class _MacroBannerState extends State<MacroBanner> {
                   ),
                 ),
                 Text(
-                  activeUser.dietType != 2 ?
-                  (activeUser.dailyCarb!).toString() : activeUser.dailyCarbCycle.toString(),
+                  activeUser.dietType != 2
+                      ? (activeUser.dailyCarb!).toString()
+                      : activeUser.dailyCarbCycle.toString(),
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.green,
@@ -199,12 +203,10 @@ class _MacroBannerState extends State<MacroBanner> {
               children: [
                 Text(
                   'الدهون',
-                  style: TextStyle(
-                      fontFamily: boldFont,
-                      fontSize: 14
-                  ),
+                  style: TextStyle(fontFamily: boldFont, fontSize: 14),
                 ),
-                Text(activeUser.myFats.toString(),
+                Text(
+                  activeUser.myFats.toString(),
                   style: TextStyle(
                     fontSize: 14,
                     color: primaryColor,

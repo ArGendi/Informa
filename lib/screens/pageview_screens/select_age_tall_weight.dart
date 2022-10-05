@@ -1,10 +1,6 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../../constants.dart';
 import '../../widgets/custom_button.dart';
@@ -12,14 +8,15 @@ import '../../widgets/custom_button.dart';
 class SelectAgeTallWeight extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectAgeTallWeight({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectAgeTallWeight(
+      {Key? key, required this.onClick, required this.onBack})
+      : super(key: key);
 
   @override
   _SelectAgeTallWeightState createState() => _SelectAgeTallWeightState();
 }
 
 class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
-
   @override
   Widget build(BuildContext context) {
     var activeUserProvider = Provider.of<ActiveUserProvider>(context);
@@ -43,7 +40,9 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     width: 85,
                     height: 85,
@@ -53,10 +52,11 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/images/coach_face.jpg'),
-                        )
-                    ),
+                        )),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'شكرا ' + activeUserProvider.user!.name! + ' لتسجيلك معانا',
                     style: TextStyle(
@@ -74,15 +74,16 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     'دعنا نتعرف علي عمرك, طولك و وزنك الحالي',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'CairoBold'
-                    ),
+                    style: TextStyle(fontSize: 16, fontFamily: 'CairoBold'),
                   ),
-                  SizedBox(height: 25,),
+                  SizedBox(
+                    height: 25,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -98,13 +99,11 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                           borderRadius: BorderRadius.circular(borderRadius),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
                           child: Text(
                             activeUserProvider.user!.age.toString() + ' سنة',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                         ),
                       ),
@@ -137,13 +136,11 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                           borderRadius: BorderRadius.circular(borderRadius),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
                           child: Text(
                             activeUserProvider.user!.tall.toString() + ' سم',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                         ),
                       ),
@@ -176,13 +173,11 @@ class _SelectAgeTallWeightState extends State<SelectAgeTallWeight> {
                           borderRadius: BorderRadius.circular(borderRadius),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
                           child: Text(
                             activeUserProvider.user!.weight.toString() + ' كجم',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                         ),
                       ),

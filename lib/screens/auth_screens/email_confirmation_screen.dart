@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/screens/auth_screens/reset_password_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
-import 'package:informa/widgets/custom_textfield.dart';
-
 
 class EmailConfirmationScreen extends StatefulWidget {
   static String id = 'email confirmation';
   final String code;
-  const EmailConfirmationScreen({Key? key, required this.code}) : super(key: key);
+  const EmailConfirmationScreen({Key? key, required this.code})
+      : super(key: key);
 
   @override
-  _EmailConfirmationScreenState createState() => _EmailConfirmationScreenState();
+  _EmailConfirmationScreenState createState() =>
+      _EmailConfirmationScreenState();
 }
 
 class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
@@ -19,10 +19,10 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
   TextEditingController _controller = TextEditingController();
   Color _codeStatusColor = Colors.grey.shade500;
 
-  onSubmit(){
+  onSubmit() {
     FocusScope.of(context).unfocus();
     String input = _controller.text;
-    if(input == widget.code)
+    if (input == widget.code)
       Navigator.pushNamed(context, ResetPasswordScreen.id);
     else
       setState(() {
@@ -37,9 +37,7 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -53,7 +51,9 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
                         'assets/images/mailed.png',
                         width: 140,
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Text(
                         'تأكيد البريد الألكتروني',
                         style: TextStyle(
@@ -69,7 +69,9 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
                           fontSize: 13,
                         ),
                       ),
-                      SizedBox(height: 30,),
+                      SizedBox(
+                        height: 30,
+                      ),
                       // Directionality(
                       //   textDirection: TextDirection.ltr,
                       //   child: PinPut(
@@ -98,25 +100,25 @@ class _EmailConfirmationScreenState extends State<EmailConfirmationScreen> {
                       //     ),
                       //   ),
                       // ),
-                      SizedBox(height: 30,),
+                      SizedBox(
+                        height: 30,
+                      ),
                       CustomButton(
                         text: 'تأكيد البريد الألكتروني',
                         onClick: onSubmit,
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Text(
                         'لم يصل رمز التأكيد؟',
-                        style: TextStyle(
-                        ),
+                        style: TextStyle(),
                       ),
                       TextButton(
-                        onPressed: (){},
+                        onPressed: () {},
                         child: Text(
                           'أعد ارسال رمز التأكيد مرة أخرى',
-                          style: TextStyle(
-                              color: primaryColor,
-                            height: 0.2
-                          ),
+                          style: TextStyle(color: primaryColor, height: 0.2),
                         ),
                       )
                     ],

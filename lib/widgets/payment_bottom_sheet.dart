@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/screens/sales_payment_screen.dart';
 
@@ -36,17 +35,21 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
             ),
           ),
         ),
-        SizedBox(height: 15,),
+        SizedBox(
+          height: 15,
+        ),
         InkWell(
           borderRadius: BorderRadius.circular(borderRadius),
-          onTap: (){},
+          onTap: () {},
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(color: Colors.grey.shade300,),
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -56,7 +59,9 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
                       Icons.credit_card,
                       color: primaryColor,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       'عن طريق بطاقة إئتمان',
                       style: TextStyle(),
@@ -67,10 +72,12 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
             ),
           ),
         ),
-        SizedBox(height: 5,),
+        SizedBox(
+          height: 5,
+        ),
         InkWell(
           borderRadius: BorderRadius.circular(borderRadius),
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
             Navigator.pushNamed(context, SalesPaymentScreen.id);
           },
@@ -80,7 +87,9 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(borderRadius),
-                border: Border.all(color: Colors.grey.shade300,),
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                ),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -90,7 +99,9 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
                       Icons.monetization_on_outlined,
                       color: primaryColor,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       'عن طريق فريق المبيعات',
                       style: TextStyle(),
@@ -101,7 +112,9 @@ class _PaymentBottomSheetState extends State<PaymentBottomSheet> {
             ),
           ),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
       ],
     );
   }

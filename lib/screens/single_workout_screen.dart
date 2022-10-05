@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/excercise.dart';
-import 'package:informa/models/workout.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/plans_screen.dart';
-import 'package:informa/screens/target_muscle.dart';
 import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +10,8 @@ import 'package:provider/provider.dart';
 class SingleWorkoutScreen extends StatefulWidget {
   static String id = 'single workout';
   final Exercise exercise;
-  const SingleWorkoutScreen({Key? key, required this.exercise}) : super(key: key);
+  const SingleWorkoutScreen({Key? key, required this.exercise})
+      : super(key: key);
 
   @override
   _SingleWorkoutScreenState createState() => _SingleWorkoutScreenState();
@@ -58,9 +56,7 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
@@ -82,10 +78,8 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                             ),
                             Text(
                               widget.exercise.description!,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey
-                              ),
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.grey),
                             ),
                           ],
                         ),
@@ -93,11 +87,10 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       Positioned(
                         left: 0,
                         child: IconButton(
-                          onPressed: (){
-                            if(!activeUser!.premium){
+                          onPressed: () {
+                            if (!activeUser!.premium) {
                               Navigator.pushNamed(context, PlansScreen.id);
-                            }
-                            else{
+                            } else {
                               setState(() {
                                 _isFavorite = !_isFavorite;
                               });
@@ -105,14 +98,18 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                           },
                           splashRadius: 5,
                           icon: Icon(
-                            _isFavorite ? Icons.bookmark_outlined : Icons.bookmark_outline,
+                            _isFavorite
+                                ? Icons.bookmark_outlined
+                                : Icons.bookmark_outline,
                             size: 30,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'شاهد التمرين',
                     textAlign: TextAlign.start,
@@ -120,31 +117,32 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       fontFamily: 'CairoBold',
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Hero(
                     tag: widget.exercise.id!,
                     child: Container(
                       width: screenSize.width,
                       height: 200,
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(borderRadius),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(widget.exercise.image!)
-                        )
-                      ),
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(borderRadius),
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage(widget.exercise.image!))),
                       child: MaterialButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(borderRadius),
                         ),
-                        onPressed: (){
-                          if(widget.exercise.video != null)
+                        onPressed: () {
+                          if (widget.exercise.video != null)
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => VideoPlayerScreen(
-                                url: widget.exercise.video!,
-                              )),
+                              MaterialPageRoute(
+                                  builder: (context) => VideoPlayerScreen(
+                                        url: widget.exercise.video!,
+                                      )),
                             );
                         },
                         child: Center(
@@ -157,7 +155,9 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Text(
                     'العضلات المستهدفة',
                     textAlign: TextAlign.start,
@@ -166,10 +166,13 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                     ),
                   ),
                   //SizedBox(height: 10,),
-                  for(int i=0; i<widget.exercise.targetMuscles!.length; i++)
+                  for (int i = 0;
+                      i < widget.exercise.targetMuscles!.length;
+                      i++)
                     InkWell(
-                      onTap: (){
-                        _showDoneDialog(widget.exercise.targetMuscles![i].image);
+                      onTap: () {
+                        _showDoneDialog(
+                            widget.exercise.targetMuscles![i].image);
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -177,7 +180,9 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (i+1).toString() + '- ' + widget.exercise.targetMuscles![i].name,
+                              (i + 1).toString() +
+                                  '- ' +
+                                  widget.exercise.targetMuscles![i].name,
                               textAlign: TextAlign.start,
                               style: TextStyle(),
                             ),
@@ -190,7 +195,9 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                         ),
                       ),
                     ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'العضلات المساعدة',
                     textAlign: TextAlign.start,
@@ -198,16 +205,20 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       fontFamily: 'CairoBold',
                     ),
                   ),
-                  for(int i=0; i<widget.exercise.helpersMuscles!.length; i++)
+                  for (int i = 0;
+                      i < widget.exercise.helpersMuscles!.length;
+                      i++)
                     InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (i+1).toString() + '- ' + widget.exercise.targetMuscles![i].name,
+                              (i + 1).toString() +
+                                  '- ' +
+                                  widget.exercise.targetMuscles![i].name,
                               textAlign: TextAlign.start,
                               style: TextStyle(),
                             ),
@@ -220,7 +231,9 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                         ),
                       ),
                     ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'العضلات المثبتة',
                     textAlign: TextAlign.start,
@@ -228,16 +241,20 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                       fontFamily: 'CairoBold',
                     ),
                   ),
-                  for(int i=0; i<widget.exercise.settlersMuscles!.length; i++)
+                  for (int i = 0;
+                      i < widget.exercise.settlersMuscles!.length;
+                      i++)
                     InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (i+1).toString() + '- ' + widget.exercise.targetMuscles![i].name,
+                              (i + 1).toString() +
+                                  '- ' +
+                                  widget.exercise.targetMuscles![i].name,
                               textAlign: TextAlign.start,
                               style: TextStyle(),
                             ),
@@ -250,11 +267,13 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                         ),
                       ),
                     ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   CustomButton(
                     text: 'تم',
-                    onClick: (){
-                      if(!activeUser!.premium)
+                    onClick: () {
+                      if (!activeUser!.premium)
                         Navigator.pushNamed(context, PlansScreen.id);
                     },
                     iconExist: false,

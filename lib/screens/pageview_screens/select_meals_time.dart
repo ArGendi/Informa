@@ -13,7 +13,8 @@ import '../../widgets/custom_button.dart';
 class SelectMealsTime extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectMealsTime({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectMealsTime({Key? key, required this.onClick, required this.onBack})
+      : super(key: key);
 
   @override
   _SelectMealsTimeState createState() => _SelectMealsTimeState();
@@ -23,29 +24,31 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
   late DateTime _dateTime;
   int _selected = 0;
 
-  void listenNotification() async{
+  void listenNotification() async {
     var initScreen = await HelpFunction.getInitScreen();
     NotificationService.onNotifications.stream.listen((payload) {
       Navigator.pushNamed(context, initScreen!);
     });
   }
 
-  setNotifications(AppUser user) async{
+  setNotifications(AppUser user) async {
     await NotificationService.init(initScheduled: true);
     listenNotification();
 
-    for(int i=0; i<user.datesOfMeals.length; i++)
+    for (int i = 0; i < user.datesOfMeals.length; i++)
       NotificationService.showRepeatScheduledNotification(
         id: 300 + i,
-        title: 'وجبة' + (i+1).toString() + ' 🍔',
+        title: 'وجبة' + (i + 1).toString() + ' 🍔',
         body: 'متبقي ساعة علي الوجبة قم بتحضرها الأن',
         payload: 'payload',
         date: user.datesOfMeals[i].hour - 1,
       );
   }
 
-  showPickTimeSheet(BuildContext context, int index){
-    var datesOfMeals = Provider.of<ActiveUserProvider>(context, listen: false).user!.datesOfMeals;
+  showPickTimeSheet(BuildContext context, int index) {
+    var datesOfMeals = Provider.of<ActiveUserProvider>(context, listen: false)
+        .user!
+        .datesOfMeals;
     showModalBottomSheet(
       context: context,
       backgroundColor: bgColor,
@@ -62,7 +65,7 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(
-                    'اختار وقت وجبة ' + (index+1).toString(),
+                    'اختار وقت وجبة ' + (index + 1).toString(),
                     style: TextStyle(
                       fontFamily: boldFont,
                     ),
@@ -73,8 +76,10 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
             Container(
               height: 180,
               child: CupertinoDatePicker(
-                initialDateTime: datesOfMeals.length > index? datesOfMeals[index] : _dateTime,
-                onDateTimeChanged: (datetime){
+                initialDateTime: datesOfMeals.length > index
+                    ? datesOfMeals[index]
+                    : _dateTime,
+                onDateTimeChanged: (datetime) {
                   setState(() {
                     _dateTime = datetime;
                   });
@@ -86,10 +91,12 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
               padding: const EdgeInsets.all(10.0),
               child: CustomButton(
                 text: 'تم',
-                onClick: (){
+                onClick: () {
                   Provider.of<ActiveUserProvider>(context, listen: false)
                       .addMealDateInIndex(_dateTime, index);
-                  setState(() {_selected = 0;});
+                  setState(() {
+                    _selected = 0;
+                  });
                   Navigator.pop(context);
                 },
               ),
@@ -100,31 +107,33 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
     );
   }
 
-  String convertDateTimeToString(date){
+  String convertDateTimeToString(date) {
     String time = '';
     bool am = true;
-    if(date.hour > 12){
+    if (date.hour > 12) {
       time += (date.hour - 12).toString() + ':';
       am = false;
-    }
-    else time += date.hour.toString() + ':';
-    if(date.minute < 10)
+    } else
+      time += date.hour.toString() + ':';
+    if (date.minute < 10)
       time += '0' + date.minute.toString();
-    else time += date.minute.toString();
-    if(am) time += ' ص';
-    else time += ' م';
+    else
+      time += date.minute.toString();
+    if (am)
+      time += ' ص';
+    else
+      time += ' م';
     return time;
   }
 
-  onNext(AppUser user){
-    if(user.numberOfMeals == user.datesOfMeals.length)
-      setNotifications(user);
+  onNext(AppUser user) {
+    if (user.numberOfMeals == user.datesOfMeals.length) setNotifications(user);
     widget.onClick();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
+    //
     super.initState();
     _dateTime = DateTime.now();
   }
@@ -152,7 +161,9 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     width: 85,
                     height: 85,
@@ -162,10 +173,11 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/images/coach_face.jpg'),
-                        )
-                    ),
+                        )),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'مواعيد الوجبات',
                     textAlign: TextAlign.center,
@@ -179,7 +191,9 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'أضغط علي كل وجبة لتحديد معادها',
                     textAlign: TextAlign.center,
@@ -188,48 +202,66 @@ class _SelectMealsTimeState extends State<SelectMealsTime> {
                       fontFamily: boldFont,
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ProgramSelectCard(
                     mainText: 'لا يوجد اوقات محددة',
                     number: 10,
                     userChoice: _selected,
-                    onClick: (){
+                    onClick: () {
                       setState(() {
                         _selected = 10;
                       });
                     },
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Divider(
                     height: 10,
                   ),
-                  for(int i=0; i<activeUser!.numberOfMeals; i++)
-                  Column(
-                    children: [
-                      SizedBox(height: 5,),
-                      ProgramSelectCard(
-                        mainText: 'وجبة ' + (i+1).toString(),
-                        subText: activeUser.datesOfMeals.length > i ?
-                        convertDateTimeToString(activeUser.datesOfMeals[i]) : null,
-                        number: i+1,
-                        userChoice: 0,
-                        onClick: (){
-                          showPickTimeSheet(context, i);
-                        },
-                      ),
-                    ],
+                  for (int i = 0; i < activeUser!.numberOfMeals; i++)
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 5,
+                        ),
+                        ProgramSelectCard(
+                          mainText: 'وجبة ' + (i + 1).toString(),
+                          subText: activeUser.datesOfMeals.length > i
+                              ? convertDateTimeToString(
+                                  activeUser.datesOfMeals[i])
+                              : null,
+                          number: i + 1,
+                          userChoice: 0,
+                          onClick: () {
+                            showPickTimeSheet(context, i);
+                          },
+                        ),
+                      ],
+                    ),
+                  SizedBox(
+                    height: 40,
                   ),
-                  SizedBox(height: 40,),
                 ],
               ),
             ),
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.numberOfMeals == activeUser.datesOfMeals.length || _selected == 10? (){
-              onNext(activeUser);
-            } : (){},
-            bgColor: activeUser.numberOfMeals == activeUser.datesOfMeals.length || _selected == 10? primaryColor : Colors.grey.shade400,
+            onClick:
+                activeUser.numberOfMeals == activeUser.datesOfMeals.length ||
+                        _selected == 10
+                    ? () {
+                        onNext(activeUser);
+                      }
+                    : () {},
+            bgColor:
+                activeUser.numberOfMeals == activeUser.datesOfMeals.length ||
+                        _selected == 10
+                    ? primaryColor
+                    : Colors.grey.shade400,
           )
         ],
       ),

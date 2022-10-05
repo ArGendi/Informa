@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/helpers/shared_preference.dart';
-import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
@@ -22,7 +21,14 @@ class FullMealsScreen extends StatefulWidget {
   final int? mealDone;
   final int? whichMeal;
   final DateTime? time;
-  const FullMealsScreen({Key? key, required this.screenName, required this.fullMeals, this.mealDone, this.whichMeal, this.time}) : super(key: key);
+  const FullMealsScreen(
+      {Key? key,
+      required this.screenName,
+      required this.fullMeals,
+      this.mealDone,
+      this.whichMeal,
+      this.time})
+      : super(key: key);
 
   @override
   _FullMealsScreenState createState() => _FullMealsScreenState(fullMeals, time);
@@ -34,35 +40,32 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
   DateTime? _dateTime;
   bool _isLoading = false;
 
-  _FullMealsScreenState(List<Meal> fullMeals, DateTime? time){
+  _FullMealsScreenState(List<Meal> fullMeals, DateTime? time) {
     _fullMeals = fullMeals;
     _dateTime = time;
   }
 
-  onClick(BuildContext context, int index) async{
+  onClick(BuildContext context, int index) async {
     String id = FirebaseAuth.instance.currentUser!.uid;
-    if(widget.whichMeal == 1) {
+    if (widget.whichMeal == 1) {
       await _firestoreService.updateNutrition(id, {
         'breakfastDone': index,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setBreakfastDone(index);
-    }
-    else if(widget.whichMeal == 2) {
+    } else if (widget.whichMeal == 2) {
       await _firestoreService.updateNutrition(id, {
         'lunchDone': index,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setLunchDone(index);
-    }
-    else if(widget.whichMeal == 3) {
+    } else if (widget.whichMeal == 3) {
       await _firestoreService.updateNutrition(id, {
         'lunch2Done': index,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setLunch2Done(index);
-    }
-    else if(widget.whichMeal == 4) {
+    } else if (widget.whichMeal == 4) {
       await _firestoreService.updateNutrition(id, {
         'dinnerDone': index,
       });
@@ -71,30 +74,27 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
     }
   }
 
-  onBack(BuildContext context) async{
+  onBack(BuildContext context) async {
     String id = FirebaseAuth.instance.currentUser!.uid;
-    if(widget.whichMeal == 1) {
+    if (widget.whichMeal == 1) {
       await _firestoreService.updateNutrition(id, {
         'breakfastDone': null,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setBreakfastDone(null);
-    }
-    else if(widget.whichMeal == 2) {
+    } else if (widget.whichMeal == 2) {
       await _firestoreService.updateNutrition(id, {
         'lunchDone': null,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setLunchDone(null);
-    }
-    else if(widget.whichMeal == 3) {
+    } else if (widget.whichMeal == 3) {
       await _firestoreService.updateNutrition(id, {
         'lunch2Done': null,
       });
       Provider.of<PremiumNutritionProvider>(context, listen: false)
           .setLunch2Done(null);
-    }
-    else if(widget.whichMeal == 4) {
+    } else if (widget.whichMeal == 4) {
       await _firestoreService.updateNutrition(id, {
         'dinnerDone': null,
       });
@@ -103,18 +103,18 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
     }
   }
 
-  void listenNotification() async{
+  void listenNotification() async {
     var initScreen = await HelpFunction.getInitScreen();
     NotificationService.onNotifications.stream.listen((payload) {
       Navigator.pushNamed(context, initScreen!);
     });
   }
 
-  setNotifications(AppUser user) async{
+  setNotifications(AppUser user) async {
     await NotificationService.init(initScheduled: true);
     listenNotification();
 
-    for(int i=0; i<user.datesOfMeals.length; i++) {
+    for (int i = 0; i < user.datesOfMeals.length; i++) {
       NotificationService.cancelNotification(300 + i);
       NotificationService.showRepeatScheduledNotification(
         id: 300 + i,
@@ -126,19 +126,26 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
     }
   }
 
-  onChangeMealDate(BuildContext context) async{
+  onChangeMealDate(BuildContext context) async {
     bool timeChanged = Provider.of<ActiveUserProvider>(context, listen: false)
         .changeMealTime(widget.time!, _dateTime!);
-    if(timeChanged){
-      var datesOfMeals = Provider.of<ActiveUserProvider>(context, listen: false).user!.datesOfMeals;
+    if (timeChanged) {
+      var datesOfMeals = Provider.of<ActiveUserProvider>(context, listen: false)
+          .user!
+          .datesOfMeals;
       String id = FirebaseAuth.instance.currentUser!.uid;
-      setState(() {_isLoading = true;});
+      setState(() {
+        _isLoading = true;
+      });
       await _firestoreService.updateUserData(id, {
         'datesOfMeals': datesOfMeals,
       });
-      var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+      var activeUser =
+          Provider.of<ActiveUserProvider>(context, listen: false).user;
       setNotifications(activeUser!);
-      setState(() {_isLoading = false;});
+      setState(() {
+        _isLoading = false;
+      });
     }
     Navigator.pop(context);
   }
@@ -172,7 +179,7 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
               height: 180,
               child: CupertinoDatePicker(
                 initialDateTime: _dateTime,
-                onDateTimeChanged: (datetime){
+                onDateTimeChanged: (datetime) {
                   setState(() {
                     _dateTime = datetime;
                   });
@@ -199,23 +206,24 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    var premiumNutritionProvider = Provider.of<PremiumNutritionProvider>(context);
+    var premiumNutritionProvider =
+        Provider.of<PremiumNutritionProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.screenName),
         centerTitle: true,
         elevation: 0,
         actions: [
-          if(widget.time != null)
-          IconButton(
-            onPressed: (){
-              showPickTimeSheet(context);
-            },
-            icon: Icon(
-              Icons.watch_later,
-              color: Colors.white,
+          if (widget.time != null)
+            IconButton(
+              onPressed: () {
+                showPickTimeSheet(context);
+              },
+              icon: Icon(
+                Icons.watch_later,
+                color: Colors.white,
+              ),
             ),
-          ),
         ],
       ),
       body: Container(
@@ -224,30 +232,31 @@ class _FullMealsScreenState extends State<FullMealsScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: ListView.builder(
             shrinkWrap: true,
             itemCount: _fullMeals.length,
-            itemBuilder: (context, index){
+            itemBuilder: (context, index) {
               return Column(
                 children: [
                   FullMealCard(
                     fullMeal: _fullMeals[index],
-                    mealDoneNumber: premiumNutritionProvider.getDoneNumberByMeal(widget.whichMeal),
+                    mealDoneNumber: premiumNutritionProvider
+                        .getDoneNumberByMeal(widget.whichMeal),
                     id: index,
                     whichMeal: widget.whichMeal,
-                    onClick: (){
+                    onClick: () {
                       onClick(context, index);
                     },
-                    onBack: (){
+                    onBack: () {
                       onBack(context);
                     },
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                 ],
               );
             },

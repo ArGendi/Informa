@@ -6,14 +6,12 @@ import 'package:informa/app_localization.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/analytics_screen.dart';
-import 'package:informa/screens/free_kitchen_screen.dart';
 import 'package:informa/screens/home_screen.dart';
 import 'package:informa/screens/nutrition_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
 import 'package:informa/screens/premium_screens/ready_fill_premium_form_screen.dart';
 import 'package:informa/screens/premium_screens/workout_screens/main_workout_screen.dart';
 import 'package:informa/screens/profile_screen.dart';
-import 'package:informa/screens/workout_screen.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
@@ -89,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
     var localization = AppLocalization.of(context);
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         return _showEndDialog(context);
       },
       child: Scaffold(
@@ -97,9 +95,7 @@ class _MainScreenState extends State<MainScreen> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage('assets/images/appBg.png')
-              )
-          ),
+                  image: AssetImage('assets/images/appBg.png'))),
           child: Stack(
             children: [
               PageStorage(
@@ -136,7 +132,7 @@ class _MainScreenState extends State<MainScreen> {
                             MaterialButton(
                               shape: CircleBorder(),
                               minWidth: 40,
-                              onPressed: (){
+                              onPressed: () {
                                 setState(() {
                                   _selectedIndex = 0;
                                   _currentPage = ProfileScreen();
@@ -147,16 +143,19 @@ class _MainScreenState extends State<MainScreen> {
                                   SvgPicture.asset(
                                     'assets/icons/user.svg',
                                     semanticsLabel: 'user',
-                                    color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
+                                    color: _selectedIndex == 0
+                                        ? primaryColor
+                                        : Colors.grey[400],
                                     width: 20,
                                     height: 20,
                                   ),
                                   Text(
                                     localization!.translate('حسابي').toString(),
                                     style: TextStyle(
-                                        color: _selectedIndex == 0 ? primaryColor : Colors.grey[400],
-                                        fontSize: 10
-                                    ),
+                                        color: _selectedIndex == 0
+                                            ? primaryColor
+                                            : Colors.grey[400],
+                                        fontSize: 10),
                                   ),
                                 ],
                               ),
@@ -165,31 +164,38 @@ class _MainScreenState extends State<MainScreen> {
                             MaterialButton(
                               shape: CircleBorder(),
                               minWidth: 40,
-                              onPressed: (){
-                                if(activeUser!.premium && activeUser.fillPremiumForm)
+                              onPressed: () {
+                                if (activeUser!.premium &&
+                                    activeUser.fillPremiumForm)
                                   setState(() {
                                     _selectedIndex = 1;
                                     _currentPage = AnalyticsScreen();
                                   });
-                                else if(activeUser.premium && !activeUser.fillPremiumForm)
-                                  Navigator.pushNamed(context, ReadyFillPremiumForm.id);
-                                else Navigator.pushNamed(context, PlansScreen.id);
+                                else if (activeUser.premium &&
+                                    !activeUser.fillPremiumForm)
+                                  Navigator.pushNamed(
+                                      context, ReadyFillPremiumForm.id);
+                                else
+                                  Navigator.pushNamed(context, PlansScreen.id);
                               },
                               child: Column(
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/chart-histogram.svg',
                                     semanticsLabel: 'chart',
-                                    color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
+                                    color: _selectedIndex == 1
+                                        ? primaryColor
+                                        : Colors.grey[400],
                                     width: 20,
                                     height: 20,
                                   ),
                                   Text(
                                     localization.translate('التقدم').toString(),
                                     style: TextStyle(
-                                        color: _selectedIndex == 1 ? primaryColor : Colors.grey[400],
-                                        fontSize: 10
-                                    ),
+                                        color: _selectedIndex == 1
+                                            ? primaryColor
+                                            : Colors.grey[400],
+                                        fontSize: 10),
                                   ),
                                 ],
                               ),
@@ -202,7 +208,7 @@ class _MainScreenState extends State<MainScreen> {
                             MaterialButton(
                               shape: CircleBorder(),
                               minWidth: 40,
-                              onPressed: (){
+                              onPressed: () {
                                 setState(() {
                                   _selectedIndex = 3;
                                   _currentPage = MainWorkoutScreen();
@@ -221,16 +227,21 @@ class _MainScreenState extends State<MainScreen> {
                                   SvgPicture.asset(
                                     'assets/icons/gym.svg',
                                     semanticsLabel: 'gym',
-                                    color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
+                                    color: _selectedIndex == 3
+                                        ? primaryColor
+                                        : Colors.grey[400],
                                     width: 20,
                                     height: 20,
                                   ),
                                   Text(
-                                    localization.translate('تمارينك').toString(),
+                                    localization
+                                        .translate('تمارينك')
+                                        .toString(),
                                     style: TextStyle(
-                                        color: _selectedIndex == 3 ? primaryColor : Colors.grey[400],
-                                        fontSize: 10
-                                    ),
+                                        color: _selectedIndex == 3
+                                            ? primaryColor
+                                            : Colors.grey[400],
+                                        fontSize: 10),
                                   ),
                                 ],
                               ),
@@ -239,35 +250,42 @@ class _MainScreenState extends State<MainScreen> {
                             MaterialButton(
                               shape: CircleBorder(),
                               minWidth: 40,
-                              onPressed: (){
+                              onPressed: () {
                                 // setState(() {
                                 //   _selectedIndex = 4;
                                 //   _currentPage = NutritionScreen();
                                 // });
-                                if(activeUser!.premium && activeUser.fillPremiumForm)
+                                if (activeUser!.premium &&
+                                    activeUser.fillPremiumForm)
                                   setState(() {
                                     _selectedIndex = 4;
                                     _currentPage = NutritionScreen();
                                   });
-                                else if(activeUser.premium && !activeUser.fillPremiumForm)
-                                  Navigator.pushNamed(context, ReadyFillPremiumForm.id);
-                                else Navigator.pushNamed(context, PlansScreen.id);
+                                else if (activeUser.premium &&
+                                    !activeUser.fillPremiumForm)
+                                  Navigator.pushNamed(
+                                      context, ReadyFillPremiumForm.id);
+                                else
+                                  Navigator.pushNamed(context, PlansScreen.id);
                               },
                               child: Column(
                                 children: [
                                   SvgPicture.asset(
                                     'assets/icons/fish.svg',
                                     semanticsLabel: 'user',
-                                    color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
+                                    color: _selectedIndex == 4
+                                        ? primaryColor
+                                        : Colors.grey[400],
                                     width: 20,
                                     height: 20,
                                   ),
                                   Text(
                                     localization.translate('الدايت').toString(),
                                     style: TextStyle(
-                                        color: _selectedIndex == 4 ? primaryColor : Colors.grey[400],
-                                        fontSize: 10
-                                    ),
+                                        color: _selectedIndex == 4
+                                            ? primaryColor
+                                            : Colors.grey[400],
+                                        fontSize: 10),
                                   ),
                                 ],
                               ),
@@ -305,10 +323,12 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-class BNBCustomPainter extends CustomPainter{
+class BNBCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color =  Colors.white..style = PaintingStyle.fill;
+    Paint paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
     Path path = Path()..moveTo(0, 0);
     path.quadraticBezierTo(size.width * 0.20, 0, size.width * 0.35, 0);
     path.quadraticBezierTo(size.width * 0.40, 0, size.width * 0.40, 10);
@@ -331,5 +351,4 @@ class BNBCustomPainter extends CustomPainter{
     return false;
     throw UnimplementedError();
   }
-
 }

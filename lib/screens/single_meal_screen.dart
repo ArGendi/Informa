@@ -1,19 +1,14 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/providers/active_user_provider.dart';
-import 'package:informa/providers/premium_nutrition_provider.dart';
-import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/plans_screen.dart';
-import 'package:informa/screens/video_player_screen.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/meal_info_box.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -25,13 +20,23 @@ class SingleMealScreen extends StatefulWidget {
   final VoidCallback? onClick;
   final VoidCallback? onBack;
   final bool? isDone;
-  const SingleMealScreen({Key? key, required this.meal, this.otherId, this.mealDoneNumber, this.onClick, this.isDone, this.onBack}) : super(key: key);
+  const SingleMealScreen(
+      {Key? key,
+      required this.meal,
+      this.otherId,
+      this.mealDoneNumber,
+      this.onClick,
+      this.isDone,
+      this.onBack})
+      : super(key: key);
 
   @override
-  _SingleMealScreenState createState() => _SingleMealScreenState(otherId, mealDoneNumber, isDone);
+  _SingleMealScreenState createState() =>
+      _SingleMealScreenState(otherId, mealDoneNumber, isDone);
 }
 
-class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerProviderStateMixin{
+class _SingleMealScreenState extends State<SingleMealScreen>
+    with SingleTickerProviderStateMixin {
   bool _isFavorite = false;
   bool _isLoading = false;
   late bool _isDone;
@@ -44,13 +49,13 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
   late Animation<Offset> _offset;
   double _protein = 0, _carb = 0, _fats = 0;
 
-  _SingleMealScreenState(int? id, int? mealDoneNumber, bool? done){
+  _SingleMealScreenState(int? id, int? mealDoneNumber, bool? done) {
     _isDone = false;
-    if(id != null && mealDoneNumber != null){
-      if(id == mealDoneNumber) _isDone = true;
+    if (id != null && mealDoneNumber != null) {
+      if (id == mealDoneNumber) _isDone = true;
     }
-    if(done != null){
-      if(done) _isDone = true;
+    if (done != null) {
+      if (done) _isDone = true;
     }
   }
 
@@ -97,25 +102,29 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
     );
   }
 
-  onDone(BuildContext context) async{
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-    if(!activeUser!.premium)
+  onDone(BuildContext context) async {
+    var activeUser =
+        Provider.of<ActiveUserProvider>(context, listen: false).user;
+    if (!activeUser!.premium)
       Navigator.pushNamed(context, PlansScreen.id);
-    else{
-      int newCalories = activeUser.dailyCalories! - widget.meal.calories!.toInt();
+    else {
+      int newCalories =
+          activeUser.dailyCalories! - widget.meal.calories!.toInt();
       int newProtein = activeUser.dailyProtein! - widget.meal.protein!.toInt();
       int newCarb = activeUser.dailyCarb! - widget.meal.carb!.toInt();
       int newCarbCycle = 0;
-      if(activeUser.dailyCarbCycle != null)
-       newCarbCycle = activeUser.dailyCarbCycle! - widget.meal.carb!.toInt();
+      if (activeUser.dailyCarbCycle != null)
+        newCarbCycle = activeUser.dailyCarbCycle! - widget.meal.carb!.toInt();
       int newFats = activeUser.dailyFats! - widget.meal.fats!.toInt();
-      if(newCalories <= 17 && newCalories >= 0) newCalories = 0;
-      if(newProtein == 1) newProtein = 0;
-      if(newCarb == 1) newCarb = 0;
-      if(newCarbCycle == 1) newCarbCycle = 0;
-      if(newFats == 1) newFats = 0;
+      if (newCalories <= 17 && newCalories >= 0) newCalories = 0;
+      if (newProtein == 1) newProtein = 0;
+      if (newCarb == 1) newCarb = 0;
+      if (newCarbCycle == 1) newCarbCycle = 0;
+      if (newFats == 1) newFats = 0;
 
-      setState(() {_isLoading = true;});
+      setState(() {
+        _isLoading = true;
+      });
 
       String id = FirebaseAuth.instance.currentUser!.uid;
       await _firestoreService.updateUserData(id, {
@@ -136,25 +145,33 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
       Provider.of<ActiveUserProvider>(context, listen: false)
           .setDailyCarbCycle(newCarbCycle);
 
-      if(widget.onClick != null) widget.onClick!();
+      if (widget.onClick != null) widget.onClick!();
 
-      setState(() {_isLoading = false;});
-      setState(() {_isDone = true;});
+      setState(() {
+        _isLoading = false;
+      });
+      setState(() {
+        _isDone = true;
+      });
 
       _showDoneDialog();
       _animationController.forward();
     }
   }
 
-  onCancel(BuildContext context) async{
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-    int newCalories = activeUser!.dailyCalories! + widget.meal.calories!.toInt();
+  onCancel(BuildContext context) async {
+    var activeUser =
+        Provider.of<ActiveUserProvider>(context, listen: false).user;
+    int newCalories =
+        activeUser!.dailyCalories! + widget.meal.calories!.toInt();
     int newProtein = activeUser.dailyProtein! + widget.meal.protein!.toInt();
     int newCarb = activeUser.dailyCarb! + widget.meal.carb!.toInt();
     int newCarbCycle = activeUser.dailyCarbCycle! + widget.meal.carb!.toInt();
     int newFats = activeUser.dailyFats! + widget.meal.fats!.toInt();
 
-    setState(() {_isLoading = true;});
+    setState(() {
+      _isLoading = true;
+    });
 
     String id = FirebaseAuth.instance.currentUser!.uid;
     await _firestoreService.updateUserData(id, {
@@ -175,21 +192,25 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyCarbCycle(newCarbCycle);
 
-    if(widget.onBack != null) widget.onBack!();
+    if (widget.onBack != null) widget.onBack!();
 
-    setState(() {_isLoading = false;});
-    setState(() {_isDone = false;});
+    setState(() {
+      _isLoading = false;
+    });
+    setState(() {
+      _isDone = false;
+    });
   }
 
-  String convertMealIntoString(Meal meal){
+  String convertMealIntoString(Meal meal) {
     String r = '';
     r += meal.amount!.toString() + ' ';
-    if(meal.unit!.trim() == 'gm' || meal.unit!.trim() == 'tsp') r += 'جرام ';
+    if (meal.unit!.trim() == 'gm' || meal.unit!.trim() == 'tsp') r += 'جرام ';
     r += meal.name!;
     return r;
   }
 
-  Future scrollUp() async{
+  Future scrollUp() async {
     await _controller.animateTo(
       _controller.position.minScrollExtent,
       duration: Duration(seconds: 1),
@@ -197,7 +218,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
     );
   }
 
-  Future scrollDown() async{
+  Future scrollDown() async {
     await _controller.animateTo(
       _controller.position.maxScrollExtent,
       duration: Duration(seconds: 1),
@@ -205,24 +226,22 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
     );
   }
 
-  runYoutubePlayer(String video){
+  runYoutubePlayer(String video) {
     _youtubeController = YoutubePlayerController(
         initialVideoId: YoutubePlayer.convertUrlToId(video)!,
         flags: YoutubePlayerFlags(
           enableCaption: false,
           autoPlay: true,
-        )
-    );
+        ));
   }
 
-  onPlayVideo(String video) async{
-    if(_youtubeController != null){
+  onPlayVideo(String video) async {
+    if (_youtubeController != null) {
       _youtubeController!.pause();
       await scrollUp();
       _youtubeController!.load(YoutubePlayer.convertUrlToId(video)!);
       return;
-    }
-    else{
+    } else {
       await scrollUp();
       setState(() {
         runYoutubePlayer(video);
@@ -231,7 +250,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
     }
   }
 
-  Widget getMealSections(){
+  Widget getMealSections() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -242,75 +261,75 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
             //color: primaryColor,
           ),
         ),
-        for(int i=0; i<widget.meal.sections!.length; i++)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  widget.meal.sections![i].name!,
-                  style: TextStyle(
+        for (int i = 0; i < widget.meal.sections!.length; i++)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    widget.meal.sections![i].name!,
+                    style: TextStyle(
                       fontSize: 18,
-                    color: primaryColor,
-                  ),
-                ),
-                if(widget.meal.video != null)
-                InkWell(
-                  onTap: (){
-                    onPlayVideo(widget.meal.video!);
-                  },
-                  child: Card(
-                    elevation: 0,
-                    color: primaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
+                      color: primaryColor,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.play_arrow,
-                        color: Colors.white,
-                        size: 20,
+                  ),
+                  if (widget.meal.video != null)
+                    InkWell(
+                      onTap: () {
+                        onPlayVideo(widget.meal.video!);
+                      },
+                      child: Card(
+                        elevation: 0,
+                        color: primaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.play_arrow,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ],
-            ),
-            //SizedBox(height: 15,),
-            for(int j=0; j<widget.meal.sections![i].meals!.length; j++)
-              Text(
-                (j+1).toString() + '- ' + convertMealIntoString(widget.meal.sections![i].meals![j]),
+                ],
               ),
-            Divider(height: 20,),
-          ],
-        ),
+              //SizedBox(height: 15,),
+              for (int j = 0; j < widget.meal.sections![i].meals!.length; j++)
+                Text(
+                  (j + 1).toString() +
+                      '- ' +
+                      convertMealIntoString(widget.meal.sections![i].meals![j]),
+                ),
+              Divider(
+                height: 20,
+              ),
+            ],
+          ),
       ],
     );
   }
 
-  Widget getMealComponents(){
+  Widget getMealComponents() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'المكونات',
-          style: TextStyle(
-              fontSize: 20,
-              color: primaryColor
-          ),
+          style: TextStyle(fontSize: 20, color: primaryColor),
         ),
-        for(int i=0; i<widget.meal.components!.length; i++)
+        for (int i = 0; i < widget.meal.components!.length; i++)
           Text(
-            (i+1).toString() + '- ' + widget.meal.components![i],
+            (i + 1).toString() + '- ' + widget.meal.components![i],
           ),
       ],
     );
   }
 
-  Widget getOptional(){
+  Widget getOptional() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -321,16 +340,17 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
             fontFamily: boldFont,
           ),
         ),
-        for(var salad in widget.meal.salads!)
+        for (var salad in widget.meal.salads!)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: (){
+                onTap: () {
                   setState(() {
-                    if(_saladsIds.contains(salad.id!))
+                    if (_saladsIds.contains(salad.id!))
                       _saladsIds.remove(salad.id!);
-                    else  _saladsIds.add(salad.id!);
+                    else
+                      _saladsIds.add(salad.id!);
                   });
                 },
                 child: Row(
@@ -344,41 +364,44 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
                       ),
                     ),
                     Icon(
-                      _saladsIds.contains(salad.id!) ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                      _saladsIds.contains(salad.id!)
+                          ? Icons.arrow_drop_up
+                          : Icons.arrow_drop_down,
                       color: Colors.black,
                     ),
                   ],
                 ),
               ),
-              if(_saladsIds.contains(salad.id!))
+              if (_saladsIds.contains(salad.id!))
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     //SizedBox(height: 10,),
-                    for(int i=0; i<salad.components!.length; i++)
+                    for (int i = 0; i < salad.components!.length; i++)
                       Text(
-                        (i+1).toString() + '- ' + salad.components![i],
+                        (i + 1).toString() + '- ' + salad.components![i],
                       ),
                   ],
-               ),
-              SizedBox(height: 10,),
+                ),
+              SizedBox(
+                height: 10,
+              ),
             ],
           ),
       ],
     );
   }
 
-  calculateAccurateMarcos(){
+  calculateAccurateMarcos() {
     //double p = 0, c = 0, f = 0;
-    if(widget.meal.sections != null){
-      for(var section in widget.meal.sections!){
-        for(var meal in section.meals!){
-          if(meal.serving == 1){
+    if (widget.meal.sections != null) {
+      for (var section in widget.meal.sections!) {
+        for (var meal in section.meals!) {
+          if (meal.serving == 1) {
             _protein += meal.protein! * meal.amount!;
             _carb += meal.carb! * meal.amount!;
             _fats += meal.fats! * meal.amount!;
-          }
-          else{
+          } else {
             _protein += meal.protein! * (meal.amount! / 100);
             _carb += meal.carb! * (meal.amount! / 100);
             _fats += meal.fats! * (meal.amount! / 100);
@@ -390,7 +413,6 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _animationController = AnimationController(
       duration: Duration(milliseconds: 1500),
@@ -408,21 +430,16 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _animationController.dispose();
-    if(_youtubeController != null)
-      _youtubeController!.dispose();
+    if (_youtubeController != null) _youtubeController!.dispose();
   }
 
   @override
   void deactivate() {
-    // TODO: implement deactivate
     super.deactivate();
-    if(_youtubeController != null)
-      _youtubeController!.pause();
+    if (_youtubeController != null) _youtubeController!.pause();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -433,60 +450,60 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: ListView(
           controller: _controller,
           children: [
             Container(
               width: double.infinity,
               height: 300,
-              child: !_isVideoPlayed ? Stack(
-                children: [
-                  Hero(
-                    tag: widget.meal.id!,
-                    child: widget.meal.image != null ? Image.network(
-                      widget.meal.image!,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 300,
-                    ) : Container(
-                      width: double.infinity,
-                      height: 300,
-                      color: Colors.grey[300],
+              child: !_isVideoPlayed
+                  ? Stack(
+                      children: [
+                        Hero(
+                          tag: widget.meal.id!,
+                          child: widget.meal.image != null
+                              ? Image.network(
+                                  widget.meal.image!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 300,
+                                )
+                              : Container(
+                                  width: double.infinity,
+                                  height: 300,
+                                  color: Colors.grey[300],
+                                ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 300,
+                          alignment: Alignment.bottomRight,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              gradient: LinearGradient(
+                                begin: FractionalOffset.topCenter,
+                                end: FractionalOffset.bottomCenter,
+                                colors: [
+                                  Colors.grey.withOpacity(0.0),
+                                  Colors.black,
+                                ],
+                              )),
+                        ),
+                      ],
+                    )
+                  : YoutubePlayerBuilder(
+                      player: YoutubePlayer(
+                        progressColors: ProgressBarColors(
+                            playedColor: primaryColor,
+                            handleColor: Colors.white),
+                        progressIndicatorColor: primaryColor,
+                        controller: _youtubeController!,
+                      ),
+                      builder: (context, player) {
+                        return player;
+                      },
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 300,
-                    alignment: Alignment.bottomRight,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        gradient: LinearGradient(
-                          begin: FractionalOffset.topCenter,
-                          end: FractionalOffset.bottomCenter,
-                          colors: [
-                            Colors.grey.withOpacity(0.0),
-                            Colors.black,
-                          ],
-                        )
-                    ),
-                  ),
-                ],
-              ) : YoutubePlayerBuilder(
-                player: YoutubePlayer(
-                  progressColors: ProgressBarColors(
-                      playedColor: primaryColor,
-                      handleColor: Colors.white
-                  ),
-                  progressIndicatorColor: primaryColor,
-                  controller: _youtubeController!,
-                ),
-                builder: (context , player) {
-                  return player;
-                },
-              ),
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -502,7 +519,7 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if(widget.meal.category != null)
+                      if (widget.meal.category != null)
                         Text(
                           widget.meal.category!,
                           style: TextStyle(
@@ -514,17 +531,13 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
                         children: [
                           Text(
                             widget.meal.name!,
-                            style: TextStyle(
-                              fontSize: 24,
-                              height: 1.6
-                            ),
+                            style: TextStyle(fontSize: 24, height: 1.6),
                           ),
                           IconButton(
-                            onPressed: (){
-                              if(!activeUser!.premium){
+                            onPressed: () {
+                              if (!activeUser!.premium) {
                                 Navigator.pushNamed(context, PlansScreen.id);
-                              }
-                              else{
+                              } else {
                                 setState(() {
                                   _isFavorite = !_isFavorite;
                                 });
@@ -532,7 +545,9 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
                             },
                             splashRadius: 5,
                             icon: Icon(
-                              _isFavorite ? Icons.bookmark_outlined : Icons.bookmark_outline,
+                              _isFavorite
+                                  ? Icons.bookmark_outlined
+                                  : Icons.bookmark_outline,
                               size: 30,
                             ),
                           ),
@@ -544,13 +559,11 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
                         children: [
                           Text(
                             'نسب الوجبة',
-                            style: TextStyle(
-                              fontSize: 12
-                            ),
+                            style: TextStyle(fontSize: 12),
                           ),
-                          if(!activeUser!.premium)
+                          if (!activeUser!.premium)
                             TextButton(
-                              onPressed: (){
+                              onPressed: () {
                                 Navigator.pushNamed(context, PlansScreen.id);
                               },
                               child: Text(
@@ -588,28 +601,44 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
                           ),
                         ],
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
 
-                      Text('p:' + _protein.toStringAsFixed(2) + ' - c:' + _carb.toStringAsFixed(2) + ' - f:' + _fats.toStringAsFixed(2)),
-                      SizedBox(height: 20,),
+                      Text('p:' +
+                          _protein.toStringAsFixed(2) +
+                          ' - c:' +
+                          _carb.toStringAsFixed(2) +
+                          ' - f:' +
+                          _fats.toStringAsFixed(2)),
+                      SizedBox(
+                        height: 20,
+                      ),
 
-                      widget.meal.sections != null ?
-                        getMealSections() : getMealComponents(),
+                      widget.meal.sections != null
+                          ? getMealSections()
+                          : getMealComponents(),
 
-                       if(widget.meal.salads != null) getOptional(),
+                      if (widget.meal.salads != null) getOptional(),
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   CustomButton(
                     text: _isDone ? 'لم انتهي بعد' : 'تم',
-                    onClick: (){
-                      if(!_isDone) onDone(context);
-                      else onCancel(context);
+                    onClick: () {
+                      if (!_isDone)
+                        onDone(context);
+                      else
+                        onCancel(context);
                     },
                     iconExist: false,
                     isLoading: _isLoading,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                 ],
               ),
             ),

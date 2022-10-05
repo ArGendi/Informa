@@ -16,13 +16,16 @@ import '../constants.dart';
 class SingleChallengeScreen extends StatefulWidget {
   static String id = 'single challenge';
   final Challenge challenge;
-  const SingleChallengeScreen({Key? key, required this.challenge}) : super(key: key);
+  const SingleChallengeScreen({Key? key, required this.challenge})
+      : super(key: key);
 
   @override
-  _SingleChallengeScreenState createState() => _SingleChallengeScreenState(challenge);
+  _SingleChallengeScreenState createState() =>
+      _SingleChallengeScreenState(challenge);
 }
 
-class _SingleChallengeScreenState extends State<SingleChallengeScreen> with SingleTickerProviderStateMixin{
+class _SingleChallengeScreenState extends State<SingleChallengeScreen>
+    with SingleTickerProviderStateMixin {
   var _formKey = GlobalKey<FormState>();
   FirestoreService _firestoreService = new FirestoreService();
   String _first = '';
@@ -33,26 +36,27 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
   late AnimationController _controller;
   late Animation<Offset> _btnOffset;
 
-  _SingleChallengeScreenState(Challenge ch){
+  _SingleChallengeScreenState(Challenge ch) {
     _challenge = ch;
   }
 
-  onSubmit(BuildContext context) async{
+  onSubmit(BuildContext context) async {
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
-    if(valid){
+    var activeUser =
+        Provider.of<ActiveUserProvider>(context, listen: false).user;
+    if (valid) {
       _formKey.currentState!.save();
-      if(widget.challenge.status == 0 || (widget.challenge.status == 2 &&
-          activeUser!.premium)){
+      if (widget.challenge.status == 0 ||
+          (widget.challenge.status == 2 && activeUser!.premium)) {
         var id = FirebaseAuth.instance.currentUser!.uid;
-        if(_challenge.submits == null){
+        if (_challenge.submits == null) {
           _challenge.submits = Map<String, dynamic>();
         }
         _challenge.submits![id] = {
-          if(widget.challenge.first != null || _first.isNotEmpty)
+          if (widget.challenge.first != null || _first.isNotEmpty)
             widget.challenge.first: _first,
-          if(widget.challenge.second != null || _second.isNotEmpty)
+          if (widget.challenge.second != null || _second.isNotEmpty)
             widget.challenge.second: _second,
           'video': _video,
         };
@@ -61,14 +65,13 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
         setState(() {
           _btnText = 'تم';
         });
-      }
-      else{
+      } else {
         showLanguageBottomSheet(context);
       }
     }
   }
 
-  showLanguageBottomSheet(BuildContext context){
+  showLanguageBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       backgroundColor: bgColor,
@@ -93,7 +96,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
 
   @override
   void initState() {
-    // TODO: implement initState
+    //
     super.initState();
     _controller = AnimationController(
       duration: Duration(milliseconds: 1400),
@@ -106,7 +109,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
       parent: _controller,
       curve: Curves.easeOutQuart,
     ));
-    Timer(Duration(milliseconds: 100), (){
+    Timer(Duration(milliseconds: 100), () {
       _controller.forward();
     });
   }
@@ -127,7 +130,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
         centerTitle: true,
         leading: IconButton(
           splashRadius: splashRadius,
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: Icon(
@@ -141,9 +144,7 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(15.0),
@@ -167,73 +168,85 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
                       fontSize: 14,
                     ),
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   CountdownCard(
                     deadline: widget.challenge.deadline!,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   InkWell(
-                    onTap: (){
-                      if(widget.challenge.video != null)
+                    onTap: () {
+                      if (widget.challenge.video != null)
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => VideoPlayerScreen(
-                            url: widget.challenge.video!,
-                          )),
+                          MaterialPageRoute(
+                              builder: (context) => VideoPlayerScreen(
+                                    url: widget.challenge.video!,
+                                  )),
                         );
                     },
                     child: Container(
                       width: double.infinity,
                       height: 160,
                       color: Colors.grey[400],
-                      child: widget.challenge.image != null ?
-                      Image.network(
-                        widget.challenge.image!,
-                        fit: BoxFit.cover,
-                      ) : Container(),
+                      child: widget.challenge.image != null
+                          ? Image.network(
+                              widget.challenge.image!,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Form(
                     key: _formKey,
                     child: Column(
                       children: [
-                        if(widget.challenge.first != null)
+                        if (widget.challenge.first != null)
                           CustomTextField(
                             text: widget.challenge.first!,
                             obscureText: false,
                             textInputType: TextInputType.text,
-                            setValue: (value){
+                            setValue: (value) {
                               _first = value;
                             },
-                            validation: (value){
-                              if (value.isEmpty) return 'أدخل ' + widget.challenge.first!;
+                            validation: (value) {
+                              if (value.isEmpty)
+                                return 'أدخل ' + widget.challenge.first!;
                               return null;
                             },
                           ),
-                        SizedBox(height: 10,),
-                        if(widget.challenge.second != null)
-                          if(widget.challenge.second!.isNotEmpty)
-                          CustomTextField(
-                            text: widget.challenge.second!,
-                            obscureText: false,
-                            textInputType: TextInputType.text,
-                            setValue: (value){
-                              _second = value;
-                            },
-                            validation: (value){
-                              if (value.isEmpty) return 'أدخل ' + widget.challenge.second!;
-                              return null;
-                            },
-                          ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        if (widget.challenge.second != null)
+                          if (widget.challenge.second!.isNotEmpty)
+                            CustomTextField(
+                              text: widget.challenge.second!,
+                              obscureText: false,
+                              textInputType: TextInputType.text,
+                              setValue: (value) {
+                                _second = value;
+                              },
+                              validation: (value) {
+                                if (value.isEmpty)
+                                  return 'أدخل ' + widget.challenge.second!;
+                                return null;
+                              },
+                            ),
                         CustomTextField(
                           text: 'رابط الفيديو الخاص بيك',
                           obscureText: false,
                           textInputType: TextInputType.text,
-                          setValue: (value){
+                          setValue: (value) {
                             _video = value;
                           },
-                          validation: (value){
+                          validation: (value) {
                             if (value.isEmpty) return 'أدخل رابط الفيديو';
                             return null;
                           },
@@ -241,20 +254,21 @@ class _SingleChallengeScreenState extends State<SingleChallengeScreen> with Sing
                       ],
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
                     'تأكد من صلاحية الرابط قبل أرسال التحدي حتي يتم تقيمك بصورة صحيحة',
-                    style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey[600]
-                    ),
+                    style: TextStyle(fontSize: 11, color: Colors.grey[600]),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   SlideTransition(
                     position: _btnOffset,
                     child: CustomButton(
                       text: _btnText,
-                      onClick: (){
+                      onClick: () {
                         onSubmit(context);
                       },
                     ),

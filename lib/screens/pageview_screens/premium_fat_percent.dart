@@ -7,8 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/services/image_service.dart';
 import 'package:informa/widgets/pick_image_bottom_sheet.dart';
-import 'package:informa/widgets/program_card.dart';
-import 'package:informa/widgets/program_select_card.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -19,39 +17,50 @@ class PremiumFatPercent extends StatefulWidget {
   final VoidCallback goToFatsImages;
   final VoidCallback onNext;
   final bool selectFromPhotos;
-  const PremiumFatPercent({Key? key, required this.onBack, required this.goToFatsImages, required this.onNext, this.selectFromPhotos = false}) : super(key: key);
+  const PremiumFatPercent(
+      {Key? key,
+      required this.onBack,
+      required this.goToFatsImages,
+      required this.onNext,
+      this.selectFromPhotos = false})
+      : super(key: key);
 
   @override
   _PremiumFatPercentState createState() => _PremiumFatPercentState();
 }
 
-class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTickerProviderStateMixin{
+class _PremiumFatPercentState extends State<PremiumFatPercent>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _imageOffset;
   int _selected = 0;
   File? _image;
   bool _isLoading = false;
 
-  pickImageAndGoNext(ImageSource source) async{
+  pickImageAndGoNext(ImageSource source) async {
     ImageService imageService = new ImageService();
     _image = await imageService.pickImage(source);
-    if(_image != null){
+    if (_image != null) {
       String id = FirebaseAuth.instance.currentUser!.uid;
-      setState(() {_isLoading = true;});
-      bool uploaded = await imageService.uploadImageToFirebase(_image!, id, "inBody");
-      setState(() {_isLoading = false;});
-      if(uploaded) {
+      setState(() {
+        _isLoading = true;
+      });
+      bool uploaded =
+          await imageService.uploadImageToFirebase(_image!, id, "inBody");
+      setState(() {
+        _isLoading = false;
+      });
+      if (uploaded) {
         Provider.of<ActiveUserProvider>(context, listen: false).setInBody(true);
         widget.onNext();
         return;
       }
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('حدث خطأ'))
-    );
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('حدث خطأ')));
   }
 
-  showPickImageBottomSheet(BuildContext context){
+  showPickImageBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       backgroundColor: bgColor,
@@ -60,10 +69,10 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
       ),
       builder: (BuildContext context) {
         return PickImageBottomSheet(
-          onCamera: (){
+          onCamera: () {
             pickImageAndGoNext(ImageSource.camera);
           },
-          onPhotos: (){
+          onPhotos: () {
             pickImageAndGoNext(ImageSource.gallery);
           },
         );
@@ -73,7 +82,6 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       duration: Duration(milliseconds: 2000),
@@ -86,7 +94,7 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
       parent: _controller,
       curve: Curves.elasticOut,
     ));
-    Timer(Duration(milliseconds: 400), (){
+    Timer(Duration(milliseconds: 400), () {
       _controller.forward();
     });
   }
@@ -96,7 +104,7 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
     _controller.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     var activeUserProvider = Provider.of<ActiveUserProvider>(context);
@@ -120,7 +128,9 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                       )
                     ],
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   SlideTransition(
                     position: _imageOffset,
                     child: Container(
@@ -132,11 +142,12 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage('assets/images/coach_face.jpg'),
-                          )
-                      ),
+                          )),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'أول حاجة نتأكد من نسبة وزنك و دهونك',
                     style: TextStyle(
@@ -148,15 +159,16 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Text(
                     'قولنا نسبة وزنك و دهونك',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontFamily: 'CairoBold'
-                    ),
+                    style: TextStyle(fontSize: 16, fontFamily: 'CairoBold'),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -172,13 +184,11 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                           borderRadius: BorderRadius.circular(borderRadius),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
                           child: Text(
                             activeUserProvider.user!.weight.toString() + ' كجم',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                         ),
                       ),
@@ -212,13 +222,12 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                           borderRadius: BorderRadius.circular(borderRadius),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
                           child: Text(
-                            activeUserProvider.user!.fatsPercent.toString() + ' %',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14
-                            ),
+                            activeUserProvider.user!.fatsPercent.toString() +
+                                ' %',
+                            style: TextStyle(color: Colors.white, fontSize: 14),
                           ),
                         ),
                       ),
@@ -246,21 +255,24 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                       ),
                     ],
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Card(
                     elevation: 0,
                     color: Colors.white,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                         side: BorderSide(
-                          color: _selected == 1 ? primaryColor : Colors.grey.shade300,
+                          color: _selected == 1
+                              ? primaryColor
+                              : Colors.grey.shade300,
                           width: _selected == 1 ? 2 : 1,
-                        )
-                    ),
+                        )),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      onTap: (){
-                        if(this.mounted)
+                      onTap: () {
+                        if (this.mounted)
                           setState(() {
                             _selected = 1;
                           });
@@ -285,14 +297,15 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                         side: BorderSide(
-                          color: _selected == 2 ? primaryColor : Colors.grey.shade300,
+                          color: _selected == 2
+                              ? primaryColor
+                              : Colors.grey.shade300,
                           width: _selected == 2 ? 2 : 1,
-                        )
-                    ),
+                        )),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      onTap: (){
-                        if(this.mounted)
+                      onTap: () {
+                        if (this.mounted)
                           setState(() {
                             _selected = 2;
                           });
@@ -310,7 +323,9 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
                       ),
                     ),
                   ),
-                  SizedBox(height: 5,),
+                  SizedBox(
+                    height: 5,
+                  ),
                   CustomButton(
                     text: 'معرفش نسبة دهوني',
                     onClick: widget.goToFatsImages,
@@ -322,14 +337,19 @@ class _PremiumFatPercentState extends State<PremiumFatPercent> with SingleTicker
           ),
           CustomButton(
             text: 'التالي',
-            bgColor: _selected != 0 || widget.selectFromPhotos? primaryColor : Colors.grey.shade400,
-            onClick: _selected != 0 || widget.selectFromPhotos? (){
-              if(widget.selectFromPhotos) {
-                Provider.of<ActiveUserProvider>(context, listen: false).setInBody(false);
-                widget.onNext();
-              }
-              else showPickImageBottomSheet(context);
-            } : (){},
+            bgColor: _selected != 0 || widget.selectFromPhotos
+                ? primaryColor
+                : Colors.grey.shade400,
+            onClick: _selected != 0 || widget.selectFromPhotos
+                ? () {
+                    if (widget.selectFromPhotos) {
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setInBody(false);
+                      widget.onNext();
+                    } else
+                      showPickImageBottomSheet(context);
+                  }
+                : () {},
             isLoading: _isLoading,
           ),
         ],

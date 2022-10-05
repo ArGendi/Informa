@@ -6,7 +6,8 @@ import '../constants.dart';
 class VideoPlayerScreen extends StatefulWidget {
   final String url;
   final String? id;
-  const VideoPlayerScreen({Key? key, required this.url, this.id}) : super(key: key);
+  const VideoPlayerScreen({Key? key, required this.url, this.id})
+      : super(key: key);
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
@@ -15,33 +16,29 @@ class VideoPlayerScreen extends StatefulWidget {
 class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   YoutubePlayerController? _controller;
 
-  runYoutubePlayer(){
+  runYoutubePlayer() {
     _controller = YoutubePlayerController(
         initialVideoId: YoutubePlayer.convertUrlToId(widget.url)!,
         flags: YoutubePlayerFlags(
           enableCaption: false,
           autoPlay: true,
-        )
-    );
+        ));
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     runYoutubePlayer();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller!.dispose();
   }
 
   @override
   void deactivate() {
-    // TODO: implement deactivate
     super.deactivate();
     _controller!.pause();
   }
@@ -59,20 +56,16 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Center(
           child: YoutubePlayerBuilder(
             player: YoutubePlayer(
               progressColors: ProgressBarColors(
-                playedColor: primaryColor,
-                handleColor: Colors.white
-              ),
+                  playedColor: primaryColor, handleColor: Colors.white),
               progressIndicatorColor: primaryColor,
               controller: _controller!,
             ),
-            builder: (context , player) {
+            builder: (context, player) {
               return player;
             },
           ),

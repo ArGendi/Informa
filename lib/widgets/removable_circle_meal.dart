@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 class RemovableCircleMeal extends StatefulWidget {
   final int id;
   final String text;
-  const RemovableCircleMeal({Key? key, required this.text, required this.id}) : super(key: key);
+  const RemovableCircleMeal({Key? key, required this.text, required this.id})
+      : super(key: key);
 
   @override
   _RemovableCircleMealState createState() => _RemovableCircleMealState();
@@ -17,27 +18,27 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     var textList = widget.text.split(' ');
-    if(textList.length > 1) {
+    if (textList.length > 1) {
       _text = textList[0];
-      for(int i=1; i<textList.length; i++){
+      for (int i = 1; i < textList.length; i++) {
         _text += '\n' + textList[i];
       }
-    }
-    else _text = widget.text;
+    } else
+      _text = widget.text;
   }
 
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return GestureDetector(
-      onTap: (){
-        Provider.of<ActiveUserProvider>(context, listen: false).changeMealStateUnWantedMeal(widget.id);
+      onTap: () {
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .changeMealStateUnWantedMeal(widget.id);
       },
       child: AnimatedOpacity(
-        opacity: activeUser!.allMeals[widget.id].isSelected? 1 : 0.4,
+        opacity: activeUser!.allMeals[widget.id].isSelected ? 1 : 0.4,
         duration: Duration(milliseconds: 400),
         child: Stack(
           children: [
@@ -58,22 +59,23 @@ class _RemovableCircleMealState extends State<RemovableCircleMeal> {
                     fontFamily: boldFont,
                     fontSize: 12,
                     height: 1.5,
-                    decoration: activeUser.allMeals[widget.id].isSelected ?
-                        TextDecoration.none : TextDecoration.lineThrough,
+                    decoration: activeUser.allMeals[widget.id].isSelected
+                        ? TextDecoration.none
+                        : TextDecoration.lineThrough,
                   ),
                 ),
               ),
             ),
-            if(activeUser.allMeals[widget.id].isSelected)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Icon(
-                Icons.cancel,
-                color: Colors.grey[800],
-                size: 20,
+            if (activeUser.allMeals[widget.id].isSelected)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Icon(
+                  Icons.cancel,
+                  color: Colors.grey[800],
+                  size: 20,
+                ),
               ),
-            ),
           ],
         ),
       ),

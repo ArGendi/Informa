@@ -131,7 +131,6 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var activeUser = Provider.of<ActiveUserProvider>(context).user;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(

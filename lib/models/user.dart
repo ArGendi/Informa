@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/meals_list.dart';
+import 'package:informa/models/supplement.dart';
 
 class AppUser {
   String? id;
   int appId = 5000;
+  String? injuryDetails;
   String? name;
   String? email;
   String? password;
@@ -33,6 +35,7 @@ class AppUser {
   int iTrainingDays = -1;
   DateTime? trainingTime;
   List trainingDays = [];
+  List<Supplement?>? addedSupplementsByUser = [];
   //---------------------------
   //0 = none, 1 = ok, 2 = no
   int wheyProtein;
@@ -55,9 +58,9 @@ class AppUser {
   String? diseaseDescription;
   DateTime? premiumStartDate;
   DateTime? premiumEndDate;
-  MealsList _mealsList = new MealsList();
+  // MealsList _mealsList = new MealsList();
   int package;
-  int plan;
+  String plan;
   bool? inBody;
   //0 = none, 1 = breakfast & lunch, 2 = lunch & dinner
   int? whichTwoMeals;
@@ -96,6 +99,7 @@ class AppUser {
     this.premiumEndDate,
     this.name,
     this.email,
+    this.injuryDetails,
     this.token,
     this.premium = false,
     this.gender = 0,
@@ -115,7 +119,7 @@ class AppUser {
     this.milkProblem = 0,
     this.disease = 0,
     this.package = 0,
-    this.plan = 0,
+    this.plan = '',
     this.whichTwoMeals = 0,
     this.oldGoal = 0,
     this.dietType = 0,
@@ -129,6 +133,7 @@ class AppUser {
 
   fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    injuryDetails = json['injuryDetails'];
     premiumEndDate = json['premiumEndDate'];
     appId = json['appId'] != null ? json['appId'] : 5000;
     email = json['email'];
@@ -177,9 +182,10 @@ class AppUser {
       bool before = dateTime.isBefore(now);
       if (before) dateTime = null;
     }
+    // addedSupplementsByUser = json['addedSupplementsByUser'];
     premiumStartDate = dateTime;
     package = json['package'];
-    plan = json['plan'];
+    plan = json['plan'].toString();
     inBody = json['inBody'];
     whichTwoMeals = json['whichTwoMeals'];
     myProtein = json['myProtein'];
@@ -228,7 +234,9 @@ class AppUser {
     return {
       'id': id,
       'appId': appId,
+      'addedSupplementsByUser': addedSupplementsByUser,
       'email': email,
+      'injuryDetails': injuryDetails,
       'name': name,
       'premiumEndDate': premiumEndDate,
       'phone': phone,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/screens/main_screen.dart';
-import 'package:informa/screens/auth_screens/login_screen.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
@@ -19,12 +18,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   var _formKey = GlobalKey<FormState>();
   String? _password;
 
-  onSubmit(){
+  onSubmit() {
     FocusScope.of(context).unfocus();
     _formKey.currentState!.save();
     bool valid = _formKey.currentState!.validate();
-    if(valid) {
-      Provider.of<ActiveUserProvider>(context, listen: false).setUser(new AppUser(
+    if (valid) {
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setUser(new AppUser(
         email: 'No email yet',
         name: 'No name yet',
         premium: true,
@@ -41,9 +41,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -57,7 +55,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         'assets/images/shield.png',
                         width: 140,
                       ),
-                      SizedBox(height: 25,),
+                      SizedBox(
+                        height: 25,
+                      ),
                       Text(
                         'أدخل كلمة مرور جديدة',
                         style: TextStyle(
@@ -73,34 +73,41 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           fontSize: 13,
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       CustomTextField(
                         text: 'كلمة المرور',
                         obscureText: true,
                         textInputType: TextInputType.text,
-                        setValue: (String value){
+                        setValue: (String value) {
                           _password = value;
                         },
-                        validation: (value){
+                        validation: (value) {
                           if (value.isEmpty) return 'أدخل كلمة المرور';
                           if (value.length < 6) return 'كلمة المرور قصيرة';
                           return null;
                         },
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       CustomTextField(
                         text: 'تأكيد كلمة المرور',
                         obscureText: true,
                         textInputType: TextInputType.text,
-                        setValue: (String value){},
-                        validation: (value){
+                        setValue: (String value) {},
+                        validation: (value) {
                           if (value.isEmpty) return 'أدخل كلمة المرور';
                           if (value.length < 6) return 'كلمة المرور قصيرة';
-                          if(value != _password) return 'كلمة المرور غير متطابقه';
+                          if (value != _password)
+                            return 'كلمة المرور غير متطابقه';
                           return null;
                         },
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       CustomButton(
                         text: 'تحديث كلمة المرور',
                         onClick: onSubmit,

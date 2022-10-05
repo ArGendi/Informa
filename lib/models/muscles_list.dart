@@ -1,5 +1,4 @@
 import 'package:informa/models/muscle.dart';
-import 'package:informa/models/workout.dart';
 
 class MusclesList {
   static List<Muscle> allMuscles = [
@@ -49,5 +48,4 @@ class MusclesList {
       exercises: [],
     ),
   ];
-
 }

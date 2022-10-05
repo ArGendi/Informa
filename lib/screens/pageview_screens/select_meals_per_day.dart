@@ -75,7 +75,7 @@ class _SelectMealsPerDayState extends State<SelectMealsPerDay> {
                     height: 10,
                   ),
                   Text(
-                    'عدد الوجبات الماسب لك فى اليوم؟',
+                    'عدد الوجبات المناسب لك فى اليوم؟',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,

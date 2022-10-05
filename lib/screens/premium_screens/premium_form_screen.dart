@@ -378,14 +378,12 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _controller = PageController(initialPage: 1);
+    _controller = PageController(initialPage: 0);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }
@@ -394,7 +392,7 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
     print(
-        '-------------------------inside  the premium form screee 0     ${activeUser!.program}--------------------------------');
+        '-------------------------inside  the premium form screee 1     ${activeUser!.program}--------------------------------');
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -439,11 +437,6 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                       });
                     },
                   ),
-              // if(activeUser!.gender == 1)
-              //   UploadBodyPhotos(
-              //     onBack: goBack,
-              //     onClick: goToNextPage,
-              //   ),
               if (activeUser.program == 2 || activeUser.program == 3)
                 SelectGoal(
                   onBack: goBack,
@@ -463,10 +456,6 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                   onBack: goBack,
                   onClick: goToNextPage,
                 ),
-              // SelectTrainingDays(
-              //   onBack: goBack,
-              //   onClick: goToNextPage,
-              // ),
               if (activeUser.program == 2 || activeUser.program == 3)
                 SelectSupplements(
                   onBack: goBack,
@@ -533,7 +522,17 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
               if (activeUser.program == 1 || activeUser.program == 2)
                 SelectPlace(
                   onBack: goBack,
-                  onClick: goToNextPage,
+                  onClick: activeUser.workoutPlace == 2
+                      ? () {
+                          print(_initialPage);
+                          _controller.animateToPage(_initialPage + 2,
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.easeInOut);
+                          setState(() {
+                            _initialPage += 2;
+                          });
+                        }
+                      : goToNextPage,
                 ),
               if (activeUser.program == 1 || activeUser.program == 2)
                 SelectTools(
@@ -542,7 +541,16 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
                 ),
               if (activeUser.program == 1 || activeUser.program == 2)
                 SelectTrainingDays(
-                  onBack: goBack,
+                  onBack: activeUser.workoutPlace == 2
+                      ? () {
+                          _controller.animateToPage(_initialPage - 2,
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.easeInOut);
+                          setState(() {
+                            _initialPage -= 2;
+                          });
+                        }
+                      : goBack,
                   onClick: goToNextPage,
                 ),
               if (activeUser.program == 1 || activeUser.program == 2)

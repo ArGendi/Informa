@@ -20,17 +20,17 @@ class SelectGoal extends StatefulWidget {
 }
 
 class _SelectGoalState extends State<SelectGoal> {
-  String _goalDescription = '';
-  var _formKey = GlobalKey<FormState>();
+  // String _goalDescription = '';
+  // var _formKey = GlobalKey<FormState>();
   final ScrollController _controller = ScrollController();
 
-  void _scrollDown() {
-    _controller.animateTo(
-      _controller.position.maxScrollExtent,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.fastOutSlowIn,
-    );
-  }
+  // void _scrollDown() {
+  //   _controller.animateTo(
+  //     _controller.position.maxScrollExtent,
+  //     duration: Duration(milliseconds: 500),
+  //     curve: Curves.fastOutSlowIn,
+  //   );
+  // }
 
   onNext(BuildContext context, AppUser user) {
     if (user.goal == 4 || user.goal == 5)

@@ -1,134 +1,213 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:informa/models/cardio.dart';
 import 'package:informa/models/challenge.dart';
 import 'package:informa/models/excercise.dart';
-import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/meal_category_list.dart';
+import 'package:informa/models/plans.dart';
+import 'package:informa/models/supplement.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/models/workout_day.dart';
 import 'package:informa/models/workout_preset.dart';
+import 'package:informa/providers/plans_provider.dart';
+import 'package:informa/providers/supplements_provider.dart';
+import 'package:provider/provider.dart';
 
-class FirestoreService{
-
-  Future<void> saveNewAccountWithFullInfo(AppUser user) async{
+class FirestoreService {
+  Future<void> saveNewAccountWithFullInfo(AppUser user) async {
     print(user.id);
     print(user.toJson());
-    await FirebaseFirestore.instance.collection('users')
+    await FirebaseFirestore.instance
+        .collection('users')
         .doc(user.id!.toString())
         .set(user.toJson())
-        .catchError((e){
+        .catchError((e) {
       print(e);
     });
     print('Account added');
   }
 
-  Future<void> saveNewAccount(AppUser user) async{
-    await FirebaseFirestore.instance.collection('users')
+  Future<void> saveNewAccount(AppUser user) async {
+    await FirebaseFirestore.instance
+        .collection('users')
         .doc(user.id!.toString())
         .set({
-          'email': user.email,
-          'name': user.name,
-          'fromSocialMedia': user.fromSocialMedia,
-        })
-        .catchError((e){
-          print(e);
-        });
+      'email': user.email,
+      'name': user.name,
+      'fromSocialMedia': user.fromSocialMedia,
+    }).catchError((e) {
+      print(e);
+    });
     print('Account added');
   }
 
-  Future<AppUser?> isEmailExist(String id) async{
+  Future<AppUser?> isEmailExist(String id) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     print('ID: ' + id);
     DocumentSnapshot response = await users.doc(id).get();
-    if(response.exists) {
+    if (response.exists) {
       AppUser user = loadDataOfUser(response);
       return user;
     }
-      return null;
+    return null;
   }
 
-  AppUser loadDataOfUser(DocumentSnapshot snapshot){
+  AppUser loadDataOfUser(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>;
     AppUser user = new AppUser();
     user.fromJson(data);
     return user;
   }
 
-  Future<AppUser?> getUserById(String id) async{
-    var documentSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(id)
-        .get();
-    if(documentSnapshot.exists){
+  Future<AppUser?> getUserById(String id) async {
+    var documentSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
+    if (documentSnapshot.exists) {
       print('Document exist on the database');
       AppUser user = new AppUser();
       var data = documentSnapshot.data() as Map<String, dynamic>;
       user.fromJson(data);
       return user;
-    }
-    else {
+    } else {
       print('Document does not exist on the database');
       return null;
     }
   }
 
-  Future<List<Challenge>> getAllChallenges() async{
+  Future<List<Challenge>> getAllChallenges() async {
     List<Challenge> challenges = [];
     DateTime now = DateTime.now();
     var documentSnapshot = await FirebaseFirestore.instance
-        .collection('challenges').where('deadline', isGreaterThan: Timestamp.fromDate(now)).orderBy('deadline').get();
+        .collection('challenges')
+        .where('deadline', isGreaterThan: Timestamp.fromDate(now))
+        .orderBy('deadline')
+        .get();
     var docs = documentSnapshot.docs;
-    for(var doc in docs){
+    for (var doc in docs) {
       Challenge challenge = new Challenge();
       challenge.id = doc.id;
       bool valid = challenge.fromJson(doc.data());
-      if(valid)
-        challenges.add(challenge);
+      if (valid) challenges.add(challenge);
     }
     return challenges;
   }
 
-  Future submitChallenge(Challenge challenge) async{
+  Future addNewSupplement(String id, Map<String, dynamic> data) async {
+    await FirebaseFirestore.instance
+        .collection('supplements')
+        .doc(id)
+        .set(data)
+        .catchError((e) {
+      print(e);
+    });
+    print('supplements data added');
+  }
+
+  Future submitChallenge(Challenge challenge) async {
     print(challenge.id);
-    await FirebaseFirestore.instance.collection('challenges')
+    await FirebaseFirestore.instance
+        .collection('challenges')
         .doc(challenge.id)
         .set(challenge.toJson())
-        .catchError((e){
+        .catchError((e) {
       print(e);
     });
     print('challenge submitted');
   }
 
-  Future<String?> getUserActivateCode(String id) async{
-    var documentSnapshot = await FirebaseFirestore.instance
-        .collection('activation')
-        .doc(id)
-        .get();
-    if(documentSnapshot.exists){
+  Future<String?> getUserActivateCode(String id) async {
+    var documentSnapshot =
+        await FirebaseFirestore.instance.collection('activation').doc(id).get();
+    if (documentSnapshot.exists) {
       print('Document exist on the database');
       var data = documentSnapshot.data() as Map<String, dynamic>;
       String code = data['code'];
       return code;
-    }
-    else {
+    } else {
       print('Document does not exist on the database');
       return null;
     }
   }
 
-  Future<bool> updateUserData(String id, Map<String, dynamic> data) async{
+  Future<String?> getDietPlans(BuildContext ctx) async {
+    List<Plans> premiumPlans = [];
+    var collectionSnapshot =
+        await FirebaseFirestore.instance.collection('diet plans').get();
+    for (var doc in collectionSnapshot.docs) {
+      Map<String, dynamic> data = doc.data();
+      Provider.of<PlansProvider>(ctx, listen: false)
+          .dietPlans
+          .add(Plans.fromMap(data));
+      // PlansProvider().plans.add(Plans.fromMap(data));
+      premiumPlans.add(Plans.fromMap(data));
+      print(premiumPlans[0].description);
+    }
+    return null;
+  }
+
+  Future<String?> getTrainingPlans(BuildContext ctx) async {
+    List<Plans> premiumPlans = [];
+    var collectionSnapshot =
+        await FirebaseFirestore.instance.collection('training plans').get();
+    for (var doc in collectionSnapshot.docs) {
+      Map<String, dynamic> data = doc.data();
+      Provider.of<PlansProvider>(ctx, listen: false)
+          .trainingPlans
+          .add(Plans.fromMap(data));
+      // PlansProvider().plans.add(Plans.fromMap(data));
+      premiumPlans.add(Plans.fromMap(data));
+      print(premiumPlans[0].description);
+    }
+    return null;
+  }
+
+  Future<String?> getDietAndTrainingPlans(BuildContext ctx) async {
+    List<Plans> premiumPlans = [];
+    var collectionSnapshot = await FirebaseFirestore.instance
+        .collection('training and diet plans')
+        .get();
+    for (var doc in collectionSnapshot.docs) {
+      Map<String, dynamic> data = doc.data();
+      Provider.of<PlansProvider>(ctx, listen: false)
+          .dietAndTrainingPlans
+          .add(Plans.fromMap(data));
+      // PlansProvider().plans.add(Plans.fromMap(data));
+      premiumPlans.add(Plans.fromMap(data));
+      print(premiumPlans[0].description);
+    }
+    return null;
+  }
+
+  Future<String?> getSupplements(BuildContext ctx) async {
+    List<Supplement> supplements = [];
+    var collectionSnapshot =
+        await FirebaseFirestore.instance.collection('supplements').get();
+    for (var doc in collectionSnapshot.docs) {
+      Map<String, dynamic> data = doc.data();
+      Provider.of<SupplementsProvider>(ctx, listen: false)
+          .supplement
+          .add(Supplement.fromMap(data));
+      // PlansProvider().plans.add(Plans.fromMap(data));
+      supplements.add(Supplement.fromMap(data));
+      print(supplements[0].name);
+    }
+    return null;
+  }
+
+  Future<bool> updateUserData(String id, Map<String, dynamic> data) async {
     bool updated = true;
-    await FirebaseFirestore.instance.collection('users')
+    await FirebaseFirestore.instance
+        .collection('users')
         .doc(id)
         .update(data)
-        .catchError((e){
+        .catchError((e) {
       print(e);
       updated = false;
     });
-    if(updated){
+    if (updated) {
       print('user data updated');
       return true;
     }
@@ -136,20 +215,20 @@ class FirestoreService{
   }
 
   Future<bool> saveNutritionMeals(
-      String id,
-      List<Meal> breakfast,
-      List<Meal> lunch,
-      List<Meal> dinner,
-      List<Meal> otherBreakfast,
-      List<Meal> otherLunch,
-      List<Meal> otherDinner,
-      bool snacks,
-      int? breakfastDone,
-      int? lunchDone,
-      int? lunch2Done,
-      int? dinnerDone,
-      int? snacksDone,
-      ) async{
+    String id,
+    List<Meal> breakfast,
+    List<Meal> lunch,
+    List<Meal> dinner,
+    List<Meal> otherBreakfast,
+    List<Meal> otherLunch,
+    List<Meal> otherDinner,
+    bool snacks,
+    int? breakfastDone,
+    int? lunchDone,
+    int? lunch2Done,
+    int? dinnerDone,
+    int? snacksDone,
+  ) async {
     bool uploaded = true;
     Map<String, dynamic> data = new Map();
     List<Map> breakfastList = [];
@@ -159,19 +238,14 @@ class FirestoreService{
     List<Map> otherLunchList = [];
     List<Map> otherDinnerList = [];
 
-    for(var fullMeal in breakfast)
-      breakfastList.add(fullMeal.toJson());
-    for(var fullMeal in lunch)
-      lunchList.add(fullMeal.toJson());
-    for(var fullMeal in dinner)
-      dinnerList.add(fullMeal.toJson());
+    for (var fullMeal in breakfast) breakfastList.add(fullMeal.toJson());
+    for (var fullMeal in lunch) lunchList.add(fullMeal.toJson());
+    for (var fullMeal in dinner) dinnerList.add(fullMeal.toJson());
 
-    for(var fullMeal in otherBreakfast)
+    for (var fullMeal in otherBreakfast)
       otherBreakfastList.add(fullMeal.toJson());
-    for(var fullMeal in otherLunch)
-      otherLunchList.add(fullMeal.toJson());
-    for(var fullMeal in otherDinner)
-      otherDinnerList.add(fullMeal.toJson());
+    for (var fullMeal in otherLunch) otherLunchList.add(fullMeal.toJson());
+    for (var fullMeal in otherDinner) otherDinnerList.add(fullMeal.toJson());
 
     data['breakfast'] = breakfastList;
     data['lunch'] = lunchList;
@@ -190,26 +264,25 @@ class FirestoreService{
     data['supplementsDone'] = [];
     data['additionalMeals'] = [];
 
-    await FirebaseFirestore.instance.collection('nutrition')
+    await FirebaseFirestore.instance
+        .collection('nutrition')
         .doc(id)
         .set(data)
-        .catchError((e){
+        .catchError((e) {
       print(e);
       uploaded = false;
     });
-    if(uploaded){
+    if (uploaded) {
       print('Nutrition data set');
       return true;
     }
     return false;
   }
 
-  Future<List<dynamic>?> getNutritionMeals(String id, AppUser user) async{
-    var documentSnapshot = await FirebaseFirestore.instance
-        .collection('nutrition')
-        .doc(id)
-        .get();
-    if(documentSnapshot.exists){
+  Future<List<dynamic>?> getNutritionMeals(String id, AppUser user) async {
+    var documentSnapshot =
+        await FirebaseFirestore.instance.collection('nutrition').doc(id).get();
+    if (documentSnapshot.exists) {
       print('Getting nutrition');
       var data = documentSnapshot.data() as Map<String, dynamic>;
       List<Meal> breakfast = [];
@@ -219,23 +292,24 @@ class FirestoreService{
       var lunchMap;
       var dinnerMap;
 
-      if(user.dietType != 2){
+      if (user.dietType != 2) {
         breakfastMap = data['breakfast'];
         lunchMap = data['lunch'];
         dinnerMap = data['dinner'];
-      }
-      else{
+      } else {
         DateTime now = DateTime.now();
         print('carbCycleStartDate: ' + user.carbCycleStartDate!.day.toString());
         print('now: ' + now.day.toString());
-        print('Carb cycle time diff: ' +((now.difference(user.carbCycleStartDate!).inDays) % 7).toString() );
-        if(((now.difference(user.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+        print('Carb cycle time diff: ' +
+            ((now.difference(user.carbCycleStartDate!).inDays) % 7).toString());
+        if (((now.difference(user.carbCycleStartDate!).inHours / 24).floor() %
+                7) <
+            4) {
           print('getting low carb.......');
           breakfastMap = data['breakfast'];
           lunchMap = data['lunch'];
           dinnerMap = data['dinner'];
-        }
-        else{
+        } else {
           print('getting high carb.......');
           breakfastMap = data['otherBreakfast'];
           lunchMap = data['otherLunch'];
@@ -243,66 +317,81 @@ class FirestoreService{
         }
       }
 
-      if(breakfastMap != null){
-        for(int i=0; i<breakfastMap.length; i++){
+      if (breakfastMap != null) {
+        for (int i = 0; i < breakfastMap.length; i++) {
           Meal meal = new Meal();
           meal.id = i.toString();
           meal.fromJson(breakfastMap[i]);
           breakfast.add(meal);
         }
-      } else print('breakfast = null !!!!!');
-      if(lunchMap != null){
-        for(int i=0; i<lunchMap.length; i++){
+      } else
+        print('breakfast = null !!!!!');
+      if (lunchMap != null) {
+        for (int i = 0; i < lunchMap.length; i++) {
           Meal meal = new Meal();
           meal.id = i.toString();
           meal.fromJson(lunchMap[i]);
           lunch.add(meal);
         }
-      } else print('lunch = null !!!!!');
-      if(dinnerMap != null){
-        for(int i=0; i<dinnerMap.length; i++){
+      } else
+        print('lunch = null !!!!!');
+      if (dinnerMap != null) {
+        for (int i = 0; i < dinnerMap.length; i++) {
           Meal meal = new Meal();
           meal.id = i.toString();
           meal.fromJson(dinnerMap[i]);
           dinner.add(meal);
         }
-      } else print('dinner = null !!!!!');
-      return [breakfast, lunch, dinner, data['snacks'], data['breakfastDone'],
-        data['lunchDone'], data['lunch2Done'], data['dinnerDone'], data['snacksDone'],
-        data['mainSnacksDone'], data['supplementsDone'], data['additionalMeals']];
-    }
-    else {
+      } else
+        print('dinner = null !!!!!');
+      return [
+        breakfast,
+        lunch,
+        dinner,
+        data['snacks'],
+        data['breakfastDone'],
+        data['lunchDone'],
+        data['lunch2Done'],
+        data['dinnerDone'],
+        data['snacksDone'],
+        data['mainSnacksDone'],
+        data['supplementsDone'],
+        data['additionalMeals']
+      ];
+    } else {
       print('Document does not exist on the database');
       return null;
     }
   }
 
-  Future<bool> checkAndUpdateNewDayData(String id, AppUser user) async{
+  Future<bool> checkAndUpdateNewDayData(String id, AppUser user) async {
     DateTime now = DateTime.now();
     DateTime threeAmToday = DateTime(now.year, now.month, now.day, 3);
     int? carb;
-    if(user.dietType == 2){
+    if (user.dietType == 2) {
       DateTime now = DateTime.now();
-      if(((user.carbCycleStartDate!.difference(now).inHours/24).floor() % 7) < 4)
+      if (((user.carbCycleStartDate!.difference(now).inHours / 24).floor() %
+              7) <
+          4)
         carb = user.lowAndHighCarb![0];
-      else carb = user.lowAndHighCarb![1];
+      else
+        carb = user.lowAndHighCarb![1];
     }
-    if(user.lastDataUpdatedDate != null){
-      int diff = (now.difference(user.lastDataUpdatedDate!).inHours / 24).floor();
+    if (user.lastDataUpdatedDate != null) {
+      int diff =
+          (now.difference(user.lastDataUpdatedDate!).inHours / 24).floor();
       print('lastDataUpdatedDate: ' + user.lastDataUpdatedDate.toString());
       print(now.difference(user.lastDataUpdatedDate!).inHours);
       print('diff: ' + diff.toString());
-      if(diff >= 1){
-        await FirebaseFirestore.instance.collection('users')
-            .doc(id)
-            .update({
+      if (diff >= 1) {
+        await FirebaseFirestore.instance.collection('users').doc(id).update({
           'dailyCalories': user.myCalories,
           'dailyProtein': user.myProtein,
           'dailyCarb': user.myCarb,
           'dailyFats': user.myFats,
           'dailyCarbCycle': carb,
           'lastDataUpdatedDate': Timestamp.fromDate(threeAmToday),
-        }).catchError((e){
+        }).catchError((e) {
           print(e);
         });
         await updateNutrition(id, {
@@ -318,18 +407,15 @@ class FirestoreService{
         print('New day data updated');
         return true;
       }
-    }
-    else{
-      await FirebaseFirestore.instance.collection('users')
-          .doc(id)
-          .update({
+    } else {
+      await FirebaseFirestore.instance.collection('users').doc(id).update({
         'dailyCalories': user.myCalories,
         'dailyProtein': user.myProtein,
         'dailyCarb': user.myCarb,
         'dailyFats': user.myFats,
         'dailyCarbCycle': carb,
         'lastDataUpdatedDate': Timestamp.fromDate(threeAmToday),
-      }).catchError((e){
+      }).catchError((e) {
         print(e);
       });
       await updateNutrition(id, {
@@ -348,35 +434,36 @@ class FirestoreService{
     return false;
   }
 
-  Future updateNutrition(String id, Map<String, dynamic> data) async{
-    await FirebaseFirestore.instance.collection('nutrition')
+  Future updateNutrition(String id, Map<String, dynamic> data) async {
+    await FirebaseFirestore.instance
+        .collection('nutrition')
         .doc(id)
         .update(data)
-        .catchError((e){
+        .catchError((e) {
       print(e);
     });
     print('Nutrition data updated');
   }
 
-  Future getMainMeals() async{
-    var documentSnapshot = await FirebaseFirestore.instance
-        .collection('mainMeals').get();
+  Future getMainMeals() async {
+    var documentSnapshot =
+        await FirebaseFirestore.instance.collection('mainMeals').get();
     var docs = documentSnapshot.docs;
-    for(var doc in docs){
+    for (var doc in docs) {
       MealCategory mealCategory = new MealCategory(id: doc.id);
       mealCategory.fromJson(doc.data());
       List<int> type = doc.data()['type'].cast<int>();
-      if(type.contains(1)) MealCategoryList.breakfast.add(mealCategory);
-      if(type.contains(2)) MealCategoryList.lunch.add(mealCategory);
-      if(type.contains(3)) MealCategoryList.dinner.add(mealCategory);
+      if (type.contains(1)) MealCategoryList.breakfast.add(mealCategory);
+      if (type.contains(2)) MealCategoryList.lunch.add(mealCategory);
+      if (type.contains(3)) MealCategoryList.dinner.add(mealCategory);
     }
   }
 
-  Future<List<Exercise>> getExercises() async{
+  Future<List<Exercise>> getExercises() async {
     List<Exercise> exercises = [];
-    var documentSnapshot = await FirebaseFirestore.instance
-        .collection('exercises').get();
-    for(var doc in documentSnapshot.docs){
+    var documentSnapshot =
+        await FirebaseFirestore.instance.collection('exercises').get();
+    for (var doc in documentSnapshot.docs) {
       var data = doc.data();
       Exercise exercise = new Exercise();
       exercise.id = doc.id;
@@ -386,11 +473,11 @@ class FirestoreService{
     return exercises;
   }
 
-  Future<List<Cardio>> getCardio(List<Exercise> allExercises) async{
+  Future<List<Cardio>> getCardio(List<Exercise> allExercises) async {
     List<Cardio> allCardio = [];
-    var documentSnapshot = await FirebaseFirestore.instance
-        .collection('cardio').get();
-    for(var doc in documentSnapshot.docs){
+    var documentSnapshot =
+        await FirebaseFirestore.instance.collection('cardio').get();
+    for (var doc in documentSnapshot.docs) {
       var data = doc.data();
       Cardio cardio = new Cardio();
       cardio.id = doc.id;
@@ -400,11 +487,11 @@ class FirestoreService{
     return allCardio;
   }
 
-  Future<List<Workout>> getWorkouts(List<Exercise> allExercises) async{
+  Future<List<Workout>> getWorkouts(List<Exercise> allExercises) async {
     List<Workout> workouts = [];
-    var documentSnapshot = await FirebaseFirestore.instance
-        .collection('workouts').get();
-    for(var doc in documentSnapshot.docs){
+    var documentSnapshot =
+        await FirebaseFirestore.instance.collection('workouts').get();
+    for (var doc in documentSnapshot.docs) {
       var data = doc.data();
       Workout workout = new Workout();
       workout.id = doc.id;
@@ -414,23 +501,24 @@ class FirestoreService{
     return workouts;
   }
 
-  Future<WorkoutPreset?> getWorkoutPresetById(String id, List<Workout> workouts, List<Cardio> cardio) async{
+  Future<WorkoutPreset?> getWorkoutPresetById(
+      String id, List<Workout> workouts, List<Cardio> cardio) async {
     var documentSnapshot = await FirebaseFirestore.instance
         .collection('workoutPresets')
         .doc(id)
         .get();
-    if(documentSnapshot.exists){
+    if (documentSnapshot.exists) {
       print('Document exist on the database');
       WorkoutPreset workoutPreset = new WorkoutPreset();
       var data = documentSnapshot.data() as Map<String, dynamic>;
       workoutPreset.fromJson(data, workouts, cardio);
       return workoutPreset;
-    }
-    else {
+    } else {
       print('Document does not exist on the database');
       return null;
     }
   }
+
 
   Future<Map?> getWorkoutHistoryById(String id) async{
     var documentSnapshot = await FirebaseFirestore.instance
@@ -462,3 +550,4 @@ class FirestoreService{
   }
 
 }
+
