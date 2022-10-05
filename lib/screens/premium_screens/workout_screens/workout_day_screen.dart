@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confetti/confetti.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/workout_day.dart';
+import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/workout_card.dart';
 
@@ -26,6 +29,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
   bool _dayDone = false;
   late AnimationController _animationController;
   late Animation<Offset> _offset;
+  FirestoreService _firestoreService = new FirestoreService();
 
   Future<void> _showDoneDialog() async {
     return showDialog<void>(
@@ -70,7 +74,9 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
     );
   }
 
-  onDone(BuildContext context) {
+
+  onDone(BuildContext context) async{
+
     String errorMsg = '';
     for (int i = 0; i < widget.workoutDay.warmUpSets!.length; i++) {
       print('warmUpSets done: ' +
@@ -86,32 +92,38 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
           widget.workoutDay.exercises![i].numberOfSets!)
         errorMsg = 'لم تنتهي من المجموعات';
     }
-    // if(errorMsg.isNotEmpty)
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(
-    //         content: Text(
-    //           errorMsg,
-    //         ),
-    //         backgroundColor: Colors.red.shade900,
-    //       )
-    //   );
-    // else{
-    //   setState(() {
-    //     _dayDone = true;
-    //   });
-    //   _confettiController.play();
-    // }
-    setState(() {
-      _dayDone = true;
-    });
-    _showDoneDialog();
-    _animationController.forward();
+    if(errorMsg.isEmpty){
+      String id = FirebaseAuth.instance.currentUser!.uid;
+      await _firestoreService.saveWorkoutInfoInHistory(
+        id,
+        widget.week,
+        widget.day,
+        widget.workoutDay,
+      );
+      setState(() {_dayDone = true;});
+      _showDoneDialog();
+      _animationController.forward();
+    }
+    else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              errorMsg,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          )
+      );
+    }
     //_confettiController.play();
   }
 
   @override
   void initState() {
     super.initState();
+    _dayDone = widget.workoutDay.isDone != null? widget.workoutDay.isDone! : false;
     _confettiController = ConfettiController(duration: Duration(seconds: 2));
     _animationController = AnimationController(
       duration: Duration(milliseconds: 1500),
@@ -150,178 +162,142 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
                 image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          child: Stack(
+          child: ListView(
+            shrinkWrap: true,
             children: [
-              ListView(
-                shrinkWrap: true,
-                children: [
-                  Text(
-                    widget.workoutDay.name!,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontFamily: boldFont,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Row(
-                      children: [
-                        Text(
-                          '1- التسخين',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontFamily: boldFont,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Card(
-                          elevation: 0,
-                          color: primaryColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Icon(
-                              Icons.play_arrow,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    '2- مجموعات الاحماء',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: boldFont,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  for (int i = 0; i < widget.workoutDay.warmUpSets!.length; i++)
-                    Column(
-                      children: [
-                        WorkoutCard(
-                          workout: widget.workoutDay.warmUpSets![i],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
-                    ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    '3- المجموعات الأساسية',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: boldFont,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  for (int i = 0; i < widget.workoutDay.exercises!.length; i++)
-                    Column(
-                      children: [
-                        WorkoutCard(
-                          workout: widget.workoutDay.exercises![i],
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
-                    ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  // Text(
-                  //   '4- الكارديو',
-                  //   style: TextStyle(
-                  //     fontSize: 17,
-                  //     fontFamily: boldFont,
-                  //   ),
-                  // ),
-                  // SizedBox(height: 5,),
-                  // for(int i=0; i<widget.workoutDay.cardio!.length; i++)
-                  //   Column(
-                  //     children: [
-                  //       WorkoutCard(
-                  //         workout: widget.workoutDay.warmUpSets![i],
-                  //       ),
-                  //       SizedBox(height: 5,),
-                  //     ],
-                  //   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Row(
-                      children: [
-                        Text(
-                          '5- استرتشات',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontFamily: boldFont,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Card(
-                          elevation: 0,
-                          color: primaryColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(3.0),
-                            child: Icon(
-                              Icons.play_arrow,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  CustomButton(
-                    text: _dayDone ? 'عاش يا وحش' : 'تم',
-                    onClick: _dayDone
-                        ? () {}
-                        : () {
-                            onDone(context);
-                          },
-                    iconExist: false,
-                    bgColor: _dayDone ? Colors.grey.shade400 : primaryColor,
-                  ),
-                ],
+              Text(
+                widget.workoutDay.name!,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontFamily: boldFont,
+                ),
               ),
-              ConfettiWidget(
-                confettiController: _confettiController,
-                colors: [
-                  primaryColor,
-                  Colors.white,
-                  Colors.blue.shade200,
-                  Colors.red.shade300,
-                ],
-                numberOfParticles: 50,
+              SizedBox(height: 20,),
+              InkWell(
+                onTap: (){},
+                child: Row(
+                  children: [
+                    Text(
+                      '1- التسخين',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontFamily: boldFont,
+                      ),
+                    ),
+
+                    SizedBox(width: 10,),
+                    Card(
+                      elevation: 0,
+                      color: primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Icon(
+                          Icons.play_arrow,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10,),
+              Text(
+                '2- مجموعات الاحماء',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontFamily: boldFont,
+                ),
+              ),
+              SizedBox(height: 5,),
+              for(int i=0; i<widget.workoutDay.warmUpSets!.length; i++)
+                Column(
+                  children: [
+                    WorkoutCard(
+                      workout: widget.workoutDay.warmUpSets![i],
+                    ),
+                    SizedBox(height: 5,),
+                  ],
+                ),
+              SizedBox(height: 10,),
+              Text(
+                '3- المجموعات الأساسية',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontFamily: boldFont,
+                ),
+              ),
+              SizedBox(height: 5,),
+              for(int i=0; i<widget.workoutDay.exercises!.length; i++)
+                Column(
+                  children: [
+                    WorkoutCard(
+                      workout: widget.workoutDay.exercises![i],
+                    ),
+                    SizedBox(height: 5,),
+                  ],
+                ),
+              SizedBox(height: 10,),
+              // Text(
+              //   '4- الكارديو',
+              //   style: TextStyle(
+              //     fontSize: 17,
+              //     fontFamily: boldFont,
+              //   ),
+              // ),
+              // SizedBox(height: 5,),
+              // for(int i=0; i<widget.workoutDay.cardio!.length; i++)
+              //   Column(
+              //     children: [
+              //       WorkoutCard(
+              //         workout: widget.workoutDay.warmUpSets![i],
+              //       ),
+              //       SizedBox(height: 5,),
+              //     ],
+              //   ),
+              SizedBox(height: 10,),
+              InkWell(
+                onTap: (){},
+                child: Row(
+                  children: [
+                    Text(
+                      '5- استرتشات',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontFamily: boldFont,
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    Card(
+                      elevation: 0,
+                      color: primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(6)
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(3.0),
+                        child: Icon(
+                          Icons.play_arrow,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+              ),
+              SizedBox(height: 20,),
+              CustomButton(
+                text: _dayDone ? 'عاش يا وحش' : 'تم',
+                onClick: _dayDone ? (){} : (){
+                  onDone(context);
+                },
+                iconExist: false,
+                bgColor: _dayDone? Colors.grey.shade400 : primaryColor,
               ),
             ],
           ),

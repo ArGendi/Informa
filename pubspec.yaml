@@ -83,6 +83,7 @@ flutter:
     - assets/images/body_fat/
     - assets/icons/
     - assets/files/
+    - assets/images/muscles/
 
   fonts:
     - family: Cairo

@@ -14,13 +14,13 @@ class WeekRow extends StatefulWidget {
 }
 
 class _WeekRowState extends State<WeekRow> {
-  Color getColor(WorkoutDay workoutDay) {
-    if (workoutDay.status == 1)
-      return Colors.grey.shade300;
-    else if (workoutDay.status == 2)
-      return primaryColor;
-    else
-      return Colors.green;
+
+  Color getColor(WorkoutDay workoutDay){
+    print('from week row widget: ' + workoutDay.toString());
+    if(workoutDay.status == 1) return Colors.grey.shade300;
+    else if(workoutDay.status == 2) return primaryColor;
+    else return Colors.green;
+
   }
 
   @override
@@ -46,42 +46,44 @@ class _WeekRowState extends State<WeekRow> {
                 onTap: () {
                   if (widget.days[i].status != 1)
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => WorkOutDayScreen(
-                                week: widget.week,
-                                day: i + 1,
-                                workoutDay: widget.days[i],
-                                // workoutDay: WorkoutDay(
-                                //   name: 'يوم جامد',
-                                //   warmUpSets: [
-                                //     Workout(
-                                //       exercise: Exercise(name: 'احماء 1'),
-                                //       fromReps: 5,
-                                //       toReps: 10,
-                                //       numberOfSets: 4,
-                                //       restTime: 30,
-                                //     ),
-                                //     Workout(
-                                //       exercise: Exercise(name: 'احماء 2'),
-                                //       fromReps: 5,
-                                //       toReps: 10,
-                                //       numberOfSets: 4,
-                                //       restTime: 30,
-                                //     ),
-                                //   ],
-                                //   exercises: [
-                                //     Workout(
-                                //       exercise: Exercise(name: 'تمرين 1'),
-                                //       fromReps: 5,
-                                //       toReps: 10,
-                                //       numberOfSets: 4,
-                                //       restTime: 30,
-                                //     ),
-                                //   ],
-                                // ),
-                              )),
-                    );
+
+                    context,
+                    MaterialPageRoute(builder: (context) => WorkOutDayScreen(
+                      week: widget.week,
+                      day: i+1,
+                      // workoutDay: widget.days[i],
+                      workoutDay: widget.days[i],
+                      // workoutDay: WorkoutDay(
+                      //   name: 'يوم جامد',
+                      //   warmUpSets: [
+                      //     Workout(
+                      //       exercise: Exercise(name: 'احماء 1'),
+                      //       fromReps: 5,
+                      //       toReps: 10,
+                      //       numberOfSets: 4,
+                      //       restTime: 30,
+                      //     ),
+                      //     Workout(
+                      //       exercise: Exercise(name: 'احماء 2'),
+                      //       fromReps: 5,
+                      //       toReps: 10,
+                      //       numberOfSets: 4,
+                      //       restTime: 30,
+                      //     ),
+                      //   ],
+                      //   exercises: [
+                      //     Workout(
+                      //       exercise: Exercise(name: 'تمرين 1'),
+                      //       fromReps: 5,
+                      //       toReps: 10,
+                      //       numberOfSets: 4,
+                      //       restTime: 30,
+                      //     ),
+                      //   ],
+                      // ),
+                    )),
+                  );
+
                 },
                 borderRadius: BorderRadius.circular(5),
                 child: Container(

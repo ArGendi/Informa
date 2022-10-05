@@ -12,10 +12,53 @@ class WorkoutDay{
   List<Cardio>? cardio = [];
   List<String>? stretching = [];
   //1= rest, 2= still, 3= done
-  int? status = 1;
+  int status;
+  bool? isDone;
 
   WorkoutDay({this.id, this.day, this.name, this.warmUps, this.warmUpSets, this.exercises,
-    this.cardio, this.stretching, this.status});
+    this.cardio, this.stretching, this.status = 1, this.isDone});
+
+  WorkoutDay copyObject(){
+    return new WorkoutDay(
+      id: id,
+      day: day,
+      name: name,
+      warmUps: warmUps,
+      warmUpSets: warmUpSets,
+      exercises: exercises,
+      cardio: cardio,
+      stretching: stretching,
+      status: status,
+      isDone: isDone,
+    );
+  }
+
+   List<Map> getWorkoutIdAndSetsOfWorkoutList(List<Workout>? list){
+     List<Map> returnList = [];
+     for(var item in list!){
+       Map map = new Map();
+       map['workoutId'] = item.id;
+       List<Map> sets = [];
+       for(var set in item.sets){
+         sets.add({
+           'weight': set.weight,
+           'number': set.number,
+         });
+       }
+       map['sets'] = sets;
+       returnList.add(map);
+     }
+     return returnList;
+   }
+
+  ///json for workout history
+  Map<String, dynamic> toWorkoutHistoryJson(){
+    return {
+      'isDone': isDone,
+      'warmUps': getWorkoutIdAndSetsOfWorkoutList(warmUpSets),
+      'exercises': getWorkoutIdAndSetsOfWorkoutList(exercises),
+    };
+  }
 
   List<String> convertWorkoutListToIdsList(List workouts){
     List<String> ids = [];

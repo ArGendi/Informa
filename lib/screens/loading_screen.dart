@@ -21,6 +21,8 @@ import 'package:informa/services/firestore_service.dart';
 import 'package:informa/services/meals_service.dart';
 import 'package:provider/provider.dart';
 
+import '../services/workout_services.dart';
+
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
 
@@ -166,20 +168,44 @@ class _LoadingScreenState extends State<LoadingScreen> {
                   Provider.of<PremiumNutritionProvider>(context, listen: false)
                       .setAdditionalMeals(additionalMeals);
               }
-              if (premiumUser.workoutPreset != null) {
-                List<Exercise> exercises =
-                    await _firestoreService.getExercises();
-                exercises.map((e) => print('${e.id} \n'));
-                List<Workout> workouts =
-                    await _firestoreService.getWorkouts(exercises);
-                List<Cardio> cardio =
-                    await _firestoreService.getCardio(exercises);
-                WorkoutPreset? workoutPreset =
-                    await _firestoreService.getWorkoutPresetById(
-                        premiumUser.workoutPreset!, workouts, cardio);
-                if (workoutPreset != null)
+
+              print('loading page - admin confirm ? '  + premiumUser.adminConfirm.toString());
+              print('loading page - program ? '  + premiumUser.program.toString());
+              if(premiumUser.adminConfirm && (premiumUser.program == 1 || premiumUser.program == 2)){
+                print('loading page - admin confirmed workout');
+                WorkoutServices workoutServices = new WorkoutServices();
+                await workoutServices.getMuscles();
+                List<Exercise> exercises = await _firestoreService.getExercises();
+                List<Workout> workouts = await _firestoreService.getWorkouts(exercises);
+                List<Cardio> cardio = await _firestoreService.getCardio(exercises);
+                WorkoutPreset? workoutPreset = await _firestoreService.getWorkoutPresetById(
+                  premiumUser.workoutPreset!,
+                  workouts,
+                  cardio
+                );
+                print("workout pre = " + workoutPreset.toString());
+                if(workoutPreset != null) {
+                  print('loading page - workout pre id: ' + workoutPreset.id.toString());
+
+ //             if (premiumUser.workoutPreset != null) {
+ //               List<Exercise> exercises =
+  //                  await _firestoreService.getExercises();
+  //              exercises.map((e) => print('${e.id} \n'));
+  //              List<Workout> workouts =
+  //                  await _firestoreService.getWorkouts(exercises);
+  //              List<Cardio> cardio =
+  //                  await _firestoreService.getCardio(exercises);
+  //              WorkoutPreset? workoutPreset =
+  //                  await _firestoreService.getWorkoutPresetById(
+   //                     premiumUser.workoutPreset!, workouts, cardio);
+   //             if (workoutPreset != null)
+
                   Provider.of<ActiveUserProvider>(context, listen: false)
                       .setWorkoutPreset(workoutPreset);
+                  String id = FirebaseAuth.instance.currentUser!.uid;
+                  await Provider.of<ActiveUserProvider>(context, listen: false)
+                      .setUserWorkoutHistoryToWorkoutPreset(id);
+                }
               }
             }
           }

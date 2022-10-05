@@ -20,6 +20,7 @@ class WorkoutPreset{
   int? gender;
   int? specialCase;
   List<WorkoutDay>? programDays;
+  List<List<WorkoutDay>?>? weeksDays;
 
   WorkoutPreset({this.id, this.programId, this.name, this.days, this.levels, this.tools,
     this.techniques, this.place, this.gender, this.specialCase});
@@ -105,6 +106,40 @@ class WorkoutPreset{
     specialCase = json['specialCase'];
     programDays = json['programDays'] != null ?
     convertListOfMapsToProgramDays(json['programDays'], allWorkouts, allCardio) : null;
+    print('Program days: ' + programDays.toString());
+    List<WorkoutDay>? tempProgramDays;
+    if(json['programDays'] != null){
+      programDays = [];
+      for(int i=0; i<7; i++)
+        programDays!.add(WorkoutDay());
+      tempProgramDays =
+          convertListOfMapsToProgramDays(json['programDays'], allWorkouts, allCardio);
+      weeksDays = [[],[],[],[]];
+      for(int i=0; i<4; i++){
+        //weeksDays!.add([]);
+        for(int j=0; j<7; j++){
+          weeksDays![i]!.add(WorkoutDay());
+        }
+        for(var day in tempProgramDays) {
+          day.status = 2;
+          weeksDays![i]![day.day! - 1] = day.copyObject();
+        }
+      }
+    }
+    // weeksDays = [];
+    // for(int i=0; i<4; i++)
+    //   weeksDays!.add([...programDays!]);
+    print("--------trace workout pre----------");
+    print(weeksDays![0]![0].status);
+    print(weeksDays![1]![0].status);
+    weeksDays![0]![0].status = 3;
+    print(weeksDays![0]![0].status);
+    print(weeksDays![1]![0].status);
+    print("----------end----------");
+    for(int i=0; i<weeksDays![0]!.length; i++)
+      print('weeks days info: ' + weeksDays![0]![i].status.toString());
+
+
   }
 
 }

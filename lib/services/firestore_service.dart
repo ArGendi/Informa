@@ -10,6 +10,7 @@ import 'package:informa/models/plans.dart';
 import 'package:informa/models/supplement.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/models/workout.dart';
+import 'package:informa/models/workout_day.dart';
 import 'package:informa/models/workout_preset.dart';
 import 'package:informa/providers/plans_provider.dart';
 import 'package:informa/providers/supplements_provider.dart';
@@ -480,7 +481,7 @@ class FirestoreService {
       var data = doc.data();
       Cardio cardio = new Cardio();
       cardio.id = doc.id;
-      cardio.fromJson(data, allExercises);
+      cardio.fromCardioJson(data, allExercises);
       allCardio.add(cardio);
     }
     return allCardio;
@@ -517,4 +518,36 @@ class FirestoreService {
       return null;
     }
   }
+
+
+  Future<Map?> getWorkoutHistoryById(String id) async{
+    var documentSnapshot = await FirebaseFirestore.instance
+        .collection('workoutHistory')
+        .doc(id)
+        .get();
+    if(documentSnapshot.exists) {
+      print('Document exist on the database');
+      WorkoutPreset workoutPreset = new WorkoutPreset();
+      var data = documentSnapshot.data() as Map<String, dynamic>;
+      return data;
+    }
+    else {
+      print('Document does not exist on the database');
+      return null;
+    }
+  }
+
+  Future saveWorkoutInfoInHistory(String id, int week, int day, WorkoutDay workoutDay) async{
+    workoutDay.isDone = true;
+    await FirebaseFirestore.instance.collection('workoutHistory')
+        .doc(id)
+        .set({
+      'week$week,day$day': workoutDay.toWorkoutHistoryJson(),
+    })
+        .catchError((e){
+      print(e);
+    });
+  }
+
 }
+
