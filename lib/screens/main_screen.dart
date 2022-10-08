@@ -349,6 +349,5 @@ class BNBCustomPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
-    throw UnimplementedError();
   }
 }

@@ -21,6 +21,7 @@ class PremiumPackagesScreen extends StatefulWidget {
   @override
   _PremiumPackagesScreenState createState() => _PremiumPackagesScreenState();
 }
+// ignore: todo
 // TODO: there is a wired action I think it will happen when the user select a duration for its plan , that we identify each duration by its days, so I think if the user choose a
 // TODO: duration maybe a conflict will happen if the user choosed a duration that in other package have the same days
 // TODO: so I think to solve it we must identify each duartion with a specific id that is uniqe from each duartion in each "tarekka motab3a"

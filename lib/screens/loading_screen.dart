@@ -169,36 +169,41 @@ class _LoadingScreenState extends State<LoadingScreen> {
                       .setAdditionalMeals(additionalMeals);
               }
 
-              print('loading page - admin confirm ? '  + premiumUser.adminConfirm.toString());
-              print('loading page - program ? '  + premiumUser.program.toString());
-              if(premiumUser.adminConfirm && (premiumUser.program == 1 || premiumUser.program == 2)){
+              print('loading page - admin confirm ? ' +
+                  premiumUser.adminConfirm.toString());
+              print(
+                  'loading page - program ? ' + premiumUser.program.toString());
+              if (premiumUser.adminConfirm &&
+                  (premiumUser.program == 1 || premiumUser.program == 2)) {
                 print('loading page - admin confirmed workout');
                 WorkoutServices workoutServices = new WorkoutServices();
                 await workoutServices.getMuscles();
-                List<Exercise> exercises = await _firestoreService.getExercises();
-                List<Workout> workouts = await _firestoreService.getWorkouts(exercises);
-                List<Cardio> cardio = await _firestoreService.getCardio(exercises);
-                WorkoutPreset? workoutPreset = await _firestoreService.getWorkoutPresetById(
-                  premiumUser.workoutPreset!,
-                  workouts,
-                  cardio
-                );
+                List<Exercise> exercises =
+                    await _firestoreService.getExercises();
+                List<Workout> workouts =
+                    await _firestoreService.getWorkouts(exercises);
+                List<Cardio> cardio =
+                    await _firestoreService.getCardio(exercises);
+                WorkoutPreset? workoutPreset =
+                    await _firestoreService.getWorkoutPresetById(
+                        premiumUser.workoutPreset!, workouts, cardio);
                 print("workout pre = " + workoutPreset.toString());
-                if(workoutPreset != null) {
-                  print('loading page - workout pre id: ' + workoutPreset.id.toString());
+                if (workoutPreset != null) {
+                  print('loading page - workout pre id: ' +
+                      workoutPreset.id.toString());
 
- //             if (premiumUser.workoutPreset != null) {
- //               List<Exercise> exercises =
-  //                  await _firestoreService.getExercises();
-  //              exercises.map((e) => print('${e.id} \n'));
-  //              List<Workout> workouts =
-  //                  await _firestoreService.getWorkouts(exercises);
-  //              List<Cardio> cardio =
-  //                  await _firestoreService.getCardio(exercises);
-  //              WorkoutPreset? workoutPreset =
-  //                  await _firestoreService.getWorkoutPresetById(
-   //                     premiumUser.workoutPreset!, workouts, cardio);
-   //             if (workoutPreset != null)
+                  //             if (premiumUser.workoutPreset != null) {
+                  //               List<Exercise> exercises =
+                  //                  await _firestoreService.getExercises();
+                  //              exercises.map((e) => print('${e.id} \n'));
+                  //              List<Workout> workouts =
+                  //                  await _firestoreService.getWorkouts(exercises);
+                  //              List<Cardio> cardio =
+                  //                  await _firestoreService.getCardio(exercises);
+                  //              WorkoutPreset? workoutPreset =
+                  //                  await _firestoreService.getWorkoutPresetById(
+                  //                     premiumUser.workoutPreset!, workouts, cardio);
+                  //             if (workoutPreset != null)
 
                   Provider.of<ActiveUserProvider>(context, listen: false)
                       .setWorkoutPreset(workoutPreset);
@@ -239,7 +244,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (this.mounted) {
       getAppData();

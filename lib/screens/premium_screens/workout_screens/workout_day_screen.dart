@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -74,9 +73,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
     );
   }
 
-
-  onDone(BuildContext context) async{
-
+  onDone(BuildContext context) async {
     String errorMsg = '';
     for (int i = 0; i < widget.workoutDay.warmUpSets!.length; i++) {
       print('warmUpSets done: ' +
@@ -92,7 +89,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
           widget.workoutDay.exercises![i].numberOfSets!)
         errorMsg = 'لم تنتهي من المجموعات';
     }
-    if(errorMsg.isEmpty){
+    if (errorMsg.isEmpty) {
       String id = FirebaseAuth.instance.currentUser!.uid;
       await _firestoreService.saveWorkoutInfoInHistory(
         id,
@@ -100,22 +97,21 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
         widget.day,
         widget.workoutDay,
       );
-      setState(() {_dayDone = true;});
+      setState(() {
+        _dayDone = true;
+      });
       _showDoneDialog();
       _animationController.forward();
-    }
-    else{
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(
-              errorMsg,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-          )
-      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          errorMsg,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ));
     }
     //_confettiController.play();
   }
@@ -123,7 +119,8 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
   @override
   void initState() {
     super.initState();
-    _dayDone = widget.workoutDay.isDone != null? widget.workoutDay.isDone! : false;
+    _dayDone =
+        widget.workoutDay.isDone != null ? widget.workoutDay.isDone! : false;
     _confettiController = ConfettiController(duration: Duration(seconds: 2));
     _animationController = AnimationController(
       duration: Duration(milliseconds: 1500),
@@ -172,9 +169,11 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
                   fontFamily: boldFont,
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               InkWell(
-                onTap: (){},
+                onTap: () {},
                 child: Row(
                   children: [
                     Text(
@@ -184,14 +183,14 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
                         fontFamily: boldFont,
                       ),
                     ),
-
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Card(
                       elevation: 0,
                       color: primaryColor,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6)
-                      ),
+                          borderRadius: BorderRadius.circular(6)),
                       child: Padding(
                         padding: const EdgeInsets.all(3.0),
                         child: Icon(
@@ -204,7 +203,9 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
                   ],
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Text(
                 '2- مجموعات الاحماء',
                 style: TextStyle(
@@ -212,17 +213,23 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
                   fontFamily: boldFont,
                 ),
               ),
-              SizedBox(height: 5,),
-              for(int i=0; i<widget.workoutDay.warmUpSets!.length; i++)
+              SizedBox(
+                height: 5,
+              ),
+              for (int i = 0; i < widget.workoutDay.warmUpSets!.length; i++)
                 Column(
                   children: [
                     WorkoutCard(
                       workout: widget.workoutDay.warmUpSets![i],
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                   ],
                 ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Text(
                 '3- المجموعات الأساسية',
                 style: TextStyle(
@@ -230,17 +237,23 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
                   fontFamily: boldFont,
                 ),
               ),
-              SizedBox(height: 5,),
-              for(int i=0; i<widget.workoutDay.exercises!.length; i++)
+              SizedBox(
+                height: 5,
+              ),
+              for (int i = 0; i < widget.workoutDay.exercises!.length; i++)
                 Column(
                   children: [
                     WorkoutCard(
                       workout: widget.workoutDay.exercises![i],
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                   ],
                 ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               // Text(
               //   '4- الكارديو',
               //   style: TextStyle(
@@ -258,9 +271,11 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
               //       SizedBox(height: 5,),
               //     ],
               //   ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               InkWell(
-                onTap: (){},
+                onTap: () {},
                 child: Row(
                   children: [
                     Text(
@@ -270,13 +285,14 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
                         fontFamily: boldFont,
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Card(
                       elevation: 0,
                       color: primaryColor,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6)
-                      ),
+                          borderRadius: BorderRadius.circular(6)),
                       child: Padding(
                         padding: const EdgeInsets.all(3.0),
                         child: Icon(
@@ -288,16 +304,19 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen>
                     ),
                   ],
                 ),
-
               ),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               CustomButton(
                 text: _dayDone ? 'عاش يا وحش' : 'تم',
-                onClick: _dayDone ? (){} : (){
-                  onDone(context);
-                },
+                onClick: _dayDone
+                    ? () {}
+                    : () {
+                        onDone(context);
+                      },
                 iconExist: false,
-                bgColor: _dayDone? Colors.grey.shade400 : primaryColor,
+                bgColor: _dayDone ? Colors.grey.shade400 : primaryColor,
               ),
             ],
           ),

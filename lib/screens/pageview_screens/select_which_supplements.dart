@@ -281,6 +281,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                               controller: carbsController,
                               onChanged: ((value) {
                                 carbs =
+                                    // ignore: unnecessary_null_comparison
                                     value == null ? 0.0 : double.parse(value);
                                 print(carbs);
                               }),
@@ -340,6 +341,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                               controller: caloriesController,
                               onChanged: ((value) {
                                 calories =
+                                    // ignore: unnecessary_null_comparison
                                     value == null ? 0.0 : double.parse(value);
                                 print(calories);
                               }),
@@ -399,6 +401,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                               controller: protienController,
                               onChanged: ((value) {
                                 protien =
+                                    // ignore: unnecessary_null_comparison
                                     value == null ? 0.0 : double.parse(value);
                                 print(protien);
                               }),
@@ -458,6 +461,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                               controller: fatsController,
                               onChanged: ((value) {
                                 fats =
+                                    // ignore: unnecessary_null_comparison
                                     value == null ? 0.0 : double.parse(value);
                                 print(fats);
                               }),

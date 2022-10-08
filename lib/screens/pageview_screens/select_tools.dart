@@ -24,6 +24,7 @@ class _SelectToolsState extends State<SelectTools> {
     activeUser!.workoutPlace == 1
         ? Provider.of<ActiveUserProvider>(context, listen: false)
             .addTrainingTool(1)
+        // ignore: unnecessary_statements
         : null;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

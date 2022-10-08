@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:informa/models/workout_day.dart';
 import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/week_row.dart';
 import 'package:provider/provider.dart';
@@ -16,23 +15,23 @@ class MainWorkoutScreen extends StatefulWidget {
 class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
   @override
   Widget build(BuildContext context) {
-    var myWorkoutPreset = Provider.of<ActiveUserProvider>(context).workoutPreset;
+    var myWorkoutPreset =
+        Provider.of<ActiveUserProvider>(context).workoutPreset;
     print('Workout preset name: ' + myWorkoutPreset!.name.toString());
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: ListView(
           children: [
             Container(
               height: 60,
               color: Colors.white,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -42,13 +41,14 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                         fontFamily: boldFont,
                       ),
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Card(
                       elevation: 0,
                       color: primaryColor,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6)
-                      ),
+                          borderRadius: BorderRadius.circular(6)),
                       child: Padding(
                         padding: const EdgeInsets.all(3.0),
                         child: Icon(
@@ -76,7 +76,9 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                             backgroundColor: Colors.green,
                             radius: 7,
                           ),
-                          SizedBox(width: 5,),
+                          SizedBox(
+                            width: 5,
+                          ),
                           Text(
                             'انتهيت منه',
                             style: TextStyle(
@@ -91,7 +93,9 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                             backgroundColor: primaryColor,
                             radius: 7,
                           ),
-                          SizedBox(width: 5,),
+                          SizedBox(
+                            width: 5,
+                          ),
                           Text(
                             'متبقي',
                             style: TextStyle(
@@ -106,7 +110,9 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                             backgroundColor: Colors.grey[300],
                             radius: 7,
                           ),
-                          SizedBox(width: 5,),
+                          SizedBox(
+                            width: 5,
+                          ),
                           Text(
                             'راحة',
                             style: TextStyle(
@@ -117,22 +123,30 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   WeekRow(
                     week: 1,
                     days: myWorkoutPreset.weeksDays![0]!,
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   WeekRow(
                     week: 2,
                     days: myWorkoutPreset.weeksDays![1]!,
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   WeekRow(
                     week: 3,
                     days: myWorkoutPreset.weeksDays![2]!,
                   ),
-                  SizedBox(height: 15,),
+                  SizedBox(
+                    height: 15,
+                  ),
                   WeekRow(
                     week: 4,
                     days: myWorkoutPreset.weeksDays![3]!,

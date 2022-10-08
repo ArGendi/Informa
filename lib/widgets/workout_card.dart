@@ -265,8 +265,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
     );
   }
 
-
-  _WorkoutCardState(Workout workout){
+  _WorkoutCardState(Workout workout) {
     //print(workout.sets[0].weight.toString() + " - " + workout.sets[0].number.toString());
     // _workout = workout;
     // _counter = workout.restTime!;
@@ -275,12 +274,10 @@ class _WorkoutCardState extends State<WorkoutCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _workout = widget.workout;
     _counter = widget.workout.restTime!;
     _text = widget.workout.restTime.toString();
-
   }
 
   @override
@@ -325,21 +322,18 @@ class _WorkoutCardState extends State<WorkoutCard> {
                       width: 8,
                     ),
                     InkWell(
-
-                      onTap: (){
-                        //showRestBottomSheet();
-                        setState(() {
-                          _playRest = true;
-                        });
-                        _restSeconds = widget.workout.restTime!;
-                        Timer.periodic(Duration(seconds: 1), (Timer t) => setState((){
-                          _restSeconds = widget.workout.restTime! - t.tick;
-                          if(_restSeconds == 0){
-                            t.cancel();
-                          }
-                        }));
-
-
+                      onTap: () {
+                        showRestBottomSheet();
+                        // setState(() {
+                        //   _playRest = true;
+                        // });
+                        // _restSeconds = widget.workout.restTime!;
+                        // Timer.periodic(Duration(seconds: 1), (Timer t) => setState((){
+                        //   _restSeconds = widget.workout.restTime! - t.tick;
+                        //   if(_restSeconds == 0){
+                        //     t.cancel();
+                        //   }
+                        // }));
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -347,15 +341,35 @@ class _WorkoutCardState extends State<WorkoutCard> {
                           color: primaryColor,
                         ),
                         child: Padding(
-
-                          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8),
-                          child: !_playRest? Row(
-                            children: [
-                              Text(
-                                'راحة',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5.0, horizontal: 8),
+                          child: !_playRest
+                              ? Row(
+                                  children: [
+                                    Text(
+                                      'راحة',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 3,
+                                    ),
+                                    Icon(
+                                      Icons.restore_sharp,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                )
+                              : Text(
+                                  _restSeconds >= 10
+                                      ? _restSeconds.toString()
+                                      : '0' + _restSeconds.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
                                 ),
                         ),
                       ),
@@ -393,77 +407,79 @@ class _WorkoutCardState extends State<WorkoutCard> {
                 ),
               ],
             ),
-
-            SizedBox(height: 20,),
-            Column(
+            SizedBox(
+              height: 20,
+            ),
+            Row(
               children: [
-                for(int i=0; i<widget.workout.numberOfSets!; i+=4)
-                  Column(
+                for (int i = 0; i < widget.workout.numberOfSets!; i++)
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          for(int j=i; j<i+4; j++)
-                            if(j < widget.workout.numberOfSets!)
-                            Row(
-                              children: [
-                                InkWell(
-                                  onTap: (){
-                                    if(j <= _workout.setsDone) {
-                                      setState(() {
-                                        _playRest = false;
-                                      });
-                                      _showGroupDialog(context, j + 1);
-                                    }
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.check_circle,
-                                        color: _workout.setsDone >= j+1 ? Colors.green : Colors.grey[300],
-                                        size: 20,
-                                      ),
-                                      SizedBox(height: 5,),
-                                      Container(
-                                        width: 75,
-                                        height: 70,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(5),
-                                          border: Border.all(
-                                            color: j < _workout.setsDone? Colors.green : primaryColor,
-                                          ),
-                                          color: j < _workout.setsDone? Colors.grey[50] : primaryColor,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(
-                                            child: Text(
-                                              j < _workout.setsDone? '(${_workout.sets[i].weight}) \nx\n (${_workout.sets[i].number})' :
-                                              'مجموعة \n' + '(' +(j+1).toString() + ")",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                color: j < _workout.setsDone? Colors.black : Colors.white,
-                                                fontSize: 14,
-                                                height: j < _workout.setsDone? 1 : 1.7,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-
+                      InkWell(
+                        onTap: () {
+                          if (i <= _workout.setsDone) {
+                            setState(() {
+                              _playRest = false;
+                            });
+                            _showGroupDialog(context, i + 1);
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
+                              color: _workout.setsDone >= i + 1
+                                  ? Colors.green
+                                  : Colors.grey[300],
+                              size: 20,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              width: 75,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: i < _workout.setsDone
+                                      ? Colors.green
+                                      : primaryColor,
+                                ),
+                                color: i < _workout.setsDone
+                                    ? Colors.grey[50]
+                                    : primaryColor,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Text(
+                                    i < _workout.setsDone
+                                        ? '(${_workout.sets[i].weight}) \nx\n (${_workout.sets[i].number})'
+                                        : 'مجموعة \n' +
+                                            '(' +
+                                            (i + 1).toString() +
+                                            ")",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: i < _workout.setsDone
+                                          ? Colors.black
+                                          : Colors.white,
+                                      fontSize: 14,
+                                      height: i < _workout.setsDone ? 1 : 1.7,
+                                    ),
                                   ),
                                 ),
-                                SizedBox(width: 5,),
-                              ],
+                              ),
                             ),
-                        ],
+                          ],
+                        ),
                       ),
-
-                      SizedBox(height: 10,),
-
+                      SizedBox(
+                        width: 5,
+                      ),
                     ],
                   ),
-
               ],
             ),
           ],
