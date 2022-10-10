@@ -77,8 +77,8 @@ class _MoreUserInfoScreenState extends State<MoreUserInfoScreen> {
     });
     var documentSnapshot =
         await FirebaseFirestore.instance.collection('users').get();
-    print(5000 + documentSnapshot.size + 1);
-    activeUser!.appId = 5000 + documentSnapshot.size + 1;
+    print(5100 + documentSnapshot.size + 1);
+    activeUser!.appId = 5100 + documentSnapshot.size + 1;
     if (activeUser.fromSocialMedia) {
       await _firestoreService
           .saveNewAccountWithFullInfo(activeUser)

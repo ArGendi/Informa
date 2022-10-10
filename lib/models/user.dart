@@ -5,7 +5,7 @@ import 'package:informa/models/supplement.dart';
 
 class AppUser {
   String? id;
-  int appId = 5000;
+  int appId = 5100;
   String? injuryDetails;
   String? name;
   String? email;
@@ -135,7 +135,7 @@ class AppUser {
     id = json['id'];
     injuryDetails = json['injuryDetails'];
     premiumEndDate = json['premiumEndDate'];
-    appId = json['appId'] != null ? json['appId'] : 5000;
+    appId = json['appId'] != null ? json['appId'] : 5100;
     email = json['email'];
     name = json['name'];
     phone = json['phone'];
