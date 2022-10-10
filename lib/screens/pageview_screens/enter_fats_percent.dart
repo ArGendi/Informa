@@ -3,6 +3,7 @@ import 'package:informa/providers/active_user_provider.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 
+import '../../app_localization.dart';
 import '../../constants.dart';
 import '../../widgets/custom_button.dart';
 
@@ -63,6 +64,7 @@ class _FatsPercentState extends State<FatsPercent> {
   Widget build(BuildContext context) {
     // var activeUserProvider = Provider.of<ActiveUserProvider>(context);
     var screenSize = MediaQuery.of(context).size;
+    var localization = AppLocalization.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -131,7 +133,14 @@ class _FatsPercentState extends State<FatsPercent> {
                         _fatPercent = value;
                       },
                       validation: (value) {
-                        if (value.isEmpty) return 'أدخل نسبة الدهون';
+                        if (value.isEmpty)
+                          return localization!
+                              .translate('ادخل نسبة الدهون')
+                              .toString();
+                        else if (double.parse(value) > 80)
+                          return localization!
+                              .translate('نسبة الدهون غير صحيحة')
+                              .toString();
                         return null;
                       },
                     ),

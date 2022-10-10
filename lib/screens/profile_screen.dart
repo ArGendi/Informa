@@ -25,7 +25,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _weight = '';
   String _fatsPercent = '';
   bool _isChangeHappen = false;
-  Future checkAndUpdateInFirebase(BuildContext ctx) async {
+
+  String _fatPercent = '';
+  var _fatsFormKey = GlobalKey<FormState>();
+
+  Future<bool> checkAndUpdateInFirebase(BuildContext ctx) async {
     Map<String, dynamic> map = new Map();
     String? age = Provider.of<ActiveUserProvider>(context, listen: false)
         .user!
@@ -56,33 +60,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
     print(_fatsPercent.trim());
 
     if (_age.trim() != '') {
-      map['age'] = int.parse(_age.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false)
-          .setAge(int.parse(_age.trim()));
-      HelpFunction.saveUserAge(int.parse(_age.trim()));
-      _isChangeHappen = true;
+      _isChangeHappen = false;
+      FocusScope.of(context).unfocus();
+      var valid = _fatsFormKey.currentState!.validate();
+      if (valid) {
+        _fatsFormKey.currentState!.save();
+        map['age'] = int.parse(_age.trim());
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setAge(int.parse(_age.trim()));
+        HelpFunction.saveUserAge(int.parse(_age.trim()));
+        _isChangeHappen = true;
+      }
     }
     if (_tall.trim() != '') {
-      map['tall'] = int.parse(_tall.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false)
-          .setTall(int.parse(_tall.trim()));
-      HelpFunction.saveUserTall(int.parse(_tall.trim()));
-      _isChangeHappen = true;
+      _isChangeHappen = false;
+      FocusScope.of(context).unfocus();
+      var valid = _fatsFormKey.currentState!.validate();
+      if (valid) {
+        _fatsFormKey.currentState!.save();
+        map['tall'] = int.parse(_tall.trim());
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setTall(int.parse(_tall.trim()));
+        HelpFunction.saveUserTall(int.parse(_tall.trim()));
+        _isChangeHappen = true;
+      }
     }
     if (_weight.trim() != '') {
-      print(_weight.runtimeType);
-      map['weight'] = int.parse(_weight.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false)
-          .setWeight(int.parse(_weight.trim()));
-      HelpFunction.saveUserWeight(int.parse(_weight.trim()));
-      _isChangeHappen = true;
+      _isChangeHappen = false;
+      FocusScope.of(context).unfocus();
+      var valid = _fatsFormKey.currentState!.validate();
+      if (valid) {
+        _fatsFormKey.currentState!.save();
+        print(_weight.runtimeType);
+        map['weight'] = int.parse(_weight.trim());
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setWeight(int.parse(_weight.trim()));
+        HelpFunction.saveUserWeight(int.parse(_weight.trim()));
+        _isChangeHappen = true;
+      }
     }
     if (_fatsPercent.trim() != '') {
-      map['fatsPercent'] = int.parse(_fatsPercent.trim());
-      Provider.of<ActiveUserProvider>(context, listen: false)
-          .setFatPercent(int.parse(_fatsPercent.trim()));
-      HelpFunction.saveUserFatsPercent(int.parse(_fatsPercent.trim()));
-      _isChangeHappen = true;
+      _isChangeHappen = false;
+      FocusScope.of(context).unfocus();
+      var valid = _fatsFormKey.currentState!.validate();
+      if (valid) {
+        _fatsFormKey.currentState!.save();
+        map['fatsPercent'] = int.parse(_fatsPercent.trim());
+        Provider.of<ActiveUserProvider>(context, listen: false)
+            .setFatPercent(int.parse(_fatsPercent.trim()));
+        HelpFunction.saveUserFatsPercent(int.parse(_fatsPercent.trim()));
+        _isChangeHappen = true;
+      }
     }
     if (_isChangeHappen) {
       var id = FirebaseAuth.instance.currentUser!.uid;
@@ -93,7 +121,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .catchError((e) {
         print(e);
       });
-    }
+      return true;
+    } else
+      return false;
   }
 
   showConfirmationAlertDialog(BuildContext context) async {
@@ -111,9 +141,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           TextButton(
             onPressed: () async {
-              await checkAndUpdateInFirebase(context);
-              Navigator.pop(context);
-              Navigator.pop(context);
+              bool cahnged = await checkAndUpdateInFirebase(context);
+              if (cahnged) {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              } else {
+                Navigator.pop(context);
+              }
             },
             child: const Text(
               'تأكيد',
@@ -372,12 +406,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         SizedBox(
                                           height: 15,
                                         ),
-                                        ProfileScreenTextField(
-                                          label: 'الوزن',
-                                          onChanged: (value) {
-                                            _weight = value;
-                                          },
-                                          initialValue: _weight.toString(),
+                                        Form(
+                                          key: _fatsFormKey,
+                                          child: ProfileScreenTextField(
+                                            validation: (value) {
+                                              if (value.isEmpty) {
+                                                return 'من فضلك أدخل وزنك الحالي';
+                                              } else if (double.parse(value) >
+                                                  300) {
+                                                return 'الوزن الذي أدخلته غير صحيح';
+                                              } else if (double.parse(value) <
+                                                  20) {
+                                                return 'الوزن الذي أدخلته غير صحيح';
+                                              } else
+                                                return null;
+                                            },
+                                            label: 'الوزن',
+                                            onChanged: (value) {
+                                              _weight = value;
+                                            },
+                                            initialValue: _weight.toString(),
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 15,
@@ -468,13 +517,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         SizedBox(
                                           height: 15,
                                         ),
-                                        ProfileScreenTextField(
-                                          label: 'الطول',
-                                          onChanged: (value) {
-                                            print(value);
-                                            _tall = value;
-                                          },
-                                          initialValue: _tall.toString(),
+                                        Form(
+                                          key: _fatsFormKey,
+                                          child: ProfileScreenTextField(
+                                            validation: (value) {
+                                              if (value.isEmpty) {
+                                                return 'من فضلك أدخل طولك';
+                                              } else if (int.parse(value) <
+                                                      100 ||
+                                                  int.parse(value) > 250) {
+                                                return 'من فضلك أدخل طولك بشكل صحيح';
+                                              } else
+                                                return null;
+                                            },
+                                            label: 'الطول',
+                                            onChanged: (value) {
+                                              print(value);
+                                              _tall = value;
+                                            },
+                                            initialValue: _tall.toString(),
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 15,
@@ -566,13 +628,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         SizedBox(
                                           height: 15,
                                         ),
-                                        ProfileScreenTextField(
-                                          label: 'نسبة الدهون',
-                                          onChanged: (value) {
-                                            print(value);
-                                            _fatsPercent = value;
-                                          },
-                                          initialValue: _fatsPercent.toString(),
+                                        Form(
+                                          key: _fatsFormKey,
+                                          child: ProfileScreenTextField(
+                                            validation: (value) {
+                                              if (value.isEmpty)
+                                                return 'ادخل نسبة الدهون';
+                                              else if (double.parse(value) > 80)
+                                                return 'نسبة الدهون غير صحيحة';
+                                              else
+                                                return null;
+                                            },
+                                            label: 'نسبة الدهون',
+                                            onChanged: (value) {
+                                              print(value);
+                                              _fatsPercent = value;
+                                            },
+                                            initialValue:
+                                                _fatsPercent.toString(),
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 15,
@@ -664,13 +738,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         SizedBox(
                                           height: 15,
                                         ),
-                                        ProfileScreenTextField(
-                                          label: 'العمر',
-                                          onChanged: (value) {
-                                            print(value);
-                                            _age = value;
-                                          },
-                                          initialValue: _age.toString(),
+                                        Form(
+                                          key: _fatsFormKey,
+                                          child: ProfileScreenTextField(
+                                            validation: (value) {
+                                              if (value.isEmpty) {
+                                                return 'الرجاء إدخال العمر';
+                                              } else if (int.parse(value) < 1) {
+                                                return 'الرجاء إدخال عمر صحيح';
+                                              } else if (int.parse(value) >
+                                                  100) {
+                                                return 'الرجاء إدخال عمر صحيح';
+                                              } else
+                                                return null;
+                                            },
+                                            label: 'العمر',
+                                            onChanged: (value) {
+                                              print(value);
+                                              _age = value;
+                                            },
+                                            initialValue: _age.toString(),
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 15,
@@ -821,14 +909,19 @@ class ProfileScreenTextField extends StatelessWidget {
     this.onChanged,
     this.initialValue,
     required this.label,
+    required this.validation,
   }) : super(key: key);
   final void Function(String)? onChanged;
   final String? initialValue;
   final String label;
+  final Function(String value) validation;
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       autofocus: true,
+      validator: (value) {
+        return validation(value!);
+      },
       controller: TextEditingController(text: initialValue),
       decoration: InputDecoration(
         label: Text(label),

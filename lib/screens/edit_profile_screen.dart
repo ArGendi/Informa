@@ -338,6 +338,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               return localization
                                   .translate('ادخل نسبة الدهون')
                                   .toString();
+                            else if (double.parse(value) > 80)
+                              return localization
+                                  .translate('نسبة الدهون غير صحيحة')
+                                  .toString();
                             return null;
                           },
                           anotherFilledColor: true,
