@@ -5,6 +5,7 @@ import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/workout.dart';
 import 'package:informa/models/workout_set.dart';
+import 'package:informa/screens/single_workout_screen.dart';
 import 'package:informa/widgets/countdown_card.dart';
 import 'package:informa/widgets/custom_textfield.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -304,16 +305,29 @@ class _WorkoutCardState extends State<WorkoutCard> {
                 ),
                 Row(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: primaryColor,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Icon(
-                          Icons.play_arrow,
-                          color: Colors.white,
+                    InkWell(
+                      borderRadius: BorderRadius.circular(5),
+                      onTap: (){
+                        print('name: ' + widget.workout.exercise!.name.toString());
+                        print('target mu: ' + widget.workout.exercise!.targetMuscles.toString());
+
+                        if(widget.workout.exercise != null)
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => SingleWorkoutScreen(exercise: widget.workout.exercise!)),
+                          );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: primaryColor,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Icon(
+                            Icons.play_arrow,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -408,7 +422,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                               children: [
                                 InkWell(
                                   onTap: (){
-                                    if(j <= _workout.setsDone) {
+                                    if(_workout.sets.isNotEmpty) {
                                       setState(() {
                                         _playRest = false;
                                       });
@@ -419,7 +433,7 @@ class _WorkoutCardState extends State<WorkoutCard> {
                                     children: [
                                       Icon(
                                         Icons.check_circle,
-                                        color: _workout.setsDone >= j+1 ? Colors.green : Colors.grey[300],
+                                        color: _workout.sets.isNotEmpty ? Colors.green : Colors.grey[300],
                                         size: 20,
                                       ),
                                       SizedBox(height: 5,),
@@ -429,21 +443,21 @@ class _WorkoutCardState extends State<WorkoutCard> {
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(5),
                                           border: Border.all(
-                                            color: j < _workout.setsDone? Colors.green : primaryColor,
+                                            color: _workout.sets.isNotEmpty? Colors.green : primaryColor,
                                           ),
-                                          color: j < _workout.setsDone? Colors.grey[50] : primaryColor,
+                                          color: _workout.sets.isNotEmpty? Colors.grey[50] : primaryColor,
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Center(
                                             child: Text(
-                                              j < _workout.setsDone? '(${_workout.sets[i].weight}) \nx\n (${_workout.sets[i].number})' :
+                                              _workout.sets.isNotEmpty? '(${_workout.sets[j].weight}) \nx\n (${_workout.sets[j].number})' :
                                               'مجموعة \n' + '(' +(j+1).toString() + ")",
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                color: j < _workout.setsDone? Colors.black : Colors.white,
+                                                color: _workout.sets.isNotEmpty? Colors.black : Colors.white,
                                                 fontSize: 14,
-                                                height: j < _workout.setsDone? 1 : 1.7,
+                                                height: _workout.sets.isNotEmpty? 1 : 1.7,
                                               ),
                                             ),
                                           ),

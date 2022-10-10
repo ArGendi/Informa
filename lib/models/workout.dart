@@ -21,6 +21,21 @@ class Workout{
   Workout({this.id, this.category, this.exercise, this.alternative, this.techniques,
     this.fromReps, this.toReps,this.numberOfSets, this.restTime, this.setsDone = 0,});
 
+  copyObject(Workout workout){
+    id = workout.id;
+    category = workout.category;
+    exercise = workout.exercise;
+    alternative = workout.alternative;
+    techniques = workout.techniques;
+    fromReps = workout.fromReps;
+    toReps = workout.toReps;
+    numberOfSets = workout.numberOfSets;
+    restTime = workout.restTime;
+    setsDone = workout.setsDone;
+    sets = workout.sets;
+    superWorkout = workout.superWorkout;
+  }
+
   Map<String, dynamic> toJson(){
     return {
       'category': category,

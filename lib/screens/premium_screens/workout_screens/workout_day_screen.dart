@@ -7,12 +7,15 @@ import 'package:informa/models/workout_day.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/workout_card.dart';
+import 'package:provider/provider.dart';
+
+import '../../../providers/active_user_provider.dart';
 
 class WorkOutDayScreen extends StatefulWidget {
   final int day;
   final int week;
-  final WorkoutDay workoutDay;
-  const WorkOutDayScreen({Key? key, required this.day, required this.week, required this.workoutDay}) : super(key: key);
+  //final WorkoutDay workoutDay;
+  const WorkOutDayScreen({Key? key, required this.day, required this.week,}) : super(key: key);
 
   @override
   _WorkOutDayScreenState createState() => _WorkOutDayScreenState();
@@ -70,14 +73,16 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
 
   onDone(BuildContext context) async{
     String errorMsg = '';
-    for(int i=0; i<widget.workoutDay.warmUpSets!.length; i++){
-      print('warmUpSets done: ' + widget.workoutDay.warmUpSets![i].setsDone.toString());
-      print('warmUpSets numberOfSets: ' + widget.workoutDay.warmUpSets![i].numberOfSets.toString());
-      if(widget.workoutDay.warmUpSets![i].setsDone < widget.workoutDay.warmUpSets![i].numberOfSets!)
+    var myWorkoutPreset = Provider.of<ActiveUserProvider>(context, listen: false).workoutPreset;
+    WorkoutDay workoutDay = myWorkoutPreset!.weeksDays![widget.week-1]![widget.day-1];
+    for(int i=0; i<workoutDay.warmUpSets!.length; i++){
+      print('warmUpSets done: ' + workoutDay.warmUpSets![i].setsDone.toString());
+      print('warmUpSets numberOfSets: ' + workoutDay.warmUpSets![i].numberOfSets.toString());
+      if(workoutDay.warmUpSets![i].setsDone < workoutDay.warmUpSets![i].numberOfSets!)
         errorMsg = 'لم تنتهي من المجموعات';
     }
-    for(int i=0; i<widget.workoutDay.exercises!.length; i++){
-      if(widget.workoutDay.exercises![i].setsDone < widget.workoutDay.exercises![i].numberOfSets!)
+    for(int i=0; i<workoutDay.exercises!.length; i++){
+      if(workoutDay.exercises![i].setsDone < workoutDay.exercises![i].numberOfSets!)
         errorMsg = 'لم تنتهي من المجموعات';
     }
     if(errorMsg.isEmpty){
@@ -86,9 +91,11 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
         id,
         widget.week,
         widget.day,
-        widget.workoutDay,
+        workoutDay,
       );
-      setState(() {_dayDone = true;});
+      Provider.of<ActiveUserProvider>(context, listen: false)
+          .setWorkoutDayIsDone(widget.week-1, widget.day-1, true);
+      //setState(() {_dayDone = true;});
       _showDoneDialog();
       _animationController.forward();
     }
@@ -112,7 +119,8 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
   void initState() {
     // TODO: implement initState
     super.initState();
-    _dayDone = widget.workoutDay.isDone != null? widget.workoutDay.isDone! : false;
+    if(!this.mounted) return;
+    //_dayDone = widget.workoutDay.isDone != null? widget.workoutDay.isDone! : false;
     _confettiController = ConfettiController(duration: Duration(seconds: 2));
     _animationController = AnimationController(
       duration: Duration(milliseconds: 1500),
@@ -136,6 +144,9 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    var myWorkoutDay = Provider.of<ActiveUserProvider>(context)
+        .workoutPreset!.weeksDays![widget.week-1]![widget.day-1];
+
     return Scaffold(
       appBar: AppBar(
         title: Text('يوم ' + widget.day.toString() + ', اسبوع ' + widget.week.toString()),
@@ -155,7 +166,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
             shrinkWrap: true,
             children: [
               Text(
-                widget.workoutDay.name!,
+                myWorkoutDay.name!,
                 style: TextStyle(
                   fontSize: 24,
                   fontFamily: boldFont,
@@ -201,11 +212,11 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
                 ),
               ),
               SizedBox(height: 5,),
-              for(int i=0; i<widget.workoutDay.warmUpSets!.length; i++)
+              for(int i=0; i<myWorkoutDay.warmUpSets!.length; i++)
                 Column(
                   children: [
                     WorkoutCard(
-                      workout: widget.workoutDay.warmUpSets![i],
+                      workout: myWorkoutDay.warmUpSets![i],
                     ),
                     SizedBox(height: 5,),
                   ],
@@ -219,11 +230,11 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
                 ),
               ),
               SizedBox(height: 5,),
-              for(int i=0; i<widget.workoutDay.exercises!.length; i++)
+              for(int i=0; i<myWorkoutDay.exercises!.length; i++)
                 Column(
                   children: [
                     WorkoutCard(
-                      workout: widget.workoutDay.exercises![i],
+                      workout: myWorkoutDay.exercises![i],
                     ),
                     SizedBox(height: 5,),
                   ],
@@ -279,12 +290,12 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
               ),
               SizedBox(height: 20,),
               CustomButton(
-                text: _dayDone ? 'عاش يا وحش' : 'تم',
-                onClick: _dayDone ? (){} : (){
+                text: myWorkoutDay.isDone? 'عاش يا وحش' : 'تم',
+                onClick: myWorkoutDay.isDone? (){} : (){
                   onDone(context);
                 },
                 iconExist: false,
-                bgColor: _dayDone? Colors.grey.shade400 : primaryColor,
+                bgColor: myWorkoutDay.isDone? Colors.grey.shade400 : primaryColor,
               ),
             ],
           ),

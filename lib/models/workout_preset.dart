@@ -114,15 +114,16 @@ class WorkoutPreset{
         programDays!.add(WorkoutDay());
       tempProgramDays =
           convertListOfMapsToProgramDays(json['programDays'], allWorkouts, allCardio);
-      weeksDays = [[],[],[],[]];
+      weeksDays = [];
       for(int i=0; i<4; i++){
-        //weeksDays!.add([]);
+        weeksDays!.add([]);
         for(int j=0; j<7; j++){
-          weeksDays![i]!.add(WorkoutDay());
+          weeksDays![i]!.add(new WorkoutDay());
         }
         for(var day in tempProgramDays) {
           day.status = 2;
-          weeksDays![i]![day.day! - 1] = day.copyObject();
+          day.programId = i.toString() + (day.day! - 1).toString();
+          weeksDays![i]![day.day! - 1].copyObject(day);
         }
       }
     }

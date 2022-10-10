@@ -453,7 +453,7 @@ class FirestoreService{
     workoutDay.isDone = true;
     await FirebaseFirestore.instance.collection('workoutHistory')
         .doc(id)
-        .set({
+        .update({
       'week$week,day$day': workoutDay.toWorkoutHistoryJson(),
     })
         .catchError((e){

@@ -415,7 +415,7 @@ class ActiveUserProvider extends ChangeNotifier{
       print(_workoutPreset!.weeksDays![1]![day-1].status);
 
       _workoutPreset!.weeksDays![week-1]![day-1].isDone = value['isDone'];
-      if(_workoutPreset!.weeksDays![week-1]![day-1].isDone!)
+      if(_workoutPreset!.weeksDays![week-1]![day-1].isDone)
         _workoutPreset!.weeksDays![week-1]![day-1].status = 3;
       else _workoutPreset!.weeksDays![week-1]![day-1].status = 2;
 
@@ -424,59 +424,79 @@ class ActiveUserProvider extends ChangeNotifier{
       print('Thank you for tracing --------------');
 
       print('status: ' + _workoutPreset!.weeksDays![week-1]![day-1].status.toString());
+      print('sets before: ' + _workoutPreset!.weeksDays![week]![day-1].warmUpSets![0].sets.toString());
 
       for(var warmup in value['warmUps']){
-        for(var workout in _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets!){
-          if(workout.id == warmup['workoutId']){
+        for(int i=0; i< _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets!.length; i++){
+          if(_workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![i].id == warmup['workoutId']){
             for(var set in warmup['sets']){
-              workout.sets.add(new WorkoutSet(
+              _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![i].sets.add(new WorkoutSet(
                 weight: set['weight'],
                 number: set['number'],
               ));
             }
-            print('workout sets number >> ' + workout.sets[0].number.toString());
-            workout.setsDone = workout.sets.length;
+            print('sets for week 1: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets[0].weight.toString());
+            print('sets for week 2: ' + _workoutPreset!.weeksDays![week]![day-1].warmUpSets![0].sets[0].weight.toString());
+          // print('workout sets -->> ' + workout.sets.toString());
+            //print('workout sets number >> ' + workout.sets[1].weight.toString());
+           // workout.setsDone = workout.sets.length;
             break;
           }
         }
       }
+      print('sets after: ' + _workoutPreset!.weeksDays![week]![day-1].warmUpSets![0].sets.toString());
 
-      print('warm ups: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets!.toString());
-      print('sets: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets.toString());
-      print('number: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets[0].number.toString());
-      print('weight: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets[0].weight.toString());
+
+      //print('warm ups: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets!.toString());
+      print('sets for week 1: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets[0].weight.toString());
+      print('sets for week 2: ' + _workoutPreset!.weeksDays![week]![day-1].warmUpSets![0].sets[0].weight.toString());
+      //print('weight: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets[0].weight.toString());
+
+
+      _workoutPreset!.weeksDays![week+1]![day-1].warmUpSets![0].sets[0].weight = 33;
+
+      print('sets for week 1: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets[0].weight.toString());
+      print('sets for week 2: ' + _workoutPreset!.weeksDays![week]![day-1].warmUpSets![0].sets[0].weight.toString());
+
 
       for(var exercise in value['exercises']){
-        for(var workout in _workoutPreset!.weeksDays![week-1]![day-1].exercises!){
-          if(workout.id == exercise['workoutId']){
+        for(int i=0; i<_workoutPreset!.weeksDays![week-1]![day-1].exercises!.length; i++){
+          if(_workoutPreset!.weeksDays![week-1]![day-1].exercises![i].id == exercise['workoutId']){
             for(var set in exercise['sets']){
-              workout.sets.add(new WorkoutSet(
+              _workoutPreset!.weeksDays![week-1]![day-1].exercises![i].sets.add(new WorkoutSet(
                 weight: set['weight'],
                 number: set['number'],
               ));
             }
-            workout.setsDone = workout.sets.length;
+            _workoutPreset!.weeksDays![week-1]![day-1].exercises![i].setsDone =
+                _workoutPreset!.weeksDays![week-1]![day-1].exercises![i].sets.length;
             break;
           }
         }
       }
       if(value['cardio'] != null)
         for(var cardio in value['cardio']){
-          for(var workout in _workoutPreset!.weeksDays![week-1]![day-1].cardio!){
-            if(workout.id == cardio['workoutId']){
+          for(int i=0; i < _workoutPreset!.weeksDays![week-1]![day-1].cardio!.length; i++){
+            if(_workoutPreset!.weeksDays![week-1]![day-1].cardio![i].id == cardio['workoutId']){
               for(var set in cardio['sets']){
-                workout.sets.add(new WorkoutSet(
+                _workoutPreset!.weeksDays![week-1]![day-1].cardio![i].sets.add(new WorkoutSet(
                   weight: set['weight'],
                   number: set['number'],
                 ));
               }
-              workout.setsDone = workout.sets.length;
+              _workoutPreset!.weeksDays![week-1]![day-1].cardio![i].setsDone =
+                  _workoutPreset!.weeksDays![week-1]![day-1].cardio![i].sets.length;
               break;
             }
           }
         }
     });
     print("all weeks: " + workoutPreset!.weeksDays.toString());
+    notifyListeners();
+  }
+
+  setWorkoutDayIsDone(int week, int day, bool value){
+    _workoutPreset!.weeksDays![week]![day].isDone = value;
     notifyListeners();
   }
 

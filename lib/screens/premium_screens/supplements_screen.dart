@@ -83,6 +83,7 @@ class _SupplementsScreenState extends State<SupplementsScreen> {
                     SizedBox(height: 10,),
                   ],
                 ),
+
             ],
           ),
         ),
