@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:informa/providers/active_user_provider.dart';
@@ -36,19 +37,28 @@ class _PremiumFatPercentState extends State<PremiumFatPercent>
   int _selected = 0;
   File? _image;
   bool _isLoading = false;
-
+  ImageService imageService = new ImageService();
   pickImageAndGoNext(ImageSource source) async {
-    ImageService imageService = new ImageService();
     _image = await imageService.pickImage(source);
+    FirebaseStorage _storage = FirebaseStorage.instance;
     if (_image != null) {
       String id = FirebaseAuth.instance.currentUser!.uid;
       setState(() {
         _isLoading = true;
       });
-      bool uploaded =
-          await imageService.uploadImageToFirebase(_image!, id, "inBody");
-      setState(() {
-        _isLoading = false;
+      bool uploaded = false;
+      Reference ref = _storage.ref().child("images/FatPercentage/$id/inBody");
+      var uploadTask = ref.putFile(_image!);
+      String imageUrl = await ref.getDownloadURL();
+      Provider.of<ActiveUserProvider>(context, listen: false).setFatPhoto(
+        imageUrl,
+      );
+      print(imageUrl);
+      await uploadTask.whenComplete(() {
+        setState(() {
+          _isLoading = false;
+          uploaded = true;
+        });
       });
       if (uploaded) {
         Provider.of<ActiveUserProvider>(context, listen: false).setInBody(true);
@@ -108,6 +118,7 @@ class _PremiumFatPercentState extends State<PremiumFatPercent>
   @override
   Widget build(BuildContext context) {
     var activeUserProvider = Provider.of<ActiveUserProvider>(context);
+    print(imageService.getImage(activeUserProvider.user!.id ?? ""));
     var screenSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

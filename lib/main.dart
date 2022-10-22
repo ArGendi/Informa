@@ -49,7 +49,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   String? initScreen = await HelpFunction.getInitScreen();
-  runApp(MultiProvider(
+  runApp(
+    MultiProvider(
       providers: [
         ChangeNotifierProvider<GoogleSignInProvider>(
           create: (context) => GoogleSignInProvider(),
@@ -87,7 +88,9 @@ void main() async {
       ],
       child: MyApp(
         initScreen: initScreen,
-      )));
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

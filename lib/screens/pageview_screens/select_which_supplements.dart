@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:informa/providers/active_user_provider.dart';
@@ -518,19 +519,30 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                               children: [
                                 TextButton(
                                   onPressed: () async {
+                                    FirebaseStorage _storage =
+                                        FirebaseStorage.instance;
                                     if (_image != null) {
                                       String id = FirebaseAuth
                                           .instance.currentUser!.uid;
                                       String basename =
                                           _image!.path.split('/').last;
-                                      bool uploaded = await imageService
-                                          .uploadImageToFirebase(
-                                        _image!,
-                                        id,
-                                        basename,
-                                        isSupplment: true,
-                                      );
+                                      bool uploaded = false;
+                                      Reference ref = _storage.ref().child(
+                                          "images/Supplments/$id/$basename");
+                                      var uploadTask = ref.putFile(_image!);
+                                      String imageUrl =
+                                          await ref.getDownloadURL();
+                                      //TODo: add multiple photos to the supplements
+                                      // Provider.of<ActiveUserProvider>(context,
+                                      //         listen: false)
+                                      //     .setSupplementsPhotos(
+                                      //   imageUrl,
+                                      // );
+                                      await uploadTask.whenComplete(() {
+                                        uploaded = true;
+                                      });
                                       if (uploaded) {
+                                        // add the path image to user data
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
                                                 content: Text(
@@ -603,7 +615,6 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                     setState(() {
                       _isLoading = true;
                     });
-
                     await FirebaseFirestore.instance
                         .collection('users')
                         .doc(id)
@@ -612,7 +623,6 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                     }).catchError((e) {
                       print(e);
                     });
-
                     setState(() {
                       _isLoading = false;
                     });
@@ -629,3 +639,5 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
     );
   }
 }
+
+//TODO: what about giving the user his real id when making it preimum instead of numbers to fast access to the files || make a binary search to get the id fastly

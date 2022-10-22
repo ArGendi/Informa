@@ -26,18 +26,35 @@ class Meal {
   int? sectionIndex;
   int workEvery = 0;
 
-  Meal({this.id, this.name, this.category, this.image, this.description,
-        this.fats, this.protein, this.calories, this.components, this.carb,
-        this.video, this.isSelected = true, this.engName, this.serving = 0,
-        this.unit, this.otherId, this.sections, this.amount, this.sectionIndex,
-        this.salads, this.workEvery = 0});
+  Meal(
+      {this.id,
+      this.name,
+      this.category,
+      this.image,
+      this.description,
+      this.fats,
+      this.protein,
+      this.calories,
+      this.components,
+      this.carb,
+      this.video,
+      this.isSelected = true,
+      this.engName,
+      this.serving = 0,
+      this.unit,
+      this.otherId,
+      this.sections,
+      this.amount,
+      this.sectionIndex,
+      this.salads,
+      this.workEvery = 0});
 
-  List<Map<String, dynamic>>? convertSectionsToMap(){
-    if(sections == null) return null;
+  List<Map<String, dynamic>>? convertSectionsToMap() {
+    if (sections == null) return null;
     List<Map<String, dynamic>> listOfMaps = [];
-    for(var section in sections!){
+    for (var section in sections!) {
       Map<String, dynamic> mealsMap = Map();
-      for(var meal in section.meals!){
+      for (var meal in section.meals!) {
         mealsMap[meal.id!] = meal.amount!;
       }
       listOfMaps.add({
@@ -49,9 +66,9 @@ class Meal {
     return listOfMaps;
   }
 
-  List<MealSection> convertMapToSections(List listOfMaps){
+  List<MealSection> convertMapToSections(List listOfMaps) {
     List<MealSection> sections = [];
-    for(var map in listOfMaps){
+    for (var map in listOfMaps) {
       MealSection mealSection = new MealSection(
         name: map['name'],
         engName: map['engName'],
@@ -60,12 +77,12 @@ class Meal {
       map['meals'].forEach((key, value) {
         int index = int.parse(key);
         late Meal meal;
-        if(index < 100)
-          meal = MealsList.breakfast[index-1].copyObject();
-        else if(index < 200)
-          meal = MealsList.lunch[index-100-1].copyObject();
-        else if(index >= 200)
-          meal = MealsList.dinner[index-200-1].copyObject();
+        if (index < 100)
+          meal = MealsList.breakfast[index - 1].copyObject();
+        else if (index < 200)
+          meal = MealsList.lunch[index - 100 - 1].copyObject();
+        else if (index >= 200)
+          meal = MealsList.dinner[index - 200 - 1].copyObject();
         meal.amount = value;
         meals.add(meal);
       });
@@ -75,27 +92,27 @@ class Meal {
     return sections;
   }
 
-  List<String>? convertSaladsToListOfStrings(){
-    if(salads == null) return null;
+  List<String>? convertSaladsToListOfStrings() {
+    if (salads == null) return null;
     List<String> ids = [];
-    for(var salad in salads!){
+    for (var salad in salads!) {
       ids.add(salad.id!);
     }
     return ids;
   }
 
-  convertListOfStringsToSalads(List? jsonSalads){
-    if(jsonSalads == null){
+  convertListOfStringsToSalads(List? jsonSalads) {
+    if (jsonSalads == null) {
       return null;
     }
     List<Meal> temp = [];
-    for(var id in jsonSalads){
+    for (var id in jsonSalads) {
       temp.add(MealsList.salads[int.parse(id) - 1]);
     }
     return temp;
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
       'engName': engName,
@@ -111,21 +128,24 @@ class Meal {
     };
   }
 
-  fromJson(Map<String, dynamic> json){
+  fromJson(Map<String, dynamic> json) {
     name = json['name'];
     engName = json['engName'];
     description = json['description'];
     image = json['image'];
-    components = json['components'] != null ? json['components'].cast<String>() : null;
-    calories = json['calories'];
+    components =
+        json['components'] != null ? json['components'].cast<String>() : null;
+    calories = double.parse(json['calories'].toString());
     protein = json['protein'];
     carb = json['carb'];
     fats = json['fats'];
-    sections = json['sections'] != null ? convertMapToSections(json['sections']) : null;
+    sections = json['sections'] != null
+        ? convertMapToSections(json['sections'])
+        : null;
     salads = convertListOfStringsToSalads(json['salads']);
   }
 
-  Meal copyObject(){
+  Meal copyObject() {
     return new Meal(
       id: id,
       otherId: otherId,
@@ -149,5 +169,4 @@ class Meal {
       salads: salads,
     );
   }
-
 }

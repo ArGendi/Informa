@@ -8,6 +8,7 @@ import 'package:informa/screens/premium_screens/full_meals_screen.dart';
 import 'package:informa/screens/premium_screens/nutrition_concepts_screen.dart';
 import 'package:informa/screens/premium_screens/snacks_screen.dart';
 import 'package:informa/screens/premium_screens/supplements_screen.dart';
+import 'package:informa/services/image_service.dart';
 import 'package:informa/widgets/custom_button.dart';
 import 'package:informa/widgets/macro_banner.dart';
 import 'package:informa/widgets/main_meal_card.dart';
@@ -53,11 +54,13 @@ class _NutritionScreenState extends State<NutritionScreen> {
     return false;
   }
 
+  ImageService imageService = new ImageService();
   @override
   Widget build(BuildContext context) {
     var premiumNutritionProvider =
         Provider.of<PremiumNutritionProvider>(context);
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
+    imageService.getImage(activeUser!.id!);
     return Scaffold(
       appBar: AppBar(
         title: Text('الدايت'),
@@ -69,7 +72,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
             image: DecorationImage(
                 fit: BoxFit.cover,
                 image: AssetImage('assets/images/appBg.png'))),
-        child: activeUser!.adminConfirm
+        child: activeUser.adminConfirm
             ? Column(
                 children: [
                   Container(
@@ -415,7 +418,32 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   ),
                 ],
               )
-            : Center(
+            :
+            // Column(
+            //     children: [
+            //       Image.network(
+            //           "https://firebasestorage.googleapis.com/v0/b/informa-321ab.appspot.com/o/images%2FSupplments%2FzMDNV4JKfAVmZp4aM4Yqbl6nZbi2%2Fscaled_7f673b83-6b94-45b7-9f4d-b9ca31f4427b7008638155055953379.jpg?alt=media&token=e853f31e-fe7e-4088-ac5c-4fba14782969"),
+            //       TextButton(
+            //         onPressed: () async {
+            //           var image =
+            //               await imageService.pickImage(ImageSource.camera);
+            //           String id = FirebaseAuth.instance.currentUser!.uid;
+            //           String basename = image!.path.split('/').last;
+            //           // upload image to firebase storage and get the url
+            //           // then update the user profile image url in the database
+            //           FirebaseStorage storage = FirebaseStorage.instance;
+            //           Reference ref = storage
+            //               .ref()
+            //               .child("images/Supplments/$id/$basename");
+            //           await ref.putFile(File(image.path));
+            //           String imageUrl = await ref.getDownloadURL();
+            //           print(imageUrl);
+            //         },
+            //         child: Text('upload'),
+            //       ),
+            //     ],
+            //   ),
+            Center(
                 child: Text(
                   'في انتظار وجباتك 🍔🕐',
                   style: TextStyle(

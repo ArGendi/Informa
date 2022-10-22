@@ -23,6 +23,18 @@ class ImageService {
     }
   }
 
+// get image form firebase by user id
+  Future<String?> getImage(String userId) async {
+    print(userId);
+    String url = await _storage
+        .ref()
+        .child('Images/FatPercentage/$userId/inBody.jpeg')
+        .getDownloadURL();
+
+    print(url);
+    return url;
+  }
+
   Future<List<XFile>?> pickMultiImages() async {
     try {
       final List<XFile>? images = await _picker.pickMultiImage(
@@ -36,17 +48,34 @@ class ImageService {
     }
   }
 
-  Future<bool> uploadImageToFirebase(File image, String id, String name,
-      {bool? isSupplment, BuildContext? ctx}) async {
+  Future<bool> uploadImageToFirebase(
+    File image,
+    String id,
+    String name, {
+    bool? isSupplment,
+    BuildContext? ctx,
+    bool? isPhotoFatPercentage,
+  }) async {
     bool uploaded = false;
     if (isSupplment == true) {
-      Reference ref = _storage.ref().child("Images/Supplments/$id/$name");
+      Reference ref = _storage.ref().child("images/Supplments/$id/$name");
+      var uploadTask = ref.putFile(image);
+      String imageUrl = await ref.getDownloadURL();
+      // Provider.of<ActiveUserProvider>(context, listen: false)
+      //     .setSupplementsPhotos(
+      //   imageUrl,
+      // );
+      await uploadTask.whenComplete(() {
+        uploaded = true;
+      });
+    } else if (isPhotoFatPercentage == true) {
+      Reference ref = _storage.ref().child("images/FatPercentage/$id/$name");
       var uploadTask = ref.putFile(image);
       await uploadTask.whenComplete(() {
         uploaded = true;
       });
     } else {
-      Reference ref = _storage.ref().child("Images/$id/$name");
+      Reference ref = _storage.ref().child("images/$id/$name");
       var uploadTask = ref.putFile(image);
       await uploadTask.whenComplete(() {
         uploaded = true;

@@ -3,7 +3,6 @@ import 'package:informa/models/user.dart';
 import 'package:informa/models/workout_preset.dart';
 import 'package:informa/models/workout_set.dart';
 import 'package:informa/services/firestore_service.dart';
-import 'package:informa/services/workout_services.dart';
 
 class ActiveUserProvider extends ChangeNotifier {
   AppUser? _user;
@@ -40,6 +39,16 @@ class ActiveUserProvider extends ChangeNotifier {
 
   setName(String name) {
     _user!.name = name;
+    notifyListeners();
+  }
+
+  setFatPhoto(String fatPhoto) {
+    _user!.fatPhoto = fatPhoto;
+    notifyListeners();
+  }
+
+  setSupplementsPhotos(List<String> supplementsPhotos) {
+    _user!.supplementsPhotos = supplementsPhotos;
     notifyListeners();
   }
 
@@ -402,57 +411,72 @@ class ActiveUserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future setUserWorkoutHistoryToWorkoutPreset(String id) async{
+  Future setUserWorkoutHistoryToWorkoutPreset(String id) async {
     print('id in workout preset history function: ' + id);
     var data = await _firestoreService.getWorkoutHistoryById(id);
-    if(data == null) return null;
+    if (data == null) return null;
     data.forEach((key, value) {
       List<String> weekAndDay = key.split(',');
       int week = int.parse(weekAndDay[0].substring(weekAndDay[0].length - 1));
-      int day = int.parse(weekAndDay[1].substring(weekAndDay[1].length -1));
+      int day = int.parse(weekAndDay[1].substring(weekAndDay[1].length - 1));
 
       print('week: ' + week.toString() + ' - day: ' + day.toString());
 
       print('Trace -----------------------');
-      print(_workoutPreset!.weeksDays![week-1]![day-1].status);
-      print(_workoutPreset!.weeksDays![1]![day-1].status);
+      print(_workoutPreset!.weeksDays![week - 1]![day - 1].status);
+      print(_workoutPreset!.weeksDays![1]![day - 1].status);
 
-      _workoutPreset!.weeksDays![week-1]![day-1].isDone = value['isDone'];
-      if(_workoutPreset!.weeksDays![week-1]![day-1].isDone!)
-        _workoutPreset!.weeksDays![week-1]![day-1].status = 3;
-      else _workoutPreset!.weeksDays![week-1]![day-1].status = 2;
+      _workoutPreset!.weeksDays![week - 1]![day - 1].isDone = value['isDone'];
+      if (_workoutPreset!.weeksDays![week - 1]![day - 1].isDone!)
+        _workoutPreset!.weeksDays![week - 1]![day - 1].status = 3;
+      else
+        _workoutPreset!.weeksDays![week - 1]![day - 1].status = 2;
 
-      print(_workoutPreset!.weeksDays![week-1]![day-1].status);
-      print(_workoutPreset!.weeksDays![1]![day-1].status);
+      print(_workoutPreset!.weeksDays![week - 1]![day - 1].status);
+      print(_workoutPreset!.weeksDays![1]![day - 1].status);
       print('Thank you for tracing --------------');
 
-      print('status: ' + _workoutPreset!.weeksDays![week-1]![day-1].status.toString());
+      print('status: ' +
+          _workoutPreset!.weeksDays![week - 1]![day - 1].status.toString());
 
-      for(var warmup in value['warmUps']){
-        for(var workout in _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets!){
-          if(workout.id == warmup['workoutId']){
-            for(var set in warmup['sets']){
+      for (var warmup in value['warmUps']) {
+        for (var workout
+            in _workoutPreset!.weeksDays![week - 1]![day - 1].warmUpSets!) {
+          if (workout.id == warmup['workoutId']) {
+            for (var set in warmup['sets']) {
               workout.sets.add(new WorkoutSet(
                 weight: set['weight'],
                 number: set['number'],
               ));
             }
-            print('workout sets number >> ' + workout.sets[0].number.toString());
+            print(
+                'workout sets number >> ' + workout.sets[0].number.toString());
             workout.setsDone = workout.sets.length;
             break;
           }
         }
       }
 
-      print('warm ups: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets!.toString());
-      print('sets: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets.toString());
-      print('number: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets[0].number.toString());
-      print('weight: ' + _workoutPreset!.weeksDays![week-1]![day-1].warmUpSets![0].sets[0].weight.toString());
+      print('warm ups: ' +
+          _workoutPreset!.weeksDays![week - 1]![day - 1].warmUpSets!
+              .toString());
+      print('sets: ' +
+          _workoutPreset!.weeksDays![week - 1]![day - 1].warmUpSets![0].sets
+              .toString());
+      print('number: ' +
+          _workoutPreset!
+              .weeksDays![week - 1]![day - 1].warmUpSets![0].sets[0].number
+              .toString());
+      print('weight: ' +
+          _workoutPreset!
+              .weeksDays![week - 1]![day - 1].warmUpSets![0].sets[0].weight
+              .toString());
 
-      for(var exercise in value['exercises']){
-        for(var workout in _workoutPreset!.weeksDays![week-1]![day-1].exercises!){
-          if(workout.id == exercise['workoutId']){
-            for(var set in exercise['sets']){
+      for (var exercise in value['exercises']) {
+        for (var workout
+            in _workoutPreset!.weeksDays![week - 1]![day - 1].exercises!) {
+          if (workout.id == exercise['workoutId']) {
+            for (var set in exercise['sets']) {
               workout.sets.add(new WorkoutSet(
                 weight: set['weight'],
                 number: set['number'],
@@ -463,11 +487,12 @@ class ActiveUserProvider extends ChangeNotifier {
           }
         }
       }
-      if(value['cardio'] != null)
-        for(var cardio in value['cardio']){
-          for(var workout in _workoutPreset!.weeksDays![week-1]![day-1].cardio!){
-            if(workout.id == cardio['workoutId']){
-              for(var set in cardio['sets']){
+      if (value['cardio'] != null)
+        for (var cardio in value['cardio']) {
+          for (var workout
+              in _workoutPreset!.weeksDays![week - 1]![day - 1].cardio!) {
+            if (workout.id == cardio['workoutId']) {
+              for (var set in cardio['sets']) {
                 workout.sets.add(new WorkoutSet(
                   weight: set['weight'],
                   number: set['number'],
@@ -482,6 +507,4 @@ class ActiveUserProvider extends ChangeNotifier {
     print("all weeks: " + workoutPreset!.weeksDays.toString());
     notifyListeners();
   }
-
 }
-

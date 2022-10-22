@@ -7,6 +7,8 @@ class AppUser {
   String? id;
   int appId = 5100;
   String? injuryDetails;
+  String? fatPhoto;
+  List<String?>? supplementsPhotos;
   String? name;
   String? email;
   String? password;
@@ -235,6 +237,8 @@ class AppUser {
       'id': id,
       'appId': appId,
       'addedSupplementsByUser': addedSupplementsByUser,
+      'fatPhoto': fatPhoto,
+      'supplementsPhotos': supplementsPhotos,
       'email': email,
       'injuryDetails': injuryDetails,
       'name': name,
