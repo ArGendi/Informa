@@ -28,7 +28,7 @@ class ImageService {
     print(userId);
     String url = await _storage
         .ref()
-        .child('Images/FatPercentage/$userId/inBody.jpeg')
+        .child('Images/FatPercentage/$userId/in.jpeg')
         .getDownloadURL();
 
     print(url);

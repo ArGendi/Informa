@@ -153,6 +153,8 @@ class _PremiumFormScreenState extends State<PremiumFormScreen> {
 
     //var activeUserAfterUpdate = Provider.of<ActiveUserProvider>(context, listen: false).user;
     var map = activeUser.toJson();
+    print('inside the premigum form screeeeeeeeeeeeeeeeeennnnnnnnnnnnnnnnn');
+    print(map);
     await firestoreService.updateUserData(id, map);
     await createNotifications();
     setState(() {

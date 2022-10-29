@@ -32,11 +32,13 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
   File? _image;
   bool _isLoading = false;
   bool isSelected = false;
+  // List<String> supplementsUrl = [];
   double? carbs;
   double? calories;
   double? protien;
   double? fats;
   List<Map<String, dynamic>> userSupplements = [];
+
   ImageService imageService = new ImageService();
   TextEditingController carbsController = TextEditingController();
   TextEditingController caloriesController = TextEditingController();
@@ -519,6 +521,7 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                               children: [
                                 TextButton(
                                   onPressed: () async {
+                                    String? imageUrl;
                                     FirebaseStorage _storage =
                                         FirebaseStorage.instance;
                                     if (_image != null) {
@@ -527,20 +530,38 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                                       String basename =
                                           _image!.path.split('/').last;
                                       bool uploaded = false;
-                                      Reference ref = _storage.ref().child(
+                                      print('----------------- inside ');
+                                      Reference ref = _storage.ref(
                                           "images/Supplments/$id/$basename");
+
                                       var uploadTask = ref.putFile(_image!);
-                                      String imageUrl =
-                                          await ref.getDownloadURL();
+                                      final storageSnapshot =
+                                          uploadTask.snapshot;
+                                      imageUrl = await storageSnapshot.ref
+                                          .getDownloadURL();
                                       //TODo: add multiple photos to the supplements
-                                      // Provider.of<ActiveUserProvider>(context,
-                                      //         listen: false)
-                                      //     .setSupplementsPhotos(
-                                      //   imageUrl,
-                                      // );
+
                                       await uploadTask.whenComplete(() {
                                         uploaded = true;
                                       });
+                                      userSupplements.add(Supplement(
+                                        carb: carbs,
+                                        fats: fats,
+                                        protein: protien,
+                                        calories: calories,
+                                        imagePath: imageUrl,
+                                      ).toMap());
+
+                                      activeUser!.addedSupplementsByUser =
+                                          userSupplements
+                                              .map((e) => Supplement.fromMap(e))
+                                              .toList();
+                                      for (var suppp in activeUser
+                                          .addedSupplementsByUser!) {
+                                        print(suppp!.imagePath);
+                                        print(suppp.carb);
+                                      }
+
                                       if (uploaded) {
                                         // add the path image to user data
                                         ScaffoldMessenger.of(context)
@@ -555,18 +576,12 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
                                           content: Text('حدث خطأ'),
                                         ),
                                       );
-                                    userSupplements.add(Supplement(
-                                      carb: carbs,
-                                      fats: fats,
-                                      protein: protien,
-                                      calories: calories,
-                                      imagePath: _image!.path.split('/').last,
-                                    ).toMap());
-
+                                    for (var supp in userSupplements) {
+                                      print(supp);
+                                    }
                                     setState(() {
                                       _image = null;
                                     });
-
                                     carbsController.clear();
                                     fatsController.clear();
                                     protienController.clear();
@@ -611,6 +626,10 @@ class _SelectWhichSupplementsState extends State<SelectWhichSupplements> {
             text: 'التالي',
             onClick: activeUser!.supplements.isNotEmpty || isSelected
                 ? () async {
+                    // Provider.of<ActiveUserProvider>(context, listen: false)
+                    //     .setSupplementsPhotos(
+                    //   supplementsUrl,
+                    // );
                     String id = FirebaseAuth.instance.currentUser!.uid;
                     setState(() {
                       _isLoading = true;

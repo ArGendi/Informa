@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -46,13 +47,21 @@ class _PremiumFatPercentState extends State<PremiumFatPercent>
       setState(() {
         _isLoading = true;
       });
+      print('inside pickImage funcitno');
       bool uploaded = false;
-      Reference ref = _storage.ref().child("images/FatPercentage/$id/inBody");
+      Reference ref = _storage.ref("images/FatPercentage/$id/inBody");
       var uploadTask = ref.putFile(_image!);
-      String imageUrl = await ref.getDownloadURL();
+      final storageSnapshot = uploadTask.snapshot;
+      String imageUrl = await storageSnapshot.ref.getDownloadURL();
       Provider.of<ActiveUserProvider>(context, listen: false).setFatPhoto(
         imageUrl,
       );
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(id)
+          .update({'fatPhoto': imageUrl}).catchError((e) {
+        print(e);
+      });
       print(imageUrl);
       await uploadTask.whenComplete(() {
         setState(() {

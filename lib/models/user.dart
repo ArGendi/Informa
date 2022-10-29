@@ -184,7 +184,9 @@ class AppUser {
       bool before = dateTime.isBefore(now);
       if (before) dateTime = null;
     }
-    // addedSupplementsByUser = json['addedSupplementsByUser'];
+    addedSupplementsByUser = (json['addedSupplementsByUser'] as List)
+        .map((e) => Supplement.fromJson(e))
+        .toList();
     premiumStartDate = dateTime;
     package = json['package'];
     plan = json['plan'].toString();
@@ -236,7 +238,8 @@ class AppUser {
     return {
       'id': id,
       'appId': appId,
-      'addedSupplementsByUser': addedSupplementsByUser,
+      'addedSupplementsByUser':
+          addedSupplementsByUser!.map((e) => e!.toJson()).toList(),
       'fatPhoto': fatPhoto,
       'supplementsPhotos': supplementsPhotos,
       'email': email,
