@@ -63,7 +63,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 image: AssetImage('assets/images/appBg.png')
             )
         ),
-        child: activeUser!.adminConfirm? Column(
+        child: activeUser!.adminConfirm && activeUser.premiumStartDate == null? Column(
           children: [
             Container(
               height: 60,
