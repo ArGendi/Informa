@@ -216,9 +216,9 @@ class _SingleWorkoutScreenState extends State<SingleWorkoutScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              (i + 1).toString() +
-                                  '- ' +
-                                  widget.exercise.targetMuscles![i].name,
+
+                              (i+1).toString() + '- ' + widget.exercise.helpersMuscles![i].name,
+
                               textAlign: TextAlign.start,
                               style: TextStyle(),
                             ),

@@ -86,6 +86,7 @@ class _SupplementsScreenState extends State<SupplementsScreen> {
                     ),
                   ],
                 ),
+
             ],
           ),
         ),

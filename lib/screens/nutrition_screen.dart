@@ -71,16 +71,25 @@ class _NutritionScreenState extends State<NutritionScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png'))),
-        child: activeUser.adminConfirm
-            ? Column(
-                children: [
-                  Container(
-                    height: 60,
-                    color: Colors.white,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 15),
+
+                image: AssetImage('assets/images/appBg.png')
+            )
+        ),
+        child: activeUser!.adminConfirm && activeUser.premiumStartDate == null? Column(
+          children: [
+            Container(
+              height: 60,
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        Navigator.pushNamed(context, NutritionConceptsScreen.id);
+                      },
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [

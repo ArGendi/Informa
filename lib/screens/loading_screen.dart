@@ -165,7 +165,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     .setMainSnacksDone(mainSnacksDone);
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setSupplementsDone(supplementsDone);
-                if (additionalMeals != null)
+
+                print('premium start date: ' + premiumUser.premiumStartDate.toString());
+                if(additionalMeals != null)
+
                   Provider.of<PremiumNutritionProvider>(context, listen: false)
                       .setAdditionalMeals(additionalMeals);
               }

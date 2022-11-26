@@ -4,6 +4,7 @@ import 'package:informa/models/workout.dart';
 
 class WorkoutDay{
   String? id;
+  String? programId;
   int? day;
   String? name;
   List<String>? warmUps = [];
@@ -13,24 +14,23 @@ class WorkoutDay{
   List<String>? stretching = [];
   //1= rest, 2= still, 3= done
   int status;
-  bool? isDone;
+  bool isDone;
 
-  WorkoutDay({this.id, this.day, this.name, this.warmUps, this.warmUpSets, this.exercises,
-    this.cardio, this.stretching, this.status = 1, this.isDone});
+  WorkoutDay({this.id, this.programId, this.day, this.name, this.warmUps, this.warmUpSets, this.exercises,
+    this.cardio, this.stretching, this.status = 1, this.isDone = false});
 
-  WorkoutDay copyObject(){
-    return new WorkoutDay(
-      id: id,
-      day: day,
-      name: name,
-      warmUps: warmUps,
-      warmUpSets: warmUpSets,
-      exercises: exercises,
-      cardio: cardio,
-      stretching: stretching,
-      status: status,
-      isDone: isDone,
-    );
+  copyObject(WorkoutDay workoutDay){
+    id = workoutDay.id;
+    programId = workoutDay.programId;
+    day = workoutDay.day;
+    name = workoutDay.name;
+    warmUps = workoutDay.warmUps;
+    warmUpSets = workoutDay.warmUpSets;
+    exercises = workoutDay.exercises;
+    cardio = workoutDay.cardio;
+    stretching = workoutDay.stretching;
+    status = workoutDay.status;
+    isDone = workoutDay.isDone;
   }
 
    List<Map> getWorkoutIdAndSetsOfWorkoutList(List<Workout>? list){

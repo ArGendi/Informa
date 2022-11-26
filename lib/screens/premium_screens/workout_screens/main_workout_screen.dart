@@ -120,22 +120,18 @@ class _MainWorkoutScreenState extends State<MainWorkoutScreen> {
                   SizedBox(height: 10,),
                   WeekRow(
                     week: 1,
-                    days: myWorkoutPreset.weeksDays![0]!,
                   ),
                   SizedBox(height: 15,),
                   WeekRow(
                     week: 2,
-                    days: myWorkoutPreset.weeksDays![1]!,
                   ),
                   SizedBox(height: 15,),
                   WeekRow(
                     week: 3,
-                    days: myWorkoutPreset.weeksDays![2]!,
                   ),
                   SizedBox(height: 15,),
                   WeekRow(
                     week: 4,
-                    days: myWorkoutPreset.weeksDays![3]!,
                   ),
                 ],
               ),
