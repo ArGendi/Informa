@@ -42,6 +42,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                         setState(() {
                           _shoulderMuscle = 1;
                           _muscle = MusclesList.allMuscles[2];
+                          _image = "assets/images/selected_body_shoulder.png";
                         });
                         print(_shoulderMuscle);
                       },
@@ -92,6 +93,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                         setState(() {
                           _shoulderMuscle = 2;
                           _muscle = MusclesList.allMuscles[3];
+                          _image = "assets/images/selected_body_shoulder.png";
                         });
                         print(_shoulderMuscle);
                       },
@@ -142,6 +144,7 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                         setState(() {
                           _shoulderMuscle = 3;
                           _muscle = MusclesList.allMuscles[4];
+                          _image = "assets/images/selected_body_shoulder.png";
                         });
                         print(_shoulderMuscle);
                       },
@@ -355,19 +358,50 @@ class _MuscleSelectionScreenState extends State<MuscleSelectionScreen> {
                   onShoulder: () {
                     print('Shoulder');
                     _showShouldersDialog();
-                    // setState(() {
-                    //   _image = 'assets/images/selected_body_abs.png';
-                    //   _muscle = MusclesList.allMuscles[1];
-                    // });
+                  },
+                  onBack: () {
+                    print('Back');
+                    setState(() {
+                      _image = 'assets/images/seleted_body_back.png';
+                      _muscle = MusclesList.allMuscles[5];
+                    });
+                  },
+                  onBiceps: () {
+                    print('Bicebs');
+                    setState(() {
+                      _image = 'assets/images/selected_body_bi.png';
+                      _muscle = MusclesList.allMuscles[6];
+                    });
+                  },
+                  onForearms: () {
+                    print('Forearms');
+                    setState(() {
+                      _image = 'assets/images/selected_body_forearm.png';
+                      _muscle = MusclesList.allMuscles[7];
+                    });
+                  },
+                  onLowerLegs: () {
+                    print('lower legs');
+                    setState(() {
+                      _image = 'assets/images/selected_body_lower_leg.png';
+                      _muscle = MusclesList.allMuscles[9];
+                    });
+                  },
+                  onUpperLegs: () {
+                    print('upper legs');
+                    setState(() {
+                      _image = 'assets/images/selcted_body_upper_leg.png';
+                      _muscle = MusclesList.allMuscles[8];
+                    });
+                  },
+                  onTriceps: () {
+                    print('Triceps');
+                    setState(() {
+                      _image = 'assets/images/selected_body_tri.png';
+                      _muscle = MusclesList.allMuscles[10];
+                    });
                   },
                 ),
-                // Text(
-                //   _muscle != null ? 'العضلة المستهدفة هي ' + _muscle!.name : 'لا يوجد عضلة مستهدفة',
-                //   style: TextStyle(
-                //     fontFamily: 'CairoBold',
-                //   ),
-                // ),
-                // SizedBox(height: 10,),
                 CustomButton(
                   text: _muscle == null ? 'أختار عضلة' : _muscle!.name,
                   bgColor:
