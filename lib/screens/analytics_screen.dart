@@ -268,28 +268,47 @@ class BodyMeasurementCard extends StatelessWidget {
           ),
           Row(
             children: [
-              Expanded(
+              SizedBox(
+                height: 350,
+                width: MediaQuery.of(context).size.width * 0.3,
                 child: Column(
                   children: [
-                    BodyLabel(bodyOrgan: 'الرقبة', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'البطن', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'يد يسري', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'يد يمني', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'خصر', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'اسفل بطن', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'رجل يمني', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'رجل يسري', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'سمانة يمني', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'سمانة يسري', bodyOrganValue: 13),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  children: [
-                    Image.asset('assets/images/body_measure.JPG'),
-                    SizedBox(
-                      height: 5,
+                    Expanded(
+                        child:
+                            BodyLabel(bodyOrgan: 'الرقبة', bodyOrganValue: 13)),
+                    Expanded(
+                        child:
+                            BodyLabel(bodyOrgan: 'البطن', bodyOrganValue: 13)),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'يد يسري', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'يد يمني', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child: BodyLabel(bodyOrgan: 'خصر', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'اسفل بطن', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'رجل يمني', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'رجل يسري', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child: BodyLabel(
+                          bodyOrgan: 'سمانة يمني', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child: BodyLabel(
+                          bodyOrgan: 'سمانة يسري', bodyOrganValue: 13),
                     ),
                   ],
                 ),
@@ -297,16 +316,58 @@ class BodyMeasurementCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    BodyLabel(bodyOrgan: 'الرقبة', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'البطن', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'يد يسري', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'يد يمني', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'خصر', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'اسفل بطن', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'رجل يمني', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'رجل يسري', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'سمانة يمني', bodyOrganValue: 13),
-                    BodyLabel(bodyOrgan: 'سمانة يسري', bodyOrganValue: 13),
+                    Image.asset(
+                      'assets/images/body_measure.JPG',
+                      height: 350,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 350,
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: Column(
+                  children: [
+                    Expanded(
+                        child:
+                            BodyLabel(bodyOrgan: 'الرقبة', bodyOrganValue: 13)),
+                    Expanded(
+                        child:
+                            BodyLabel(bodyOrgan: 'البطن', bodyOrganValue: 13)),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'يد يسري', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'يد يمني', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child: BodyLabel(bodyOrgan: 'خصر', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'اسفل بطن', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'رجل يمني', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child:
+                          BodyLabel(bodyOrgan: 'رجل يسري', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child: BodyLabel(
+                          bodyOrgan: 'سمانة يمني', bodyOrganValue: 13),
+                    ),
+                    Expanded(
+                      child: BodyLabel(
+                          bodyOrgan: 'سمانة يسري', bodyOrganValue: 13),
+                    ),
                   ],
                 ),
               ),
@@ -331,22 +392,27 @@ class BodyLabel extends StatelessWidget {
     var localization = AppLocalization.of(context);
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 5),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
+            flex: 3,
             child: Text(
               localization!.translate(bodyOrgan).toString(),
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(
+                fontSize: 12,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
           SizedBox(
             width: 2,
           ),
           Expanded(
+            flex: 3,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 4),
+              padding: EdgeInsets.symmetric(horizontal: 2),
               decoration: BoxDecoration(
                 color: primaryColor,
                 borderRadius: BorderRadius.circular(5),
@@ -357,9 +423,7 @@ class BodyLabel extends StatelessWidget {
               child: Center(
                 child: Text(
                   '$bodyOrganValue CM',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 12),
                 ),
               ),
             ),

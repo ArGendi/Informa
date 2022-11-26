@@ -270,24 +270,26 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(
                             height: 5,
                           ),
-                          MaterialButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, PremiumFormScreen.id);
-                            },
-                            color: primaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius)),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                'ابدء الأسئلة',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontFamily: 'CairoBold',
-                                  color: Colors.white,
+                          Expanded(
+                            child: MaterialButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, PremiumFormScreen.id);
+                              },
+                              color: primaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(borderRadius)),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Text(
+                                  'ابدء الأسئلة',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: 'CairoBold',
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),

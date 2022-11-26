@@ -71,25 +71,16 @@ class _NutritionScreenState extends State<NutritionScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
-        child: activeUser!.adminConfirm && activeUser.premiumStartDate == null? Column(
-          children: [
-            Container(
-              height: 60,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    InkWell(
-                      onTap: (){
-                        Navigator.pushNamed(context, NutritionConceptsScreen.id);
-                      },
-
+                image: AssetImage('assets/images/appBg.png'))),
+        child: activeUser!.adminConfirm && activeUser.premiumStartDate == null
+            ? Column(
+                children: [
+                  Container(
+                    height: 60,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 15),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -99,52 +90,64 @@ class _NutritionScreenState extends State<NutritionScreen> {
                                   context, NutritionConceptsScreen.id);
                             },
                             child: Row(
-                              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(
-                                  'شرح مفاهيم',
-                                  style: TextStyle(
-                                    fontFamily: boldFont,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, NutritionConceptsScreen.id);
+                                  },
+                                  child: Row(
+                                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'شرح مفاهيم',
+                                        style: TextStyle(
+                                          fontFamily: boldFont,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Card(
+                                        elevation: 0,
+                                        color: primaryColor,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: Icon(
+                                            Icons.play_arrow,
+                                            color: Colors.white,
+                                            //size: 25,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 10,
+                                Container(
+                                  width: 1,
+                                  height: double.maxFinite,
+                                  color: Colors.grey[300],
                                 ),
-                                Card(
-                                  elevation: 0,
-                                  color: primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(3.0),
-                                    child: Icon(
-                                      Icons.play_arrow,
-                                      color: Colors.white,
-                                      //size: 25,
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(
+                                        context, DietRequirementsScreen.id);
+                                  },
+                                  child: Text(
+                                    'متطلبات الدايت',
+                                    style: TextStyle(
+                                      fontFamily: boldFont,
+                                      color: primaryColor,
                                     ),
                                   ),
-                                ),
+                                )
                               ],
                             ),
                           ),
-                          Container(
-                            width: 1,
-                            height: double.maxFinite,
-                            color: Colors.grey[300],
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, DietRequirementsScreen.id);
-                            },
-                            child: Text(
-                              'متطلبات الدايت',
-                              style: TextStyle(
-                                fontFamily: boldFont,
-                                color: primaryColor,
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),
