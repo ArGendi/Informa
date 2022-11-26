@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/screens/main_screen.dart';
@@ -14,7 +15,8 @@ class ReadyFillPremiumForm extends StatefulWidget {
   _ReadyFillPremiumFormState createState() => _ReadyFillPremiumFormState();
 }
 
-class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> with SingleTickerProviderStateMixin{
+class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offset;
 
@@ -24,7 +26,7 @@ class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> with Single
     });
   }
 
-  onLater(BuildContext context) async{
+  onLater(BuildContext context) async {
     await NotificationService.init(initScheduled: true);
     listenNotification();
     await NotificationService.showRepeatScheduledNotification(
@@ -36,30 +38,28 @@ class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> with Single
     );
     Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
   }
-  
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1000),
     );
     _offset = Tween<Offset>(
-      begin: Offset(0,-3),
+      begin: Offset(0, -3),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeOutBack,
     ));
-    Timer(Duration(milliseconds: 200), (){
+    Timer(Duration(milliseconds: 200), () {
       _controller.forward();
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }
@@ -71,9 +71,7 @@ class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> with Single
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -92,7 +90,9 @@ class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> with Single
                   //   size: 80,
                   // ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Text(
                   'جاهز تجاوب علي الأسئلة؟',
                   style: TextStyle(
@@ -107,18 +107,22 @@ class _ReadyFillPremiumFormState extends State<ReadyFillPremiumForm> with Single
                     color: Colors.grey,
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 CustomButton(
                   text: 'يلا بينا',
-                  onClick: (){
+                  onClick: () {
                     Navigator.pushNamed(context, PremiumFormScreen.id);
                   },
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 CustomButton(
                   bgColor: Colors.grey.shade400,
                   text: 'بعدين',
-                  onClick: (){
+                  onClick: () {
                     onLater(context);
                   },
                 ),

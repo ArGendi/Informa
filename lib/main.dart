@@ -7,8 +7,10 @@ import 'package:informa/providers/app_language_provider.dart';
 import 'package:informa/providers/challenges_provider.dart';
 import 'package:informa/providers/google_auth_provider.dart';
 import 'package:informa/providers/kitchen_provider.dart';
+import 'package:informa/providers/plans_provider.dart';
 import 'package:informa/providers/premium_nutrition_provider.dart';
 import 'package:informa/providers/recently_viewed_meals_provider.dart';
+import 'package:informa/providers/supplements_provider.dart';
 import 'package:informa/providers/water_provider.dart';
 import 'package:informa/providers/workout_days_provider.dart';
 import 'package:informa/screens/auth_screens/forget_password_screen.dart';
@@ -47,10 +49,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   String? initScreen = await HelpFunction.getInitScreen();
-  runApp(MultiProvider(
+  runApp(
+    MultiProvider(
       providers: [
         ChangeNotifierProvider<GoogleSignInProvider>(
           create: (context) => GoogleSignInProvider(),
+        ),
+        ChangeNotifierProvider<SupplementsProvider>(
+          create: (context) => SupplementsProvider(),
         ),
         ChangeNotifierProvider<AppLanguageProvider>(
           create: (context) => AppLanguageProvider(),
@@ -76,10 +82,15 @@ void main() async {
         ChangeNotifierProvider<WorkoutDaysProvider>(
           create: (context) => WorkoutDaysProvider(),
         ),
+        ChangeNotifierProvider<PlansProvider>(
+          create: (context) => PlansProvider(),
+        ),
       ],
       child: MyApp(
         initScreen: initScreen,
-      )));
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -101,24 +112,6 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: initScreen == null ? WelcomeScreen() : SplashScreen(),
-      //WorkOutDayScreen(
-      //         day: 2,
-      //         week: 1,
-      //         workoutDay: WorkoutDay(
-      //           name: 'دفع مدافع',
-      //           warmUpSets: [
-      //             Workout(
-      //               exercise: Exercise(name: 'احماء 1'),
-      //             ),
-      //             Workout(
-      //               exercise: Exercise(name: 'احماء 2'),
-      //             ),
-      //             Workout(
-      //               exercise: Exercise(name: 'احماء 3'),
-      //             ),
-      //           ],
-      //         ),
-      //       ),//
       routes: {
         MainRegisterScreen.id: (context) => MainRegisterScreen(),
         ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
@@ -126,8 +119,6 @@ class MyApp extends StatelessWidget {
         MainScreen.id: (context) => MainScreen(),
         FreeKitchenScreen.id: (context) => FreeKitchenScreen(),
         ForgetPasswordScreen.id: (context) => ForgetPasswordScreen(),
-        //DetailedMealScreen.id: (context) => DetailedMealScreen(),
-        //FreeWorkoutScreen.id: (context) => FreeWorkoutScreen(),
         MuscleSelectionScreen.id: (context) => MuscleSelectionScreen(),
         PlansScreen.id: (context) => PlansScreen(),
         PrepareProgramScreen.id: (context) => PrepareProgramScreen(),
@@ -148,7 +139,6 @@ class MyApp extends StatelessWidget {
         AddExternalMealInfoScreen.id: (context) => AddExternalMealInfoScreen(),
         DietRequirementsScreen.id: (context) => DietRequirementsScreen(),
         NutritionConceptsScreen.id: (context) => NutritionConceptsScreen(),
-        //EmailConfirmationScreen.id: (context) => EmailConfirmationScreen(),
       },
       supportedLocales: [
         Locale('en', ''),
@@ -172,3 +162,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+// put id in duration
+// copy all duration for each program
+

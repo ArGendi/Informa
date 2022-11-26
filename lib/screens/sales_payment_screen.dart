@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:informa/helpers/shared_preference.dart';
@@ -8,9 +7,9 @@ import 'package:informa/screens/main_screen.dart';
 import 'package:informa/screens/premium_screens/ready_fill_premium_form_screen.dart';
 import 'package:informa/services/firestore_service.dart';
 import 'package:informa/widgets/custom_button.dart';
-import 'package:informa/widgets/custom_textfield.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+
 import '../constants.dart';
 
 class SalesPaymentScreen extends StatefulWidget {
@@ -27,32 +26,39 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
   FirestoreService _firestoreService = new FirestoreService();
   bool _isLoading = false;
 
-  onShare(BuildContext context){
+  onShare(BuildContext context) {
     //String id = FirebaseAuth.instance.currentUser!.uid;
-    var activeUser = Provider.of<ActiveUserProvider>(context, listen: false).user;
+    var activeUser =
+        Provider.of<ActiveUserProvider>(context, listen: false).user;
     Share.share(activeUser!.appId.toString());
   }
 
-  onActivate(BuildContext context) async{
+  onActivate(BuildContext context) async {
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
-    if(valid){
+    if (valid) {
       _formKey.currentState!.save();
-      setState(() { _isLoading = true; });
+      setState(() {
+        _isLoading = true;
+      });
       String id = FirebaseAuth.instance.currentUser!.uid;
       String? originalCode = await _firestoreService.getUserActivateCode(id);
-      if(originalCode != null){
-        if(_activateCode.trim() == originalCode.trim()){
-          await Provider.of<ActiveUserProvider>(context, listen: false).setPremium(true, id);
+      if (originalCode != null) {
+        if (_activateCode.trim() == originalCode.trim()) {
+          await Provider.of<ActiveUserProvider>(context, listen: false)
+              .setPremium(true, id);
           await HelpFunction.saveUserPremium(true);
-          setState(() { _isLoading = false; });
+          setState(() {
+            _isLoading = false;
+          });
           Navigator.pushNamed(context, ReadyFillPremiumForm.id);
         }
-      }
-      else ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('انت غير مشترك من فضلك تواصل مع فريق الدعم'))
-      );
-      setState(() { _isLoading = false; });
+      } else
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('انت غير مشترك من فضلك تواصل مع فريق الدعم')));
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -65,7 +71,7 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
         elevation: 0,
         leading: IconButton(
           splashRadius: splashRadius,
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: Icon(
@@ -88,7 +94,9 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                     fontFamily: boldFont,
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -96,15 +104,19 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                       'التحدث مع فريق المبيعات',
                       style: TextStyle(),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     InkWell(
                       borderRadius: BorderRadius.circular(borderRadius),
-                      onTap: (){},
+                      onTap: () {},
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(borderRadius),
-                          border: Border.all(color: Colors.grey.shade300,),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                          ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -113,7 +125,9 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                               FaIcon(
                                 FontAwesomeIcons.whatsapp,
                               ),
-                              SizedBox(width: 10,),
+                              SizedBox(
+                                width: 10,
+                              ),
                               Text(
                                 'التحدث الي فريق المبيعات',
                                 style: TextStyle(),
@@ -123,7 +137,9 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                     Text(
                       'أرسل الكود الخاص بيك لفريق المبيعات',
                       style: TextStyle(),
@@ -135,17 +151,21 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                         color: Colors.grey,
                       ),
                     ),
-                    SizedBox(height: 5,),
+                    SizedBox(
+                      height: 5,
+                    ),
                     InkWell(
                       borderRadius: BorderRadius.circular(borderRadius),
-                      onTap: (){
+                      onTap: () {
                         onShare(context);
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(borderRadius),
-                          border: Border.all(color: Colors.grey.shade300,),
+                          border: Border.all(
+                            color: Colors.grey.shade300,
+                          ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -155,7 +175,9 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                                 Icons.share,
                                 color: primaryColor,
                               ),
-                              SizedBox(width: 10,),
+                              SizedBox(
+                                width: 10,
+                              ),
                               Text(
                                 'أرسال الكود',
                                 style: TextStyle(),
@@ -165,7 +187,9 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
                   ],
                 ),
               ],
@@ -173,7 +197,7 @@ class _SalesPaymentScreenState extends State<SalesPaymentScreen> {
             CustomButton(
               text: 'تم',
               //isLoading: _isLoading,
-              onClick: (){
+              onClick: () {
                 Navigator.popUntil(context, ModalRoute.withName(MainScreen.id));
               },
             ),

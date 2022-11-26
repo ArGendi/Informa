@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:informa/providers/active_user_provider.dart';
-import 'package:provider/provider.dart';
 
 import '../constants.dart';
 
@@ -11,18 +9,26 @@ class SelectLevelCard extends StatefulWidget {
   final int selected;
   final VoidCallback onClick;
   final int maxLevel;
-  const SelectLevelCard({Key? key, required this.text, required this.level, required this.id, required this.selected, required this.onClick, this.maxLevel = 5}) : super(key: key);
+  const SelectLevelCard(
+      {Key? key,
+      required this.text,
+      required this.level,
+      required this.id,
+      required this.selected,
+      required this.onClick,
+      this.maxLevel = 5})
+      : super(key: key);
 
   @override
   _SelectLevelCardState createState() => _SelectLevelCardState();
 }
 
 class _SelectLevelCardState extends State<SelectLevelCard> {
-  Widget cardLevel(int level){
+  Widget cardLevel(int level) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        for(int i=0; i<5; i++)
+        for (int i = 0; i < 5; i++)
           Row(
             children: [
               Container(
@@ -30,7 +36,9 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
                 height: 2,
                 color: i < level ? primaryColor : Colors.grey[300],
               ),
-              SizedBox(width: 5,),
+              SizedBox(
+                width: 5,
+              ),
             ],
           ),
       ],
@@ -39,7 +47,7 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
 
   @override
   Widget build(BuildContext context) {
-    var activeUserProvider = Provider.of<ActiveUserProvider>(context);
+    // var activeUserProvider = Provider.of<ActiveUserProvider>(context);
     return InkWell(
       onTap: widget.onClick,
       borderRadius: BorderRadius.circular(borderRadius),
@@ -49,8 +57,7 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
           borderRadius: BorderRadius.circular(borderRadius),
           border: Border.all(
               color: widget.selected == widget.id ? primaryColor : Colors.white,
-              width: 2
-          ),
+              width: 2),
         ),
         duration: Duration(milliseconds: 400),
         child: Padding(
@@ -65,7 +72,9 @@ class _SelectLevelCardState extends State<SelectLevelCard> {
                   fontSize: 15,
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               cardLevel(widget.level),
             ],
           ),

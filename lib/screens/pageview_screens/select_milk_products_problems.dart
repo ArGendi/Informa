@@ -9,14 +9,17 @@ import '../../widgets/custom_button.dart';
 class SelectMilkProductsProblems extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
-  const SelectMilkProductsProblems({Key? key, required this.onClick, required this.onBack}) : super(key: key);
+  const SelectMilkProductsProblems(
+      {Key? key, required this.onClick, required this.onBack})
+      : super(key: key);
 
   @override
-  _SelectMilkProductsProblemsState createState() => _SelectMilkProductsProblemsState();
+  _SelectMilkProductsProblemsState createState() =>
+      _SelectMilkProductsProblemsState();
 }
 
-class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems> {
-
+class _SelectMilkProductsProblemsState
+    extends State<SelectMilkProductsProblems> {
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
@@ -40,7 +43,9 @@ class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems>
                       )
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Container(
                     width: 85,
                     height: 85,
@@ -50,10 +55,11 @@ class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems>
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: AssetImage('assets/images/coach_face.jpg'),
-                        )
-                    ),
+                        )),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'دلوقتي نشوف منتجات الألبان',
                     textAlign: TextAlign.center,
@@ -67,7 +73,9 @@ class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems>
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'هل تعانى من هضم منتاجات الالبان؟',
                     textAlign: TextAlign.center,
@@ -76,84 +84,105 @@ class _SelectMilkProductsProblemsState extends State<SelectMilkProductsProblems>
                       fontFamily: boldFont,
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ProgramSelectCard(
                     mainText: 'نعم عندى حساسية من كل منتجات الالبان',
                     number: 1,
                     userChoice: activeUser!.milkProblem,
-                    onClick: (){
-                      List<int> shouldRemoved = [2,3,4,5,7,8,11,13,14];
+                    onClick: () {
+                      List<int> shouldRemoved = [2, 3, 4, 5, 7, 8, 11, 13, 14];
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setListOfMealSelection(shouldRemoved, false);
-                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(1);
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setMilkProblem(1);
                     },
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ProgramSelectCard(
                     mainText: 'لا باكل و بشرب منتجات الالبان عادى',
                     number: 2,
                     userChoice: activeUser.milkProblem,
-                    onClick: (){
-                      List<int> shouldReturn = [2,3,4,5,7,8,11,13,14];
+                    onClick: () {
+                      List<int> shouldReturn = [2, 3, 4, 5, 7, 8, 11, 13, 14];
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setListOfMealSelection(shouldReturn, true);
-                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(2);
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setMilkProblem(2);
                     },
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ProgramSelectCard(
-                    mainText: 'مشكلتى مع اللبن فقط لكن الجبن و الزبادى تمام',
+                    mainText: 'مشكلتى مع الحليب فقط لكن الجبن و الزبادى تمام',
                     number: 3,
                     userChoice: activeUser.milkProblem,
-                    onClick: (){
+                    onClick: () {
                       List<int> shouldRemoved = [11];
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setListOfMealSelection(shouldRemoved, false);
-                      List<int> shouldReturn = [2,3,4,5,7,8,13,14];
+                      List<int> shouldReturn = [2, 3, 4, 5, 7, 8, 13, 14];
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setListOfMealSelection(shouldReturn, true);
-                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(3);
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setMilkProblem(3);
                     },
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ProgramSelectCard(
-                    mainText: 'مشكلتى مع الجبن فقط لكنى أشرب لبن و اكل زبادى عادى',
+                    mainText:
+                        'مشكلتى مع الجبن فقط لكنى أشرب الحليب و اكل زبادى عادى',
                     number: 4,
                     userChoice: activeUser.milkProblem,
-                    onClick: (){
-                      List<int> shouldRemoved = [2,3,4,5,7,8];
+                    onClick: () {
+                      List<int> shouldRemoved = [2, 3, 4, 5, 7, 8];
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setListOfMealSelection(shouldRemoved, false);
-                      List<int> shouldReturn = [11,13,14];
+                      List<int> shouldReturn = [11, 13, 14];
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setListOfMealSelection(shouldReturn, true);
-                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(4);
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setMilkProblem(4);
                     },
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ProgramSelectCard(
-                    mainText: 'مشكلتى مع الزبادى فقط و لكن الجبن تمام و اللبن تمام',
+                    mainText:
+                        'مشكلتى مع الزبادى فقط و لكن الجبن تمام و الحليب تمام',
                     number: 5,
                     userChoice: activeUser.milkProblem,
-                    onClick: (){
-                      List<int> shouldRemoved = [13,14];
+                    onClick: () {
+                      List<int> shouldRemoved = [13, 14];
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setListOfMealSelection(shouldRemoved, false);
-                      List<int> shouldReturn = [13,14];
+                      List<int> shouldReturn = [13, 14];
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setListOfMealSelection(shouldReturn, true);
-                      Provider.of<ActiveUserProvider>(context, listen: false).setMilkProblem(5);
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setMilkProblem(5);
                     },
                   ),
-                  SizedBox(height: 40,),
+                  SizedBox(
+                    height: 40,
+                  ),
                 ],
               ),
             ),
           ),
           CustomButton(
             text: 'التالي',
-            onClick: activeUser.milkProblem != 0 ? widget.onClick : (){},
-            bgColor: activeUser.milkProblem != 0 ? primaryColor : Colors.grey.shade400,
+            onClick: activeUser.milkProblem != 0 ? widget.onClick : () {},
+            bgColor: activeUser.milkProblem != 0
+                ? primaryColor
+                : Colors.grey.shade400,
           )
         ],
       ),

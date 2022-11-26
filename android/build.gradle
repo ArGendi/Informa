@@ -27,6 +27,8 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
+
+// new relaese 2021-10-01
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

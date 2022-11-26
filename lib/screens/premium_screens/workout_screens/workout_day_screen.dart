@@ -14,14 +14,17 @@ import '../../../providers/active_user_provider.dart';
 class WorkOutDayScreen extends StatefulWidget {
   final int day;
   final int week;
+
   //final WorkoutDay workoutDay;
   const WorkOutDayScreen({Key? key, required this.day, required this.week,}) : super(key: key);
+
 
   @override
   _WorkOutDayScreenState createState() => _WorkOutDayScreenState();
 }
 
-class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerProviderStateMixin{
+class _WorkOutDayScreenState extends State<WorkOutDayScreen>
+    with SingleTickerProviderStateMixin {
   late ConfettiController _confettiController;
   bool _dayDone = false;
   late AnimationController _animationController;
@@ -71,8 +74,11 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
     );
   }
 
+
   onDone(BuildContext context) async{
+
     String errorMsg = '';
+
     var myWorkoutPreset = Provider.of<ActiveUserProvider>(context, listen: false).workoutPreset;
     WorkoutDay workoutDay = myWorkoutPreset!.weeksDays![widget.week-1]![widget.day-1];
     for(int i=0; i<workoutDay.warmUpSets!.length; i++){
@@ -83,6 +89,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
     }
     for(int i=0; i<workoutDay.exercises!.length; i++){
       if(workoutDay.exercises![i].setsDone < workoutDay.exercises![i].numberOfSets!)
+
         errorMsg = 'لم تنتهي من المجموعات';
     }
     if(errorMsg.isEmpty){
@@ -117,7 +124,6 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if(!this.mounted) return;
     //_dayDone = widget.workoutDay.isDone != null? widget.workoutDay.isDone! : false;
@@ -137,7 +143,6 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _animationController.dispose();
   }
@@ -149,7 +154,10 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('يوم ' + widget.day.toString() + ', اسبوع ' + widget.week.toString()),
+        title: Text('يوم ' +
+            widget.day.toString() +
+            ', اسبوع ' +
+            widget.week.toString()),
         centerTitle: true,
         elevation: 0,
       ),
@@ -157,9 +165,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           child: ListView(
@@ -184,6 +190,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
                         fontFamily: boldFont,
                       ),
                     ),
+
                     SizedBox(width: 10,),
                     Card(
                       elevation: 0,
@@ -287,6 +294,7 @@ class _WorkOutDayScreenState extends State<WorkOutDayScreen> with SingleTickerPr
                     ),
                   ],
                 ),
+
               ),
               SizedBox(height: 20,),
               CustomButton(

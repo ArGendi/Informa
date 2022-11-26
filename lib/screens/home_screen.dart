@@ -302,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     HomeBanner(
-                      mainText: '',
+                      mainText: 'تمارين انفورما',
                       subText: 'تصفح التمارين والاداء السليم',
                       btnText: 'تصفح التمارين',
                       imagePath: 'assets/images/home3.jpg',

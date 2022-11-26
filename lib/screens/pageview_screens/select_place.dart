@@ -20,7 +20,6 @@ class _SelectPlaceState extends State<SelectPlace> {
   @override
   Widget build(BuildContext context) {
     var activeUser = Provider.of<ActiveUserProvider>(context).user;
-    var screenSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -72,6 +71,7 @@ class _SelectPlaceState extends State<SelectPlace> {
                     number: 1,
                     userChoice: activeUser!.workoutPlace,
                     onClick: () {
+                      // in home => user.workoutPlace = 1
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setWorkoutPlace(1);
                     },
@@ -85,6 +85,7 @@ class _SelectPlaceState extends State<SelectPlace> {
                     number: 2,
                     userChoice: activeUser.workoutPlace,
                     onClick: () {
+                      // in gym => user.workoutPlace = 2
                       Provider.of<ActiveUserProvider>(context, listen: false)
                           .setWorkoutPlace(2);
                     },

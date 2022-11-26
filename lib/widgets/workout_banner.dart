@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:informa/constants.dart';
 import 'package:informa/models/excercise.dart';
-import 'package:informa/models/workout.dart';
 import 'package:informa/screens/single_workout_screen.dart';
 
 class WorkoutBanner extends StatefulWidget {
@@ -14,16 +13,16 @@ class WorkoutBanner extends StatefulWidget {
 }
 
 class _WorkoutBannerState extends State<WorkoutBanner> {
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SingleWorkoutScreen(
-            exercise: widget.exercise,
-          )),
+          MaterialPageRoute(
+              builder: (context) => SingleWorkoutScreen(
+                    exercise: widget.exercise,
+                  )),
         );
       },
       borderRadius: BorderRadius.circular(borderRadius),
@@ -54,10 +53,7 @@ class _WorkoutBannerState extends State<WorkoutBanner> {
                     widget.exercise.description!,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey
-                    ),
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
                   ),
                 ],
               ),

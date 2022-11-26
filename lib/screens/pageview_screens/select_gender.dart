@@ -16,14 +16,14 @@ class SelectGender extends StatefulWidget {
   _SelectGenderState createState() => _SelectGenderState();
 }
 
-class _SelectGenderState extends State<SelectGender> with SingleTickerProviderStateMixin{
+class _SelectGenderState extends State<SelectGender>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _helloOffset;
   late Animation<Offset> _btnOffset;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       duration: Duration(milliseconds: 2000),
@@ -43,7 +43,7 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
       parent: _controller,
       curve: Curves.elasticOut,
     ));
-    Timer(Duration(milliseconds: 800), (){
+    Timer(Duration(milliseconds: 800), () {
       _controller.forward();
     });
   }
@@ -65,7 +65,9 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
           Expanded(
             child: Column(
               children: [
-                SizedBox(height: 50,),
+                SizedBox(
+                  height: 50,
+                ),
                 SlideTransition(
                   position: _helloOffset,
                   child: Column(
@@ -89,23 +91,26 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                     ],
                   ),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Text(
                   'أختار النوع',
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontFamily: 'CairoBold'
-                  ),
+                  style: TextStyle(fontSize: 22, fontFamily: 'CairoBold'),
                 ),
-                SizedBox(height: 20,),
+                SizedBox(
+                  height: 20,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: InkWell(
                         borderRadius: BorderRadius.circular(7),
-                        onTap: (){
-                          Provider.of<ActiveUserProvider>(context, listen: false).setUser(
+                        onTap: () {
+                          Provider.of<ActiveUserProvider>(context,
+                                  listen: false)
+                              .setUser(
                             new AppUser(
                               gender: 1,
                             ),
@@ -118,10 +123,10 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(7),
                               border: Border.all(
-                                  color: activeUser!.gender == 1 ? primaryColor : Colors.white,
-                                  width: 2
-                              )
-                          ),
+                                  color: activeUser!.gender == 1
+                                      ? primaryColor
+                                      : Colors.white,
+                                  width: 2)),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -130,16 +135,13 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                                   child: Container(
                                     child: Center(
                                       child: SvgPicture.asset(
-                                        'assets/icons/male.svg'
-                                      ),
+                                          'assets/icons/male.svg'),
                                     ),
                                   ),
                                 ),
                                 Text(
                                   'ذكر',
-                                  style: TextStyle(
-                                      fontSize: 16
-                                  ),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                               ],
                             ),
@@ -147,12 +149,16 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                         ),
                       ),
                     ),
-                    SizedBox(width: 20,),
+                    SizedBox(
+                      width: 20,
+                    ),
                     Expanded(
                       child: InkWell(
                         borderRadius: BorderRadius.circular(7),
-                        onTap: (){
-                          Provider.of<ActiveUserProvider>(context, listen: false).setUser(
+                        onTap: () {
+                          Provider.of<ActiveUserProvider>(context,
+                                  listen: false)
+                              .setUser(
                             new AppUser(
                               gender: 2,
                             ),
@@ -165,10 +171,10 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(7),
                               border: Border.all(
-                                  color: activeUser.gender == 2 ? primaryColor : Colors.white,
-                                  width: 2
-                              )
-                          ),
+                                  color: activeUser.gender == 2
+                                      ? primaryColor
+                                      : Colors.white,
+                                  width: 2)),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
@@ -177,16 +183,13 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                                   child: Container(
                                     child: Center(
                                       child: SvgPicture.asset(
-                                          'assets/icons/female.svg'
-                                      ),
+                                          'assets/icons/female.svg'),
                                     ),
                                   ),
                                 ),
                                 Text(
                                   'انثى',
-                                  style: TextStyle(
-                                      fontSize: 16
-                                  ),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                               ],
                             ),
@@ -196,7 +199,9 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
                     ),
                   ],
                 ),
-                SizedBox(height: 40,),
+                SizedBox(
+                  height: 40,
+                ),
               ],
             ),
           ),
@@ -204,8 +209,9 @@ class _SelectGenderState extends State<SelectGender> with SingleTickerProviderSt
             position: _btnOffset,
             child: CustomButton(
               text: 'التالي',
-              onClick: activeUser.gender == 0 ? (){} : widget.onClick,
-              bgColor: activeUser.gender == 0 ? Colors.grey.shade400 : primaryColor,
+              onClick: activeUser.gender == 0 ? () {} : widget.onClick,
+              bgColor:
+                  activeUser.gender == 0 ? Colors.grey.shade400 : primaryColor,
             ),
           )
         ],

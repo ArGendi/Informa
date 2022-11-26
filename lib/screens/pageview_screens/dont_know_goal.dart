@@ -31,7 +31,6 @@ class _DoNotKnowGoalState extends State<DoNotKnowGoal> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (mounted) {
       _goals = calculateGoal();

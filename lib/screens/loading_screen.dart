@@ -6,8 +6,6 @@ import 'package:informa/helpers/shared_preference.dart';
 import 'package:informa/models/cardio.dart';
 import 'package:informa/models/challenge.dart';
 import 'package:informa/models/excercise.dart';
-import 'package:informa/models/full_meal.dart';
-import 'package:informa/models/meal.dart';
 import 'package:informa/models/user.dart';
 import 'package:informa/models/water.dart';
 import 'package:informa/models/workout.dart';
@@ -20,7 +18,7 @@ import 'package:informa/providers/water_provider.dart';
 import 'package:informa/screens/auth_screens/register_screens.dart';
 import 'package:informa/screens/main_screen.dart';
 import 'package:informa/services/firestore_service.dart';
-import 'package:informa/services/informa_service.dart';
+import 'package:informa/services/image_service.dart';
 import 'package:informa/services/meals_service.dart';
 import 'package:provider/provider.dart';
 
@@ -35,10 +33,9 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen> {
   FirestoreService _firestoreService = new FirestoreService();
-  InformaService _informaService = new InformaService();
   MealsService _mealsService = new MealsService();
-
-  resetMacros(AppUser user) async{
+  ImageService imageService = ImageService();
+  resetMacros(AppUser user) async {
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyCalories(user.myCalories!);
     Provider.of<ActiveUserProvider>(context, listen: false)
@@ -47,15 +44,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
         .setDailyCarb(user.myCarb!);
     Provider.of<ActiveUserProvider>(context, listen: false)
         .setDailyFats(user.myFats!);
-    if(user.dietType == 2){
+    if (user.dietType == 2) {
       DateTime now = DateTime.now();
-      if(((now.difference(user.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
+      if (((now.difference(user.carbCycleStartDate!).inHours / 24).floor() %
+              7) <
+          4) {
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setDailyCarbCycle(user.lowAndHighCarb![0]);
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setCarbCycleIndex(0);
-      }
-      else{
+      } else {
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setDailyCarbCycle(user.lowAndHighCarb![1]);
         Provider.of<ActiveUserProvider>(context, listen: false)
@@ -63,70 +61,81 @@ class _LoadingScreenState extends State<LoadingScreen> {
       }
     }
     double? myWater = await HelpFunction.getMyWater();
-    if(myWater != null) HelpFunction.saveDailyWater(myWater);
+    if (myWater != null) HelpFunction.saveDailyWater(myWater);
   }
 
-  getAppData() async{
+  getAppData() async {
+    await FirestoreService().getDietPlans(context);
+    await FirestoreService().getTrainingPlans(context);
+    await FirestoreService().getDietAndTrainingPlans(context);
+
+    await FirestoreService().getSupplements(context);
     String? lang = await HelpFunction.getUserLanguage();
     String? initScreen = await HelpFunction.getInitScreen();
     await _mealsService.setAllMeals();
-    if(lang != null)
+    if (lang != null)
       Provider.of<AppLanguageProvider>(context, listen: false).changeLang(lang);
-    if(initScreen != null) {
+    if (initScreen != null) {
       var currentUser = FirebaseAuth.instance.currentUser;
-      if(currentUser != null){
+      if (currentUser != null) {
         // AppUser user = new AppUser();
         // await user.getFromSharedPreference();
         AppUser? user = await _firestoreService.getUserById(currentUser.uid);
-        if(user != null){
-          Provider.of<ActiveUserProvider>(context, listen: false)
-              .setUser(user);
-          if(user.premium){
+        if (user != null) {
+          Provider.of<ActiveUserProvider>(context, listen: false).setUser(user);
+          if (user.premium) {
             AppUser premiumUser = user;
 
             double? myWater = await HelpFunction.getMyWater();
             double? dailyWater = await HelpFunction.getDailyWater();
 
-            if(myWater != null && dailyWater != null) {
+            if (myWater != null && dailyWater != null) {
               Provider.of<ActiveUserProvider>(context, listen: false)
                   .setMyWater(myWater);
               Provider.of<ActiveUserProvider>(context, listen: false)
                   .setDailyWater(dailyWater);
             }
 
-            if(premiumUser.premium && premiumUser.fillPremiumForm){
-              if(premiumUser.adminConfirm && (premiumUser.program == 2 || premiumUser.program == 3)){
-                bool update = await _firestoreService
-                    .checkAndUpdateNewDayData(currentUser.uid, premiumUser);
-                if(update) resetMacros(premiumUser);
+            if (premiumUser.premium && premiumUser.fillPremiumForm) {
+              if (premiumUser.adminConfirm &&
+                  (premiumUser.program == 2 || premiumUser.program == 3)) {
+                bool update = await _firestoreService.checkAndUpdateNewDayData(
+                    currentUser.uid, premiumUser);
+                if (update) resetMacros(premiumUser);
               }
-              if(premiumUser.dietType == 2){
-                DateTime now = DateTime.now();
-                if(((now.difference(premiumUser.carbCycleStartDate!).inHours/24).floor() % 7) < 4){
-                  Provider.of<ActiveUserProvider>(context, listen: false)
-                      .setCarbCycleIndex(0);
-                  if(premiumUser.dailyCarbCycle == premiumUser.lowAndHighCarb![1]){
-                    await _firestoreService.updateUserData(currentUser.uid, {
-                      'dailyCarbCycle': premiumUser.lowAndHighCarb![0],
-                    });
-                    Provider.of<ActiveUserProvider>(context, listen: false)
-                        .setDailyCarbCycle(premiumUser.lowAndHighCarb![0]);
-                  }
-                }
-                else{
-                  Provider.of<ActiveUserProvider>(context, listen: false)
-                      .setCarbCycleIndex(1);
-                  if(premiumUser.dailyCarbCycle == premiumUser.lowAndHighCarb![0]){
-                    await _firestoreService.updateUserData(currentUser.uid, {
-                      'dailyCarbCycle': premiumUser.lowAndHighCarb![1],
-                    });
-                    Provider.of<ActiveUserProvider>(context, listen: false)
-                        .setDailyCarbCycle(premiumUser.lowAndHighCarb![1]);
-                  }
-                }
-              }
-              List? nutrition = await _firestoreService.getNutritionMeals(currentUser.uid, premiumUser);
-              if(nutrition != null){
+              // if (premiumUser.dietType == 2) {
+              //   DateTime now = DateTime.now();
+              //   if (((now.difference(premiumUser.carbCycleStartDate!).inHours /
+              //                   24)
+              //               .floor() %
+              //           7) <
+              //       4) {
+              //     Provider.of<ActiveUserProvider>(context, listen: false)
+              //         .setCarbCycleIndex(0);
+              //     if (premiumUser.dailyCarbCycle ==
+              //         premiumUser.lowAndHighCarb![1]) {
+              //       await _firestoreService.updateUserData(currentUser.uid, {
+              //         'dailyCarbCycle': premiumUser.lowAndHighCarb![0],
+              //       });
+              //       Provider.of<ActiveUserProvider>(context, listen: false)
+              //           .setDailyCarbCycle(premiumUser.lowAndHighCarb![0]);
+              //     }
+              //   } else {
+              //     Provider.of<ActiveUserProvider>(context, listen: false)
+              //         .setCarbCycleIndex(1);
+              //     if (premiumUser.dailyCarbCycle ==
+              //         premiumUser.lowAndHighCarb![0]) {
+              //       await _firestoreService.updateUserData(currentUser.uid, {
+              //         'dailyCarbCycle': premiumUser.lowAndHighCarb![1],
+              //       });
+              //       Provider.of<ActiveUserProvider>(context, listen: false)
+              //           .setDailyCarbCycle(premiumUser.lowAndHighCarb![1]);
+              //     }
+              //   }
+              // }
+              List? nutrition = await _firestoreService.getNutritionMeals(
+                  currentUser.uid, premiumUser);
+              if (nutrition != null) {
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setBreakfast(nutrition[0]);
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
@@ -156,28 +165,50 @@ class _LoadingScreenState extends State<LoadingScreen> {
                     .setMainSnacksDone(mainSnacksDone);
                 Provider.of<PremiumNutritionProvider>(context, listen: false)
                     .setSupplementsDone(supplementsDone);
+
                 print('premium start date: ' + premiumUser.premiumStartDate.toString());
                 if(additionalMeals != null)
+
                   Provider.of<PremiumNutritionProvider>(context, listen: false)
                       .setAdditionalMeals(additionalMeals);
               }
-              print('loading page - admin confirm ? '  + premiumUser.adminConfirm.toString());
-              print('loading page - program ? '  + premiumUser.program.toString());
-              if(premiumUser.adminConfirm && (premiumUser.program == 1 || premiumUser.program == 2)){
+
+              print('loading page - admin confirm ? ' +
+                  premiumUser.adminConfirm.toString());
+              print(
+                  'loading page - program ? ' + premiumUser.program.toString());
+              if (premiumUser.adminConfirm &&
+                  (premiumUser.program == 1 || premiumUser.program == 2)) {
                 print('loading page - admin confirmed workout');
                 WorkoutServices workoutServices = new WorkoutServices();
                 await workoutServices.getMuscles();
-                List<Exercise> exercises = await _firestoreService.getExercises();
-                List<Workout> workouts = await _firestoreService.getWorkouts(exercises);
-                List<Cardio> cardio = await _firestoreService.getCardio(exercises);
-                WorkoutPreset? workoutPreset = await _firestoreService.getWorkoutPresetById(
-                  premiumUser.workoutPreset!,
-                  workouts,
-                  cardio
-                );
+                List<Exercise> exercises =
+                    await _firestoreService.getExercises();
+                List<Workout> workouts =
+                    await _firestoreService.getWorkouts(exercises);
+                List<Cardio> cardio =
+                    await _firestoreService.getCardio(exercises);
+                WorkoutPreset? workoutPreset =
+                    await _firestoreService.getWorkoutPresetById(
+                        premiumUser.workoutPreset!, workouts, cardio);
                 print("workout pre = " + workoutPreset.toString());
-                if(workoutPreset != null) {
-                  print('loading page - workout pre id: ' + workoutPreset.id.toString());
+                if (workoutPreset != null) {
+                  print('loading page - workout pre id: ' +
+                      workoutPreset.id.toString());
+
+                  //             if (premiumUser.workoutPreset != null) {
+                  //               List<Exercise> exercises =
+                  //                  await _firestoreService.getExercises();
+                  //              exercises.map((e) => print('${e.id} \n'));
+                  //              List<Workout> workouts =
+                  //                  await _firestoreService.getWorkouts(exercises);
+                  //              List<Cardio> cardio =
+                  //                  await _firestoreService.getCardio(exercises);
+                  //              WorkoutPreset? workoutPreset =
+                  //                  await _firestoreService.getWorkoutPresetById(
+                  //                     premiumUser.workoutPreset!, workouts, cardio);
+                  //             if (workoutPreset != null)
+
                   Provider.of<ActiveUserProvider>(context, listen: false)
                       .setWorkoutPreset(workoutPreset);
                   String id = FirebaseAuth.instance.currentUser!.uid;
@@ -194,9 +225,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
           //       .setUser(nonPremiumUser);
           // }
           //get challenges
-          if(mounted) {
-            List<Challenge> challenges = await _firestoreService
-                .getAllChallenges();
+          if (mounted) {
+            List<Challenge> challenges =
+                await _firestoreService.getAllChallenges();
             Provider.of<ChallengesProvider>(context, listen: false)
                 .setChallenges(challenges);
             //get water settings
@@ -204,14 +235,14 @@ class _LoadingScreenState extends State<LoadingScreen> {
             await water.getFromSharedPreference();
             Provider.of<WaterProvider>(context, listen: false).setWater(water);
           }
-        }
-        else Navigator.pushReplacementNamed(context, RegisterScreens.id);
+        } else
+          Navigator.pushReplacementNamed(context, RegisterScreens.id);
       }
-      if(initScreen == MainScreen.id && currentUser == null)
+      if (initScreen == MainScreen.id && currentUser == null)
         Navigator.pushReplacementNamed(context, RegisterScreens.id);
-      else Navigator.pushReplacementNamed(context, initScreen);
-    }
-    else
+      else
+        Navigator.pushReplacementNamed(context, initScreen);
+    } else
       Navigator.pushReplacementNamed(context, RegisterScreens.id);
   }
 
@@ -219,7 +250,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(this.mounted){
+    if (this.mounted) {
       getAppData();
     }
   }
@@ -231,9 +262,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage('assets/images/appBg.png')
-            )
-        ),
+                image: AssetImage('assets/images/appBg.png'))),
         child: Center(
           child: SpinKitFoldingCube(
             color: primaryColor,

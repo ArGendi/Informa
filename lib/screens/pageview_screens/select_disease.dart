@@ -7,34 +7,38 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../widgets/custom_button.dart';
-import '../main_screen.dart';
 
 class SelectDisease extends StatefulWidget {
   final VoidCallback onClick;
   final VoidCallback onBack;
   final bool? isLoading;
-  const SelectDisease({Key? key, required this.onClick, required this.onBack, this.isLoading = false}) : super(key: key);
+  const SelectDisease(
+      {Key? key,
+      required this.onClick,
+      required this.onBack,
+      this.isLoading = false})
+      : super(key: key);
 
   @override
   _SelectDiseaseState createState() => _SelectDiseaseState();
 }
 
-class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProviderStateMixin{
+class _SelectDiseaseState extends State<SelectDisease>
+    with SingleTickerProviderStateMixin {
   String _diseaseWithDesc = '';
   var _formKey = GlobalKey<FormState>();
   late AnimationController _controller;
   late Animation<Offset> _offset;
 
-  onNext(int disease) async{
+  onNext(int disease) async {
     FocusScope.of(context).unfocus();
-    if(disease == 1){
+    if (disease == 1) {
       widget.onClick();
       await _controller.forward();
       Navigator.pushNamed(context, PremiumProgramCounterScreen.id);
-    }
-    else{
+    } else {
       bool valid = _formKey.currentState!.validate();
-      if(valid){
+      if (valid) {
         _formKey.currentState!.save();
         Provider.of<ActiveUserProvider>(context, listen: false)
             .setDiseaseDescription(_diseaseWithDesc);
@@ -47,7 +51,6 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = AnimationController(
       vsync: this,
@@ -55,7 +58,7 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
     );
     _offset = Tween<Offset>(
       begin: Offset.zero,
-      end: Offset(0,-3),
+      end: Offset(0, -3),
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.easeOutBack,
@@ -64,7 +67,6 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     //_controller.dispose();
   }
@@ -92,7 +94,9 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
                       )
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   SlideTransition(
                     position: _offset,
                     child: Container(
@@ -104,11 +108,12 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: AssetImage('assets/images/coach_face.jpg'),
-                          )
-                      ),
+                          )),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'محتاجين نعرف لو عندك اي امراض',
                     textAlign: TextAlign.center,
@@ -122,7 +127,9 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
                     indent: screenSize.width * .3,
                     endIndent: screenSize.width * .3,
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Text(
                     'هل في اى مرض؟',
                     textAlign: TextAlign.center,
@@ -131,27 +138,35 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
                       fontFamily: boldFont,
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ProgramSelectCard(
                     mainText: 'لا يوجد',
                     number: 1,
                     userChoice: activeUser!.disease,
-                    onClick: (){
-                      Provider.of<ActiveUserProvider>(context, listen: false).setDisease(1);
+                    onClick: () {
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setDisease(1);
                     },
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   ProgramSelectCard(
                     mainText: 'نعم يوجد',
                     number: 2,
                     userChoice: activeUser.disease,
-                    onClick: (){
-                      Provider.of<ActiveUserProvider>(context, listen: false).setDisease(2);
+                    onClick: () {
+                      Provider.of<ActiveUserProvider>(context, listen: false)
+                          .setDisease(2);
                     },
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   AnimatedOpacity(
-                    opacity: activeUser.disease == 2? 1 : 0,
+                    opacity: activeUser.disease == 2 ? 1 : 0,
                     duration: Duration(milliseconds: 300),
                     child: Column(
                       children: [
@@ -171,7 +186,9 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
                             fontFamily: boldFont,
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Form(
                           key: _formKey,
                           child: CustomTextField(
@@ -179,11 +196,11 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
                             obscureText: false,
                             textInputType: TextInputType.text,
                             anotherFilledColor: true,
-                            setValue: (value){
+                            setValue: (value) {
                               _diseaseWithDesc = value;
                             },
-                            validation: (value){
-                              if(value.isEmpty) return 'أكتب المرض بالشرح';
+                            validation: (value) {
+                              if (value.isEmpty) return 'أكتب المرض بالشرح';
                               return null;
                             },
                           ),
@@ -191,17 +208,22 @@ class _SelectDiseaseState extends State<SelectDisease> with SingleTickerProvider
                       ],
                     ),
                   ),
-                  SizedBox(height: 40,),
+                  SizedBox(
+                    height: 40,
+                  ),
                 ],
               ),
             ),
           ),
           CustomButton(
             text: 'تم',
-            onClick: activeUser.disease != 0? (){
-              onNext(activeUser.disease);
-            } : (){},
-            bgColor: activeUser.disease != 0? primaryColor : Colors.grey.shade400,
+            onClick: activeUser.disease != 0
+                ? () {
+                    onNext(activeUser.disease);
+                  }
+                : () {},
+            bgColor:
+                activeUser.disease != 0 ? primaryColor : Colors.grey.shade400,
             isLoading: widget.isLoading!,
           )
         ],

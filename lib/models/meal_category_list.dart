@@ -1,8 +1,6 @@
 import 'package:informa/models/meal_category.dart';
-import 'package:informa/models/meal_section.dart';
-import 'package:informa/models/meals_list.dart';
 
-class MealCategoryList{
+class MealCategoryList {
   static List<MealCategory> breakfast = [
     // MealCategory(
     //   id: '1',

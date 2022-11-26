@@ -162,9 +162,26 @@ class _SelectCardioToolsState extends State<SelectCardioTools> {
                         Provider.of<ActiveUserProvider>(context, listen: false)
                             .removeFromCardioTools(5);
                     },
-                    mainText: 'لا يوجد',
+                    mainText: 'Bicycle machine',
                     number: 5,
                     userChoice: activeUser.cardioTools.contains(5) ? 5 : 0,
+                    imagePath: 'assets/images/bicycle.jpg',
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ProgramSelectCard(
+                    onClick: () {
+                      if (!activeUser.cardioTools.contains(6))
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .addToCardioTools(6);
+                      else
+                        Provider.of<ActiveUserProvider>(context, listen: false)
+                            .removeFromCardioTools(6);
+                    },
+                    mainText: 'لا يوجد',
+                    number: 6,
+                    userChoice: activeUser.cardioTools.contains(6) ? 6 : 0,
                     //imagePath: 'assets/images/bar1.png',
                   ),
                   SizedBox(

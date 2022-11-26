@@ -17,10 +17,12 @@ class _SubmitChallengeState extends State<SubmitChallenge> {
   String _videoUrl = '';
   String _btnText = 'أرسل';
 
-  onSubmit(){
+  // print hello world
+
+  onSubmit() {
     FocusScope.of(context).unfocus();
     bool valid = _formKey.currentState!.validate();
-    if(valid){
+    if (valid) {
       _formKey.currentState!.save();
       print(_videoUrl);
       setState(() {
@@ -49,24 +51,27 @@ class _SubmitChallengeState extends State<SubmitChallenge> {
               children: [
                 Text(
                   'متبقي علي نهاية التحدي',
-                  style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.orange
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.orange),
                 ),
-                SizedBox(width: 5,),
+                SizedBox(
+                  width: 5,
+                ),
                 CountdownCard(
                   deadline: widget.challenge.deadline!,
                 ),
               ],
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               width: double.infinity,
               height: 150,
               color: Colors.grey[400],
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             Form(
               key: _formKey,
               child: CustomTextField(
@@ -74,24 +79,25 @@ class _SubmitChallengeState extends State<SubmitChallenge> {
                 obscureText: false,
                 textInputType: TextInputType.text,
                 anotherFilledColor: true,
-                setValue: (value){
+                setValue: (value) {
                   _videoUrl = value;
                 },
-                validation: (value){
+                validation: (value) {
                   if (value.isEmpty) return 'أدخل رابط الفيديو';
                   return null;
                 },
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               'تأكد من صلاحية الرابط قبل أرسال التحدي حتي يتم تقيمك بصورة صحيحة',
-              style: TextStyle(
-                  fontSize: 11,
-                  color: Colors.grey[600]
-              ),
+              style: TextStyle(fontSize: 11, color: Colors.grey[600]),
             ),
-            SizedBox(height: 10,),
+            SizedBox(
+              height: 10,
+            ),
             CustomButton(
               text: _btnText,
               onClick: onSubmit,

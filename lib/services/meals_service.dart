@@ -1,8 +1,5 @@
-import 'dart:collection';
-
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
-import 'package:informa/models/full_meal.dart';
 import 'package:informa/models/meal.dart';
 import 'package:informa/models/meal_category.dart';
 import 'package:informa/models/meal_category_list.dart';
@@ -11,22 +8,22 @@ import 'package:informa/models/meals_list.dart';
 import 'package:informa/models/snacks_list.dart';
 import 'package:informa/models/supplements_list.dart';
 import 'package:informa/models/user.dart';
-import 'package:informa/services/informa_service.dart';
 
-class MealsService{
-  InformaService _informaService = new InformaService();
+class MealsService {
+  // InformaService _informaService = new InformaService();
 
-  Future<List<List<dynamic>>> loadAsset(String fileName) async{
+  Future<List<List<dynamic>>> loadAsset(String fileName) async {
     var data = await rootBundle.loadString(fileName);
     return CsvToListConverter().convert(data);
   }
 
-  Future setAllMeals() async{
-    List<List<dynamic>> breakfast = await loadAsset('assets/files/breakfast.csv');
+  Future setAllMeals() async {
+    List<List<dynamic>> breakfast =
+        await loadAsset('assets/files/breakfast.csv');
     List<List<dynamic>> lunch = await loadAsset('assets/files/lunch.csv');
     List<List<dynamic>> dinner = await loadAsset('assets/files/dinner.csv');
     List<List<dynamic>> allMeals = await loadAsset('assets/files/allMeals.csv');
-    for(int i=1; i<breakfast.length; i++){
+    for (int i = 1; i < breakfast.length; i++) {
       MealsList.breakfast.add(
         Meal(
           id: i.toString(),
@@ -43,7 +40,7 @@ class MealsService{
         ),
       );
     }
-    for(int i=1; i<lunch.length; i++){
+    for (int i = 1; i < lunch.length; i++) {
       MealsList.lunch.add(
         Meal(
           id: (i + 100).toString(),
@@ -60,7 +57,7 @@ class MealsService{
         ),
       );
     }
-    for(int i=1; i<dinner.length; i++){
+    for (int i = 1; i < dinner.length; i++) {
       MealsList.dinner.add(
         Meal(
           id: (i + 200).toString(),
@@ -77,8 +74,8 @@ class MealsService{
         ),
       );
     }
-    for(int i=1; i<allMeals.length; i++){
-      if(allMeals[i][1] != 52 && allMeals[i][1] < 70)
+    for (int i = 1; i < allMeals.length; i++) {
+      if (allMeals[i][1] != 52 && allMeals[i][1] < 70)
         MealsList.allMealsList.add(
           Meal(
             otherId: allMeals[i][1].toString(),
@@ -89,102 +86,114 @@ class MealsService{
     }
   }
 
-  Map<Meal, int>? otherCalculateFullMealNumbers(MealCategory mealCategory, int protein, int carb, int fats){
+  Map<Meal, int>? otherCalculateFullMealNumbers(
+      MealCategory mealCategory, int protein, int carb, int fats) {
     int counter = 0, pointer = 0;
     double myProtein = 0, myCarb = 0, myFats = 0;
     Map<Meal, int> result = Map();
     List<Meal> outMeals = [];
     print('Starting the loop');
-    while(outMeals.length < mealCategory.meals!.length){
-      if(counter > 400) break;
-      if((myProtein - protein).abs() < 1 && (myCarb - carb).abs() < 1 &&
+    while (outMeals.length < mealCategory.meals!.length) {
+      if (counter > 400) break;
+      if ((myProtein - protein).abs() < 1 &&
+          (myCarb - carb).abs() < 1 &&
           (myFats - fats).abs() < 1) break;
 
       double p = 0, c = 0, f = 0;
       Meal meal = mealCategory.meals![pointer];
       print(meal.name);
       bool isBalanced = isMealBalanced(meal, protein, carb, fats, 1, 1, 1);
-      if(((!isBalanced || meal.serving == 1) && (counter%4 != 0)) || outMeals.contains(meal)){
+      if (((!isBalanced || meal.serving == 1) && (counter % 4 != 0)) ||
+          outMeals.contains(meal)) {
         print(meal.name! + ' not balanced');
-        if(pointer+1 >= mealCategory.meals!.length) counter++;
-        pointer = (pointer+1) % mealCategory.meals!.length;
+        if (pointer + 1 >= mealCategory.meals!.length) counter++;
+        pointer = (pointer + 1) % mealCategory.meals!.length;
         continue;
       }
-      if(meal.serving != 1){
+      if (meal.serving != 1) {
         print(meal.name! + ' take 5 gram');
         p = meal.protein! * 0.05;
         c = meal.carb! * 0.05;
         f = meal.fats! * 0.05;
-      }
-      else{
+      } else {
         p = meal.protein!;
         c = meal.carb!;
         f = meal.fats!;
       }
 
-      if((myProtein + p < protein + 1) && (myCarb + c < carb + 1) && (myFats + f < fats + 1)){
+      if ((myProtein + p < protein + 1) &&
+          (myCarb + c < carb + 1) &&
+          (myFats + f < fats + 1)) {
         print(meal.name! + ' confirmed');
         myProtein += p;
         myCarb += c;
         myFats += f;
-        if(result.containsKey(meal)){
+        if (result.containsKey(meal)) {
           int? value = result[meal];
-          if(meal.serving != 1) result[meal] = value! + 5;
-          else result[meal] = value! + 1;
+          if (meal.serving != 1)
+            result[meal] = value! + 5;
+          else
+            result[meal] = value! + 1;
+        } else {
+          if (meal.serving != 1)
+            result[meal] = 5;
+          else
+            result[meal] = 1;
         }
-        else{
-          if(meal.serving != 1) result[meal] = 5;
-          else result[meal] = 1;
-        }
-      }
-      else {
+      } else {
         print(meal.name! + ' go to out meal');
         outMeals.add(meal);
       }
-      if(pointer+1 >= mealCategory.meals!.length) counter++;
-      pointer = (pointer+1) % mealCategory.meals!.length;
+      if (pointer + 1 >= mealCategory.meals!.length) counter++;
+      pointer = (pointer + 1) % mealCategory.meals!.length;
     }
     print('Out of calculation loop');
-    if(mealCategory.extra != null){
-      if(fats > myFats){
+    if (mealCategory.extra != null) {
+      if (fats > myFats) {
         int diff = fats - myFats.round();
         myFats += diff;
-        if(diff > 0)
-          result[mealCategory.extra!] = diff;
+        if (diff > 0) result[mealCategory.extra!] = diff;
       }
     }
     // result.forEach((key, value) {
     //   print(key.name! + ": " + value.toString());
     // });
-    if((myProtein < protein - 3) || (myCarb < carb - 3) || (myFats < fats - 3))
+    if ((myProtein < protein - 3) || (myCarb < carb - 3) || (myFats < fats - 3))
       return null;
     return result;
   }
 
-  List<Meal>? otherCalculateFullMealNumbers2(MealCategory mealCategory, int protein, int carb, int fats){
+  List<Meal>? otherCalculateFullMealNumbers2(
+      MealCategory mealCategory, int protein, int carb, int fats) {
     int counter = 0, pointer = 0;
     double myProtein = 0, myCarb = 0, myFats = 0;
     List<Meal> meals = [];
     List<Meal> outMeals = [];
     double calories = (protein * 4) + (carb * 4) + (fats * 9);
 
-    if(mealCategory.sections == null) return null;
-    for(int i= 0; i<mealCategory.sections!.length; i++){
-      for(var tempMeal in mealCategory.sections![i].meals!){
+    if (mealCategory.sections == null) return null;
+    for (int i = 0; i < mealCategory.sections!.length; i++) {
+      for (var tempMeal in mealCategory.sections![i].meals!) {
         Meal newMeal = tempMeal.copyObject();
         newMeal.amount = 0;
         newMeal.sectionIndex = i;
-        double mealCalories = (newMeal.protein! * 4) + (newMeal.carb! * 4) + (newMeal.fats! * 9);
-        if(mealCalories / calories < 0.4) newMeal.workEvery = 1;
-        else if(mealCalories / calories < 0.5) newMeal.workEvery = 2;
-        else if(mealCalories / calories < 0.8) newMeal.workEvery = 3;
-        else if(mealCalories / calories < 1) newMeal.workEvery = 4;
-        else newMeal.workEvery = 5;
+        double mealCalories =
+            (newMeal.protein! * 4) + (newMeal.carb! * 4) + (newMeal.fats! * 9);
+        if (mealCalories / calories < 0.4)
+          newMeal.workEvery = 1;
+        else if (mealCalories / calories < 0.5)
+          newMeal.workEvery = 2;
+        else if (mealCalories / calories < 0.8)
+          newMeal.workEvery = 3;
+        else if (mealCalories / calories < 1)
+          newMeal.workEvery = 4;
+        else
+          newMeal.workEvery = 5;
         meals.add(newMeal);
       }
     }
 
-    for(var meal in meals){
+    for (var meal in meals) {
       print('----> ' + meal.name! + ': ' + meal.workEvery.toString());
     }
 
@@ -202,65 +211,69 @@ class MealsService{
     // avgFats = avgFats / meals.length - 0.2;
 
     print('Starting the loop');
-    while(outMeals.length < meals.length){
-      if(counter > 400) break;
-      if((myProtein - protein).abs() < 1 && (myCarb - carb).abs() < 1 &&
-          myFats  < fats) break;
+    while (outMeals.length < meals.length) {
+      if (counter > 400) break;
+      if ((myProtein - protein).abs() < 1 &&
+          (myCarb - carb).abs() < 1 &&
+          myFats < fats) break;
 
       double p = 0, c = 0, f = 0;
       //Meal meal = meals[pointer];
       print(meals[pointer].name);
-      bool isBalanced = isMealBalanced(
-        meals[pointer], protein, carb, fats,
-          minMacros[0], minMacros[1], minMacros[2]
-      );
+      // bool isBalanced = isMealBalanced(meals[pointer], protein, carb, fats,
+      //     minMacros[0], minMacros[1], minMacros[2]);
       //bool isBalanced = isMealBalanced2(meals[pointer], protein, carb, fats);
-      if(((meals[pointer].serving == 1) && (counter%3 != 0))
-          || outMeals.contains(meals[pointer]) || (meals[pointer].workEvery > 1 && counter%meals[pointer].workEvery != 0)){
+      if (((meals[pointer].serving == 1) && (counter % 3 != 0)) ||
+          outMeals.contains(meals[pointer]) ||
+          (meals[pointer].workEvery > 1 &&
+              counter % meals[pointer].workEvery != 0)) {
         print(meals[pointer].name! + ' not balanced');
-        if(pointer+1 >= meals.length) counter++;
-        pointer = (pointer+1) % meals.length;
+        if (pointer + 1 >= meals.length) counter++;
+        pointer = (pointer + 1) % meals.length;
         continue;
       }
-      if(meals[pointer].serving != 1){
+      if (meals[pointer].serving != 1) {
         print(meals[pointer].name! + ' take 5 gram');
         p = meals[pointer].protein! * 0.05;
         c = meals[pointer].carb! * 0.05;
         f = meals[pointer].fats! * 0.05;
-      }
-      else{
+      } else {
         p = meals[pointer].protein!;
         c = meals[pointer].carb!;
         f = meals[pointer].fats!;
       }
 
-      if((myProtein + p < protein + 1) && (myCarb + c < carb + 1) && (myFats + f < fats + 1)){
+      if ((myProtein + p < protein + 1) &&
+          (myCarb + c < carb + 1) &&
+          (myFats + f < fats + 1)) {
         print(meals[pointer].name! + ' confirmed');
         myProtein += p;
         myCarb += c;
         myFats += f;
-        if(meals[pointer].amount != null){
-          if(meals[pointer].serving != 1) meals[pointer].amount = meals[pointer].amount! + 5;
-          else meals[pointer].amount = meals[pointer].amount! + 1;
+        if (meals[pointer].amount != null) {
+          if (meals[pointer].serving != 1)
+            meals[pointer].amount = meals[pointer].amount! + 5;
+          else
+            meals[pointer].amount = meals[pointer].amount! + 1;
+        } else {
+          if (meals[pointer].serving != 1)
+            meals[pointer].amount = 5;
+          else
+            meals[pointer].amount = 1;
         }
-        else{
-          if(meals[pointer].serving != 1) meals[pointer].amount = 5;
-          else meals[pointer].amount = 1;
-        }
-      }
-      else {
+      } else {
         print(meals[pointer].name! + ' go to out meal');
         outMeals.add(meals[pointer]);
       }
-      if(pointer+1 >= meals.length) counter++;
-      pointer = (pointer+1) % meals.length;
+      if (pointer + 1 >= meals.length) counter++;
+      pointer = (pointer + 1) % meals.length;
     }
     print('Out of calculation loop');
-    if(mealCategory.extra != null){
-      if(fats > myFats){
+    if (mealCategory.extra != null) {
+      if (fats > myFats) {
         int diff = fats - myFats.round();
         myFats += diff;
-        if(diff > 0) {
+        if (diff > 0) {
           mealCategory.extra!.amount = diff;
           mealCategory.extra!.sectionIndex = -1;
           meals.add(mealCategory.extra!);
@@ -276,34 +289,36 @@ class MealsService{
     return meals;
   }
 
-  bool isMealBalanced(
-      Meal meal, int protein, int carb, int fats,
-      double avgProtein, double avgCarb, double avgFats
-      ){
-    if((meal.protein! / protein) > avgProtein) return false;
-    else if((meal.carb! / carb) > avgCarb) return false;
-    else if((meal.fats! / fats) > avgFats) return false;
+  bool isMealBalanced(Meal meal, int protein, int carb, int fats,
+      double avgProtein, double avgCarb, double avgFats) {
+    if ((meal.protein! / protein) > avgProtein)
+      return false;
+    else if ((meal.carb! / carb) > avgCarb)
+      return false;
+    else if ((meal.fats! / fats) > avgFats) return false;
     return true;
   }
 
-  bool isMealBalanced2(Meal meal, int protein, int carb, int fats){
-    double mealCalories = (meal.protein! * 4) + (meal.carb! * 4) + (meal.fats! * 9);
+  bool isMealBalanced2(Meal meal, int protein, int carb, int fats) {
+    double mealCalories =
+        (meal.protein! * 4) + (meal.carb! * 4) + (meal.fats! * 9);
     double calories = (protein * 4) + (carb * 4) + (fats * 9);
-    if((mealCalories / calories) > 0.8) return false;
+    if ((mealCalories / calories) > 0.8) return false;
     return true;
   }
 
-  List<double> getMinMealMacros(List<Meal> meals, int protein, int carb, int fats){
+  List<double> getMinMealMacros(
+      List<Meal> meals, int protein, int carb, int fats) {
     double p1 = 0, c1 = 0, f1 = 0;
     double minP = 0, minC = 0, minF = 0;
     minP = meals[0].protein! / protein;
     minC = meals[0].carb! / carb;
     minF = meals[0].fats! / fats;
-    for(int i=1; i<meals.length; i++){
+    for (int i = 1; i < meals.length; i++) {
       p1 = meals[i].protein! / protein;
       c1 = meals[i].carb! / carb;
       f1 = meals[i].fats! / fats;
-      if((p1 + c1 + f1) < (minP + minC + minF)){
+      if ((p1 + c1 + f1) < (minP + minC + minF)) {
         minP = p1;
         minC = c1;
         minF = f1;
@@ -312,13 +327,14 @@ class MealsService{
     return [minP, minC, minF];
   }
 
-  List<dynamic> calculateSnacks(AppUser user, int proteinNeeded, int carbNeeded){
+  List<dynamic> calculateSnacks(
+      AppUser user, int proteinNeeded, int carbNeeded) {
     Map<Meal, int> snacks = new Map();
     double protein = 0;
     double carb = 0;
     double fats = 0;
     List<dynamic> snacksWithRest = [];
-    if(user.wheyProtein == 1 && proteinNeeded >= 250) {
+    if (user.wheyProtein == 1 && proteinNeeded >= 250) {
       snacks[SnacksList.snacks[0]] = 2;
       snacks[SnacksList.snacks[1]] = 1;
       snacks[SnacksList.snacks[2]] = 1;
@@ -330,8 +346,7 @@ class MealsService{
       carb += SnacksList.snacks[1].carb! * 1;
       fats += SnacksList.snacks[0].fats! * 2;
       fats += SnacksList.snacks[1].fats! * 1;
-    }
-    else if(user.wheyProtein == 1 && proteinNeeded >= 200){
+    } else if (user.wheyProtein == 1 && proteinNeeded >= 200) {
       snacks[SnacksList.snacks[0]] = 1;
       snacks[SnacksList.snacks[1]] = 1;
       snacks[SnacksList.snacks[2]] = 1;
@@ -343,8 +358,7 @@ class MealsService{
       carb += SnacksList.snacks[1].carb! * 1;
       fats += SnacksList.snacks[0].fats! * 1;
       fats += SnacksList.snacks[1].fats! * 1;
-    }
-    else if(user.wheyProtein == 1 && proteinNeeded >= 150) {
+    } else if (user.wheyProtein == 1 && proteinNeeded >= 150) {
       snacks[SnacksList.snacks[1]] = 1;
       snacks[SnacksList.snacks[2]] = 1;
       snacks[SnacksList.snacks[3]] = 1;
@@ -352,8 +366,7 @@ class MealsService{
       protein += SnacksList.snacks[1].protein! * 1;
       carb += SnacksList.snacks[1].carb! * 1;
       fats += SnacksList.snacks[1].fats! * 1;
-    }
-    else if(user.wheyProtein == 2 && proteinNeeded >= 250) {
+    } else if (user.wheyProtein == 2 && proteinNeeded >= 250) {
       snacks[SnacksList.snacks[4]] = 2;
       // snacks[SnacksList.snacks[5]] = 2;
       // snacks[SnacksList.snacks[6]] = 2;
@@ -363,8 +376,7 @@ class MealsService{
       protein += SnacksList.snacks[4].protein! * 2;
       carb += SnacksList.snacks[4].carb! * 2;
       fats += SnacksList.snacks[4].fats! * 2;
-    }
-    else if(user.wheyProtein == 2 && proteinNeeded >= 150) {
+    } else if (user.wheyProtein == 2 && proteinNeeded >= 150) {
       snacks[SnacksList.snacks[4]] = 1;
       // snacks[SnacksList.snacks[5]] = 1;
       // snacks[SnacksList.snacks[6]] = 1;
@@ -376,7 +388,7 @@ class MealsService{
       fats += SnacksList.snacks[4].fats! * 1;
     }
 
-    if(carbNeeded >= 350) {
+    if (carbNeeded >= 350) {
       snacks[SnacksList.snacks[5]] = 1;
       snacks[SnacksList.snacks[8]] = 1;
 
@@ -386,8 +398,7 @@ class MealsService{
       carb += SnacksList.snacks[8].carb! * 1;
       fats += SnacksList.snacks[5].fats! * 1;
       fats += SnacksList.snacks[8].fats! * 1;
-    }
-    else if(carbNeeded >= 300) {
+    } else if (carbNeeded >= 300) {
       snacks[SnacksList.snacks[5]] = 1;
       snacks[SnacksList.snacks[7]] = 1;
 
@@ -397,22 +408,19 @@ class MealsService{
       carb += SnacksList.snacks[7].carb! * 1;
       fats += SnacksList.snacks[5].fats! * 1;
       fats += SnacksList.snacks[7].fats! * 1;
-    }
-    else if(carbNeeded >= 250) {
+    } else if (carbNeeded >= 250) {
       snacks[SnacksList.snacks[5]] = 1;
 
       protein += SnacksList.snacks[5].protein! * 1;
       carb += SnacksList.snacks[5].carb! * 1;
       fats += SnacksList.snacks[5].fats! * 1;
-    }
-    else if(carbNeeded >= 200) {
+    } else if (carbNeeded >= 200) {
       snacks[SnacksList.snacks[8]] = 1;
 
       protein += SnacksList.snacks[8].protein! * 1;
       carb += SnacksList.snacks[8].carb! * 1;
       fats += SnacksList.snacks[8].fats! * 1;
-    }
-    else if(carbNeeded >= 125) {
+    } else if (carbNeeded >= 125) {
       snacks[SnacksList.snacks[7]] = 1;
 
       protein += SnacksList.snacks[7].protein! * 1;
@@ -424,9 +432,9 @@ class MealsService{
     return snacksWithRest;
   }
 
-  List<double> calculateSupplementsMacros(AppUser user){
+  List<double> calculateSupplementsMacros(AppUser user) {
     double protein = 0, carb = 0, fats = 0;
-    for(var id in user.supplements){
+    for (var id in user.supplements) {
       Meal supplement = SupplementsList.supplements[int.parse(id) - 1];
       protein += supplement.protein != null ? supplement.protein! : 0;
       carb += supplement.carb != null ? supplement.carb! : 0;
@@ -435,7 +443,8 @@ class MealsService{
     return [protein, carb, fats];
   }
 
-  List<Meal> calculateMeal(int protein, int carb, int fats, int percent, AppUser user, int whichMeal, bool includeSalad){
+  List<Meal> calculateMeal(int protein, int carb, int fats, int percent,
+      AppUser user, int whichMeal, bool includeSalad) {
     List<Meal> allMeals = [];
     double newProtein = protein * (percent / 100);
     double newCarb = carb * (percent / 100);
@@ -443,37 +452,49 @@ class MealsService{
     double proteinAfterSalad = 0, carbAfterSalad = 0, fatsAfterSalad = 0;
 
     List<MealCategory> mealsCategory = [];
-    if(whichMeal == 1) mealsCategory = MealCategoryList.breakfast;
-    else if(whichMeal == 2) mealsCategory = MealCategoryList.lunch;
-    else if(whichMeal == 3) mealsCategory = MealCategoryList.dinner;
+    if (whichMeal == 1)
+      mealsCategory = MealCategoryList.breakfast;
+    else if (whichMeal == 2)
+      mealsCategory = MealCategoryList.lunch;
+    else if (whichMeal == 3) mealsCategory = MealCategoryList.dinner;
 
-    for(var mealCategory in mealsCategory){
+    for (var mealCategory in mealsCategory) {
       bool unWantedMealCategory = false;
-      for(var section in mealCategory.sections!){
-        for(var meal in section.meals!){
-          if(user.unWantedMeals.contains(meal.otherId)) {
+      for (var section in mealCategory.sections!) {
+        for (var meal in section.meals!) {
+          if (user.unWantedMeals.contains(meal.otherId)) {
             unWantedMealCategory = true;
             break;
           }
         }
       }
-      if(unWantedMealCategory) continue;
-      if(whichMeal == 2 && includeSalad){
+      if (unWantedMealCategory) continue;
+      if (whichMeal == 2 && includeSalad) {
         proteinAfterSalad = newProtein - MealsList.salads[0].protein!;
         carbAfterSalad = newCarb - MealsList.salads[0].carb!;
         fatsAfterSalad = newFats - MealsList.salads[0].fats!;
       }
-      print('Macro: ' + newProtein.toString() + ' ' + newCarb.toString() + ' ' + newFats.toString());
+      print('Macro: ' +
+          newProtein.toString() +
+          ' ' +
+          newCarb.toString() +
+          ' ' +
+          newFats.toString());
 
       List<Meal>? result;
-      if(whichMeal != 2)
-        result = otherCalculateFullMealNumbers2(mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
+      if (whichMeal != 2)
+        result = otherCalculateFullMealNumbers2(
+            mealCategory, newProtein.toInt(), newCarb.toInt(), newFats.toInt());
       else
-        result = otherCalculateFullMealNumbers2(mealCategory, proteinAfterSalad.toInt(), carbAfterSalad.toInt(), fatsAfterSalad.toInt());
+        result = otherCalculateFullMealNumbers2(
+            mealCategory,
+            proteinAfterSalad.toInt(),
+            carbAfterSalad.toInt(),
+            fatsAfterSalad.toInt());
 
-      if(result != null){
+      if (result != null) {
         print('-------------- Result ----------------');
-        for(var meal in result){
+        for (var meal in result) {
           print(meal.name! + ': ' + meal.amount!.toString());
         }
         print('-------------- End result ----------------');
@@ -484,10 +505,12 @@ class MealsService{
           protein: newProtein,
           carb: newCarb,
           fats: newFats,
-          calories: (newProtein.toInt() * 4 + newCarb.toInt() * 4 + newFats.toInt() * 9),
+          calories: (newProtein.toInt() * 4 +
+              newCarb.toInt() * 4 +
+              newFats.toInt() * 9),
         );
         List<MealSection> sections = [];
-        for(var section in mealCategory.sections!){
+        for (var section in mealCategory.sections!) {
           sections.add(
             new MealSection(
               name: section.name,
@@ -496,8 +519,8 @@ class MealsService{
             ),
           );
         }
-        for(var tempMeal in result){
-          if(tempMeal.sectionIndex != -1)
+        for (var tempMeal in result) {
+          if (tempMeal.sectionIndex != -1)
             sections[tempMeal.sectionIndex!].meals!.add(tempMeal);
           else {
             sections.add(
@@ -509,9 +532,9 @@ class MealsService{
             );
           }
         }
-        if(whichMeal == 2){
-          if(meal.salads == null) meal.salads = [];
-          for(var salad in MealsList.salads){
+        if (whichMeal == 2) {
+          if (meal.salads == null) meal.salads = [];
+          for (var salad in MealsList.salads) {
             meal.salads!.add(salad);
           }
         }
@@ -522,5 +545,4 @@ class MealsService{
     }
     return allMeals;
   }
-
 }
