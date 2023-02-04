@@ -590,9 +590,6 @@ class _SingleMealScreenState extends State<SingleMealScreen> with SingleTickerPr
                       ),
                       SizedBox(height: 20,),
 
-                      Text('p:' + _protein.toStringAsFixed(2) + ' - c:' + _carb.toStringAsFixed(2) + ' - f:' + _fats.toStringAsFixed(2)),
-                      SizedBox(height: 20,),
-
                       widget.meal.sections != null ?
                         getMealSections() : getMealComponents(),
 

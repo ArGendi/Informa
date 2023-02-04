@@ -69,6 +69,8 @@ class _SnacksScreenState extends State<SnacksScreen> {
     else if(activeUser.myCarb! >= 125) {
       _mainList.add(SnacksList.snacks[7]);
     }
+    print("main lizt: " + _mainList.toString());
+    print("Or lizt: " + _orList.toString());
   }
 
   @override

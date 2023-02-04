@@ -60,11 +60,11 @@ class Meal {
       map['meals'].forEach((key, value) {
         int index = int.parse(key);
         late Meal meal;
-        if(index < 100)
+        if(index < 100 && index-1 < MealsList.breakfast.length)
           meal = MealsList.breakfast[index-1].copyObject();
-        else if(index < 200)
+        else if(index < 200 && index-100-1 < MealsList.lunch.length)
           meal = MealsList.lunch[index-100-1].copyObject();
-        else if(index >= 200)
+        else if(index >= 200 && index-200-1 < MealsList.dinner.length)
           meal = MealsList.dinner[index-200-1].copyObject();
         meal.amount = value;
         meals.add(meal);

@@ -203,18 +203,18 @@ class _MainScreenState extends State<MainScreen> {
                               shape: CircleBorder(),
                               minWidth: 40,
                               onPressed: (){
-                                setState(() {
-                                  _selectedIndex = 3;
-                                  _currentPage = MainWorkoutScreen();
-                                });
-                                // if(activeUser!.premium && activeUser.fillPremiumForm)
-                                //   setState(() {
-                                //     _selectedIndex = 3;
-                                //     _currentPage = MainWorkoutScreen();
-                                //   });
-                                // else if(activeUser.premium && !activeUser.fillPremiumForm)
-                                //   Navigator.pushNamed(context, ReadyFillPremiumForm.id);
-                                // else Navigator.pushNamed(context, PlansScreen.id);
+                                // setState(() {
+                                //   _selectedIndex = 3;
+                                //   _currentPage = MainWorkoutScreen();
+                                // });
+                                if(activeUser!.premium && activeUser.fillPremiumForm && (activeUser.program == 1 || activeUser.program == 2))
+                                  setState(() {
+                                    _selectedIndex = 3;
+                                    _currentPage = MainWorkoutScreen();
+                                  });
+                                else if(activeUser.premium && !activeUser.fillPremiumForm)
+                                  Navigator.pushNamed(context, ReadyFillPremiumForm.id);
+                                else Navigator.pushNamed(context, PlansScreen.id);
                               },
                               child: Column(
                                 children: [
